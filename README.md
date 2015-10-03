@@ -26,7 +26,7 @@ Check *ppj-labos-upute*. (Possibly outdated)
 - [Filip Gulan](http://github.com/fgulan)
 - [Jan Kelemen](http://github.com/jan-kelemen)
 - [Domagoj Polančec](http://github.com/CleverLettuce)
-- Matea Sabolić
+- [Matea Sabolić](https://github.com/TaraLuna)
 
 ###License
 MIT License, for more details see *LICENSE*.
