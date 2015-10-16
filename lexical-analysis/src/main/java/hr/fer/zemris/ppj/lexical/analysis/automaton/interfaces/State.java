@@ -9,5 +9,10 @@ package hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces;
  */
 public interface State {
 
+    /**
+     * Gets the state id.
+     * 
+     * @return the state id
+     */
     String getId();
 }
