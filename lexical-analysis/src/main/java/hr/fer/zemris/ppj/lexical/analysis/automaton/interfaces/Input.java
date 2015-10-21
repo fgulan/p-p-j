@@ -9,5 +9,6 @@ package hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces;
  */
 // TODO: add some methods if necessary
 public interface Input {
-
+    public void setString(String input);
+    public String getString();
 }
