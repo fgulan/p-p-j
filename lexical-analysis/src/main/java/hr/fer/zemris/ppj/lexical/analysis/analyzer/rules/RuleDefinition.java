@@ -57,7 +57,7 @@ public class RuleDefinition {
         for (final String action : actions) {
             result += action;
         }
-        result += "}";
+        result += "\n}";
 
         return result;
     }

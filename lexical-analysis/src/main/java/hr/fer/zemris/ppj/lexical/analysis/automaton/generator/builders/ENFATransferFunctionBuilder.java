@@ -40,7 +40,7 @@ public class ENFATransferFunctionBuilder implements TransferFunctionBuilder {
     /**
      * {@inheritDoc}
      *
-     * @see hr.fer.zemris.ppj.lexical.analysis.automaton.generator.builders.interfaces.TransferFunctionBuilder#build(java.util.List)
+     * @see hr.fer.zemris.ppj.lexical.analysis.automaton.generator.builders.interfaces.TransferFunctionBuilder#build(java.util.Map)
      * @since 1.0
      */
     @Override
@@ -73,8 +73,9 @@ public class ENFATransferFunctionBuilder implements TransferFunctionBuilder {
      */
     @Override
     public void addTransition(final String oldState, final Character symbol, final String newState) {
+        System.out.println(rawTransitions.keySet().toString() + oldState + rawTransitions.containsKey(oldState));
         final Map<Character, Set<String>> rawStateTransitions =
-                rawTransitions.containsKey(oldState) ? rawTransitions.get(symbol) : new HashMap<>();
+                rawTransitions.containsKey(oldState) ? rawTransitions.get(oldState) : new HashMap<>();
         final Set<String> rawTransitionResult =
                 rawStateTransitions.containsKey(symbol) ? rawStateTransitions.get(symbol) : new HashSet<>();
 

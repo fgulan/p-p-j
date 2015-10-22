@@ -89,6 +89,7 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
             final State state = builder.build();
 
             statesMap.put(state.getId(), state);
+            states.add(state);
 
             if (!foundInitial && pair.initial.getId().equals(builder.getId())) {
                 startState = state;
@@ -121,7 +122,7 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
         }
 
         boolean prefixed = false;
-        final StateBuilder lastState = pair.initial;
+        StateBuilder lastState = pair.initial;
 
         for (int i = 0; i < expression.length(); i++) {
             StateBuilderPair subpair = new StateBuilderPair(null, null);
@@ -135,7 +136,7 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
                 continue;
             }
             else if (expression.charAt(i) == '\\') {
-                prefixed = false;
+                prefixed = true;
 
                 continue;
             }
@@ -169,7 +170,7 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
             }
 
             addTransition(lastState, subpair.initial);
-            subpair.accepting = lastState;
+            lastState = subpair.accepting;
 
             addTransition(lastState, pair.accepting);
         }
