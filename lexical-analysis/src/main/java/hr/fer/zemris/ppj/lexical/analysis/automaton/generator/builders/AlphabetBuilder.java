@@ -3,6 +3,7 @@ package hr.fer.zemris.ppj.lexical.analysis.automaton.generator.builders;
 import java.util.HashSet;
 import java.util.Set;
 
+import hr.fer.zemris.ppj.lexical.analysis.automaton.BasicInput;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.Input;
 
 /**
@@ -32,8 +33,11 @@ public class AlphabetBuilder {
      * @since 1.0
      */
     public Set<Input> build() {
-        // TODO: implement with real automaton class.
-        return null;
+        Set<Input> alphabet = new HashSet<>();
+        for (Character symbol : rawInput) {
+            alphabet.add(new BasicInput(symbol));
+        }
+        return alphabet;
     }
 
     /**

@@ -1,5 +1,6 @@
 package hr.fer.zemris.ppj.lexical.analysis.automaton.generator.builders;
 
+import hr.fer.zemris.ppj.lexical.analysis.automaton.BasicState;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.generator.builders.interfaces.StateBuilder;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.State;
 
@@ -8,7 +9,7 @@ import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.State;
  *
  * @author Jan Kelemen
  *
- * @version alpha
+ * @version 1.0
  */
 public class ENFAStateBuilder extends AbstractStateBuilder implements StateBuilder {
 
@@ -29,12 +30,11 @@ public class ENFAStateBuilder extends AbstractStateBuilder implements StateBuild
      * {@inheritDoc}
      *
      * @see hr.fer.zemris.ppj.lexical.analysis.automaton.generator.builders.interfaces.StateBuilder#build()
-     * @since
+     * @since 1.0
      */
     @Override
     public State build() {
-        // TODO Auto-generated method stub
-        return null;
+        return new BasicState(getId());
     }
 
 }

@@ -1,21 +1,21 @@
 package hr.fer.zemris.ppj.lexical.analysis.automaton.generator;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import hr.fer.zemris.ppj.lexical.analysis.automaton.ENFAutomaton;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.generator.builders.AlphabetBuilder;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.generator.builders.ENFAStateBuilder;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.generator.builders.ENFATransferFunctionBuilder;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.generator.builders.interfaces.StateBuilder;
-import hr.fer.zemris.ppj.lexical.analysis.automaton.generator.builders.interfaces.TransferFunctionBuilder;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.generator.interfaces.AutomatonGenerator;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.Automaton;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.Input;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.State;
-import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.TransferFunction;
+import hr.fer.zemris.ppj.lexical.analysis.automaton.transfer.ENFAutomatonTransferFunction;
 import hr.fer.zemris.ppj.lexical.analysis.text.manipulation.RegularExpressionManipulator;
 
 /**
@@ -51,7 +51,7 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
 
     private final Map<String, StateBuilder> stateBuilders;
 
-    private final TransferFunctionBuilder transferFunctionBuilder;
+    private final ENFATransferFunctionBuilder transferFunctionBuilder;
 
     private final AlphabetBuilder alphabetBuilder;
 
@@ -80,12 +80,15 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
         final Set<Input> alphabet = alphabetBuilder.build();
 
         // Build states
-        final List<State> states = new ArrayList<>();
-        final List<State> acceptingStates = new ArrayList<>();
+        final Map<String, State> statesMap = new HashMap<>(); // Utility map used when building transfer function
+        final Set<State> states = new HashSet<>();
+        final Set<State> acceptingStates = new HashSet<>();
         State startState = null;
         final boolean foundInitial = false;
         for (final StateBuilder builder : stateBuilders.values()) {
             final State state = builder.build();
+
+            statesMap.put(state.getId(), state);
 
             if (!foundInitial && pair.initial.getId().equals(builder.getId())) {
                 startState = state;
@@ -97,10 +100,9 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
         }
 
         // Build transfer function
-        final TransferFunction transferFunction = transferFunctionBuilder.build(states);
+        final ENFAutomatonTransferFunction transferFunction = transferFunctionBuilder.build(statesMap);
 
-        // TODO: Build the automaton
-        return null;
+        return new ENFAutomaton(states, acceptingStates, alphabet, transferFunction, startState);
     }
 
     private StateBuilderPair fromRegularExpressionImpl(final String expression) {
