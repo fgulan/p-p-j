@@ -40,5 +40,14 @@ public class DeterministicTransition extends NormalTransition {
         }
         return true;
     }
+    
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((getInput() == null) ? 0 : getInput().hashCode());
+        result = prime * result + ((getOldState() == null) ? 0 : getOldState().hashCode());
+        return result;
+    }
 
 }
