@@ -57,4 +57,15 @@ public interface TransferFunction {
     // TODO: clarify javadoc with an example?
     Set<Transition> getTransitions(State oldState, State newState, Input input);
 
+    /**
+     * Gets the set of new states for the given old state and given input.
+     * 
+     * @param oldState
+     *            the old state
+     * @param input
+     *            the input
+     * @return the set of new states
+     */
+    Set<State> getNewStates(Set<State> currentStates, Input input);
+
 }

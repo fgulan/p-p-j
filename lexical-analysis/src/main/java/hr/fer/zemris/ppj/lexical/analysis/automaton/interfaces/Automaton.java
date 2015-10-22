@@ -28,32 +28,29 @@ public interface Automaton {
     void apply(Input input);
 
     /**
-     * Gets the last received input. 
-This is null if and only if no inputs have been received by the automaton.
+     * Gets the last received input. This is null if and only if no inputs have been received by the automaton.
      * 
      * @return the last received input
      */
     Input getLastInput();
 
     /**
-     * Gets the set of the automaton's current states. 
-     * This method will never return null. If the automaton has no current states, an empty set is returned.
+     * Gets the set of the automaton's current states. This method will never return null. If the automaton has no
+     * current states, an empty set is returned.
      * 
      * @return the set of current states
      */
     Set<State> getCurrentStates();
 
     /**
-     * Gets the set of all states defined for the automaton. 
-     * This method will never return null.
+     * Gets the set of all states defined for the automaton. This method will never return null.
      * 
      * @return the set of all states defined for the automaton
      */
     Set<State> getStates();
 
     /**
-     * Gets the set of the automaton's accept states. 
-     * This method will never return null. If the automaton has no accept
+     * Gets the set of the automaton's accept states. This method will never return null. If the automaton has no accept
      * states, an empty set is returned.
      * 
      * @return the set of accept states
@@ -100,12 +97,15 @@ This is null if and only if no inputs have been received by the automaton.
      * @return true if the state is one of the automaton's states, false otherwise
      */
     boolean hasState(State state);
-    
+
     /**
      * Gets the set of the defined inputs for the automaton.
      * 
      * @return the set of the defined inputs
      */
     Set<Input> getInputs();
-    
+
+    void reset();
+
+    boolean isAccepting();
 }

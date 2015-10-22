@@ -1,9 +1,8 @@
 package hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces;
 
 /**
- * Represents a transition in an automaton's transfer function.
- * Transitions are defined with three parameters: old state, new state and input.
- * Old state is the automaton's state before receiving the input and new state is the
+ * Represents a transition in an automaton's transfer function. Transitions are defined with three parameters: old
+ * state, new state and input. Old state is the automaton's state before receiving the input and new state is the
  * automaton's state after receiving the input.
  * 
  * @author Domagoj Polančec

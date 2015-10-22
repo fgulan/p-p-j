@@ -7,7 +7,7 @@ package hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces;
  * @version 1.0
  *
  */
-public interface State {
+public interface State extends Comparable<State> {
 
     /**
      * Gets the state id.
