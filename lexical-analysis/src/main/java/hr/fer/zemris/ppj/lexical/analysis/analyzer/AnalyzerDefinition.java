@@ -59,7 +59,7 @@ public class AnalyzerDefinition {
         result += collectionToString(lexemeNames) + "\n";
         result += "\n";
         for (final RuleDefinition definition : rules) {
-            result += definition.toString() + "\n";
+            result += definition.toString() + "\n\n";
         }
         return result;
     }
