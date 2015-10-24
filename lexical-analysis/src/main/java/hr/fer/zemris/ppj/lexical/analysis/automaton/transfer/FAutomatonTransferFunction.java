@@ -3,7 +3,6 @@ package hr.fer.zemris.ppj.lexical.analysis.automaton.transfer;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.Input;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.State;
@@ -68,19 +67,18 @@ public abstract class FAutomatonTransferFunction implements TransferFunction {
 
     private Set<Transition> findMatching(State oldState, State newState, Input input,
             Set<FAutomatonTransition> transitions) {
-        Set<Transition> found = new HashSet<>(transitions);
-        found.removeIf(new Predicate<Transition>() {
-
-            @Override
-            public boolean test(Transition t) {
-                if (oldState != null && !oldState.equals(t.getOldState())
-                        || newState != null && !newState.equals(t.getNewState())
-                        || input != null && !input.equals(t.getInput())) {
-                    return true;
-                }
-                return false;
+        Set<Transition> found = new HashSet<>();
+        for (Transition transition: transitions){
+            if (input != null && !input.equals(transition.getInput())  
+                  || oldState != null && !oldState.equals(transition.getOldState())
+                  || newState != null && !newState.equals(transition.getNewState())
+                  ) {
+                continue;
             }
-        });
+            
+            found.add(transition);
+        }
+        
         return found;
     }
 
