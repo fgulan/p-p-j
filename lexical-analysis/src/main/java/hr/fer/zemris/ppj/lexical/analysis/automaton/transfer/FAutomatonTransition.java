@@ -36,7 +36,10 @@ public abstract class FAutomatonTransition implements Transition {
 
     @Override
     public String toString() {
-        return escape(oldState.toString()) + " " + escape(input.toString()) + " " + escape(newState.toString());
+        String escapedOldState = oldState == null ? "null" : escape(oldState.toString());
+        String escapedInput = input == null ? "null" : escape(input.toString());
+        String escapedNewState = newState == null ? "null" : escape(newState.toString());
+        return escapedOldState + " " + escapedInput + " " + escapedNewState;
     }
 
     @Override
