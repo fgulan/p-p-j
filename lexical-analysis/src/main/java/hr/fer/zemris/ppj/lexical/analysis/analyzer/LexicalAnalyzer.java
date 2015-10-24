@@ -22,37 +22,7 @@ public class LexicalAnalyzer {
     }
     
     
-    
-//    public void doLexing() {
-//        LexerRule accRule = null;
-//
-//        while (finishIndex < input.length() - 1) {
-//            while (currentState.isAnyAlive()) {
-//                ++finishIndex;
-//                LexerRule tmpRule = currentState.getAccepted();
-//                if (tmpRule == null) {
-//                } else {
-//                    accRule = tmpRule;
-//                    lastIndex = finishIndex - 1;
-//                }
-//                if (finishIndex < input.length()) {
-//                    currentState.pushCharToAutomatons(String.valueOf(input.charAt(finishIndex)));
-//                } else {
-//                    break;
-//                }
-//            }
-//
-//            if (accRule == null) {
-//                finishIndex = startIndex++;
-//                currentState.resetAutomatons();
-//            } else {
-//                finishIndex = lastIndex;
-//                accRule.doActions(this);
-//                accRule = null;
-//                currentState.resetAutomatons();
-//            }
-//        }
-//    }
+
     
     public void analyze() {
         LexerRule activeRule = null;
