@@ -158,7 +158,7 @@ public abstract class AbstractAutomaton implements Automaton {
     private String formatCollection(Collection<?> collection, String delimiter) {
         String format = "";
         for (Object entry : collection) {
-            format = format + escape(entry.toString()) + delimiter;
+            format = format + entry + delimiter;
         }
 
         int lastDelimiterIndex = format.lastIndexOf(delimiter);
@@ -173,11 +173,5 @@ public abstract class AbstractAutomaton implements Automaton {
     public void apply(Input input) {
         currentStates = getTransferFunction().getNewStates(getCurrentStates(), input);
         lastInput = input;
-    }
-    
-    private static String escape(String entryString) {
-        String escapedString = entryString.replaceAll("\n", "\\n").replaceAll("\t", "\\t").replaceAll(" ", "\\_");
-
-        return escapedString;
     }
 }

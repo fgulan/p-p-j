@@ -36,7 +36,7 @@ public abstract class FAutomatonTransition implements Transition {
 
     @Override
     public String toString() {
-        return oldState + " " + input + " " + newState;
+        return escape(oldState.toString()) + " " + escape(input.toString()) + " " + escape(newState.toString());
     }
 
     @Override
@@ -86,6 +86,12 @@ public abstract class FAutomatonTransition implements Transition {
             return false;
         }
         return true;
+    }
+    
+    private static String escape(String entryString) {
+        String escapedString = entryString.replaceAll("\n", "\\n").replaceAll("\t", "\\t").replaceAll(" ", "\\_");
+
+        return escapedString;
     }
 
 }
