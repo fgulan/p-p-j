@@ -175,14 +175,9 @@ public abstract class AbstractAutomaton implements Automaton {
         lastInput = input;
     }
     
-    private static String escape(String entryString){
-        String escapedString = entryString;
-        switch (entryString){
-            case("\n"): entryString = "\\n"; break;
-            case(" "): entryString = "\\_"; break;
-            case("\t"): entryString = "\\t"; break;
-        }
-        
+    private static String escape(String entryString) {
+        String escapedString = entryString.replaceAll("\n", "\\n").replaceAll("\t", "\\t").replaceAll(" ", "\\_");
+
         return escapedString;
     }
 }
