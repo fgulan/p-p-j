@@ -1,21 +1,21 @@
 package hr.fer.zemris.ppj.lexical.analysis.automaton.generator;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import hr.fer.zemris.ppj.lexical.analysis.automaton.ENFAutomaton;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.generator.builders.AlphabetBuilder;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.generator.builders.ENFAStateBuilder;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.generator.builders.ENFATransferFunctionBuilder;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.generator.builders.interfaces.StateBuilder;
-import hr.fer.zemris.ppj.lexical.analysis.automaton.generator.builders.interfaces.TransferFunctionBuilder;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.generator.interfaces.AutomatonGenerator;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.Automaton;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.Input;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.State;
-import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.TransferFunction;
+import hr.fer.zemris.ppj.lexical.analysis.automaton.transfer.ENFAutomatonTransferFunction;
 import hr.fer.zemris.ppj.lexical.analysis.text.manipulation.RegularExpressionManipulator;
 
 /**
@@ -51,7 +51,7 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
 
     private final Map<String, StateBuilder> stateBuilders;
 
-    private final TransferFunctionBuilder transferFunctionBuilder;
+    private final ENFATransferFunctionBuilder transferFunctionBuilder;
 
     private final AlphabetBuilder alphabetBuilder;
 
@@ -80,12 +80,16 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
         final Set<Input> alphabet = alphabetBuilder.build();
 
         // Build states
-        final List<State> states = new ArrayList<>();
-        final List<State> acceptingStates = new ArrayList<>();
+        final Map<String, State> statesMap = new HashMap<>(); // Utility map used when building transfer function
+        final Set<State> states = new HashSet<>();
+        final Set<State> acceptingStates = new HashSet<>();
         State startState = null;
         final boolean foundInitial = false;
         for (final StateBuilder builder : stateBuilders.values()) {
             final State state = builder.build();
+
+            statesMap.put(state.getId(), state);
+            states.add(state);
 
             if (!foundInitial && pair.initial.getId().equals(builder.getId())) {
                 startState = state;
@@ -97,10 +101,9 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
         }
 
         // Build transfer function
-        final TransferFunction transferFunction = transferFunctionBuilder.build(states);
+        final ENFAutomatonTransferFunction transferFunction = transferFunctionBuilder.build(statesMap);
 
-        // TODO: Build the automaton
-        return null;
+        return new ENFAutomaton(states, acceptingStates, alphabet, transferFunction, startState);
     }
 
     private StateBuilderPair fromRegularExpressionImpl(final String expression) {
@@ -114,61 +117,57 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
                 addTransition(subpair.accepting, pair.accepting);
                 subpair.accepting.changeAcceptance(false);
             }
-
-            return pair;
         }
+        else {
+            boolean prefixed = false;
+            StateBuilder lastState = pair.initial;
 
-        boolean prefixed = false;
-        final StateBuilder lastState = pair.initial;
+            for (int i = 0; i < expression.length(); i++) {
+                StateBuilderPair subpair = new StateBuilderPair(null, null);
 
-        for (int i = 0; i < expression.length(); i++) {
-            StateBuilderPair subpair = new StateBuilderPair(null, null);
+                if (prefixed) { // Slucaj 1
+                    prefixed = false;
+                    subpair = new StateBuilderPair(newStateBuilder(false), newStateBuilder(false));
+                    addTransition(subpair.initial, subpair.accepting, unprefixedSymbol(expression.charAt(i)));
+                }
+                else { // Slucaj 2
+                    if (expression.charAt(i) == '\\') {
+                        prefixed = true;
+                        continue;
+                    }
 
-            // Early escapes
-            if (prefixed) {
-                subpair = new StateBuilderPair(newStateBuilder(false), newStateBuilder(false));
-                addTransition(subpair.initial, subpair.accepting, unprefixedSymbol(expression.charAt(i)));
-                addTransition(lastState, pair.accepting);
+                    if (expression.charAt(i) == '(') {
+                        int j = RegularExpressionManipulator.findClosingBracket(expression, i, '(', ')');
 
-                continue;
+                        subpair = fromRegularExpressionImpl(expression.substring(i + 1, j));
+                        subpair.accepting.changeAcceptance(false);
+
+                        i = j;
+                    }
+                    else {
+                        subpair = new StateBuilderPair(newStateBuilder(false), newStateBuilder(false));
+                        addTransition(subpair.initial, subpair.accepting,
+                                expression.charAt(i) == '$' ? EMPTY_SEQUENCE : expression.charAt(i));
+                    }
+                }
+
+                // Kleene operator check
+                if (((i + 1) < expression.length()) && (expression.charAt(i) == '*')) {
+                    final StateBuilderPair oldPair = subpair;
+                    subpair = new StateBuilderPair(newStateBuilder(false), newStateBuilder(false));
+
+                    addTransition(subpair.initial, oldPair.initial);
+                    addTransition(subpair.initial, subpair.accepting);
+                    addTransition(oldPair.accepting, subpair.accepting);
+                    addTransition(oldPair.accepting, oldPair.initial);
+
+                    i++;
+                }
+
+                // Merge with last subexpression
+                addTransition(lastState, subpair.initial);
+                lastState = subpair.accepting;
             }
-            else if (expression.charAt(i) == '\\') {
-                prefixed = false;
-
-                continue;
-            }
-
-            // Concatenation
-            if (expression.charAt(i) == '(') { // slucaj 2a <-> slucaj 2b
-                final int j = RegularExpressionManipulator.findClosingBracket(expression, i, '(', ')');
-
-                subpair = fromRegularExpressionImpl(expression.substring(i + 1, j));
-                subpair.accepting.changeAcceptance(false);
-
-                i = j;
-            }
-            else {
-                subpair = new StateBuilderPair(newStateBuilder(false), newStateBuilder(false));
-                addTransition(subpair.initial, subpair.accepting,
-                        expression.charAt(i) == '$' ? EMPTY_SEQUENCE : expression.charAt(i));
-            }
-
-            // Kleene operator check
-            if (((i + 1) < expression.length()) && (expression.charAt(i) == '*')) {
-                final StateBuilderPair oldPair = subpair;
-                subpair = new StateBuilderPair(newStateBuilder(false), newStateBuilder(false));
-
-                addTransition(subpair.initial, oldPair.initial);
-                addTransition(subpair.initial, subpair.accepting);
-                addTransition(oldPair.accepting, subpair.accepting);
-                addTransition(oldPair.accepting, oldPair.initial);
-
-                i++;
-            }
-
-            addTransition(lastState, subpair.initial);
-            subpair.accepting = lastState;
-
             addTransition(lastState, pair.accepting);
         }
         return pair;

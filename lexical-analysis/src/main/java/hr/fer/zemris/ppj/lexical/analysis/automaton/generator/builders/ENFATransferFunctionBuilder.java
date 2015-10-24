@@ -2,13 +2,17 @@ package hr.fer.zemris.ppj.lexical.analysis.automaton.generator.builders;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
+import hr.fer.zemris.ppj.lexical.analysis.automaton.BasicInput;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.generator.builders.interfaces.TransferFunctionBuilder;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.State;
-import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.TransferFunction;
+import hr.fer.zemris.ppj.lexical.analysis.automaton.transfer.ENFAutomatonTransferFunction;
+import hr.fer.zemris.ppj.lexical.analysis.automaton.transfer.EpsilonTransition;
+import hr.fer.zemris.ppj.lexical.analysis.automaton.transfer.FAutomatonTransition;
+import hr.fer.zemris.ppj.lexical.analysis.automaton.transfer.NormalTransition;
 
 /**
  * <code>ENFATransferFunctionBuilder</code> is a builder for transfer function of nondeterministic automaton with
@@ -19,6 +23,8 @@ import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.TransferFunction;
  * @version 1.0
  */
 public class ENFATransferFunctionBuilder implements TransferFunctionBuilder {
+
+    private static final char EMPTY_SEQUENCE = '\0';
 
     Map<String, Map<Character, Set<String>>> rawTransitions;
 
@@ -34,13 +40,28 @@ public class ENFATransferFunctionBuilder implements TransferFunctionBuilder {
     /**
      * {@inheritDoc}
      *
-     * @see hr.fer.zemris.ppj.lexical.analysis.automaton.generator.builders.interfaces.TransferFunctionBuilder#build(java.util.List)
-     * @since
+     * @see hr.fer.zemris.ppj.lexical.analysis.automaton.generator.builders.interfaces.TransferFunctionBuilder#build(java.util.Map)
+     * @since 1.0
      */
     @Override
-    public TransferFunction build(final List<State> states) {
-        // TODO Auto-generated method stub
-        return null;
+    public ENFAutomatonTransferFunction build(final Map<String, State> states) {
+        Set<FAutomatonTransition> automatonTransitions = new HashSet<>();
+        for (Entry<String, Map<Character, Set<String>>> transition : rawTransitions.entrySet()) {
+            State oldState = states.get(transition.getKey());
+            for (Entry<Character, Set<String>> stateTransition : transition.getValue().entrySet()) {
+                Character symbol = stateTransition.getKey();
+                for (String newStateId : stateTransition.getValue()) {
+                    State newState = states.get(newStateId);
+                    if (symbol == EMPTY_SEQUENCE) {
+                        automatonTransitions.add(new EpsilonTransition(oldState, newState));
+                    }
+                    else {
+                        automatonTransitions.add(new NormalTransition(oldState, newState, new BasicInput(symbol)));
+                    }
+                }
+            }
+        }
+        return new ENFAutomatonTransferFunction(automatonTransitions);
     }
 
     /**
@@ -53,7 +74,7 @@ public class ENFATransferFunctionBuilder implements TransferFunctionBuilder {
     @Override
     public void addTransition(final String oldState, final Character symbol, final String newState) {
         final Map<Character, Set<String>> rawStateTransitions =
-                rawTransitions.containsKey(oldState) ? rawTransitions.get(symbol) : new HashMap<>();
+                rawTransitions.containsKey(oldState) ? rawTransitions.get(oldState) : new HashMap<>();
         final Set<String> rawTransitionResult =
                 rawStateTransitions.containsKey(symbol) ? rawStateTransitions.get(symbol) : new HashSet<>();
 

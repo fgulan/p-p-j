@@ -55,7 +55,7 @@ public class RuleDefinition {
         result += analyzerState + "\n";
         result += "{\n";
         for (final String action : actions) {
-            result += action;
+            result += action + "\n";
         }
         result += "}";
 

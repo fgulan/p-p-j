@@ -71,12 +71,14 @@ public class GLA {
         }
 
         final RegularExpressionManipulator manipulator = new RegularExpressionManipulator(regularDefinitions);
-        while (line != null) {
+        while ((line != null) && !line.isEmpty()) {
             final String analyzerState = line.substring(1, line.indexOf('>'));
             final String regularExpression =
                     manipulator.removeRegularDefinitions(line.substring(line.indexOf('>') + 1));
             final List<String> actions = new ArrayList<>();
-            while (!line.startsWith("}")) {
+            line = reader.readLine(); // Ignore opening bracket
+            line = reader.readLine();
+            while (!line.startsWith("}") && !line.isEmpty()) {
                 actions.add(line);
                 line = reader.readLine();
             }

@@ -40,26 +40,32 @@ public abstract class AbstractAutomaton implements Automaton {
                 transferFunction, startState);
     }
 
+    @Override
     public Set<State> getStates() {
         return new HashSet<>(states);
     }
 
+    @Override
     public Set<State> getAcceptStates() {
         return new HashSet<>(acceptStates);
     }
 
+    @Override
     public Set<State> getCurrentStates() {
         return new HashSet<>(currentStates);
     }
 
+    @Override
     public Set<Input> getInputs() {
         return new HashSet<>(inputs);
     }
 
+    @Override
     public TransferFunction getTransferFunction() {
         return transferFunction;
     }
 
+    @Override
     public State getStartState() {
         return startState;
     }
@@ -105,10 +111,11 @@ public abstract class AbstractAutomaton implements Automaton {
         Set<State> states = new TreeSet<>(this.states);
         Set<Input> inputs = new HashSet<>(this.inputs);
         Set<State> acceptStates = new TreeSet<>(this.acceptStates);
-        Set<Transition> transitions = new HashSet<>(this.transferFunction.getTransitions());
+        Set<Transition> transitions = new HashSet<>(transferFunction.getTransitions());
 
-        String result = formatCollection(states, " ") + "\n" + formatCollection(inputs, " ") + "\n"
-                + formatCollection(acceptStates, " ") + "\n" + formatCollection(transitions, "\n");
+        String result =
+                formatCollection(states, " ") + "\n" + formatCollection(acceptStates, " ") + "\n" + startState.getId()
+                        + "\n" + formatCollection(inputs, " ") + "\n" + formatCollection(transitions, "\n");
 
         return result;
     }

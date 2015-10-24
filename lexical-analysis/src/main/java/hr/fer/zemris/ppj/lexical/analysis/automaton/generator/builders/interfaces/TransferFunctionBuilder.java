@@ -1,6 +1,6 @@
 package hr.fer.zemris.ppj.lexical.analysis.automaton.generator.builders.interfaces;
 
-import java.util.List;
+import java.util.Map;
 
 import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.State;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.TransferFunction;
@@ -22,7 +22,7 @@ public interface TransferFunctionBuilder {
      * @return the transfer function.
      * @since 1.0
      */
-    TransferFunction build(List<State> states);
+    TransferFunction build(Map<String, State> states);
 
     /**
      * Adds a transition to the transition function.
