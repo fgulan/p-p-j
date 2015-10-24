@@ -89,7 +89,7 @@ public abstract class FAutomatonTransition implements Transition {
     }
     
     private static String escape(String entryString) {
-        String escapedString = entryString.replaceAll("\n", "\\n").replaceAll("\t", "\\t").replaceAll(" ", "\\_");
+        String escapedString = entryString.replaceAll("\n", "\\\\n").replaceAll("\t", "\\t").replaceAll(" ", "\\_");
 
         return escapedString;
     }
