@@ -6,8 +6,7 @@ public class NewLineAction implements LexerAction {
 
     @Override
     public void execute(LexicalAnalyzer lexer) {
-        // TODO Auto-generated method stub
-
+        lexer.incrementLineCounter();
     }
 
 }

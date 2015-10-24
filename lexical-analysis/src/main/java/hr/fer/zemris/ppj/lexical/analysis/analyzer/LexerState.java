@@ -3,9 +3,6 @@ package hr.fer.zemris.ppj.lexical.analysis.analyzer;
 import java.util.LinkedList;
 import java.util.List;
 
-import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.Input;
-
-
 public class LexerState {
     
     private String name;
@@ -28,10 +25,28 @@ public class LexerState {
         rules.add(rule);
     }
     
-    public void apply(Input input) {
+    public void apply(char input) {
         for (LexerRule rule : rules) {
-            rule.apply(input);
+            rule.apply(input);;
         }
+    }
+    
+    public LexerRule getActiveRule() {
+        for (LexerRule rule : rules) {
+            if (rule.isAccepting()) {
+                return rule;
+            }
+        }
+        return null;
+    }
+    
+    public boolean isAlive() {
+        for (LexerRule rule : rules) {
+            if (rule.isAlive()) {
+                return true;
+            }
+        }
+        return false;
     }
     
     public String getName() {
@@ -40,5 +55,11 @@ public class LexerState {
 
     public List<LexerRule> getRules() {
         return rules;
+    }
+    
+    public void resetAutomatons() {
+        for (LexerRule rule : rules) {
+            rule.resetAutomaton();
+        }
     }
 }
