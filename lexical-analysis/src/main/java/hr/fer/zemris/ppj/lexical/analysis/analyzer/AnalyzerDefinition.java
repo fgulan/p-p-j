@@ -61,7 +61,7 @@ public class AnalyzerDefinition {
         for (final RuleDefinition definition : rules) {
             result += definition.toString() + "\n\n";
         }
-        return result;
+        return result.substring(0, result.length() - 1) + "END";
     }
 
     private String collectionToString(final Collection<?> list) {
