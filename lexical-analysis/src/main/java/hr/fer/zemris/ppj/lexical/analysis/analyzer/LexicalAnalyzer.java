@@ -20,13 +20,14 @@ public class LexicalAnalyzer {
         this.states = states;
         this.currentState = currentState;
         this.source = source;
+;
         this.printStream = printStream;
     }
     
     public void analyze() {
         LexerRule activeRule = null;
         while (finishIndex < source.length()) {
-            if (currentState.isAlive()) {
+            while (currentState.isAlive()) {
                 finishIndex++;
                 LexerRule tempRule = currentState.getActiveRule();
                 if (tempRule != null) {
@@ -35,7 +36,8 @@ public class LexicalAnalyzer {
                 }
                 
                 if (finishIndex < source.length()) {
-                    currentState.apply(source.charAt(finishIndex));
+                    //TODO sugavo je ovako, morat cu jos to rijesit
+                    currentState.apply(escapeString(String.valueOf(source.charAt(finishIndex))));
                 } else {
                     break;
                 }
@@ -48,10 +50,30 @@ public class LexicalAnalyzer {
                 currentState.resetAutomatons();
             } else {
                 finishIndex = startIndex++;
-                //currentState.resetAutomatons();
+                currentState.resetAutomatons();
             }
         }
     }
+
+    private static String escapeString(String input) {
+        String output = input;
+        switch (input) {
+        case "\n":
+            output = "\\n";
+            break;
+        case "\r":
+            output = "\\r";
+            break;
+        case "\t":
+            output = "\\t";
+            break;
+        default:
+            output = input;
+            break;
+        }
+        return output;
+    }
+    
 
     public LexerState getCurrentState() {
         return currentState;
@@ -102,6 +124,6 @@ public class LexicalAnalyzer {
     }
     
     public String getCurrentPhrase() {
-        return source.substring(startIndex, finishIndex);
+        return source.substring(startIndex, finishIndex + 1);
     }
 }

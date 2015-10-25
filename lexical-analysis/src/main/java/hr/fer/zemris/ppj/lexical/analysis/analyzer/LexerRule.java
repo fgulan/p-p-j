@@ -21,6 +21,10 @@ public class LexerRule {
         Automatons.apply(automaton, input);
     }
     
+    public void apply(String input) {
+        Automatons.apply(automaton, input);
+    }
+    
     public void execute(LexicalAnalyzer lexer) {
         for (LexerAction action : actions) {
             action.execute(lexer);

@@ -68,11 +68,12 @@ public abstract class FAutomatonTransferFunction implements TransferFunction {
     private Set<Transition> findMatching(State oldState, State newState, Input input,
             Set<FAutomatonTransition> transitions) {
         Set<Transition> found = new HashSet<>();
-        for (Transition transition: transitions){
-            if (input != null && !input.equals(transition.getInput())  
-                  || oldState != null && !oldState.equals(transition.getOldState())
-                  || newState != null && !newState.equals(transition.getNewState())
-                  ) {
+        
+        for (Transition transition: transitions) {
+            boolean prvi = input != null && !input.equals(transition.getInput()) ;
+            boolean drugi = oldState != null && !oldState.equals(transition.getOldState());
+            boolean treci = newState != null && !newState.equals(transition.getNewState());
+            if (prvi || drugi || treci ) {
                 continue;
             }
             
