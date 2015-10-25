@@ -117,61 +117,57 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
                 addTransition(subpair.accepting, pair.accepting);
                 subpair.accepting.changeAcceptance(false);
             }
-
-            return pair;
         }
+        else {
+            boolean prefixed = false;
+            StateBuilder lastState = pair.initial;
 
-        boolean prefixed = false;
-        StateBuilder lastState = pair.initial;
+            for (int i = 0; i < expression.length(); i++) {
+                StateBuilderPair subpair = new StateBuilderPair(null, null);
 
-        for (int i = 0; i < expression.length(); i++) {
-            StateBuilderPair subpair = new StateBuilderPair(null, null);
+                if (prefixed) { // Slucaj 1
+                    prefixed = false;
+                    subpair = new StateBuilderPair(newStateBuilder(false), newStateBuilder(false));
+                    addTransition(subpair.initial, subpair.accepting, unprefixedSymbol(expression.charAt(i)));
+                }
+                else { // Slucaj 2
+                    if (expression.charAt(i) == '\\') {
+                        prefixed = true;
+                        continue;
+                    }
 
-            // Early escapes
-            if (prefixed) {
-                subpair = new StateBuilderPair(newStateBuilder(false), newStateBuilder(false));
-                addTransition(subpair.initial, subpair.accepting, unprefixedSymbol(expression.charAt(i)));
-                addTransition(lastState, pair.accepting);
+                    if (expression.charAt(i) == '(') {
+                        int j = RegularExpressionManipulator.findClosingBracket(expression, i, '(', ')');
 
-                continue;
+                        subpair = fromRegularExpressionImpl(expression.substring(i + 1, j));
+                        subpair.accepting.changeAcceptance(false);
+
+                        i = j;
+                    }
+                    else {
+                        subpair = new StateBuilderPair(newStateBuilder(false), newStateBuilder(false));
+                        addTransition(subpair.initial, subpair.accepting,
+                                expression.charAt(i) == '$' ? EMPTY_SEQUENCE : expression.charAt(i));
+                    }
+                }
+
+                // Kleene operator check
+                if (((i + 1) < expression.length()) && (expression.charAt(i) == '*')) {
+                    final StateBuilderPair oldPair = subpair;
+                    subpair = new StateBuilderPair(newStateBuilder(false), newStateBuilder(false));
+
+                    addTransition(subpair.initial, oldPair.initial);
+                    addTransition(subpair.initial, subpair.accepting);
+                    addTransition(oldPair.accepting, subpair.accepting);
+                    addTransition(oldPair.accepting, oldPair.initial);
+
+                    i++;
+                }
+
+                // Merge with last subexpression
+                addTransition(lastState, subpair.initial);
+                lastState = subpair.accepting;
             }
-            else if (expression.charAt(i) == '\\') {
-                prefixed = true;
-
-                continue;
-            }
-
-            // Concatenation
-            if (expression.charAt(i) == '(') { // slucaj 2a <-> slucaj 2b
-                final int j = RegularExpressionManipulator.findClosingBracket(expression, i, '(', ')');
-
-                subpair = fromRegularExpressionImpl(expression.substring(i + 1, j));
-                subpair.accepting.changeAcceptance(false);
-
-                i = j;
-            }
-            else {
-                subpair = new StateBuilderPair(newStateBuilder(false), newStateBuilder(false));
-                addTransition(subpair.initial, subpair.accepting,
-                        expression.charAt(i) == '$' ? EMPTY_SEQUENCE : expression.charAt(i));
-            }
-
-            // Kleene operator check
-            if (((i + 1) < expression.length()) && (expression.charAt(i) == '*')) {
-                final StateBuilderPair oldPair = subpair;
-                subpair = new StateBuilderPair(newStateBuilder(false), newStateBuilder(false));
-
-                addTransition(subpair.initial, oldPair.initial);
-                addTransition(subpair.initial, subpair.accepting);
-                addTransition(oldPair.accepting, subpair.accepting);
-                addTransition(oldPair.accepting, oldPair.initial);
-
-                i++;
-            }
-
-            addTransition(lastState, subpair.initial);
-            lastState = subpair.accepting;
-
             addTransition(lastState, pair.accepting);
         }
         return pair;

@@ -10,6 +10,7 @@ import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.Input;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.State;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.TransferFunction;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.Transition;
+import hr.fer.zemris.ppj.lexical.analysis.automaton.transfer.FAutomatonTransition;
 
 public abstract class AbstractAutomaton implements Automaton {
 
@@ -158,6 +159,12 @@ public abstract class AbstractAutomaton implements Automaton {
     private String formatCollection(Collection<?> collection, String delimiter) {
         String format = "";
         for (Object entry : collection) {
+            if (!(entry instanceof FAutomatonTransition)) {
+                if (entry != null) {
+                    entry = entry.toString().replaceAll("\n", "\\\\n").replaceAll("\t", "\\\\t").replaceAll(" ",
+                            "\\\\_");
+                }
+            }
             format = format + entry + delimiter;
         }
 

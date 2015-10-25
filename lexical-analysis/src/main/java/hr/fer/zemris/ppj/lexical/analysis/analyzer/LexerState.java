@@ -1,10 +1,7 @@
 package hr.fer.zemris.ppj.lexical.analysis.analyzer;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
-
-import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.Input;
-
 
 public class LexerState {
     
@@ -12,7 +9,7 @@ public class LexerState {
     private List<LexerRule> rules;
     
     public LexerState(String name) {
-        this(name, new LinkedList<LexerRule>());
+        this(name, new ArrayList<LexerRule>());
     }
 
     public LexerState(String name, List<LexerRule> rules) {
@@ -28,10 +25,28 @@ public class LexerState {
         rules.add(rule);
     }
     
-    public void apply(Input input) {
+    public void apply(char input) {
         for (LexerRule rule : rules) {
-            rule.apply(input);
+            rule.apply(input);;
         }
+    }
+    
+    public LexerRule getActiveRule() {
+        for (LexerRule rule : rules) {
+            if (rule.isAccepting()) {
+                return rule;
+            }
+        }
+        return null;
+    }
+    
+    public boolean isAlive() {
+        for (LexerRule rule : rules) {
+            if (rule.isAlive()) {
+                return true;
+            }
+        }
+        return false;
     }
     
     public String getName() {
@@ -41,4 +56,37 @@ public class LexerState {
     public List<LexerRule> getRules() {
         return rules;
     }
+    
+    public void resetAutomatons() {
+        for (LexerRule rule : rules) {
+            rule.resetAutomaton();
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        LexerState other = (LexerState) obj;
+        if (name == null) {
+            if (other.name != null)
+                return false;
+        } else if (!name.equals(other.name))
+            return false;
+        return true;
+    }
+    
+    
 }

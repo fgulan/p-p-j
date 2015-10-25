@@ -29,20 +29,30 @@ public class BasicInput implements Input {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         BasicInput other = (BasicInput) obj;
         if (representation == null) {
-            if (other.representation != null)
+            if (other.representation != null) {
                 return false;
+            }
         }
-        else if (!representation.equals(other.representation))
+        else if (!representation.equals(other.representation)) {
             return false;
+        }
         return true;
+    }
+
+    @Override
+    public int compareTo(Input o) {
+        return this.toString().compareTo(o.toString());
     }
 
 }
