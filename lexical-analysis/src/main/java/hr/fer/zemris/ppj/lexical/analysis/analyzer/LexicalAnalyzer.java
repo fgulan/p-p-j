@@ -8,21 +8,20 @@ public class LexicalAnalyzer {
     private Map<String, LexerState> states;
     private LexerState currentState;
     private String source;
+    private PrintStream printStream;
     
     private int lineCounter = 1;
     private int startIndex = 0;
     private int lastIndex = -1;
     private int finishIndex = -1;
     
-    public LexicalAnalyzer(Map<String, LexerState> states, LexerState currentState, String source) {
+    public LexicalAnalyzer(Map<String, LexerState> states, LexerState currentState, String source, PrintStream printStream) {
         super();
         this.states = states;
         this.currentState = currentState;
         this.source = source;
+        this.printStream = printStream;
     }
-    
-    
-
     
     public void analyze() {
         LexerRule activeRule = null;
@@ -99,8 +98,7 @@ public class LexicalAnalyzer {
     }
     
     public PrintStream getOutput() {
-        //TODO 
-        return null;
+        return printStream;
     }
     
     public String getCurrentPhrase() {

@@ -8,13 +8,11 @@ import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.Automaton;
 
 public class LexerRule {
 
-    private LexerState initialState;
     private Automaton automaton;
     private List<LexerAction> actions;
     
-    public LexerRule(LexerState initialState, Automaton automaton, List<LexerAction> actions) {
+    public LexerRule(Automaton automaton, List<LexerAction> actions) {
         super();
-        this.initialState = initialState;
         this.automaton = automaton;
         this.actions = actions;
     }
@@ -39,10 +37,6 @@ public class LexerRule {
     
     public boolean isAlive() {
         return automaton.getCurrentStates().size() != 0;
-    }
-    
-    public LexerState getInitialState() {
-        return initialState;
     }
 
     public Automaton getAutomaton() {
