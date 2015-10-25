@@ -25,7 +25,7 @@ def copytree(src, dst):
 			
 def prepare_for_compile():
     copytree("src/main/java", "system-test")
-    copytree("src/main/java/hr", "system-test\\analizator")
+    copytree("src/main/java/hr", "system-test/analizator/hr")
 
 def compile():
     subprocess.call("javac GLA.java", shell=True)
