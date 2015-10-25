@@ -1,7 +1,11 @@
 package hr.fer.zemris.ppj.lexical.analysis.automaton.transforms;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -15,41 +19,44 @@ import hr.fer.zemris.ppj.lexical.analysis.automaton.transfer.DeterministicTransi
 
 public class EquivalentRemover implements AutomatonTransform<DFAutomaton, DFAutomaton> {
 
-    public static class StatePair {
-
+    private Map<State, List<StatePair>> statePairsIndex = new HashMap<>();
+    private Map<State, List<Transition>> oldStateTransitionsIndex = new HashMap<>();
+    private Map<State, List<Transition>> newStateTransitionsIndex = new HashMap<>();
+    
+    public static class StatePair{
         private State first;
         private State second;
         private boolean marked;
         private Set<StatePair> linkedPairs = new HashSet<>();
-
+        
         public StatePair(State first, State second) {
             super();
-
-            if (first == null || second == null) {
+            
+            if (first == null || second == null){
                 throw new IllegalArgumentException();
             }
-
+            
             this.first = first;
             this.second = second;
         }
-
-        public void mark() {
+        
+        public void mark(){
             marked = true;
-            for (StatePair pair : linkedPairs) {
-                if (!pair.marked) {
+            for (StatePair pair: linkedPairs){
+                if(!pair.marked){
                     pair.mark();
                 }
             }
         }
-
-        public void unMark() {
+        
+        public void unMark(){
             marked = false;
-            for (StatePair pair : linkedPairs) {
+            for (StatePair pair: linkedPairs){
                 pair.unMark();
             }
         }
-
-        public void addLinkedPair(StatePair pair) {
+        
+        public void addLinkedPair(StatePair pair){
             linkedPairs.add(pair);
         }
 
@@ -57,15 +64,16 @@ public class EquivalentRemover implements AutomatonTransform<DFAutomaton, DFAuto
             return first;
         }
 
+
         public State getSecond() {
             return second;
         }
-
-        public boolean contains(State state) {
+        
+        public boolean contains(State state){
             return first.equals(state) || second.equals(state);
         }
-
-        public String toString() {
+        
+        public String toString(){
             return first + " " + second + " " + marked;
         }
 
@@ -91,69 +99,70 @@ public class EquivalentRemover implements AutomatonTransform<DFAutomaton, DFAuto
             }
             StatePair other = (StatePair) obj;
 
-            if (this.first == null && (other.first == null || other.second == null)) {
+            if (this.first == null && (other.first == null || other.second == null)){
                 return true;
             }
-
-            if (other.first == null && (this.first == null || this.second == null)) {
+            
+            if (other.first == null && (this.first == null || this.second == null)){
                 return true;
             }
-
-            if (this.first.equals(other.first) && this.second.equals(other.second)) {
+            
+            if (this.first.equals(other.first) && this.second.equals(other.second)){
                 return true;
             }
-
-            if (this.first.equals(other.second) && this.second.equals(other.first)) {
+            
+            if (this.first.equals(other.second) && this.second.equals(other.first)){
                 return true;
             }
-
+            
             return false;
         }
     }
-
+    
     private Set<StatePair> pairs = new HashSet<>();
-
+    
     @Override
-    public DFAutomaton transform(DFAutomaton source) {
+    public DFAutomaton transform(
+            DFAutomaton source) {
 
         Set<State> states = new TreeSet<>(source.getStates()); // use TreeSet to order states
-        Set<Transition> transitions = new HashSet<>(source.getTransferFunction().getTransitions());
         Set<State> candidates = new HashSet<>(source.getStates());
-
+        
         fillPairs(source);
         markPairs(source);
-
+        populateIndexes(source);
+        
         Set<DeterministicTransition> rewiredTransitions = new HashSet<>();
         State startState = source.getStartState();
-
-        for (State state : states) {
+        
+        for (State state: states){
             // in case the visited state is already removed
-            if (!candidates.contains(state)) {
+            if (!candidates.contains(state)){
                 continue;
             }
-
-            for (StatePair pair : pairs) {
-                if (pair.contains(state) && !pair.marked && !pair.first.equals(pair.second)) {
+            
+            List<StatePair> pairs = statePairsIndex.get(state);
+            for (StatePair pair: pairs){
+                if (!pair.marked){
                     State removed = null;
-
+                    
                     /*
-                     * if tree set is used for 'states', this will ensure that if two states are equal the one which is
-                     * visited first will be kept and the other one will be removed.
+                     * if tree set is used for 'states', this will ensure that if two states are equal
+                     * the one which is visited first will be kept and the other one will be removed.
                      */
-                    if (state.equals(pair.first)) {
+                    if (state.equals(pair.first)){
                         removed = pair.second;
-                    }
-                    else {
+                    } else {
                         removed = pair.first;
                     }
-
+                    
                     candidates.remove(removed);
-
+                    
                     /*
-                     * if the initial state has been removed, the new initial state of the automaton is the state which
-                     * is equivalent to the old initial state
+                     *  if the initial state has been removed, the new initial state
+                     *  of the automaton is the state which is equivalent to the old initial state 
                      */
-                    if (removed.equals(startState)) {
+                    if (removed.equals(startState)){
                         startState = state;
                     }
 
@@ -163,102 +172,142 @@ public class EquivalentRemover implements AutomatonTransform<DFAutomaton, DFAuto
                             continue;
                         }
 
-                        for (Transition transition : transitions) {
-                            if (transition.getOldState().equals(oldState) && transition.getNewState().equals(removed)) {
+                        List<Transition> oldStateTransitions = oldStateTransitionsIndex.get(oldState);
+                        
+                        for (Transition transition : oldStateTransitions) {
+                            if (transition.getNewState().equals(removed)) {
                                 /*
-                                 * Adding a new deterministic transition with the same oldState and input as another
-                                 * deterministic transition will remove that transition. This means that, when rewiring
-                                 * transitions, previously rewired transitions which have the removed state as the new
-                                 * state will be removed.
+                                 * Adding a new normal transition with the same oldState and input as another normal
+                                 * transition will remove that transition. This means that, when rewiring transitions,
+                                 * previously rewired transitions which have the removed state as the new state will be
+                                 * removed.
                                  */
-                                rewiredTransitions
-                                        .add(new DeterministicTransition(oldState, state, transition.getInput()));
+                                rewiredTransitions.add(
+                                        new DeterministicTransition(oldState, state, transition.getInput()));
                             }
                         }
                     }
                 }
             }
         }
-
+        
         Iterator<DeterministicTransition> iterator = rewiredTransitions.iterator();
-        while (iterator.hasNext()) {
+        while(iterator.hasNext()){
             Transition transition = iterator.next();
-            if (!candidates.contains(transition.getOldState())) {
+            if(!candidates.contains(transition.getOldState())){
                 iterator.remove();
             }
         }
-
+        
         /*
-         * Useful transitions set is a union of rewired and remaining transitions. This is because rewired transitions
-         * is a set of normal transitions
+         *  Useful transitions set is a union of rewired and remaining transitions.
+         *  This is because rewired transitions is a set of normal transitions
          */
-        Set<DeterministicTransition> usefulTransitions = new HashSet<>();
+        Set<DeterministicTransition>usefulTransitions = new HashSet<>();
         usefulTransitions.addAll(rewiredTransitions);
         Set<State> acceptStates = new HashSet<>();
         Set<Input> inputs = source.getInputs();
 
         for (State currentState : candidates) {
+            List<Transition> oldStateTransitions = oldStateTransitionsIndex.get(currentState);
             for (Input input : inputs) {
-                for (Transition transition : transitions) {
-                    if (currentState.equals(transition.getOldState()) && input.equals(transition.getInput())
+                for (Transition transition : oldStateTransitions) {
+                    if (input.equals(transition.getInput())
                             && candidates.contains(transition.getNewState())) {
                         usefulTransitions.add((DeterministicTransition) transition);
                     }
                 }
             }
 
-            if (source.isAcceptState(currentState)) {
+            if (source.isAcceptState(currentState)){
                 acceptStates.add(currentState);
             }
         }
 
         DFAutomatonTransferFunction usefulFunction = new DFAutomatonTransferFunction(usefulTransitions);
-
         return new DFAutomaton(candidates, acceptStates, inputs, usefulFunction, startState);
     }
 
-    private StatePair findPair(StatePair pair) {
-        if (!pairs.contains(pair)) {
+    private void populateIndexes(DFAutomaton source) {
+        Set<Transition> transitions = source.getTransferFunction().getTransitions();
+        
+        for (Transition transition: transitions){
+            State oldState = transition.getOldState();
+            State newState = transition.getNewState();
+            
+            if (oldStateTransitionsIndex.get(oldState) == null){
+                List<Transition> transList= new ArrayList<>();
+                oldStateTransitionsIndex.put(oldState, transList);
+            }
+            
+            if (newStateTransitionsIndex.get(newState) == null){
+                List<Transition> transList= new ArrayList<>();
+                newStateTransitionsIndex.put(newState, transList);
+            }
+            
+            oldStateTransitionsIndex.get(oldState).add(transition);
+            newStateTransitionsIndex.get(newState).add(transition);
+        }
+        
+        for (StatePair pair: pairs){
+            if (pair.first.equals(pair.second)){
+                continue;
+            }
+            
+            if (statePairsIndex.get(pair.first) == null){
+                statePairsIndex.put(pair.first, new ArrayList<>());
+            }
+            
+            if (statePairsIndex.get(pair.second) == null){
+                statePairsIndex.put(pair.second, new ArrayList<>());
+            }
+            
+            statePairsIndex.get(pair.first).add(pair);
+            statePairsIndex.get(pair.second).add(pair);
+        }
+    }
+
+    private StatePair findPair(StatePair pair){
+        if (!pairs.contains(pair)){
             return null;
         }
-
-        for (StatePair anotherPair : pairs) {
-            if (anotherPair.equals(pair)) {
+        
+        for (StatePair anotherPair: pairs){
+            if (anotherPair.equals(pair)){
                 return anotherPair;
             }
         }
-
+        
         return null;
     }
-
+    
     private void markPairs(DFAutomaton automaton) {
-
+        
         Set<Input> inputs = automaton.getInputs();
-
-        for (Input input : inputs) {
-            for (StatePair pair : pairs) {
+        
+        for (Input input: inputs){
+            for (StatePair pair: pairs){
                 State firstNext = automaton.getTransition(pair.first, input).getNewState();
                 State secondNext = automaton.getTransition(pair.second, input).getNewState();
-
-                if (firstNext == null || secondNext == null) {
+                
+                if (firstNext == null || secondNext == null){
                     continue;
                 }
-
+                
                 StatePair nextPair = findPair(new StatePair(firstNext, secondNext));
-
-                if (nextPair == null) {
+                
+                if (nextPair == null){
                     continue;
                 }
-
-                if (nextPair.marked) {
+                
+                if (nextPair.marked){
                     pair.mark();
-                }
-                else {
-                    for (Input anotherInput : inputs) {
-                        firstNext = automaton.getTransition(pair.first, anotherInput).getNewState();
+                } else {
+                    for (Input anotherInput: inputs){
+                        firstNext =  automaton.getTransition(pair.first, anotherInput).getNewState();
                         secondNext = automaton.getTransition(pair.second, anotherInput).getNewState();
-
-                        if (!firstNext.equals(secondNext)) {
+                        
+                        if (!firstNext.equals(secondNext)){
                             nextPair = findPair(new StatePair(firstNext, secondNext));
                             nextPair.addLinkedPair(pair);
                         }
@@ -270,18 +319,18 @@ public class EquivalentRemover implements AutomatonTransform<DFAutomaton, DFAuto
 
     private void fillPairs(DFAutomaton automaton) {
         Set<State> machineStates = automaton.getStates();
-
-        for (State currentState : machineStates) {
-            for (State anotherState : machineStates) {
+        
+        for(State currentState: machineStates){
+            for(State anotherState: machineStates){
                 StatePair pair = new StatePair(currentState, anotherState);
 
-                if (!pairs.contains(pair)) {
+                if(!pairs.contains(pair)){
                     boolean firstIsAcceptable = automaton.isAcceptState(pair.getFirst());
                     boolean secondIsAcceptable = automaton.isAcceptState(pair.getSecond());
 
                     pairs.add(pair);
-
-                    if (firstIsAcceptable ^ secondIsAcceptable) {
+                    
+                    if (firstIsAcceptable ^ secondIsAcceptable){
                         pair.mark();
                     }
                 }
