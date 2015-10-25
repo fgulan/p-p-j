@@ -6,6 +6,6 @@ public class RejectAction implements LexerAction {
 
     @Override
     public void execute(LexicalAnalyzer lexer) {
-        lexer.setStartIndex(lexer.getFinishIndex());
+        lexer.setStartIndex(lexer.getFinishIndex() + 1);
     }
 }

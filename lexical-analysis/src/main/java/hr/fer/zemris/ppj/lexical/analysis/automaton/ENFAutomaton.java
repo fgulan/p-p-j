@@ -1,6 +1,5 @@
 package hr.fer.zemris.ppj.lexical.analysis.automaton;
 
-import java.util.List;
 import java.util.Set;
 
 import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.Input;

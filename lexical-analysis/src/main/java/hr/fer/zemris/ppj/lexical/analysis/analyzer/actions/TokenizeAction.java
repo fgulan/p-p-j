@@ -14,6 +14,6 @@ public class TokenizeAction implements LexerAction {
     @Override
     public void execute(LexicalAnalyzer lexer) {
         lexer.getOutput().println(token + " " + lexer.getLineCounter() + " " + lexer.getCurrentPhrase());
-        lexer.setStartIndex(lexer.getFinishIndex());
+        lexer.setStartIndex(lexer.getFinishIndex()+1);
     }
 }

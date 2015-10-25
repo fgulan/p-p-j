@@ -57,9 +57,6 @@ public class LA {
      * @since 1.0.0
      */
     public static void main(String[] args) {
-        
-        System.out.println("Working Directory = " +
-                System.getProperty("user.dir"));
         try(BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("test.in"), StandardCharsets.UTF_8));) {
             readSourceCode(reader);
         } catch (Exception e) {
@@ -113,12 +110,9 @@ public class LA {
         //Read empty line
         line = reader.readLine();
         
-        while (true) {
+        while (!line.equals("END")) {
             readRuleDefinition(reader);
             line = reader.readLine();
-            if (line == null) {
-                break;
-            }
         }
     }
 
@@ -174,11 +168,30 @@ public class LA {
             } else if (args.length == 3) {
                 transitions.add(new NormalTransition(new BasicState(args[0]), 
                                                      new BasicState(args[2]), 
-                                                     new BasicInput(args[1])));
+                                                     new BasicInput(escapeString(args[1]))));
             }
             line = reader.readLine();
         }
         return transitions;
+    }
+    
+    private static String escapeString(String input) {
+        String output = input;
+        switch (input) {
+        case "\n":
+            output = "\\n";
+            break;
+        case "\r":
+            output = "\\r";
+            break;
+        case "\t":
+            output = "\\t";
+            break;
+        default:
+            output = input;
+            break;
+        }
+        return output;
     }
     
     private static List<LexerAction> readRuleActions(final BufferedReader reader) throws IOException {

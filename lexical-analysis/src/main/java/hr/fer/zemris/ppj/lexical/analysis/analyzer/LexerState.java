@@ -31,6 +31,12 @@ public class LexerState {
         }
     }
     
+    public void apply(String input) {
+        for (LexerRule rule : rules) {
+            rule.apply(input);;
+        }
+    }
+    
     public LexerRule getActiveRule() {
         for (LexerRule rule : rules) {
             if (rule.isAccepting()) {
