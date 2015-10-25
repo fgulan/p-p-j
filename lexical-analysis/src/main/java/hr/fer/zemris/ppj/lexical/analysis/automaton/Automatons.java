@@ -6,6 +6,7 @@ import java.util.Set;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.Automaton;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.State;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.Transition;
+import hr.fer.zemris.ppj.lexical.analysis.automaton.transforms.ENFAtoDFA;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.transforms.EquivalentRemover;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.transforms.UnreachableRemover;
 
@@ -39,6 +40,11 @@ public class Automatons {
 
     public static void apply(Automaton automaton, int input) {
         automaton.apply(new BasicInput(input));
+    }
+
+    public static DFAutomaton minimize(ENFAutomaton source) {
+        DFAutomaton converted = new ENFAtoDFA().transform(source);
+        return minimize(converted);
     }
 
     public static DFAutomaton minimize(DFAutomaton source) {

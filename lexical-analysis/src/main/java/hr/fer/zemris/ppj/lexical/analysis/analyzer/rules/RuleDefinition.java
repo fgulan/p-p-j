@@ -2,6 +2,7 @@ package hr.fer.zemris.ppj.lexical.analysis.analyzer.rules;
 
 import java.util.List;
 
+import hr.fer.zemris.ppj.lexical.analysis.automaton.Automatons;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.generator.ENFAutomatonGenerator;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.Automaton;
 
@@ -31,7 +32,7 @@ public class RuleDefinition {
      */
     public RuleDefinition(final String analyzerState, final String regularExpression, final List<String> actions) {
         this.analyzerState = analyzerState;
-        automaton = new ENFAutomatonGenerator().fromRegularExpression(regularExpression);
+        automaton = Automatons.minimize(new ENFAutomatonGenerator().fromRegularExpression(regularExpression));
         this.actions = actions;
     }
 

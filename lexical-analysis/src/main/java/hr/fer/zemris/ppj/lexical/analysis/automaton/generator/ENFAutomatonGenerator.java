@@ -12,7 +12,6 @@ import hr.fer.zemris.ppj.lexical.analysis.automaton.generator.builders.ENFAState
 import hr.fer.zemris.ppj.lexical.analysis.automaton.generator.builders.ENFATransferFunctionBuilder;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.generator.builders.interfaces.StateBuilder;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.generator.interfaces.AutomatonGenerator;
-import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.Automaton;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.Input;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.State;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.transfer.ENFAutomatonTransferFunction;
@@ -73,7 +72,7 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
      * @since 1.0
      */
     @Override
-    public Automaton fromRegularExpression(final String expression) {
+    public ENFAutomaton fromRegularExpression(final String expression) {
         final StateBuilderPair pair = fromRegularExpressionImpl(expression);
 
         // Build alphabet
