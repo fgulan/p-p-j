@@ -32,9 +32,6 @@ public class LexerState {
     }
     
     public void apply(String input) {
-        if (input.equals("\n")) {
-            System.out.println("Koji k");
-        }
         for (LexerRule rule : rules) {
             rule.apply(input);;
         }

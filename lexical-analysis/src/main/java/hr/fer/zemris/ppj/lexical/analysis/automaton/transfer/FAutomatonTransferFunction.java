@@ -70,16 +70,15 @@ public abstract class FAutomatonTransferFunction implements TransferFunction {
         Set<Transition> found = new HashSet<>();
         
         for (Transition transition: transitions) {
-            boolean prvi = input != null && !input.equals(transition.getInput()) ;
-            boolean drugi = oldState != null && !oldState.equals(transition.getOldState());
-            boolean treci = newState != null && !newState.equals(transition.getNewState());
-            if (prvi || drugi || treci ) {
+            boolean inputBool = input != null && !input.equals(transition.getInput()) ;
+            boolean oldBool = oldState != null && !oldState.equals(transition.getOldState());
+            boolean newBool = newState != null && !newState.equals(transition.getNewState());
+            
+            if (inputBool || oldBool || newBool) {
                 continue;
             }
-            
             found.add(transition);
         }
-        
         return found;
     }
 
