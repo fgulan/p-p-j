@@ -113,9 +113,12 @@ public class LA {
         //Read empty line
         line = reader.readLine();
         
-        while (!line.equals("END")) {
+        while (true) {
             readRuleDefinition(reader);
             line = reader.readLine();
+            if (line == null) {
+                break;
+            }
         }
     }
 

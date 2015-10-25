@@ -1,5 +1,6 @@
 package hr.fer.zemris.ppj.lexical.analysis.analyzer;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,7 +10,7 @@ public class LexerState {
     private List<LexerRule> rules;
     
     public LexerState(String name) {
-        this(name, new LinkedList<LexerRule>());
+        this(name, new ArrayList<LexerRule>());
     }
 
     public LexerState(String name, List<LexerRule> rules) {
