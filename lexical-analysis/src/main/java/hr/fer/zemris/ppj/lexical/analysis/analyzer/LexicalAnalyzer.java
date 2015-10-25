@@ -37,7 +37,7 @@ public class LexicalAnalyzer {
                 
                 if (finishIndex < source.length()) {
                     //TODO sugavo je ovako, morat cu jos to rijesit
-                    currentState.apply(escapeString(String.valueOf(source.charAt(finishIndex))));
+                    currentState.apply(String.valueOf(source.charAt(finishIndex)));
                 } else {
                     break;
                 }
@@ -54,26 +54,6 @@ public class LexicalAnalyzer {
             }
         }
     }
-
-    private static String escapeString(String input) {
-        String output = input;
-        switch (input) {
-        case "\n":
-            output = "\\n";
-            break;
-        case "\r":
-            output = "\\r";
-            break;
-        case "\t":
-            output = "\\t";
-            break;
-        default:
-            output = input;
-            break;
-        }
-        return output;
-    }
-    
 
     public LexerState getCurrentState() {
         return currentState;

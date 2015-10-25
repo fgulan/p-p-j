@@ -64,7 +64,7 @@ public class LA {
         }
         
         try(BufferedReader inputReader = new BufferedReader(new InputStreamReader(
-                new FileInputStream("definition.txt"), 
+                new FileInputStream("bin/analizator/definition.txt"), 
                 StandardCharsets.UTF_8));) 
         {
             readInputData(inputReader);
@@ -178,14 +178,17 @@ public class LA {
     private static String escapeString(String input) {
         String output = input;
         switch (input) {
-        case "\n":
-            output = "\\n";
+        case "\\n":
+            output = "\n";
             break;
-        case "\r":
-            output = "\\r";
+        case "\\r":
+            output = "\r";
             break;
-        case "\t":
-            output = "\\t";
+        case "\\t":
+            output = "\t";
+            break;
+        case "\\_":
+            output = " ";
             break;
         default:
             output = input;
