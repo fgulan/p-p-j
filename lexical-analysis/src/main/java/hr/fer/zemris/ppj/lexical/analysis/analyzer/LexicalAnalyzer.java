@@ -48,7 +48,7 @@ public class LexicalAnalyzer {
                 currentState.resetAutomatons();
             } else {
                 finishIndex = startIndex++;
-                currentState.resetAutomatons();
+                //currentState.resetAutomatons();
             }
         }
     }
