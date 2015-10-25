@@ -50,4 +50,9 @@ public class BasicInput implements Input {
         return true;
     }
 
+    @Override
+    public int compareTo(Input o) {
+        return this.toString().compareTo(o.toString());
+    }
+
 }

@@ -67,14 +67,14 @@ public class LA {
         }
         
         try(BufferedReader inputReader = new BufferedReader(new InputStreamReader(
-                new FileInputStream("test.in"), 
+                new FileInputStream("definition.txt"), 
                 StandardCharsets.UTF_8));) 
         {
             readInputData(inputReader);
         } catch (final Exception e) {
             System.err.println("Unable to read from file input. Message: " + e.getMessage());
         }
-        new LexicalAnalyzer(states, startState, source, new PrintStream(System.out));
+        new LexicalAnalyzer(states, startState, source, new PrintStream(System.out)).analyze();;
     }
     
     private static void readSourceCode(final BufferedReader reader) throws IOException {
@@ -142,8 +142,8 @@ public class LA {
         
         //Parse alphabet
         line = reader.readLine();
-        Set<Input> alphabet = new TreeSet<>();
-        for (Input input : alphabet) {
+        Set<Input> alphabet = new HashSet<>();
+        for (String input : line.split(" ")) {
             alphabet.add(new BasicInput(input));
         }
         
@@ -152,8 +152,6 @@ public class LA {
         ENFAutomaton automaton = new ENFAutomaton(allStates, acceptedStates, alphabet, 
                                                   new ENFAutomatonTransferFunction(transitions), startState);
         
-        //Read empty line
-        line = reader.readLine();
         
         //Read state and actions
         String lexerStateString = reader.readLine();

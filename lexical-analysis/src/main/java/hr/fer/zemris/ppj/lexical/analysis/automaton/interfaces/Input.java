@@ -8,5 +8,5 @@ package hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces;
  * @see Automaton
  */
 // TODO: add some methods if necessary
-public interface Input {
+public interface Input extends Comparable<Input> {
 }
