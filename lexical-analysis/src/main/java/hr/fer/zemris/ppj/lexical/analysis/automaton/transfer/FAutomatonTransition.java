@@ -46,9 +46,9 @@ public abstract class FAutomatonTransition implements Transition {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((input == null) ? 0 : input.hashCode());
-        result = prime * result + ((newState == null) ? 0 : newState.hashCode());
-        result = prime * result + ((oldState == null) ? 0 : oldState.hashCode());
+        result = (prime * result) + ((input == null) ? 0 : input.hashCode());
+        result = (prime * result) + ((newState == null) ? 0 : newState.hashCode());
+        result = (prime * result) + ((oldState == null) ? 0 : oldState.hashCode());
         return result;
     }
 
@@ -90,9 +90,9 @@ public abstract class FAutomatonTransition implements Transition {
         }
         return true;
     }
-    
+
     private static String escape(String entryString) {
-        String escapedString = entryString.replaceAll("\n", "\\\\n").replaceAll("\t", "\\\\t").replaceAll(" ", "\\_");
+        String escapedString = entryString.replaceAll("\n", "\\\\n").replaceAll("\t", "\\\\t").replaceAll(" ", "\\\\_");
 
         return escapedString;
     }
