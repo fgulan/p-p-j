@@ -43,6 +43,8 @@ public class BasicInput implements Input {
             if (other.representation != null) {
                 return false;
             }
+        } else if (other.representation == null){
+            return false;
         }
         
         if (representation.equals(other.representation)) {

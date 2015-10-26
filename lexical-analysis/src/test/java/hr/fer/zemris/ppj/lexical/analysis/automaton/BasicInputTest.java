@@ -43,4 +43,9 @@ public class BasicInputTest {
     public void testNotEqualsCharInt(){
         Assert.assertFalse(new BasicInput('\0').equals(new BasicInput(0)));
     }
+    
+    @Test
+    public void testNotEqualsStringNull(){
+        Assert.assertFalse(new BasicInput(" ").equals(new BasicInput(null)));
+    }
 }
