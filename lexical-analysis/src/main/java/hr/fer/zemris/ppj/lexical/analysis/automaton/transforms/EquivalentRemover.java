@@ -142,6 +142,9 @@ public class EquivalentRemover implements AutomatonTransform<DFAutomaton, DFAuto
             }
             
             List<StatePair> pairs = statePairsIndex.get(state);
+            if (pairs == null){
+                continue;
+            }
             for (StatePair pair: pairs){
                 if (!pair.marked){
                     State removed = null;
