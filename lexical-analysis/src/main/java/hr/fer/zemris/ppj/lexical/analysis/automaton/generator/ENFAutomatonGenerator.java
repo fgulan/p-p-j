@@ -151,7 +151,7 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
                 }
 
                 // Kleene operator check
-                if (((i + 1) < expression.length()) && (expression.charAt(i) == '*')) {
+                if (((i + 1) < expression.length()) && (expression.charAt(i + 1) == '*')) {
                     final StateBuilderPair oldPair = subpair;
                     subpair = new StateBuilderPair(newStateBuilder(false), newStateBuilder(false));
 

@@ -64,7 +64,7 @@ public class LA {
         }
         
         try(BufferedReader inputReader = new BufferedReader(new InputStreamReader(
-                new FileInputStream("bin/analizator/definition.txt"), 
+                new FileInputStream("analizator/definition.txt"), 
                 StandardCharsets.UTF_8));) 
         {
             readInputData(inputReader);
