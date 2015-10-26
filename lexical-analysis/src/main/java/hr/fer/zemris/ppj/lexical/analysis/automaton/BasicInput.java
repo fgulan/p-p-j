@@ -44,10 +44,16 @@ public class BasicInput implements Input {
                 return false;
             }
         }
-        else if (!representation.equals(other.representation)) {
-            return false;
+        
+        if (representation.equals(other.representation)) {
+            return true;
         }
-        return true;
+        
+        if (representation.toString().equals(other.representation.toString())) {
+            return true;
+        }
+        
+        return false;
     }
 
     @Override
