@@ -73,10 +73,10 @@ public class ENFATransferFunctionBuilder implements TransferFunctionBuilder {
      */
     @Override
     public void addTransition(final String oldState, final Character symbol, final String newState) {
-        final Map<Character, Set<String>> rawStateTransitions =
-                rawTransitions.containsKey(oldState) ? rawTransitions.get(oldState) : new HashMap<>();
+        final Map<Character, Set<String>> rawStateTransitions = (rawTransitions.containsKey(oldState)
+                ? rawTransitions.get(oldState) : new HashMap<Character, Set<String>>());
         final Set<String> rawTransitionResult =
-                rawStateTransitions.containsKey(symbol) ? rawStateTransitions.get(symbol) : new HashSet<>();
+                (rawStateTransitions.containsKey(symbol) ? rawStateTransitions.get(symbol) : new HashSet<String>());
 
         rawTransitionResult.add(newState);
 
