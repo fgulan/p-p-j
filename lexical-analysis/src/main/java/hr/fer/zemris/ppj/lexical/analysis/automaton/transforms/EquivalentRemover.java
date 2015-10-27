@@ -258,11 +258,11 @@ public class EquivalentRemover implements AutomatonTransform<DFAutomaton, DFAuto
             }
             
             if (statePairsIndex.get(pair.first) == null){
-                statePairsIndex.put(pair.first, new ArrayList<>());
+                statePairsIndex.put(pair.first, new ArrayList<StatePair>());
             }
             
             if (statePairsIndex.get(pair.second) == null){
-                statePairsIndex.put(pair.second, new ArrayList<>());
+                statePairsIndex.put(pair.second, new ArrayList<StatePair>());
             }
             
             statePairsIndex.get(pair.first).add(pair);
