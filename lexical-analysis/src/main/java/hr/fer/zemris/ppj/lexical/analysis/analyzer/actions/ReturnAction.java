@@ -12,7 +12,7 @@ public class ReturnAction implements LexerAction {
 
     @Override
     public void execute(LexicalAnalyzer lexer) {
-        int startOffset = lexer.getStartIndex() + offset-1;
+        int startOffset = lexer.getStartIndex() + offset - 1;
         lexer.setFinishIndex(startOffset);
         lexer.setLastIndex(startOffset);
     }

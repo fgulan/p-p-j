@@ -204,24 +204,45 @@ public class LA {
         String line = reader.readLine();
         //Parse actions
         line = reader.readLine(); 
+        LexerAction returnAction = null;
+        LexerAction tokenizeAction = null;
+        LexerAction rejectAction = null;
+        LexerAction lineAction = null;
+        LexerAction enterStateAction = null;
+        
         while (!line.equals("}")) {
             if (line.equals("-")) {
-                actions.add(new RejectAction());
+                rejectAction = new RejectAction();
             } else {
                 if (line.startsWith(RETURN_ACTION)) {
                     String[] args = line.split(" ");
                     int offset = Integer.parseInt(args[1]);
-                    actions.add(new ReturnAction(offset));
+                    returnAction = new ReturnAction(offset);
                 } else if (line.startsWith(NEW_LINE_ACTION)) {
-                    actions.add(new NewLineAction());
+                    lineAction = new NewLineAction();
                 } else if (line.startsWith(ENTER_STATE_ACTION)) {
-                    actions.add(new EnterStateAction(line.split(" ")[1]));
+                    enterStateAction = new EnterStateAction(line.split(" ")[1]);
                 } else {
                     //Print action
-                    actions.add(new TokenizeAction(line));
+                    tokenizeAction = new TokenizeAction(line);
                 }
             }
             line = reader.readLine();
+        }
+        if (returnAction != null) {
+            actions.add(returnAction);
+        }
+        if (tokenizeAction != null) {
+            actions.add(tokenizeAction);
+        }
+        if (rejectAction != null) {
+            actions.add(rejectAction);
+        }
+        if (lineAction != null) {
+            actions.add(lineAction);
+        }
+        if (enterStateAction != null) {
+            actions.add(enterStateAction);
         }
         return actions;
     }
