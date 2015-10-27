@@ -2,7 +2,6 @@ package hr.fer.zemris.ppj.lexical.analysis.automaton.transfer;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.function.Consumer;
 
 import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.Input;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.State;
@@ -19,18 +18,15 @@ public abstract class FAutomatonTransferFunction implements TransferFunction {
 
     public FAutomatonTransferFunction(Set<FAutomatonTransition> transitions) {
         this.transitions.addAll(transitions);
-        this.transitions.forEach(new Consumer<FAutomatonTransition>() {
-
-            @Override
-            public void accept(FAutomatonTransition t) {
-                if (t.isEpsilonTransition()) {
-                    epsilonTransitions.add(t);
-                }
-                else {
-                    normalTransitions.add(t);
-                }
+        
+        for (FAutomatonTransition transition: transitions){
+            if (transition.isEpsilonTransition()) {
+                epsilonTransitions.add(transition);
             }
-        });
+            else {
+                normalTransitions.add(transition);
+            }
+        }
     }
 
     @Override
