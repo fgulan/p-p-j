@@ -39,7 +39,7 @@ import hr.fer.zemris.ppj.lexical.analysis.automaton.transfer.NormalTransition;
  * @version 1.0.0
  */
 public class LA {
-    
+
     public static final String SKIP_ACTION = "-";
     public static final String NEW_LINE_ACTION = "NOVI_REDAK";
     public static final String RETURN_ACTION = "VRATI_SE";
@@ -57,23 +57,24 @@ public class LA {
      * @since 1.0.0
      */
     public static void main(String[] args) {
-        try(BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("test.in"), StandardCharsets.UTF_8));) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
             readSourceCode(reader);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             System.err.println("Unable to read from system input. Message: " + e.getMessage());
         }
-        
-        try(BufferedReader inputReader = new BufferedReader(new InputStreamReader(
-                new FileInputStream("analizator/definition.txt"), 
-                StandardCharsets.UTF_8));) 
-        {
+
+        try (BufferedReader inputReader = new BufferedReader(
+                new InputStreamReader(new FileInputStream("definition.txt"), StandardCharsets.UTF_8));) {
             readInputData(inputReader);
-        } catch (final Exception e) {
+        }
+        catch (final Exception e) {
             System.err.println("Unable to read from file input. Message: " + e.getMessage());
         }
-        new LexicalAnalyzer(states, startState, source, new PrintStream(System.out)).analyze();;
+        new LexicalAnalyzer(states, startState, source, new PrintStream(System.out)).analyze();
+        ;
     }
-    
+
     private static void readSourceCode(final BufferedReader reader) throws IOException {
         String line = reader.readLine();
         StringBuilder builder = new StringBuilder();
@@ -84,12 +85,12 @@ public class LA {
         }
         source = builder.toString();
     }
-    
+
     private static void readInputData(final BufferedReader reader) throws IOException {
-        //Read states
+        // Read states
         String line = reader.readLine();
 
-        //Parse states
+        // Parse states
         for (String stateString : line.split(" ")) {
             LexerState state = new LexerState(stateString);
             if (startState == null) {
@@ -97,19 +98,19 @@ public class LA {
             }
             states.put(stateString, state);
         }
-        
-        //Read empty line
+
+        // Read empty line
         line = reader.readLine();
-        
-        //Read tokens
+
+        // Read tokens
         line = reader.readLine();
-        
-        //Parse tokens
-        //TODO for now - do we need them?
-        
-        //Read empty line
+
+        // Parse tokens
+        // TODO for now - do we need them?
+
+        // Read empty line
         line = reader.readLine();
-        
+
         while (!line.equals("END")) {
             readRuleDefinition(reader);
             line = reader.readLine();
@@ -117,115 +118,117 @@ public class LA {
     }
 
     private static void readRuleDefinition(final BufferedReader reader) throws IOException {
-        //Read all states
+        // Read all states
         String line = reader.readLine();
-        
-        //Parse all states
+
+        // Parse all states
         Set<State> allStates = new TreeSet<>();
         for (String stateAutomaton : line.split(" ")) {
             allStates.add(new BasicState(stateAutomaton));
         }
-        
-        //Parse accepted states
+
+        // Parse accepted states
         line = reader.readLine();
         Set<State> acceptedStates = new TreeSet<>();
         for (String stateAutomaton : line.split(" ")) {
             acceptedStates.add(new BasicState(stateAutomaton));
         }
-        
-        //Parse start state
+
+        // Parse start state
         line = reader.readLine();
         State startState = new BasicState(line);
-        
-        //Parse alphabet
+
+        // Parse alphabet
         line = reader.readLine();
         Set<Input> alphabet = new HashSet<>();
         for (String input : line.split(" ")) {
             alphabet.add(new BasicInput(input));
         }
-        
-        //Parse transition and create automaton
+
+        // Parse transition and create automaton
         Set<FAutomatonTransition> transitions = readAutomatonTransitions(reader);
-        ENFAutomaton automaton = new ENFAutomaton(allStates, acceptedStates, alphabet, 
-                                                  new ENFAutomatonTransferFunction(transitions), startState);
-        
-        
-        //Read state and actions
+        ENFAutomaton automaton = new ENFAutomaton(allStates, acceptedStates, alphabet,
+                new ENFAutomatonTransferFunction(transitions), startState);
+
+        // Read state and actions
         String lexerStateString = reader.readLine();
         List<LexerAction> actions = readRuleActions(reader);
         LexerRule rule = new LexerRule(automaton, actions);
         states.get(lexerStateString).addRule(rule);
     }
-    
+
     private static Set<FAutomatonTransition> readAutomatonTransitions(final BufferedReader reader) throws IOException {
         Set<FAutomatonTransition> transitions = new HashSet<>();
         String line = reader.readLine();
         while (!line.isEmpty()) {
             String[] args = line.split(" ");
-            if (args.length == 3 && args[1].equals("null")) {
-                transitions.add(new EpsilonTransition(new BasicState(args[0]), 
-                                                      new BasicState(args[2])));
-            } else if (args.length == 3) {
-                transitions.add(new NormalTransition(new BasicState(args[0]), 
-                                                     new BasicState(args[2]), 
-                                                     new BasicInput(escapeString(args[1]))));
+            if ((args.length == 3) && args[1].equals("null")) {
+                transitions.add(new EpsilonTransition(new BasicState(args[0]), new BasicState(args[2])));
+            }
+            else if (args.length == 3) {
+                transitions.add(new NormalTransition(new BasicState(args[0]), new BasicState(args[2]),
+                        new BasicInput(escapeString(args[1]))));
             }
             line = reader.readLine();
         }
         return transitions;
     }
-    
+
     private static String escapeString(String input) {
         String output = input;
         switch (input) {
-        case "\\n":
-            output = "\n";
-            break;
-        case "\\r":
-            output = "\r";
-            break;
-        case "\\t":
-            output = "\t";
-            break;
-        case "\\_":
-            output = " ";
-            break;
-        default:
-            output = input;
-            break;
+            case "\\n":
+                output = "\n";
+                break;
+            case "\\r":
+                output = "\r";
+                break;
+            case "\\t":
+                output = "\t";
+                break;
+            case "\\_":
+                output = " ";
+                break;
+            default:
+                output = input;
+                break;
         }
         return output;
     }
-    
+
     private static List<LexerAction> readRuleActions(final BufferedReader reader) throws IOException {
         List<LexerAction> actions = new ArrayList<LexerAction>();
-        
-        //Read opening bracket
+
+        // Read opening bracket
         String line = reader.readLine();
-        //Parse actions
-        line = reader.readLine(); 
-        
-        //https://www.youtube.com/watch?v=MEogSTKCgBE
+        // Parse actions
+        line = reader.readLine();
+
+        // https://www.youtube.com/watch?v=MEogSTKCgBE
         LexerAction returnAction = null;
         LexerAction tokenizeAction = null;
         LexerAction rejectAction = null;
         LexerAction lineAction = null;
         LexerAction enterStateAction = null;
-        
+
         while (!line.equals("}")) {
             if (line.equals("-")) {
                 rejectAction = new RejectAction();
-            } else {
+            }
+            else {
                 if (line.startsWith(RETURN_ACTION)) {
                     String[] args = line.split(" ");
                     int offset = Integer.parseInt(args[1]);
                     returnAction = new ReturnAction(offset);
-                } else if (line.startsWith(NEW_LINE_ACTION)) {
+                }
+                else if (line.startsWith(NEW_LINE_ACTION)) {
                     lineAction = new NewLineAction();
-                } else if (line.startsWith(ENTER_STATE_ACTION)) {
+                }
+                else if (line.startsWith(ENTER_STATE_ACTION)) {
                     enterStateAction = new EnterStateAction(line.split(" ")[1]);
-                } else {
-                    //Print action
+                }
+                else {
+                    // Print action
                     tokenizeAction = new TokenizeAction(line);
                 }
             }
