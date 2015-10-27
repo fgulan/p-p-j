@@ -80,7 +80,6 @@ public class GLA {
             line = reader.readLine();
             while (!line.startsWith("}") && !line.isEmpty()) {
                 actions.add(line);
-                System.out.println(line);
                 line = reader.readLine();
             }
             line = reader.readLine();
