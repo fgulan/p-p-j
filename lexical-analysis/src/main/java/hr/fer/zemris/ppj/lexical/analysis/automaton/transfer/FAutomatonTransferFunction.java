@@ -19,7 +19,7 @@ public abstract class FAutomatonTransferFunction implements TransferFunction {
     public FAutomatonTransferFunction(Set<FAutomatonTransition> transitions) {
         this.transitions.addAll(transitions);
         
-        for (FAutomatonTransition transition: transitions){
+        for (FAutomatonTransition transition: this.transitions){
             if (transition.isEpsilonTransition()) {
                 epsilonTransitions.add(transition);
             }
