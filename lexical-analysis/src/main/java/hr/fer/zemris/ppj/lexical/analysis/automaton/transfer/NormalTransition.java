@@ -5,7 +5,7 @@ import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.State;
 
 public class NormalTransition extends FAutomatonTransition {
 
-    public NormalTransition(State oldState, State newState, Input input) {
+    public NormalTransition(final State oldState, final State newState, final Input input) {
         super(oldState, newState, input);
     }
 

@@ -4,7 +4,7 @@ import java.util.Set;
 
 public class ENFAutomatonTransferFunction extends FAutomatonTransferFunction {
 
-    public ENFAutomatonTransferFunction(Set<FAutomatonTransition> transitions) {
+    public ENFAutomatonTransferFunction(final Set<FAutomatonTransition> transitions) {
         super(transitions);
     }
 

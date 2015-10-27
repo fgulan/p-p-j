@@ -3,16 +3,16 @@ package hr.fer.zemris.ppj.lexical.analysis.analyzer.actions;
 import hr.fer.zemris.ppj.lexical.analysis.analyzer.LexicalAnalyzer;
 
 public class ReturnAction implements LexerAction {
-    
-    private int offset;
-    
-    public ReturnAction(int offset) {
+
+    private final int offset;
+
+    public ReturnAction(final int offset) {
         this.offset = offset;
     }
 
     @Override
-    public void execute(LexicalAnalyzer lexer) {
-        int startOffset = lexer.getStartIndex() + offset - 1;
+    public void execute(final LexicalAnalyzer lexer) {
+        final int startOffset = (lexer.getStartIndex() + offset) - 1;
         lexer.setFinishIndex(startOffset);
         lexer.setLastIndex(startOffset);
     }

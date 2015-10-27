@@ -136,9 +136,9 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
                     }
 
                     if (expression.charAt(i) == '(') {
-                        int j = RegularExpressionManipulator.findClosingBracket(expression, i, '(', ')');
+                        final int j = RegularExpressionManipulator.findClosingBracket(expression, i, '(', ')');
 
-                        subpair = fromRegularExpressionImpl(expression.substring(i+1, j));
+                        subpair = fromRegularExpressionImpl(expression.substring(i + 1, j));
                         subpair.accepting.changeAcceptance(false);
 
                         i = j;

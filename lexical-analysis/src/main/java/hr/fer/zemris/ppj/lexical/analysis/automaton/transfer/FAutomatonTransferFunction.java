@@ -1,5 +1,7 @@
 package hr.fer.zemris.ppj.lexical.analysis.automaton.transfer;
 
+import static hr.fer.zemris.ppj.lexical.analysis.automaton.Automatons.extractStates;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,18 +10,16 @@ import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.State;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.TransferFunction;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.Transition;
 
-import static hr.fer.zemris.ppj.lexical.analysis.automaton.Automatons.*;
-
 public abstract class FAutomatonTransferFunction implements TransferFunction {
 
     private final Set<FAutomatonTransition> transitions = new HashSet<>();
     private final Set<FAutomatonTransition> epsilonTransitions = new HashSet<>();
     private final Set<FAutomatonTransition> normalTransitions = new HashSet<>();
 
-    public FAutomatonTransferFunction(Set<FAutomatonTransition> transitions) {
+    public FAutomatonTransferFunction(final Set<FAutomatonTransition> transitions) {
         this.transitions.addAll(transitions);
-        
-        for (FAutomatonTransition transition: this.transitions){
+
+        for (final FAutomatonTransition transition : this.transitions) {
             if (transition.isEpsilonTransition()) {
                 epsilonTransitions.add(transition);
             }
@@ -30,12 +30,12 @@ public abstract class FAutomatonTransferFunction implements TransferFunction {
     }
 
     @Override
-    public boolean hasTransition(Transition transition) {
+    public boolean hasTransition(final Transition transition) {
         return !getTransitions().contains(transition);
     }
 
     @Override
-    public boolean hasTransition(State oldState, State newState, Input input) {
+    public boolean hasTransition(final State oldState, final State newState, final Input input) {
         return !getTransitions(oldState, newState, input).isEmpty();
     }
 
@@ -45,12 +45,12 @@ public abstract class FAutomatonTransferFunction implements TransferFunction {
     }
 
     @Override
-    public Set<Transition> getTransitions(State oldState, State newState, Input input) {
+    public Set<Transition> getTransitions(final State oldState, final State newState, final Input input) {
         return new HashSet<>(findMatching(oldState, newState, input, transitions));
     }
 
     @Override
-    public Set<State> getNewStates(Set<State> currentStates, Input input) {
+    public Set<State> getNewStates(final Set<State> currentStates, final Input input) {
         Set<State> newStates = new HashSet<>(currentStates);
         if (input != null) {
             newStates = applyTransition(newStates, input);
@@ -61,15 +61,15 @@ public abstract class FAutomatonTransferFunction implements TransferFunction {
         return newStates;
     }
 
-    private Set<Transition> findMatching(State oldState, State newState, Input input,
-            Set<FAutomatonTransition> transitions) {
-        Set<Transition> found = new HashSet<>();
-        
-        for (Transition transition: transitions) {
-            boolean inputBool = input != null && !input.equals(transition.getInput()) ;
-            boolean oldBool = oldState != null && !oldState.equals(transition.getOldState());
-            boolean newBool = newState != null && !newState.equals(transition.getNewState());
-            
+    private Set<Transition> findMatching(final State oldState, final State newState, final Input input,
+            final Set<FAutomatonTransition> transitions) {
+        final Set<Transition> found = new HashSet<>();
+
+        for (final Transition transition : transitions) {
+            final boolean inputBool = (input != null) && !input.equals(transition.getInput());
+            final boolean oldBool = (oldState != null) && !oldState.equals(transition.getOldState());
+            final boolean newBool = (newState != null) && !newState.equals(transition.getNewState());
+
             if (inputBool || oldBool || newBool) {
                 continue;
             }
@@ -78,7 +78,7 @@ public abstract class FAutomatonTransferFunction implements TransferFunction {
         return found;
     }
 
-    private Set<State> applyEpsilonTransition(Set<State> currentStates) {
+    private Set<State> applyEpsilonTransition(final Set<State> currentStates) {
 
         if (currentStates.isEmpty()) {
             return new HashSet<>();
@@ -88,19 +88,19 @@ public abstract class FAutomatonTransferFunction implements TransferFunction {
             return currentStates;
         }
 
-        Set<State> returnStates = new HashSet<>(currentStates);
+        final Set<State> returnStates = new HashSet<>(currentStates);
 
         while (true) {
-            Set<State> newStates = new HashSet<>();
+            final Set<State> newStates = new HashSet<>();
 
-            int oldCount = returnStates.size();
-            for (State currentState : returnStates) {
+            final int oldCount = returnStates.size();
+            for (final State currentState : returnStates) {
                 newStates
                         .addAll(extractStates(findMatching(currentState, null, null, epsilonTransitions), false, true));
             }
 
             returnStates.addAll(newStates);
-            int newCount = returnStates.size();
+            final int newCount = returnStates.size();
             if (newCount == oldCount) {
                 break;
             }
@@ -109,13 +109,13 @@ public abstract class FAutomatonTransferFunction implements TransferFunction {
         return returnStates;
     }
 
-    private Set<State> applyTransition(Set<State> currentStates, Input input) {
+    private Set<State> applyTransition(final Set<State> currentStates, final Input input) {
         if (currentStates.isEmpty()) {
             return new HashSet<>();
         }
 
-        Set<State> newStates = new HashSet<>();
-        for (State currentState : currentStates) {
+        final Set<State> newStates = new HashSet<>();
+        for (final State currentState : currentStates) {
             newStates.addAll(extractStates(findMatching(currentState, null, input, normalTransitions), false, true));
         }
 

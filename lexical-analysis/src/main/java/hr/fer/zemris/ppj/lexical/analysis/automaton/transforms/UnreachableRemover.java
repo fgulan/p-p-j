@@ -14,22 +14,22 @@ import hr.fer.zemris.ppj.lexical.analysis.automaton.transfer.DeterministicTransi
 public class UnreachableRemover implements AutomatonTransform<DFAutomaton, DFAutomaton> {
 
     @Override
-    public DFAutomaton transform(DFAutomaton source) {
+    public DFAutomaton transform(final DFAutomaton source) {
 
-        Set<State> reachable = new HashSet<>();
+        final Set<State> reachable = new HashSet<>();
         reachable.add(source.getStartState());
-        Set<Input> inputs = source.getInputs();
-        Set<Transition> transitions = source.getTransferFunction().getTransitions();
+        final Set<Input> inputs = source.getInputs();
+        final Set<Transition> transitions = source.getTransferFunction().getTransitions();
 
         while (true) {
-            int oldReachableCount = reachable.size();
+            final int oldReachableCount = reachable.size();
 
-            for (Input input : inputs) {
+            for (final Input input : inputs) {
 
-                Set<State> moreStates = new HashSet<>();
+                final Set<State> moreStates = new HashSet<>();
 
-                for (Transition transition : transitions) {
-                    for (State currentState : reachable) {
+                for (final Transition transition : transitions) {
+                    for (final State currentState : reachable) {
                         if (currentState.equals(transition.getOldState()) && input.equals(transition.getInput())) {
                             moreStates.add(transition.getNewState());
                         }
@@ -39,19 +39,19 @@ public class UnreachableRemover implements AutomatonTransform<DFAutomaton, DFAut
                 reachable.addAll(moreStates);
             }
 
-            int newReachableCount = reachable.size();
+            final int newReachableCount = reachable.size();
 
             if (newReachableCount == oldReachableCount) {
                 break;
             }
         }
 
-        Set<DeterministicTransition> usefulTransitions = new HashSet<>();
-        Set<State> reachAccept = new HashSet<>();
+        final Set<DeterministicTransition> usefulTransitions = new HashSet<>();
+        final Set<State> reachAccept = new HashSet<>();
 
-        for (State currentState : reachable) {
-            for (Input input : inputs) {
-                for (Transition transition : transitions) {
+        for (final State currentState : reachable) {
+            for (final Input input : inputs) {
+                for (final Transition transition : transitions) {
                     if (currentState.equals(transition.getOldState()) && input.equals(transition.getInput())
                             && reachable.contains(transition.getNewState())) {
                         usefulTransitions.add((DeterministicTransition) transition);
@@ -64,7 +64,7 @@ public class UnreachableRemover implements AutomatonTransform<DFAutomaton, DFAut
             }
         }
 
-        DFAutomatonTransferFunction usefulFunction = new DFAutomatonTransferFunction(usefulTransitions);
+        final DFAutomatonTransferFunction usefulFunction = new DFAutomatonTransferFunction(usefulTransitions);
 
         return new DFAutomaton(reachable, reachAccept, inputs, usefulFunction, source.getStartState());
     }

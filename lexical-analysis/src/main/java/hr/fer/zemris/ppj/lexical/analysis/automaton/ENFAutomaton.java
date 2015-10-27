@@ -8,12 +8,13 @@ import hr.fer.zemris.ppj.lexical.analysis.automaton.transfer.ENFAutomatonTransfe
 
 public class ENFAutomaton extends AbstractAutomaton {
 
-    public ENFAutomaton(Set<State> states, Set<State> acceptStates, Set<Input> alphabet,
-            ENFAutomatonTransferFunction transferFunction, State startState) {
+    public ENFAutomaton(final Set<State> states, final Set<State> acceptStates, final Set<Input> alphabet,
+            final ENFAutomatonTransferFunction transferFunction, final State startState) {
         super(states, acceptStates, alphabet, transferFunction, startState);
     }
 
-    public ENFAutomaton(Set<State> acceptStates, ENFAutomatonTransferFunction transferFunction, State startState) {
+    public ENFAutomaton(final Set<State> acceptStates, final ENFAutomatonTransferFunction transferFunction,
+            final State startState) {
         super(acceptStates, transferFunction, startState);
     }
 

@@ -56,11 +56,11 @@ public class LA {
      *            command line arguments aren't used.
      * @since 1.0.0
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
             readSourceCode(reader);
         }
-        catch (Exception e) {
+        catch (final Exception e) {
             System.err.println("Unable to read from system input. Message: " + e.getMessage());
         }
 
@@ -77,7 +77,7 @@ public class LA {
 
     private static void readSourceCode(final BufferedReader reader) throws IOException {
         String line = reader.readLine();
-        StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder();
         while (line != null) {
             builder.append(line);
             builder.append("\n");
@@ -91,8 +91,8 @@ public class LA {
         String line = reader.readLine();
 
         // Parse states
-        for (String stateString : line.split(" ")) {
-            LexerState state = new LexerState(stateString);
+        for (final String stateString : line.split(" ")) {
+            final LexerState state = new LexerState(stateString);
             if (startState == null) {
                 startState = state;
             }
@@ -122,46 +122,46 @@ public class LA {
         String line = reader.readLine();
 
         // Parse all states
-        Set<State> allStates = new TreeSet<>();
-        for (String stateAutomaton : line.split(" ")) {
+        final Set<State> allStates = new TreeSet<>();
+        for (final String stateAutomaton : line.split(" ")) {
             allStates.add(new BasicState(stateAutomaton));
         }
 
         // Parse accepted states
         line = reader.readLine();
-        Set<State> acceptedStates = new TreeSet<>();
-        for (String stateAutomaton : line.split(" ")) {
+        final Set<State> acceptedStates = new TreeSet<>();
+        for (final String stateAutomaton : line.split(" ")) {
             acceptedStates.add(new BasicState(stateAutomaton));
         }
 
         // Parse start state
         line = reader.readLine();
-        State startState = new BasicState(line);
+        final State startState = new BasicState(line);
 
         // Parse alphabet
         line = reader.readLine();
-        Set<Input> alphabet = new HashSet<>();
-        for (String input : line.split(" ")) {
+        final Set<Input> alphabet = new HashSet<>();
+        for (final String input : line.split(" ")) {
             alphabet.add(new BasicInput(input));
         }
 
         // Parse transition and create automaton
-        Set<FAutomatonTransition> transitions = readAutomatonTransitions(reader);
-        ENFAutomaton automaton = new ENFAutomaton(allStates, acceptedStates, alphabet,
+        final Set<FAutomatonTransition> transitions = readAutomatonTransitions(reader);
+        final ENFAutomaton automaton = new ENFAutomaton(allStates, acceptedStates, alphabet,
                 new ENFAutomatonTransferFunction(transitions), startState);
 
         // Read state and actions
-        String lexerStateString = reader.readLine();
-        List<LexerAction> actions = readRuleActions(reader);
-        LexerRule rule = new LexerRule(automaton, actions);
+        final String lexerStateString = reader.readLine();
+        final List<LexerAction> actions = readRuleActions(reader);
+        final LexerRule rule = new LexerRule(automaton, actions);
         states.get(lexerStateString).addRule(rule);
     }
 
     private static Set<FAutomatonTransition> readAutomatonTransitions(final BufferedReader reader) throws IOException {
-        Set<FAutomatonTransition> transitions = new HashSet<>();
+        final Set<FAutomatonTransition> transitions = new HashSet<>();
         String line = reader.readLine();
         while (!line.isEmpty()) {
-            String[] args = line.split(" ");
+            final String[] args = line.split(" ");
             if ((args.length == 3) && args[1].equals("null")) {
                 transitions.add(new EpsilonTransition(new BasicState(args[0]), new BasicState(args[2])));
             }
@@ -174,7 +174,7 @@ public class LA {
         return transitions;
     }
 
-    private static String escapeString(String input) {
+    private static String escapeString(final String input) {
         String output = input;
         switch (input) {
             case "\\n":
@@ -197,7 +197,7 @@ public class LA {
     }
 
     private static List<LexerAction> readRuleActions(final BufferedReader reader) throws IOException {
-        List<LexerAction> actions = new ArrayList<LexerAction>();
+        final List<LexerAction> actions = new ArrayList<LexerAction>();
 
         // Read opening bracket
         String line = reader.readLine();
@@ -217,8 +217,8 @@ public class LA {
             }
             else {
                 if (line.startsWith(RETURN_ACTION)) {
-                    String[] args = line.split(" ");
-                    int offset = Integer.parseInt(args[1]);
+                    final String[] args = line.split(" ");
+                    final int offset = Integer.parseInt(args[1]);
                     returnAction = new ReturnAction(offset);
                 }
                 else if (line.startsWith(NEW_LINE_ACTION)) {

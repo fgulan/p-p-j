@@ -5,12 +5,12 @@ import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.State;
 
 public class DeterministicTransition extends NormalTransition {
 
-    public DeterministicTransition(State oldState, State newState, Input input) {
+    public DeterministicTransition(final State oldState, final State newState, final Input input) {
         super(oldState, newState, input);
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
@@ -21,7 +21,7 @@ public class DeterministicTransition extends NormalTransition {
             return false;
         }
 
-        FAutomatonTransition other = (FAutomatonTransition) obj;
+        final FAutomatonTransition other = (FAutomatonTransition) obj;
         if (getInput() == null) {
             if (other.getInput() != null) {
                 return false;
@@ -40,13 +40,13 @@ public class DeterministicTransition extends NormalTransition {
         }
         return true;
     }
-    
+
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((getInput() == null) ? 0 : getInput().hashCode());
-        result = prime * result + ((getOldState() == null) ? 0 : getOldState().hashCode());
+        result = (prime * result) + ((getInput() == null) ? 0 : getInput().hashCode());
+        result = (prime * result) + ((getOldState() == null) ? 0 : getOldState().hashCode());
         return result;
     }
 

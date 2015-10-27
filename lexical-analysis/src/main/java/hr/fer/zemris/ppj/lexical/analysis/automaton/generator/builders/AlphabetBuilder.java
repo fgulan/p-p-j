@@ -33,8 +33,8 @@ public class AlphabetBuilder {
      * @since 1.0
      */
     public Set<Input> build() {
-        Set<Input> alphabet = new HashSet<>();
-        for (Character symbol : rawInput) {
+        final Set<Input> alphabet = new HashSet<>();
+        for (final Character symbol : rawInput) {
             alphabet.add(new BasicInput(symbol));
         }
         return alphabet;

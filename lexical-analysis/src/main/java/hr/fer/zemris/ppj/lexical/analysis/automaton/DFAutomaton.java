@@ -9,17 +9,18 @@ import hr.fer.zemris.ppj.lexical.analysis.automaton.transfer.DFAutomatonTransfer
 
 public class DFAutomaton extends AbstractAutomaton {
 
-    public DFAutomaton(Set<State> states, Set<State> acceptStates, Set<Input> inputs,
-            DFAutomatonTransferFunction transferFunction, State startState) {
+    public DFAutomaton(final Set<State> states, final Set<State> acceptStates, final Set<Input> inputs,
+            final DFAutomatonTransferFunction transferFunction, final State startState) {
         super(states, acceptStates, inputs, transferFunction, startState);
     }
 
-    public DFAutomaton(Set<State> acceptStates, DFAutomatonTransferFunction transferFunction, State startState) {
+    public DFAutomaton(final Set<State> acceptStates, final DFAutomatonTransferFunction transferFunction,
+            final State startState) {
         super(acceptStates, transferFunction, startState);
     }
 
     public State getCurrentState() {
-        Set<State> currentStates = getCurrentStates();
+        final Set<State> currentStates = getCurrentStates();
         if (currentStates.isEmpty()) {
             return null;
         }
@@ -28,8 +29,8 @@ public class DFAutomaton extends AbstractAutomaton {
         }
     }
 
-    public Transition getTransition(State oldState, Input input) {
-        Set<Transition> transitions = getTransferFunction().getTransitions(oldState, null, input);
+    public Transition getTransition(final State oldState, final Input input) {
+        final Set<Transition> transitions = getTransferFunction().getTransitions(oldState, null, input);
         if (transitions.isEmpty()) {
             return null;
         }

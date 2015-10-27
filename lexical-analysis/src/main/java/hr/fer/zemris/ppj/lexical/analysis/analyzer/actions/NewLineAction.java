@@ -5,7 +5,7 @@ import hr.fer.zemris.ppj.lexical.analysis.analyzer.LexicalAnalyzer;
 public class NewLineAction implements LexerAction {
 
     @Override
-    public void execute(LexicalAnalyzer lexer) {
+    public void execute(final LexicalAnalyzer lexer) {
         lexer.incrementLineCounter();
     }
 

@@ -1,51 +1,52 @@
 package hr.fer.zemris.ppj.lexical.analysis.automaton;
 
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Test;
 
 public class BasicInputTest {
 
     @Test
-    public void testEqualsStringString(){
+    public void testEqualsStringString() {
         Assert.assertTrue(new BasicInput(" ").equals(new BasicInput(" ")));
     }
-    
+
     @Test
-    public void testEqualsStringChar(){
+    public void testEqualsStringChar() {
         Assert.assertTrue(new BasicInput(" ").equals(new BasicInput(' ')));
     }
-    
+
     @Test
-    public void testEqualsCharString(){
+    public void testEqualsCharString() {
         Assert.assertTrue(new BasicInput(' ').equals(new BasicInput(" ")));
     }
-    
+
     @Test
-    public void testEqualsStringInt(){
+    public void testEqualsStringInt() {
         Assert.assertTrue(new BasicInput("1").equals(new BasicInput(1)));
     }
-    
+
     @Test
-    public void testEqualsIntString(){
+    public void testEqualsIntString() {
         Assert.assertTrue(new BasicInput(1).equals(new BasicInput("1")));
     }
-    
+
     @Test
-    public void testEqualsIntChar(){
+    public void testEqualsIntChar() {
         Assert.assertTrue(new BasicInput(1).equals(new BasicInput('1')));
     }
-    
+
     @Test
-    public void testEqualsCharInt(){
+    public void testEqualsCharInt() {
         Assert.assertTrue(new BasicInput('1').equals(new BasicInput(1)));
     }
-    
+
     @Test
-    public void testNotEqualsCharInt(){
+    public void testNotEqualsCharInt() {
         Assert.assertFalse(new BasicInput('\0').equals(new BasicInput(0)));
     }
-    
+
     @Test
-    public void testNotEqualsStringNull(){
+    public void testNotEqualsStringNull() {
         Assert.assertFalse(new BasicInput(" ").equals(new BasicInput(null)));
     }
 }

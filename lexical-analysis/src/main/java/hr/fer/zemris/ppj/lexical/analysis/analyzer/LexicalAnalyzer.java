@@ -5,50 +5,53 @@ import java.util.Map;
 
 public class LexicalAnalyzer {
 
-    private Map<String, LexerState> states;
+    private final Map<String, LexerState> states;
     private LexerState currentState;
-    private String source;
-    private PrintStream printStream;
-    
+    private final String source;
+    private final PrintStream printStream;
+
     private int lineCounter = 1;
     private int startIndex = 0;
     private int lastIndex = -1;
     private int finishIndex = -1;
-    
-    public LexicalAnalyzer(Map<String, LexerState> states, LexerState currentState, String source, PrintStream printStream) {
+
+    public LexicalAnalyzer(final Map<String, LexerState> states, final LexerState currentState, final String source,
+            final PrintStream printStream) {
         super();
         this.states = states;
         this.currentState = currentState;
         this.source = source;
-;
+        ;
         this.printStream = printStream;
     }
-    
+
     public void analyze() {
         LexerRule activeRule = null;
         while (finishIndex < source.length()) {
             while (currentState.isAlive()) {
                 finishIndex++;
-                LexerRule tempRule = currentState.getActiveRule();
+                final LexerRule tempRule = currentState.getActiveRule();
                 if (tempRule != null) {
                     lastIndex = finishIndex - 1;
                     activeRule = tempRule;
                 }
-                
+
                 if (finishIndex < source.length()) {
-                    //TODO sugavo je ovako, morat cu jos to rijesit
+                    // TODO sugavo je ovako, morat cu jos to rijesit
                     currentState.apply(String.valueOf(source.charAt(finishIndex)));
-                } else {
+                }
+                else {
                     break;
                 }
             }
-            
+
             if (activeRule != null) {
                 finishIndex = lastIndex;
                 activeRule.execute(this);
                 activeRule = null;
                 currentState.resetAutomatons();
-            } else {
+            }
+            else {
                 finishIndex = startIndex++;
                 currentState.resetAutomatons();
             }
@@ -59,11 +62,11 @@ public class LexicalAnalyzer {
         return currentState;
     }
 
-    public void setCurrentState(LexerState currentState) {
+    public void setCurrentState(final LexerState currentState) {
         this.currentState = currentState;
     }
-    
-    public void setCurrentStateFromName(String stateName) {
+
+    public void setCurrentStateFromName(final String stateName) {
         currentState = states.get(stateName);
     }
 
@@ -72,14 +75,14 @@ public class LexicalAnalyzer {
     }
 
     public void incrementLineCounter() {
-        this.lineCounter++;
+        lineCounter++;
     }
 
     public int getStartIndex() {
         return startIndex;
     }
 
-    public void setStartIndex(int startIndex) {
+    public void setStartIndex(final int startIndex) {
         this.startIndex = startIndex;
     }
 
@@ -87,7 +90,7 @@ public class LexicalAnalyzer {
         return lastIndex;
     }
 
-    public void setLastIndex(int lastIndex) {
+    public void setLastIndex(final int lastIndex) {
         this.lastIndex = lastIndex;
     }
 
@@ -95,14 +98,14 @@ public class LexicalAnalyzer {
         return finishIndex;
     }
 
-    public void setFinishIndex(int finishIndex) {
+    public void setFinishIndex(final int finishIndex) {
         this.finishIndex = finishIndex;
     }
-    
+
     public PrintStream getOutput() {
         return printStream;
     }
-    
+
     public String getCurrentPhrase() {
         return source.substring(startIndex, finishIndex + 1);
     }

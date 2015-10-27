@@ -4,15 +4,15 @@ import hr.fer.zemris.ppj.lexical.analysis.analyzer.LexicalAnalyzer;
 
 public class EnterStateAction implements LexerAction {
 
-    private String newState;
-    
-    public EnterStateAction(String newState) {
+    private final String newState;
+
+    public EnterStateAction(final String newState) {
         super();
         this.newState = newState;
     }
-    
+
     @Override
-    public void execute(LexicalAnalyzer lexer) {
+    public void execute(final LexicalAnalyzer lexer) {
         lexer.setCurrentStateFromName(newState);
     }
 

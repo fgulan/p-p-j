@@ -18,7 +18,7 @@ public class RegularExpressionManipulatorTest {
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        List<String> regularDefinitions = new ArrayList<>();
+        final List<String> regularDefinitions = new ArrayList<>();
 
         regularDefinitions.add("{znak} a|b");
         regularDefinitions.add("{znamenka} 0|1|2|3");
@@ -34,7 +34,7 @@ public class RegularExpressionManipulatorTest {
 
     @Test
     public void testFindClosingBracket() {
-        String expression = "ab((c(d\\())e)";
+        final String expression = "ab((c(d\\())e)";
         assertEquals(-1, RegularExpressionManipulator.findClosingBracket(expression, 0, '(', ')'));
         assertEquals(12, RegularExpressionManipulator.findClosingBracket(expression, 2, '(', ')'));
         assertEquals(10, RegularExpressionManipulator.findClosingBracket(expression, 3, '(', ')'));
@@ -45,7 +45,7 @@ public class RegularExpressionManipulatorTest {
 
     @Test
     public void testIsEcaped() {
-        String expression = "a\\b\\\\c\\\\\\d";
+        final String expression = "a\\b\\\\c\\\\\\d";
         assertFalse(RegularExpressionManipulator.isEscaped(expression, 0));
         assertTrue(RegularExpressionManipulator.isEscaped(expression, 2));
         assertFalse(RegularExpressionManipulator.isEscaped(expression, 5));

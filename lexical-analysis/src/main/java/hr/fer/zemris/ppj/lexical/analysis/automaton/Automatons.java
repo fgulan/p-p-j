@@ -12,15 +12,16 @@ import hr.fer.zemris.ppj.lexical.analysis.automaton.transforms.UnreachableRemove
 
 public class Automatons {
 
-    public static Set<State> extractStates(Set<Transition> transitions, boolean extractOld, boolean extractNew) {
-        Set<State> extracted = new HashSet<>();
-        for (Transition transition : transitions) {
+    public static Set<State> extractStates(final Set<Transition> transitions, final boolean extractOld,
+            final boolean extractNew) {
+        final Set<State> extracted = new HashSet<>();
+        for (final Transition transition : transitions) {
             if (extractOld) {
                 extracted.add(transition.getOldState());
             }
 
             if (extractNew) {
-                State newState = transition.getNewState();
+                final State newState = transition.getNewState();
                 if (newState != null) {
                     extracted.add(transition.getNewState());
                 }
@@ -30,24 +31,24 @@ public class Automatons {
         return extracted;
     }
 
-    public static void apply(Automaton automaton, String input) {
+    public static void apply(final Automaton automaton, final String input) {
         automaton.apply(new BasicInput(input));
     }
 
-    public static void apply(Automaton automaton, char input) {
+    public static void apply(final Automaton automaton, final char input) {
         automaton.apply(new BasicInput(input));
     }
 
-    public static void apply(Automaton automaton, int input) {
+    public static void apply(final Automaton automaton, final int input) {
         automaton.apply(new BasicInput(input));
     }
 
-    public static DFAutomaton minimize(ENFAutomaton source) {
-        DFAutomaton converted = new ENFAtoDFA().transform(source);
+    public static DFAutomaton minimize(final ENFAutomaton source) {
+        final DFAutomaton converted = new ENFAtoDFA().transform(source);
         return minimize(converted);
     }
 
-    public static DFAutomaton minimize(DFAutomaton source) {
+    public static DFAutomaton minimize(final DFAutomaton source) {
         DFAutomaton minimized = new UnreachableRemover().transform(source);
         minimized = new EquivalentRemover().transform(minimized);
 

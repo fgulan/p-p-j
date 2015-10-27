@@ -45,13 +45,13 @@ public class ENFATransferFunctionBuilder implements TransferFunctionBuilder {
      */
     @Override
     public ENFAutomatonTransferFunction build(final Map<String, State> states) {
-        Set<FAutomatonTransition> automatonTransitions = new HashSet<>();
-        for (Entry<String, Map<Character, Set<String>>> transition : rawTransitions.entrySet()) {
-            State oldState = states.get(transition.getKey());
-            for (Entry<Character, Set<String>> stateTransition : transition.getValue().entrySet()) {
-                Character symbol = stateTransition.getKey();
-                for (String newStateId : stateTransition.getValue()) {
-                    State newState = states.get(newStateId);
+        final Set<FAutomatonTransition> automatonTransitions = new HashSet<>();
+        for (final Entry<String, Map<Character, Set<String>>> transition : rawTransitions.entrySet()) {
+            final State oldState = states.get(transition.getKey());
+            for (final Entry<Character, Set<String>> stateTransition : transition.getValue().entrySet()) {
+                final Character symbol = stateTransition.getKey();
+                for (final String newStateId : stateTransition.getValue()) {
+                    final State newState = states.get(newStateId);
                     if (symbol == EMPTY_SEQUENCE) {
                         automatonTransitions.add(new EpsilonTransition(oldState, newState));
                     }

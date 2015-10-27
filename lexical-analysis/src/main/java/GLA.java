@@ -31,7 +31,7 @@ public class GLA {
      *            command line arguments aren't used.
      * @since 1.0.0
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
             readInputData(reader);
         }

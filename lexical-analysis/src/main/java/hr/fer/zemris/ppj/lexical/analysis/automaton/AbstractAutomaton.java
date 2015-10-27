@@ -23,8 +23,8 @@ public abstract class AbstractAutomaton implements Automaton {
     private final State startState;
     private Input lastInput;
 
-    public AbstractAutomaton(Set<State> states, Set<State> acceptStates, Set<Input> inputs,
-            TransferFunction transferFunction, State startState) {
+    public AbstractAutomaton(final Set<State> states, final Set<State> acceptStates, final Set<Input> inputs,
+            final TransferFunction transferFunction, final State startState) {
         super();
         this.states = states;
         this.acceptStates = acceptStates;
@@ -36,7 +36,8 @@ public abstract class AbstractAutomaton implements Automaton {
         currentStates = transferFunction.getNewStates(currentStates, null);
     }
 
-    public AbstractAutomaton(Set<State> acceptStates, TransferFunction transferFunction, State startState) {
+    public AbstractAutomaton(final Set<State> acceptStates, final TransferFunction transferFunction,
+            final State startState) {
         this(extract(transferFunction, State.class), acceptStates, extract(transferFunction, Input.class),
                 transferFunction, startState);
     }
@@ -77,17 +78,17 @@ public abstract class AbstractAutomaton implements Automaton {
     }
 
     @Override
-    public boolean hasState(State state) {
+    public boolean hasState(final State state) {
         return states.contains(state);
     }
 
     @Override
-    public boolean isAcceptState(State state) {
+    public boolean isAcceptState(final State state) {
         return acceptStates.contains(state);
     }
 
     @Override
-    public boolean isCurrentState(State state) {
+    public boolean isCurrentState(final State state) {
         return currentStates.contains(state);
     }
 
@@ -101,7 +102,7 @@ public abstract class AbstractAutomaton implements Automaton {
 
     @Override
     public boolean isAccepting() {
-        Set<State> intersection = getCurrentStates();
+        final Set<State> intersection = getCurrentStates();
         intersection.retainAll(acceptStates);
 
         return !intersection.isEmpty();
@@ -109,12 +110,12 @@ public abstract class AbstractAutomaton implements Automaton {
 
     @Override
     public String toString() {
-        Set<State> states = new TreeSet<>(this.states);
-        Set<Input> inputs = new HashSet<>(this.inputs);
-        Set<State> acceptStates = new TreeSet<>(this.acceptStates);
-        Set<Transition> transitions = new HashSet<>(transferFunction.getTransitions());
+        final Set<State> states = new TreeSet<>(this.states);
+        final Set<Input> inputs = new HashSet<>(this.inputs);
+        final Set<State> acceptStates = new TreeSet<>(this.acceptStates);
+        final Set<Transition> transitions = new HashSet<>(transferFunction.getTransitions());
 
-        String result =
+        final String result =
                 formatCollection(states, " ") + "\n" + formatCollection(acceptStates, " ") + "\n" + startState.getId()
                         + "\n" + formatCollection(inputs, " ") + "\n" + formatCollection(transitions, "\n");
 
@@ -122,14 +123,14 @@ public abstract class AbstractAutomaton implements Automaton {
     }
 
     @SuppressWarnings("unchecked")
-    private static <T> Set<T> extract(TransferFunction function, Class<T> type) {
-        Set<T> extracts = new HashSet<>();
-        Set<Transition> transitions = function.getTransitions();
+    private static <T> Set<T> extract(final TransferFunction function, final Class<T> type) {
+        final Set<T> extracts = new HashSet<>();
+        final Set<Transition> transitions = function.getTransitions();
 
-        for (Transition transition : transitions) {
+        for (final Transition transition : transitions) {
             try {
-                State oldState = transition.getOldState();
-                State newState = transition.getNewState();
+                final State oldState = transition.getOldState();
+                final State newState = transition.getNewState();
 
                 if (oldState != null) {
                     extracts.add((T) oldState);
@@ -139,15 +140,15 @@ public abstract class AbstractAutomaton implements Automaton {
                     extracts.add((T) newState);
                 }
             }
-            catch (ClassCastException cce1) {
+            catch (final ClassCastException cce1) {
                 try {
-                    Input input = transition.getInput();
+                    final Input input = transition.getInput();
 
                     if (input != null) {
                         extracts.add((T) input);
                     }
                 }
-                catch (ClassCastException cce2) {
+                catch (final ClassCastException cce2) {
                     throw new IllegalArgumentException("Illegal type parameter.");
                 }
             }
@@ -156,7 +157,7 @@ public abstract class AbstractAutomaton implements Automaton {
         return extracts;
     }
 
-    private String formatCollection(Collection<?> collection, String delimiter) {
+    private String formatCollection(final Collection<?> collection, final String delimiter) {
         String format = "";
         for (Object entry : collection) {
             if (!(entry instanceof FAutomatonTransition)) {
@@ -168,7 +169,7 @@ public abstract class AbstractAutomaton implements Automaton {
             format = format + entry + delimiter;
         }
 
-        int lastDelimiterIndex = format.lastIndexOf(delimiter);
+        final int lastDelimiterIndex = format.lastIndexOf(delimiter);
         if (lastDelimiterIndex > 0) {
             format = format.substring(0, lastDelimiterIndex);
         }
@@ -177,7 +178,7 @@ public abstract class AbstractAutomaton implements Automaton {
     }
 
     @Override
-    public void apply(Input input) {
+    public void apply(final Input input) {
         currentStates = getTransferFunction().getNewStates(getCurrentStates(), input);
         lastInput = input;
     }

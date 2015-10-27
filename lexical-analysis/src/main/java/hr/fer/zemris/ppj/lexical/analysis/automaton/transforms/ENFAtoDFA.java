@@ -24,13 +24,13 @@ public class ENFAtoDFA implements AutomatonTransform<ENFAutomaton, DFAutomaton> 
     private State errorState;
 
     @Override
-    public DFAutomaton transform(ENFAutomaton source) {
+    public DFAutomaton transform(final ENFAutomaton source) {
 
-        Set<Input> inputs = source.getInputs();
-        Set<Transition> transitions = source.getTransferFunction().getTransitions();
+        final Set<Input> inputs = source.getInputs();
+        final Set<Transition> transitions = source.getTransferFunction().getTransitions();
 
-        Set<State> newState = getNewStartState(source);
-        State DFAStartState = getNewDFAStateName(newState);
+        final Set<State> newState = getNewStartState(source);
+        final State DFAStartState = getNewDFAStateName(newState);
         states.add(DFAStartState);
         if (isAcceptStateDFA(newState, source)) {
             acceptStates.add(DFAStartState);
@@ -39,23 +39,24 @@ public class ENFAtoDFA implements AutomatonTransform<ENFAutomaton, DFAutomaton> 
         constructErrorState(inputs);
         newStateTransitions(newState, source);
 
-        DFAutomatonTransferFunction function = new DFAutomatonTransferFunction(newTransitions);
+        final DFAutomatonTransferFunction function = new DFAutomatonTransferFunction(newTransitions);
 
         return new DFAutomaton(states, acceptStates, inputs, function, DFAStartState);
     }
 
-    public Set<State> getNewStates(Set<State> currentStates, TransferFunction transferfunction, Input input) {
+    public Set<State> getNewStates(final Set<State> currentStates, final TransferFunction transferfunction,
+            final Input input) {
         return transferfunction.getNewStates(currentStates, input);
     }
 
-    public Set<State> getEpsilonClosure(Set<State> currentStates, TransferFunction transferFunction) {
+    public Set<State> getEpsilonClosure(final Set<State> currentStates, final TransferFunction transferFunction) {
         Set<State> epsilonClosure = new HashSet<>();
         epsilonClosure = transferFunction.getNewStates(currentStates, null);
         return epsilonClosure;
     }
 
-    public Set<State> getNewStartState(ENFAutomaton source) {
-        Set<State> newStateName = new TreeSet<State>();
+    public Set<State> getNewStartState(final ENFAutomaton source) {
+        final Set<State> newStateName = new TreeSet<State>();
         Set<State> newState = new HashSet<>();
         newState.add(source.getStartState());
         newState = getEpsilonClosure(newState, source.getTransferFunction());
@@ -63,56 +64,57 @@ public class ENFAtoDFA implements AutomatonTransform<ENFAutomaton, DFAutomaton> 
         return newState;
     }
 
-    public State getNewDFAStateName(Set<State> newStateName) {
+    public State getNewDFAStateName(final Set<State> newStateName) {
         String Name = "";
-        for (State state : newStateName) {
+        for (final State state : newStateName) {
             Name = Name + state.getId();
         }
-        State newName = new BasicState(Name);
+        final State newName = new BasicState(Name);
         return newName;
     }
 
-    public Set<State> getNewDFAState(ENFAutomaton source, Set<State> current) {
-        Set<State> newStateName = new TreeSet<State>();
+    public Set<State> getNewDFAState(final ENFAutomaton source, final Set<State> current) {
+        final Set<State> newStateName = new TreeSet<State>();
         Set<State> newState = new HashSet<>();
         newState = getEpsilonClosure(current, source.getTransferFunction());
         newStateName.addAll(newState);
         return newStateName;
     }
 
-    private void constructErrorState(Set<Input> inputs) {
+    private void constructErrorState(final Set<Input> inputs) {
         errorState = new BasicState("ERR");
-        for (Input input : inputs) {
+        for (final Input input : inputs) {
             newTransitions.add(new DeterministicTransition(errorState, errorState, input));
         }
     }
 
-    public boolean isAcceptStateDFA(Set<State> states, ENFAutomaton source) {
-        Set<State> uncheckedStates = new HashSet<>(states);
+    public boolean isAcceptStateDFA(final Set<State> states, final ENFAutomaton source) {
+        final Set<State> uncheckedStates = new HashSet<>(states);
         uncheckedStates.retainAll(source.getAcceptStates());
         return !uncheckedStates.isEmpty();
     }
 
-    public void newStateTransitions(Set<State> oldState, ENFAutomaton source) {
-        Set<Input> inputs = source.getInputs();
+    public void newStateTransitions(final Set<State> oldState, final ENFAutomaton source) {
+        final Set<Input> inputs = source.getInputs();
         Set<State> newState = new HashSet<>();
         boolean isNew = true;
 
         while (isNew) {
             isNew = false;
-            for (Input input : inputs) {
+            for (final Input input : inputs) {
                 newState = getNewStates(oldState, source.getTransferFunction(), input);
                 newState = getEpsilonClosure(newState, source.getTransferFunction());
                 newState = getNewDFAState(source, newState);
-                State stateName = newState.isEmpty() ? errorState : getNewDFAStateName(newState);
+                final State stateName = newState.isEmpty() ? errorState : getNewDFAStateName(newState);
                 if (!states.contains(stateName)) {
                     isNew = true;
                     states.add(stateName);
                     if (isAcceptStateDFA(newState, source)) {
                         acceptStates.add(stateName);
                     }
-                    State oldStateName = getNewDFAStateName(oldState);
-                    DeterministicTransition transition = new DeterministicTransition(oldStateName, stateName, input);
+                    final State oldStateName = getNewDFAStateName(oldState);
+                    final DeterministicTransition transition =
+                            new DeterministicTransition(oldStateName, stateName, input);
                     newTransitions.add(transition);
                     newStateTransitions(newState, source);
                 }
