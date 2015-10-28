@@ -4,6 +4,8 @@ import hr.fer.zemris.ppj.lexical.analysis.analyzer.LexicalAnalyzer;
 
 public class NewLineAction implements LexerAction {
 
+    public static final String ACTION_STRING = "NOVI_REDAK";
+
     @Override
     public void execute(final LexicalAnalyzer lexer) {
         lexer.incrementLineCounter();
@@ -11,6 +13,6 @@ public class NewLineAction implements LexerAction {
 
     @Override
     public String toString() {
-        return "NOVI_REDAK";
+        return ACTION_STRING;
     }
 }

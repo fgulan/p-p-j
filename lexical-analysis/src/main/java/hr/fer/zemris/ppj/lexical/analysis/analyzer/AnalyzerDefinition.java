@@ -45,7 +45,7 @@ public class AnalyzerDefinition {
      *
      * All lists are space delimited.
      *
-     * @see hr.fer.zemris.ppj.lexical.analysis.analyzer.rules.RuleDefinition#toString()
+     * @see hr.fer.zemris.ppj.lexical.analysis.analyzer.LexerRule#toString()
      * @see java.lang.Object#toString()
      * @since 1.0
      */

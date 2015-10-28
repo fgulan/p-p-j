@@ -4,6 +4,8 @@ import hr.fer.zemris.ppj.lexical.analysis.analyzer.LexicalAnalyzer;
 
 public class ReturnAction implements LexerAction {
 
+    public static final String ACTION_STRING = "VRATI_SE";
+
     private final int offset;
 
     public ReturnAction(final int offset) {
@@ -19,6 +21,6 @@ public class ReturnAction implements LexerAction {
 
     @Override
     public String toString() {
-        return "VRATI_SE " + offset;
+        return ACTION_STRING + " " + offset;
     }
 }

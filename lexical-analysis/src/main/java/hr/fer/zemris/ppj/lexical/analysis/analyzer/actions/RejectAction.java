@@ -4,6 +4,8 @@ import hr.fer.zemris.ppj.lexical.analysis.analyzer.LexicalAnalyzer;
 
 public class RejectAction implements LexerAction {
 
+    public static final String ACTION_STRING = "-";
+
     @Override
     public void execute(final LexicalAnalyzer lexer) {
         lexer.setStartIndex(lexer.getFinishIndex() + 1);
@@ -11,6 +13,6 @@ public class RejectAction implements LexerAction {
 
     @Override
     public String toString() {
-        return "-";
+        return ACTION_STRING;
     }
 }
