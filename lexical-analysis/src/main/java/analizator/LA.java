@@ -12,25 +12,25 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import hr.fer.zemris.ppj.lexical.analysis.analyzer.LexerRule;
-import hr.fer.zemris.ppj.lexical.analysis.analyzer.LexerState;
-import hr.fer.zemris.ppj.lexical.analysis.analyzer.LexicalAnalyzer;
-import hr.fer.zemris.ppj.lexical.analysis.analyzer.actions.ActionFactory;
-import hr.fer.zemris.ppj.lexical.analysis.analyzer.actions.EnterStateAction;
-import hr.fer.zemris.ppj.lexical.analysis.analyzer.actions.LexerAction;
-import hr.fer.zemris.ppj.lexical.analysis.analyzer.actions.NewLineAction;
-import hr.fer.zemris.ppj.lexical.analysis.analyzer.actions.RejectAction;
-import hr.fer.zemris.ppj.lexical.analysis.analyzer.actions.ReturnAction;
-import hr.fer.zemris.ppj.lexical.analysis.analyzer.actions.TokenizeAction;
-import hr.fer.zemris.ppj.lexical.analysis.automaton.BasicInput;
-import hr.fer.zemris.ppj.lexical.analysis.automaton.BasicState;
-import hr.fer.zemris.ppj.lexical.analysis.automaton.ENFAutomaton;
-import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.Input;
-import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.State;
-import hr.fer.zemris.ppj.lexical.analysis.automaton.transfer.ENFAutomatonTransferFunction;
-import hr.fer.zemris.ppj.lexical.analysis.automaton.transfer.EpsilonTransition;
-import hr.fer.zemris.ppj.lexical.analysis.automaton.transfer.FAutomatonTransition;
-import hr.fer.zemris.ppj.lexical.analysis.automaton.transfer.NormalTransition;
+import hr.fer.zemris.ppj.finite.automaton.BasicInput;
+import hr.fer.zemris.ppj.finite.automaton.BasicState;
+import hr.fer.zemris.ppj.finite.automaton.ENFAutomaton;
+import hr.fer.zemris.ppj.finite.automaton.interfaces.Input;
+import hr.fer.zemris.ppj.finite.automaton.interfaces.State;
+import hr.fer.zemris.ppj.finite.automaton.transfer.ENFAutomatonTransferFunction;
+import hr.fer.zemris.ppj.finite.automaton.transfer.EpsilonTransition;
+import hr.fer.zemris.ppj.finite.automaton.transfer.FAutomatonTransition;
+import hr.fer.zemris.ppj.finite.automaton.transfer.NormalTransition;
+import hr.fer.zemris.ppj.lexical.analyzer.LexerRule;
+import hr.fer.zemris.ppj.lexical.analyzer.LexerState;
+import hr.fer.zemris.ppj.lexical.analyzer.LexicalAnalyzer;
+import hr.fer.zemris.ppj.lexical.analyzer.actions.ActionFactory;
+import hr.fer.zemris.ppj.lexical.analyzer.actions.EnterStateAction;
+import hr.fer.zemris.ppj.lexical.analyzer.actions.LexerAction;
+import hr.fer.zemris.ppj.lexical.analyzer.actions.NewLineAction;
+import hr.fer.zemris.ppj.lexical.analyzer.actions.RejectAction;
+import hr.fer.zemris.ppj.lexical.analyzer.actions.ReturnAction;
+import hr.fer.zemris.ppj.lexical.analyzer.actions.TokenizeAction;
 
 /**
  * <code>LA</code> class is required by the evaluator, to contain a entry point for the lexical analyzer generator.

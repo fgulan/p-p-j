@@ -7,11 +7,11 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import hr.fer.zemris.ppj.lexical.analysis.analyzer.AnalyzerDefinition;
-import hr.fer.zemris.ppj.lexical.analysis.analyzer.LexerRule;
-import hr.fer.zemris.ppj.lexical.analysis.analyzer.actions.ActionFactory;
-import hr.fer.zemris.ppj.lexical.analysis.analyzer.actions.LexerAction;
-import hr.fer.zemris.ppj.lexical.analysis.text.manipulation.RegularExpressionManipulator;
+import hr.fer.zemris.ppj.lexical.analyzer.AnalyzerDefinition;
+import hr.fer.zemris.ppj.lexical.analyzer.LexerRule;
+import hr.fer.zemris.ppj.lexical.analyzer.actions.ActionFactory;
+import hr.fer.zemris.ppj.lexical.analyzer.actions.LexerAction;
+import hr.fer.zemris.ppj.utility.text.manipulation.RegularExpressionManipulator;
 
 /**
  * <code>GLA</code> class is required by the evaluator, to contain a entry point for the lexical analyzer generator.
