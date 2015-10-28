@@ -8,7 +8,7 @@ import java.util.Set;
 
 import hr.fer.zemris.ppj.lexical.analysis.automaton.ENFAutomaton;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.generator.builders.AlphabetBuilder;
-import hr.fer.zemris.ppj.lexical.analysis.automaton.generator.builders.ENFAStateBuilder;
+import hr.fer.zemris.ppj.lexical.analysis.automaton.generator.builders.BasicStateBuilder;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.generator.builders.ENFATransferFunctionBuilder;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.generator.builders.interfaces.StateBuilder;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.generator.interfaces.AutomatonGenerator;
@@ -172,8 +172,8 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
         return pair;
     }
 
-    private ENFAStateBuilder newStateBuilder(final boolean acceptance) {
-        final ENFAStateBuilder builder = new ENFAStateBuilder(String.valueOf(stateBuilders.size()), acceptance);
+    private StateBuilder newStateBuilder(final boolean acceptance) {
+        final StateBuilder builder = new BasicStateBuilder(String.valueOf(stateBuilders.size()), acceptance);
         stateBuilders.put(builder.getId(), builder);
         return builder;
     }

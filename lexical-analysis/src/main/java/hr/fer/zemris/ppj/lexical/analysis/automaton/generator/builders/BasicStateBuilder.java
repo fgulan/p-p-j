@@ -1,15 +1,16 @@
 package hr.fer.zemris.ppj.lexical.analysis.automaton.generator.builders;
 
+import hr.fer.zemris.ppj.lexical.analysis.automaton.BasicState;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.generator.builders.interfaces.StateBuilder;
 
 /**
- * <code>AbstractStateBuilder</code> is a abstract class which implements behavior common to all state builders.
+ * <code>BasicStateBuilder</code> is a class which builds states of the automaton.
  *
  * @author Jan Kelemen
  *
  * @version 1.0
  */
-public abstract class AbstractStateBuilder implements StateBuilder {
+public class BasicStateBuilder implements StateBuilder {
 
     private final String number;
     private boolean acceptance;
@@ -23,7 +24,7 @@ public abstract class AbstractStateBuilder implements StateBuilder {
      *            the acceptance of the state.
      * @since 1.0
      */
-    public AbstractStateBuilder(final String number, final boolean acceptance) {
+    public BasicStateBuilder(final String number, final boolean acceptance) {
         this.number = number;
         this.acceptance = acceptance;
     }
@@ -48,6 +49,11 @@ public abstract class AbstractStateBuilder implements StateBuilder {
     @Override
     public boolean isAccepting() {
         return acceptance;
+    }
+
+    @Override
+    public BasicState build() {
+        return new BasicState(String.valueOf(number));
     }
 
     /**
