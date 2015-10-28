@@ -3,7 +3,7 @@ package hr.fer.zemris.ppj.lexical.analysis.analyzer.generator;
 import java.util.List;
 
 import hr.fer.zemris.ppj.lexical.analysis.analyzer.AnalyzerDefinition;
-import hr.fer.zemris.ppj.lexical.analysis.analyzer.rules.RuleDefinition;
+import hr.fer.zemris.ppj.lexical.analysis.analyzer.LexerRule;
 
 /**
  * <code>AnalyzerGenerator</code> generates a lexical analyzer.
@@ -27,7 +27,7 @@ public class AnalyzerGenerator {
      * @since 1.0
      */
     public static AnalyzerDefinition generateAnalyzerDefinition(final List<String> analyzerStates,
-            final List<String> lexemeNames, final List<RuleDefinition> rules) {
+            final List<String> lexemeNames, final List<LexerRule> rules) {
         return new AnalyzerDefinition(analyzerStates, lexemeNames, rules);
     }
 }

@@ -16,4 +16,9 @@ public class ReturnAction implements LexerAction {
         lexer.setFinishIndex(startOffset);
         lexer.setLastIndex(startOffset);
     }
+
+    @Override
+    public String toString() {
+        return "VRATI_SE " + offset;
+    }
 }

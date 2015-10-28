@@ -16,4 +16,8 @@ public class EnterStateAction implements LexerAction {
         lexer.setCurrentStateFromName(newState);
     }
 
+    @Override
+    public String toString() {
+        return "UDJI_U_STANJE " + newState;
+    }
 }

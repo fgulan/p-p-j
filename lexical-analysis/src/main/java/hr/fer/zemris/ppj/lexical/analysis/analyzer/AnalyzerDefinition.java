@@ -3,8 +3,6 @@ package hr.fer.zemris.ppj.lexical.analysis.analyzer;
 import java.util.Collection;
 import java.util.List;
 
-import hr.fer.zemris.ppj.lexical.analysis.analyzer.rules.RuleDefinition;
-
 /**
  * <code>AnalyzerDefinition</code> contains a definition of the analyzer.
  *
@@ -16,7 +14,7 @@ public class AnalyzerDefinition {
 
     private final List<String> analyzerStates;
     private final List<String> lexemeNames;
-    private final List<RuleDefinition> rules;
+    private final List<LexerRule> rules;
 
     /**
      * Class constructor, creates a analyzer definition from the specified structure.
@@ -30,7 +28,7 @@ public class AnalyzerDefinition {
      * @since 1.0
      */
     public AnalyzerDefinition(final List<String> analyzerStates, final List<String> lexemeNames,
-            final List<RuleDefinition> rules) {
+            final List<LexerRule> rules) {
         this.analyzerStates = analyzerStates;
         this.lexemeNames = lexemeNames;
         this.rules = rules;
@@ -58,7 +56,7 @@ public class AnalyzerDefinition {
         result += "\n";
         result += collectionToString(lexemeNames) + "\n";
         result += "\n";
-        for (final RuleDefinition definition : rules) {
+        for (final LexerRule definition : rules) {
             result += definition.toString() + "\n\n";
         }
         return result.substring(0, result.length() - 1) + "END";

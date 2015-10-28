@@ -4,15 +4,25 @@ import java.util.List;
 
 import hr.fer.zemris.ppj.lexical.analysis.analyzer.actions.LexerAction;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.Automatons;
+import hr.fer.zemris.ppj.lexical.analysis.automaton.generator.ENFAutomatonGenerator;
 import hr.fer.zemris.ppj.lexical.analysis.automaton.interfaces.Automaton;
 
 public class LexerRule {
 
+    private final String lexerState;
     private final Automaton automaton;
     private final List<LexerAction> actions;
 
-    public LexerRule(final Automaton automaton, final List<LexerAction> actions) {
+    public LexerRule(final String lexerState, final String regularExpression, final List<LexerAction> actions) {
         super();
+        this.lexerState = lexerState;
+        automaton = new ENFAutomatonGenerator().fromRegularExpression(regularExpression);
+        this.actions = actions;
+    }
+
+    public LexerRule(final String lexerState, final Automaton automaton, final List<LexerAction> actions) {
+        super();
+        this.lexerState = lexerState;
         this.automaton = automaton;
         this.actions = actions;
     }
@@ -49,5 +59,19 @@ public class LexerRule {
 
     public List<LexerAction> getActions() {
         return actions;
+    }
+
+    @Override
+    public String toString() {
+        String result = "";
+        result += automaton.toString() + "\n\n";
+        result += lexerState + "\n";
+        result += "{\n";
+        for (final LexerAction action : actions) {
+            result += action + "\n";
+        }
+        result += "}";
+
+        return result;
     }
 }

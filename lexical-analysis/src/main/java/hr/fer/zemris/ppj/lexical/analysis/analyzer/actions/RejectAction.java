@@ -8,4 +8,9 @@ public class RejectAction implements LexerAction {
     public void execute(final LexicalAnalyzer lexer) {
         lexer.setStartIndex(lexer.getFinishIndex() + 1);
     }
+
+    @Override
+    public String toString() {
+        return "-";
+    }
 }

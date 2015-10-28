@@ -15,6 +15,7 @@ import java.util.TreeSet;
 import hr.fer.zemris.ppj.lexical.analysis.analyzer.LexerRule;
 import hr.fer.zemris.ppj.lexical.analysis.analyzer.LexerState;
 import hr.fer.zemris.ppj.lexical.analysis.analyzer.LexicalAnalyzer;
+import hr.fer.zemris.ppj.lexical.analysis.analyzer.actions.ActionFactory;
 import hr.fer.zemris.ppj.lexical.analysis.analyzer.actions.EnterStateAction;
 import hr.fer.zemris.ppj.lexical.analysis.analyzer.actions.LexerAction;
 import hr.fer.zemris.ppj.lexical.analysis.analyzer.actions.NewLineAction;
@@ -39,11 +40,6 @@ import hr.fer.zemris.ppj.lexical.analysis.automaton.transfer.NormalTransition;
  * @version 1.0.0
  */
 public class LA {
-
-    public static final String SKIP_ACTION = "-";
-    public static final String NEW_LINE_ACTION = "NOVI_REDAK";
-    public static final String RETURN_ACTION = "VRATI_SE";
-    public static final String ENTER_STATE_ACTION = "UDJI_U_STANJE";
 
     private static final Map<String, LexerState> states = new HashMap<>();
     private static LexerState startState;
@@ -153,7 +149,7 @@ public class LA {
         // Read state and actions
         final String lexerStateString = reader.readLine();
         final List<LexerAction> actions = readRuleActions(reader);
-        final LexerRule rule = new LexerRule(automaton, actions);
+        final LexerRule rule = new LexerRule(lexerStateString, automaton, actions);
         states.get(lexerStateString).addRule(rule);
     }
 
@@ -212,25 +208,21 @@ public class LA {
         LexerAction enterStateAction = null;
 
         while (!line.equals("}")) {
-            if (line.equals("-")) {
-                rejectAction = new RejectAction();
+            LexerAction action = ActionFactory.fromString(line);
+            if (action instanceof ReturnAction) {
+                returnAction = action;
             }
-            else {
-                if (line.startsWith(RETURN_ACTION)) {
-                    final String[] args = line.split(" ");
-                    final int offset = Integer.parseInt(args[1]);
-                    returnAction = new ReturnAction(offset);
-                }
-                else if (line.startsWith(NEW_LINE_ACTION)) {
-                    lineAction = new NewLineAction();
-                }
-                else if (line.startsWith(ENTER_STATE_ACTION)) {
-                    enterStateAction = new EnterStateAction(line.split(" ")[1]);
-                }
-                else {
-                    // Print action
-                    tokenizeAction = new TokenizeAction(line);
-                }
+            else if (action instanceof NewLineAction) {
+                lineAction = action;
+            }
+            else if (action instanceof EnterStateAction) {
+                enterStateAction = action;
+            }
+            else if (action instanceof TokenizeAction) {
+                tokenizeAction = action;
+            }
+            else if (action instanceof RejectAction) {
+                rejectAction = action;
             }
             line = reader.readLine();
         }

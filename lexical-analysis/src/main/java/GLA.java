@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hr.fer.zemris.ppj.lexical.analysis.analyzer.AnalyzerDefinition;
-import hr.fer.zemris.ppj.lexical.analysis.analyzer.rules.RuleDefinition;
+import hr.fer.zemris.ppj.lexical.analysis.analyzer.LexerRule;
+import hr.fer.zemris.ppj.lexical.analysis.analyzer.actions.ActionFactory;
+import hr.fer.zemris.ppj.lexical.analysis.analyzer.actions.LexerAction;
 import hr.fer.zemris.ppj.lexical.analysis.text.manipulation.RegularExpressionManipulator;
 
 /**
@@ -22,7 +24,7 @@ public class GLA {
 
     private static final List<String> analyzerStates = new ArrayList<>();
     private static final List<String> lexemeNames = new ArrayList<>();
-    private static final List<RuleDefinition> rules = new ArrayList<>();
+    private static final List<LexerRule> rules = new ArrayList<>();
 
     /**
      * Entry point for lexical analyzer generator program.
@@ -75,16 +77,16 @@ public class GLA {
             final String analyzerState = line.substring(1, line.indexOf('>'));
             final String regularExpression =
                     manipulator.removeRegularDefinitions(line.substring(line.indexOf('>') + 1));
-            final List<String> actions = new ArrayList<>();
+            final List<LexerAction> actions = new ArrayList<>();
             line = reader.readLine(); // Ignore opening bracket
             line = reader.readLine();
             while (!line.startsWith("}") && !line.isEmpty()) {
-                actions.add(line);
+                actions.add(ActionFactory.fromString(line));
                 line = reader.readLine();
             }
             line = reader.readLine();
 
-            rules.add(new RuleDefinition(analyzerState, regularExpression, actions));
+            rules.add(new LexerRule(analyzerState, regularExpression, actions));
         }
     }
 

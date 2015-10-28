@@ -9,4 +9,8 @@ public class NewLineAction implements LexerAction {
         lexer.incrementLineCounter();
     }
 
+    @Override
+    public String toString() {
+        return "NOVI_REDAK";
+    }
 }
