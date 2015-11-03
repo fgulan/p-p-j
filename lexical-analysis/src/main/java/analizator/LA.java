@@ -6,21 +6,11 @@ import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 
-import hr.fer.zemris.ppj.finite.automaton.BasicInput;
-import hr.fer.zemris.ppj.finite.automaton.BasicState;
-import hr.fer.zemris.ppj.finite.automaton.ENFAutomaton;
-import hr.fer.zemris.ppj.finite.automaton.interfaces.Input;
-import hr.fer.zemris.ppj.finite.automaton.interfaces.State;
-import hr.fer.zemris.ppj.finite.automaton.transfer.ENFAutomatonTransferFunction;
-import hr.fer.zemris.ppj.finite.automaton.transfer.EpsilonTransition;
-import hr.fer.zemris.ppj.finite.automaton.transfer.FAutomatonTransition;
-import hr.fer.zemris.ppj.finite.automaton.transfer.NormalTransition;
+import hr.fer.zemris.ppj.finite.automaton.generator.ENFAutomatonGenerator;
+import hr.fer.zemris.ppj.finite.automaton.interfaces.Automaton;
 import hr.fer.zemris.ppj.lexical.analyzer.LexerRule;
 import hr.fer.zemris.ppj.lexical.analyzer.LexerState;
 import hr.fer.zemris.ppj.lexical.analyzer.LexicalAnalyzer;
@@ -97,7 +87,7 @@ public class LA {
         line = reader.readLine();
 
         // Parse tokens
-        // TODO for now - do we need them?
+        // TODO for now - do we need them? No.
 
         // Read empty line
         line = reader.readLine();
@@ -109,82 +99,25 @@ public class LA {
     }
 
     private static void readRuleDefinition(final BufferedReader reader) throws IOException {
-        // Read all states
+        // Read automaton definition
+        String aStates = reader.readLine();
+        String aAcceptStates = reader.readLine();
+        String aStartState = reader.readLine();
+        String aAlphabet = reader.readLine();
+        List<String> aTransitions = new ArrayList<String>();
         String line = reader.readLine();
-
-        // Parse all states
-        final Set<State> allStates = new TreeSet<>();
-        for (final String stateAutomaton : line.split(" ")) {
-            allStates.add(new BasicState(stateAutomaton));
+        while (!line.isEmpty()) {
+            aTransitions.add(line);
+            line = reader.readLine();
         }
-
-        // Parse accepted states
-        line = reader.readLine();
-        final Set<State> acceptedStates = new TreeSet<>();
-        for (final String stateAutomaton : line.split(" ")) {
-            acceptedStates.add(new BasicState(stateAutomaton));
-        }
-
-        // Parse start state
-        line = reader.readLine();
-        final State startState = new BasicState(line);
-
-        // Parse alphabet
-        line = reader.readLine();
-        final Set<Input> alphabet = new HashSet<>();
-        for (final String input : line.split(" ")) {
-            alphabet.add(new BasicInput(input));
-        }
-
-        // Parse transition and create automaton
-        final Set<FAutomatonTransition> transitions = readAutomatonTransitions(reader);
-        final ENFAutomaton automaton = new ENFAutomaton(allStates, acceptedStates, alphabet,
-                new ENFAutomatonTransferFunction(transitions), startState);
+        Automaton automaton = new ENFAutomatonGenerator().fromTextDefinition(aStates, aAcceptStates, aAlphabet,
+                aTransitions, aStartState);
 
         // Read state and actions
         final String lexerStateString = reader.readLine();
         final List<LexerAction> actions = readRuleActions(reader);
         final LexerRule rule = new LexerRule(lexerStateString, automaton, actions);
         states.get(lexerStateString).addRule(rule);
-    }
-
-    private static Set<FAutomatonTransition> readAutomatonTransitions(final BufferedReader reader) throws IOException {
-        final Set<FAutomatonTransition> transitions = new HashSet<>();
-        String line = reader.readLine();
-        while (!line.isEmpty()) {
-            final String[] args = line.split(" ");
-            if ((args.length == 3) && args[1].equals("null")) {
-                transitions.add(new EpsilonTransition(new BasicState(args[0]), new BasicState(args[2])));
-            }
-            else if (args.length == 3) {
-                transitions.add(new NormalTransition(new BasicState(args[0]), new BasicState(args[2]),
-                        new BasicInput(escapeString(args[1]))));
-            }
-            line = reader.readLine();
-        }
-        return transitions;
-    }
-
-    private static String escapeString(final String input) {
-        String output = input;
-        switch (input) {
-            case "\\n":
-                output = "\n";
-                break;
-            case "\\r":
-                output = "\r";
-                break;
-            case "\\t":
-                output = "\t";
-                break;
-            case "\\_":
-                output = " ";
-                break;
-            default:
-                output = input;
-                break;
-        }
-        return output;
     }
 
     private static List<LexerAction> readRuleActions(final BufferedReader reader) throws IOException {
