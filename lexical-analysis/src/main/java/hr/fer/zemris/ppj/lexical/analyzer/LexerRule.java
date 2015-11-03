@@ -1,5 +1,7 @@
 package hr.fer.zemris.ppj.lexical.analyzer;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import hr.fer.zemris.ppj.finite.automaton.Automatons;
@@ -24,7 +26,8 @@ public class LexerRule {
         super();
         this.lexerState = lexerState;
         this.automaton = automaton;
-        this.actions = actions;
+        this.actions = new ArrayList<LexerAction>(actions);
+        Collections.sort(this.actions);
     }
 
     public void apply(final char input) {

@@ -8,6 +8,8 @@ public class ReturnAction implements LexerAction {
 
     private final int offset;
 
+    private final int PRIORITY = 0;
+
     public ReturnAction(final int offset) {
         this.offset = offset;
     }
@@ -22,5 +24,15 @@ public class ReturnAction implements LexerAction {
     @Override
     public String toString() {
         return ACTION_STRING + " " + offset;
+    }
+
+    @Override
+    public int priority() {
+        return PRIORITY;
+    }
+
+    @Override
+    public int compareTo(LexerAction o) {
+        return Integer.compare(priority(), o.priority());
     }
 }

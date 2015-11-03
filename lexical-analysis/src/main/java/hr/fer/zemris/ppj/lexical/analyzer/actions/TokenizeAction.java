@@ -6,6 +6,8 @@ public class TokenizeAction implements LexerAction {
 
     private final String token;
 
+    private final int PRIORITY = 1;
+
     public TokenizeAction(final String token) {
         super();
         this.token = token;
@@ -20,5 +22,15 @@ public class TokenizeAction implements LexerAction {
     @Override
     public String toString() {
         return token;
+    }
+
+    @Override
+    public int priority() {
+        return PRIORITY;
+    }
+
+    @Override
+    public int compareTo(LexerAction o) {
+        return Integer.compare(priority(), o.priority());
     }
 }

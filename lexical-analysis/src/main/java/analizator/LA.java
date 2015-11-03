@@ -25,12 +25,7 @@ import hr.fer.zemris.ppj.lexical.analyzer.LexerRule;
 import hr.fer.zemris.ppj.lexical.analyzer.LexerState;
 import hr.fer.zemris.ppj.lexical.analyzer.LexicalAnalyzer;
 import hr.fer.zemris.ppj.lexical.analyzer.actions.ActionFactory;
-import hr.fer.zemris.ppj.lexical.analyzer.actions.EnterStateAction;
 import hr.fer.zemris.ppj.lexical.analyzer.actions.LexerAction;
-import hr.fer.zemris.ppj.lexical.analyzer.actions.NewLineAction;
-import hr.fer.zemris.ppj.lexical.analyzer.actions.RejectAction;
-import hr.fer.zemris.ppj.lexical.analyzer.actions.ReturnAction;
-import hr.fer.zemris.ppj.lexical.analyzer.actions.TokenizeAction;
 
 /**
  * <code>LA</code> class is required by the evaluator, to contain a entry point for the lexical analyzer generator.
@@ -200,46 +195,9 @@ public class LA {
         // Parse actions
         line = reader.readLine();
 
-        // https://www.youtube.com/watch?v=MEogSTKCgBE
-        LexerAction returnAction = null;
-        LexerAction tokenizeAction = null;
-        LexerAction rejectAction = null;
-        LexerAction lineAction = null;
-        LexerAction enterStateAction = null;
-
         while (!line.equals("}")) {
-            LexerAction action = ActionFactory.fromString(line);
-            if (action instanceof ReturnAction) {
-                returnAction = action;
-            }
-            else if (action instanceof NewLineAction) {
-                lineAction = action;
-            }
-            else if (action instanceof EnterStateAction) {
-                enterStateAction = action;
-            }
-            else if (action instanceof TokenizeAction) {
-                tokenizeAction = action;
-            }
-            else if (action instanceof RejectAction) {
-                rejectAction = action;
-            }
+            actions.add(ActionFactory.fromString(line));
             line = reader.readLine();
-        }
-        if (returnAction != null) {
-            actions.add(returnAction);
-        }
-        if (tokenizeAction != null) {
-            actions.add(tokenizeAction);
-        }
-        if (rejectAction != null) {
-            actions.add(rejectAction);
-        }
-        if (lineAction != null) {
-            actions.add(lineAction);
-        }
-        if (enterStateAction != null) {
-            actions.add(enterStateAction);
         }
         return actions;
     }

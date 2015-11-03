@@ -1,5 +1,6 @@
 package hr.fer.zemris.ppj.lexical.analyzer;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -29,9 +30,9 @@ public class AnalyzerDefinition {
      */
     public AnalyzerDefinition(final List<String> analyzerStates, final List<String> lexemeNames,
             final List<LexerRule> rules) {
-        this.analyzerStates = analyzerStates;
-        this.lexemeNames = lexemeNames;
-        this.rules = rules;
+        this.analyzerStates = new ArrayList<String>(analyzerStates);
+        this.lexemeNames = new ArrayList<String>(lexemeNames);
+        this.rules = new ArrayList<LexerRule>(rules);
     }
 
     /**

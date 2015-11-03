@@ -8,6 +8,8 @@ public class EnterStateAction implements LexerAction {
 
     private final String newState;
 
+    private final int PRIORITY = 3;
+
     public EnterStateAction(final String newState) {
         super();
         this.newState = newState;
@@ -21,5 +23,15 @@ public class EnterStateAction implements LexerAction {
     @Override
     public String toString() {
         return ACTION_STRING + " " + newState;
+    }
+
+    @Override
+    public int priority() {
+        return PRIORITY;
+    }
+
+    @Override
+    public int compareTo(LexerAction o) {
+        return Integer.compare(priority(), o.priority());
     }
 }

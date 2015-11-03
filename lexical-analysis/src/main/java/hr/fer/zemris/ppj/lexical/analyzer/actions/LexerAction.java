@@ -2,8 +2,9 @@ package hr.fer.zemris.ppj.lexical.analyzer.actions;
 
 import hr.fer.zemris.ppj.lexical.analyzer.LexicalAnalyzer;
 
-public interface LexerAction {
+public interface LexerAction extends Comparable<LexerAction> {
 
-    public void execute(LexicalAnalyzer lexer);
+    void execute(LexicalAnalyzer lexer);
 
+    int priority();
 }
