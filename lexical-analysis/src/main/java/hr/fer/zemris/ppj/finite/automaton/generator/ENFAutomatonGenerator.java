@@ -10,8 +10,8 @@ import hr.fer.zemris.ppj.finite.automaton.ENFAutomaton;
 import hr.fer.zemris.ppj.finite.automaton.generator.builders.AlphabetBuilder;
 import hr.fer.zemris.ppj.finite.automaton.generator.builders.BasicStateBuilder;
 import hr.fer.zemris.ppj.finite.automaton.generator.builders.ENFATransferFunctionBuilder;
-import hr.fer.zemris.ppj.finite.automaton.generator.builders.interfaces.StateBuilder;
 import hr.fer.zemris.ppj.finite.automaton.generator.interfaces.AutomatonGenerator;
+import hr.fer.zemris.ppj.finite.automaton.generator.interfaces.StateBuilder;
 import hr.fer.zemris.ppj.finite.automaton.interfaces.Automaton;
 import hr.fer.zemris.ppj.finite.automaton.interfaces.Input;
 import hr.fer.zemris.ppj.finite.automaton.interfaces.State;
@@ -71,7 +71,6 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
     /**
      * {@inheritDoc}
      *
-     * @see hr.fer.zemris.ppj.finite.automaton.generator.interfaces.AutomatonGenerator#fromRegularExpression(java.lang.String)
      * @since 1.0
      */
     @Override
@@ -91,29 +90,27 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
     /**
      * {@inheritDoc}
      *
-     * @see hr.fer.zemris.ppj.finite.automaton.generator.interfaces.AutomatonGenerator#fromTextDefinition(java.lang.String,
-     *      java.lang.String, java.lang.String, java.util.List, java.lang.String)
      * @since 1.1
      */
     @Override
-    public Automaton fromTextDefinition(String states, String acceptStates, String alphabet, List<String> transitions,
-            String startState) {
-        for (String stateId : states.split(" ")) {
+    public Automaton fromTextDefinition(final String states, final String acceptStates, final String alphabet,
+            final List<String> transitions, final String startState) {
+        for (final String stateId : states.split(" ")) {
             stateBuilders.put(stateId, new BasicStateBuilder(stateId, false));
         }
 
-        for (String stateId : acceptStates.split(" ")) {
+        for (final String stateId : acceptStates.split(" ")) {
             stateBuilders.get(stateId).changeAcceptance(true);
         }
 
         initial = startState;
 
-        for (String symbol : alphabet.split(" ")) {
+        for (final String symbol : alphabet.split(" ")) {
             alphabetBuilder.addSymbol(escapeString(symbol));
         }
 
-        for (String transition : transitions) {
-            String[] split = transition.split(" ");
+        for (final String transition : transitions) {
+            final String[] split = transition.split(" ");
             transferFunctionBuilder.addTransition(split[0],
                     split[1].equals("null") ? EMPTY_SEQUENCE : escapeString(split[1]), split[2]);
         }
@@ -121,6 +118,9 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
         return build();
     }
 
+    /*
+     * Implements Thompson's construction algorithm:
+     */
     private StateBuilderPair fromRegularExpressionImpl(final String expression) {
         final List<String> subexpressions = RegularExpressionManipulator.splitOnOperator(expression, '|');
         final StateBuilderPair pair = new StateBuilderPair(newStateBuilder(false), newStateBuilder(true));
@@ -188,13 +188,16 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
         return pair;
     }
 
+    /*
+     * Builds the automaton. EVERYTHING must be correctly defined.
+     */
     private ENFAutomaton build() {
-        Map<String, State> statesMap = new HashMap<>();
-        Set<State> states = new HashSet<State>();
-        Set<State> acceptStates = new HashSet<State>();
+        final Map<String, State> statesMap = new HashMap<>();
+        final Set<State> states = new HashSet<State>();
+        final Set<State> acceptStates = new HashSet<State>();
 
-        for (StateBuilder builder : stateBuilders.values()) {
-            State state = builder.build();
+        for (final StateBuilder builder : stateBuilders.values()) {
+            final State state = builder.build();
             statesMap.put(state.getId(), state);
             states.add(state);
             if (builder.isAccepting()) {
@@ -202,29 +205,41 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
             }
         }
 
-        Set<Input> alphabet = alphabetBuilder.build();
+        final Set<Input> alphabet = alphabetBuilder.build();
 
-        ENFAutomatonTransferFunction transferFunction = transferFunctionBuilder.build(statesMap);
+        final ENFAutomatonTransferFunction transferFunction = transferFunctionBuilder.build(statesMap);
 
         return new ENFAutomaton(states, acceptStates, alphabet, transferFunction, statesMap.get(initial));
     }
 
+    /*
+     * Creates a new state builder used in automaton creation.
+     */
     private StateBuilder newStateBuilder(final boolean acceptance) {
         final StateBuilder builder = new BasicStateBuilder(String.valueOf(stateBuilders.size()), acceptance);
         stateBuilders.put(builder.getId(), builder);
         return builder;
     }
 
+    /*
+     * Adds a transition for the empty sequence (e-move) to the automaton.
+     */
     private void addTransition(final StateBuilder oldState, final StateBuilder newState) {
         transferFunctionBuilder.addTransition(oldState.getId(), EMPTY_SEQUENCE, newState.getId());
     }
 
+    /*
+     * Adds a transition for the specified symbol to the automaton.
+     */
     private void addTransition(final StateBuilder oldState, final StateBuilder newState, final Character symbol) {
         transferFunctionBuilder.addTransition(oldState.getId(), symbol, newState.getId());
 
         alphabetBuilder.addSymbol(symbol);
     }
 
+    /*
+     * Used when a prefixed symbol is foumd in the regular expression to get the real representation of the symbol.
+     */
     private char unprefixedSymbol(final char symbol) {
         switch (symbol) {
             case 't':
@@ -238,6 +253,9 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
         }
     }
 
+    /*
+     * Used when reading from a text definition to get unescaped symbols for transitions and alphabet.
+     */
     private static Character escapeString(final String input) {
         Character output = input.charAt(0);
         switch (input) {

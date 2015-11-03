@@ -7,7 +7,6 @@ import java.util.Set;
  *
  * @author Domagoj Polancec
  * @version 1.0
- *
  */
 public interface TransferFunction {
 
@@ -32,7 +31,6 @@ public interface TransferFunction {
      *            the input to match
      * @return true if any matching transitions are found, false otherwise
      */
-    // TODO: clarify javadoc with an example?
     boolean hasTransition(State oldState, State newState, Input input);
 
     /**
@@ -54,14 +52,13 @@ public interface TransferFunction {
      *            the input to match
      * @return the set of all matching transitions
      */
-    // TODO: clarify javadoc with an example?
     Set<Transition> getTransitions(State oldState, State newState, Input input);
 
     /**
      * Gets the set of new states for the given old state and given input.
      *
-     * @param oldState
-     *            the old state
+     * @param currentStates
+     *            the current states of the automaton.
      * @param input
      *            the input
      * @return the set of new states

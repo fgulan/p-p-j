@@ -2,10 +2,24 @@ package hr.fer.zemris.ppj.finite.automaton;
 
 import hr.fer.zemris.ppj.finite.automaton.interfaces.State;
 
+/**
+ * <code>BasicState</code> represents a basic state of the automaton.
+ *
+ * @author Domagoj Polancec
+ *
+ * @version 1.0
+ */
 public class BasicState implements State {
 
     private final String id;
 
+    /**
+     * Class constructor, specifies the id of the state.
+     *
+     * @param id
+     *            the id.
+     * @since 1.0
+     */
     public BasicState(final String id) {
         this.id = id;
     }

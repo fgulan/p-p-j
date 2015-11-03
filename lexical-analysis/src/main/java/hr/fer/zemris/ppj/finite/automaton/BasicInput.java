@@ -2,14 +2,34 @@ package hr.fer.zemris.ppj.finite.automaton;
 
 import hr.fer.zemris.ppj.finite.automaton.interfaces.Input;
 
+/**
+ * <code>BasicInput</code> represents a basic input of the automaton.
+ *
+ * @author Domagoj Polancec
+ *
+ * @version 1.0
+ */
 public class BasicInput implements Input {
 
     private final Object representation;
 
+    /**
+     * Class constructor, specifies the representation of the input.
+     *
+     * @param representation
+     *            the representation.
+     * @since 1.0
+     */
     public BasicInput(final Object representation) {
         this.representation = representation;
     }
 
+    /**
+     * Retunrs the representation of the input.
+     *
+     * @return the representation.
+     * @since 1.0
+     */
     public Object getRepresentation() {
         return representation;
     }

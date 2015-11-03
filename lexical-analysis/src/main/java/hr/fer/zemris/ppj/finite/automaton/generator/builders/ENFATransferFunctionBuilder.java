@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import hr.fer.zemris.ppj.finite.automaton.BasicInput;
-import hr.fer.zemris.ppj.finite.automaton.generator.builders.interfaces.TransferFunctionBuilder;
+import hr.fer.zemris.ppj.finite.automaton.generator.interfaces.TransferFunctionBuilder;
 import hr.fer.zemris.ppj.finite.automaton.interfaces.State;
 import hr.fer.zemris.ppj.finite.automaton.transfer.ENFAutomatonTransferFunction;
 import hr.fer.zemris.ppj.finite.automaton.transfer.EpsilonTransition;
@@ -40,7 +40,6 @@ public class ENFATransferFunctionBuilder implements TransferFunctionBuilder {
     /**
      * {@inheritDoc}
      *
-     * @see hr.fer.zemris.ppj.finite.automaton.generator.builders.interfaces.TransferFunctionBuilder#build(java.util.Map)
      * @since 1.0
      */
     @Override
@@ -67,8 +66,6 @@ public class ENFATransferFunctionBuilder implements TransferFunctionBuilder {
     /**
      * {@inheritDoc}
      *
-     * @see hr.fer.zemris.ppj.finite.automaton.generator.builders.interfaces.TransferFunctionBuilder#addTransition(String,
-     *      Character, String)
      * @since 1.0
      */
     @Override

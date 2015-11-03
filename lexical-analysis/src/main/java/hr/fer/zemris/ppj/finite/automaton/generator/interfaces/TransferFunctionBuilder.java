@@ -1,4 +1,4 @@
-package hr.fer.zemris.ppj.finite.automaton.generator.builders.interfaces;
+package hr.fer.zemris.ppj.finite.automaton.generator.interfaces;
 
 import java.util.Map;
 
@@ -20,7 +20,6 @@ public interface TransferFunctionBuilder {
      * @param states
      *            states of the automaton
      * @return the transfer function.
-     * @since 1.0
      */
     TransferFunction build(Map<String, State> states);
 
@@ -33,7 +32,6 @@ public interface TransferFunctionBuilder {
      *            symbol of the transition.
      * @param newState
      *            id of the new state of the transition.
-     * @since 1.0
      */
     void addTransition(String oldState, Character symbol, String newState);
 }

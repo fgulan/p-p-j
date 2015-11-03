@@ -3,8 +3,7 @@ package hr.fer.zemris.ppj.finite.automaton;
 import org.junit.Assert;
 import org.junit.Test;
 
-import hr.fer.zemris.ppj.finite.automaton.BasicInput;
-
+@SuppressWarnings("javadoc")
 public class BasicInputTest {
 
     @Test

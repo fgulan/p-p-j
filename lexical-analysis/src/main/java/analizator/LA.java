@@ -20,6 +20,7 @@ import hr.fer.zemris.ppj.lexical.analyzer.actions.LexerAction;
 /**
  * <code>LA</code> class is required by the evaluator, to contain a entry point for the lexical analyzer generator.
  *
+ * @author Filip Gulan
  * @author Jan Kelemen
  *
  * @version 1.0.0
@@ -37,7 +38,7 @@ public class LA {
      *            command line arguments aren't used.
      * @since 1.0.0
      */
-    public static void main(final String[] args) {
+    public static void main(String[] args) {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
             readSourceCode(reader);
         }
@@ -52,8 +53,8 @@ public class LA {
         catch (final Exception e) {
             System.err.println("Unable to read from file input. Message: " + e.getMessage());
         }
-        new LexicalAnalyzer(states, startState, source, new PrintStream(System.out)).analyze();
-        ;
+
+        new LexicalAnalyzer(states, startState).analyze(source, new PrintStream(System.out));
     }
 
     private static void readSourceCode(final BufferedReader reader) throws IOException {
@@ -87,7 +88,7 @@ public class LA {
         line = reader.readLine();
 
         // Parse tokens
-        // TODO for now - do we need them? No.
+        // TODO for now - do we need them? No. @Jan
 
         // Read empty line
         line = reader.readLine();
@@ -99,39 +100,44 @@ public class LA {
     }
 
     private static void readRuleDefinition(final BufferedReader reader) throws IOException {
-        // Read automaton definition
-        String aStates = reader.readLine();
-        String aAcceptStates = reader.readLine();
-        String aStartState = reader.readLine();
-        String aAlphabet = reader.readLine();
-        List<String> aTransitions = new ArrayList<String>();
-        String line = reader.readLine();
-        while (!line.isEmpty()) {
-            aTransitions.add(line);
-            line = reader.readLine();
-        }
-        Automaton automaton = new ENFAutomatonGenerator().fromTextDefinition(aStates, aAcceptStates, aAlphabet,
-                aTransitions, aStartState);
+        final Automaton automaton = readAutomatonDefinition(reader);
 
         // Read state and actions
         final String lexerStateString = reader.readLine();
         final List<LexerAction> actions = readRuleActions(reader);
         final LexerRule rule = new LexerRule(lexerStateString, automaton, actions);
+
         states.get(lexerStateString).addRule(rule);
+    }
+
+    private static Automaton readAutomatonDefinition(final BufferedReader reader) throws IOException {
+        final String states = reader.readLine();
+        final String acceptStates = reader.readLine();
+        final String startState = reader.readLine();
+        final String alphabet = reader.readLine();
+        final List<String> transitions = new ArrayList<String>();
+
+        String line = reader.readLine();
+        while (!line.isEmpty()) {
+            transitions.add(line);
+            line = reader.readLine();
+        }
+
+        return new ENFAutomatonGenerator().fromTextDefinition(states, acceptStates, alphabet, transitions, startState);
     }
 
     private static List<LexerAction> readRuleActions(final BufferedReader reader) throws IOException {
         final List<LexerAction> actions = new ArrayList<LexerAction>();
 
-        // Read opening bracket
-        String line = reader.readLine();
-        // Parse actions
-        line = reader.readLine();
+        reader.readLine(); // Ignore opening bracket.
 
+        // Parse actions
+        String line = reader.readLine();
         while (!line.equals("}")) {
             actions.add(ActionFactory.fromString(line));
             line = reader.readLine();
         }
+
         return actions;
     }
 }

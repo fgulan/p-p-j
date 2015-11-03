@@ -25,7 +25,7 @@ public interface AutomatonGenerator {
 
     /**
      * Generates a automaton from textual definition.
-     * 
+     *
      * @param states
      *            -
      * @param acceptStates

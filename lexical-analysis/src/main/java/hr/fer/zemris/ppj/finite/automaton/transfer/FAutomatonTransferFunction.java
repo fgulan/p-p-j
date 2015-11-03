@@ -10,12 +10,26 @@ import hr.fer.zemris.ppj.finite.automaton.interfaces.State;
 import hr.fer.zemris.ppj.finite.automaton.interfaces.TransferFunction;
 import hr.fer.zemris.ppj.finite.automaton.interfaces.Transition;
 
+/**
+ * <code>FAutomatonTransferFunction</code> implements behavior common to all finite automaton transfer functions.
+ *
+ * @author Domagoj Polancec
+ *
+ * @version 1.0
+ */
 public abstract class FAutomatonTransferFunction implements TransferFunction {
 
     private final Set<FAutomatonTransition> transitions = new HashSet<>();
     private final Set<FAutomatonTransition> epsilonTransitions = new HashSet<>();
     private final Set<FAutomatonTransition> normalTransitions = new HashSet<>();
 
+    /**
+     * Class constructor, specifies the transitions of the transfer function.
+     *
+     * @param transitions
+     *            the transitions.
+     * @since 1.0
+     */
     public FAutomatonTransferFunction(final Set<FAutomatonTransition> transitions) {
         this.transitions.addAll(transitions);
 
@@ -61,6 +75,9 @@ public abstract class FAutomatonTransferFunction implements TransferFunction {
         return newStates;
     }
 
+    /*
+     * Finds transitions that match the specified criteria.
+     */
     private Set<Transition> findMatching(final State oldState, final State newState, final Input input,
             final Set<FAutomatonTransition> transitions) {
         final Set<Transition> found = new HashSet<>();
@@ -78,6 +95,9 @@ public abstract class FAutomatonTransferFunction implements TransferFunction {
         return found;
     }
 
+    /*
+     * Calculates the e-closure of the specified states.
+     */
     private Set<State> applyEpsilonTransition(final Set<State> currentStates) {
 
         if (currentStates.isEmpty()) {
@@ -109,6 +129,9 @@ public abstract class FAutomatonTransferFunction implements TransferFunction {
         return returnStates;
     }
 
+    /*
+     * Calculates the result of the transfer function from the specified state for the given input.
+     */
     private Set<State> applyTransition(final Set<State> currentStates, final Input input) {
         if (currentStates.isEmpty()) {
             return new HashSet<>();

@@ -4,12 +4,30 @@ import hr.fer.zemris.ppj.finite.automaton.interfaces.Input;
 import hr.fer.zemris.ppj.finite.automaton.interfaces.State;
 import hr.fer.zemris.ppj.finite.automaton.interfaces.Transition;
 
+/**
+ * <code>FAutomatonTransition</code> implements behavior common to all finite automaton transitions.
+ *
+ * @author Domagoj Polancec
+ *
+ * @version 1.0
+ */
 public abstract class FAutomatonTransition implements Transition {
 
     private final State oldState;
     private final State newState;
     private final Input input;
 
+    /**
+     * Class constructor, specifies the old state, the new state and the input of the transition.
+     *
+     * @param oldState
+     *            the old state.
+     * @param newState
+     *            the new state.
+     * @param input
+     *            the input.
+     * @since 1.0
+     */
     public FAutomatonTransition(final State oldState, final State newState, final Input input) {
         super();
         this.oldState = oldState;
@@ -27,12 +45,18 @@ public abstract class FAutomatonTransition implements Transition {
         return newState;
     }
 
+    /**
+     * Checks if the transition is a epsilon transiton.
+     *
+     * @return <code>true</code> if the transition is a e-move, <code>false</code> otherwise.
+     * @since 1.0
+     */
+    public abstract boolean isEpsilonTransition();
+
     @Override
     public Input getInput() {
         return input;
     }
-
-    public abstract boolean isEpsilonTransition();
 
     @Override
     public String toString() {
@@ -91,6 +115,9 @@ public abstract class FAutomatonTransition implements Transition {
         return true;
     }
 
+    /*
+     * Escapes the symbols from the transitionf for the string representation.
+     */
     private static String escape(final String entryString) {
         final String escapedString =
                 entryString.replaceAll("\n", "\\\\n").replaceAll("\t", "\\\\t").replaceAll(" ", "\\\\_");

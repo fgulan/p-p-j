@@ -99,13 +99,21 @@ public interface Automaton {
     boolean hasState(State state);
 
     /**
-     * Gets the set of the defined inputs for the automaton.
+     * Gets the set of the alphabet of the automaton.
      *
-     * @return the set of the defined inputs
+     * @return the alphabet.
      */
-    Set<Input> getInputs();
+    Set<Input> getAlphabet();
 
+    /**
+     * Resets the automaton to the initial state.
+     */
     void reset();
 
+    /**
+     * Checks if the automaton is in a accepting state.
+     *
+     * @return <code>true</code> if the automaton is in a accepting state, <code>false</code> otherwise.
+     */
     boolean isAccepting();
 }

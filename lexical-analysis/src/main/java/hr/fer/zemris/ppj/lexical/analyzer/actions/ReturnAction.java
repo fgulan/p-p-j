@@ -2,14 +2,32 @@ package hr.fer.zemris.ppj.lexical.analyzer.actions;
 
 import hr.fer.zemris.ppj.lexical.analyzer.LexicalAnalyzer;
 
+/**
+ * <code>ReturnAction</code> is a lexical analyzer action which changes the point at which the matched lexeme ends.
+ *
+ * @author Filip Gulan
+ * @author Jan Kelemen
+ *
+ * @version 1.0
+ */
 public class ReturnAction implements LexerAction {
 
+    /**
+     * Action name.
+     */
     public static final String ACTION_STRING = "VRATI_SE";
 
     private final int offset;
 
     private final int PRIORITY = 0;
 
+    /**
+     * Class constructor, specifies the offset from the beggining of the lexeme.
+     *
+     * @param offset
+     *            the offset.
+     * @since 1.0
+     */
     public ReturnAction(final int offset) {
         this.offset = offset;
     }
@@ -32,7 +50,7 @@ public class ReturnAction implements LexerAction {
     }
 
     @Override
-    public int compareTo(LexerAction o) {
+    public int compareTo(final LexerAction o) {
         return Integer.compare(priority(), o.priority());
     }
 }

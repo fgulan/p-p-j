@@ -12,34 +12,50 @@ import hr.fer.zemris.ppj.finite.automaton.interfaces.TransferFunction;
 import hr.fer.zemris.ppj.finite.automaton.interfaces.Transition;
 import hr.fer.zemris.ppj.finite.automaton.transfer.FAutomatonTransition;
 
+/**
+ * <code>AbstractAutomaton</code> implements behaviour of finite automatons common to all automatons.
+ *
+ * @author Domagoj Polancec
+ *
+ * @version 1.0
+ */
 public abstract class AbstractAutomaton implements Automaton {
 
     private final Set<State> states;
     private final Set<State> acceptStates;
     private Set<State> currentStates = new HashSet<>();
-    private final Set<Input> inputs;
+    private final Set<Input> alphabet;
 
     private final TransferFunction transferFunction;
     private final State startState;
     private Input lastInput;
 
-    public AbstractAutomaton(final Set<State> states, final Set<State> acceptStates, final Set<Input> inputs,
+    /**
+     * Class constructor, specifies formal definition of automaton.
+     *
+     * @param states
+     *            the states of the automaton
+     * @param acceptStates
+     *            the accepting states of the automaton.
+     * @param alphabet
+     *            the alphabet of the automaton.
+     * @param transferFunction
+     *            the transfer function of the automaton.
+     * @param startState
+     *            the initial state of the automaton.
+     * @since 1.0
+     */
+    public AbstractAutomaton(final Set<State> states, final Set<State> acceptStates, final Set<Input> alphabet,
             final TransferFunction transferFunction, final State startState) {
         super();
         this.states = states;
         this.acceptStates = acceptStates;
-        this.inputs = inputs;
+        this.alphabet = alphabet;
         this.transferFunction = transferFunction;
         this.startState = startState;
 
         currentStates.add(startState);
         currentStates = transferFunction.getNewStates(currentStates, null);
-    }
-
-    public AbstractAutomaton(final Set<State> acceptStates, final TransferFunction transferFunction,
-            final State startState) {
-        this(extract(transferFunction, State.class), acceptStates, extract(transferFunction, Input.class),
-                transferFunction, startState);
     }
 
     @Override
@@ -58,8 +74,8 @@ public abstract class AbstractAutomaton implements Automaton {
     }
 
     @Override
-    public Set<Input> getInputs() {
-        return new HashSet<>(inputs);
+    public Set<Input> getAlphabet() {
+        return new HashSet<>(alphabet);
     }
 
     @Override
@@ -111,7 +127,7 @@ public abstract class AbstractAutomaton implements Automaton {
     @Override
     public String toString() {
         final Set<State> states = new TreeSet<>(this.states);
-        final Set<Input> inputs = new HashSet<>(this.inputs);
+        final Set<Input> inputs = new HashSet<>(alphabet);
         final Set<State> acceptStates = new TreeSet<>(this.acceptStates);
         final Set<Transition> transitions = new HashSet<>(transferFunction.getTransitions());
 
@@ -122,41 +138,9 @@ public abstract class AbstractAutomaton implements Automaton {
         return result;
     }
 
-    @SuppressWarnings("unchecked")
-    private static <T> Set<T> extract(final TransferFunction function, final Class<T> type) {
-        final Set<T> extracts = new HashSet<>();
-        final Set<Transition> transitions = function.getTransitions();
-
-        for (final Transition transition : transitions) {
-            try {
-                final State oldState = transition.getOldState();
-                final State newState = transition.getNewState();
-
-                if (oldState != null) {
-                    extracts.add((T) oldState);
-                }
-
-                if (newState != null) {
-                    extracts.add((T) newState);
-                }
-            }
-            catch (final ClassCastException cce1) {
-                try {
-                    final Input input = transition.getInput();
-
-                    if (input != null) {
-                        extracts.add((T) input);
-                    }
-                }
-                catch (final ClassCastException cce2) {
-                    throw new IllegalArgumentException("Illegal type parameter.");
-                }
-            }
-        }
-
-        return extracts;
-    }
-
+    /*
+     * Formats the collection to a delimited string with escapes for smoe symbols.
+     */
     private String formatCollection(final Collection<?> collection, final String delimiter) {
         String format = "";
         for (Object entry : collection) {

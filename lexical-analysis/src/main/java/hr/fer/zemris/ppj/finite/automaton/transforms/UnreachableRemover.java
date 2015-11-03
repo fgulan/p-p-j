@@ -11,6 +11,14 @@ import hr.fer.zemris.ppj.finite.automaton.interfaces.Transition;
 import hr.fer.zemris.ppj.finite.automaton.transfer.DFAutomatonTransferFunction;
 import hr.fer.zemris.ppj.finite.automaton.transfer.DeterministicTransition;
 
+/**
+ * <code>UnreachableRemover</code> is a automaton transformer which removes unreachable states from the deterministic
+ * finite automaton.
+ *
+ * @author Domagoj Polancec
+ *
+ * @version 1.0
+ */
 public class UnreachableRemover implements AutomatonTransform<DFAutomaton, DFAutomaton> {
 
     @Override
@@ -18,7 +26,7 @@ public class UnreachableRemover implements AutomatonTransform<DFAutomaton, DFAut
 
         final Set<State> reachable = new HashSet<>();
         reachable.add(source.getStartState());
-        final Set<Input> inputs = source.getInputs();
+        final Set<Input> inputs = source.getAlphabet();
         final Set<Transition> transitions = source.getTransferFunction().getTransitions();
 
         while (true) {

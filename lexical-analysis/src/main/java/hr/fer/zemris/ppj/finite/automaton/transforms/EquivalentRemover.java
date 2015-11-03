@@ -17,13 +17,24 @@ import hr.fer.zemris.ppj.finite.automaton.interfaces.Transition;
 import hr.fer.zemris.ppj.finite.automaton.transfer.DFAutomatonTransferFunction;
 import hr.fer.zemris.ppj.finite.automaton.transfer.DeterministicTransition;
 
+/**
+ * <code>EquivalentRemover</code> is a automaton transformer which removes equivalents states from the deterministic
+ * finite automaton.
+ *
+ * @author Domagoj Polancec
+ *
+ * @version 1.0
+ */
 public class EquivalentRemover implements AutomatonTransform<DFAutomaton, DFAutomaton> {
 
     private final Map<State, List<StatePair>> statePairsIndex = new HashMap<>();
     private final Map<State, List<Transition>> oldStateTransitionsIndex = new HashMap<>();
     private final Map<State, List<Transition>> newStateTransitionsIndex = new HashMap<>();
 
-    public static class StatePair {
+    /*
+     * Element of the table used by the algorithm.
+     */
+    private static class StatePair {
 
         private final State first;
         private final State second;
@@ -50,13 +61,6 @@ public class EquivalentRemover implements AutomatonTransform<DFAutomaton, DFAuto
             }
         }
 
-        public void unMark() {
-            marked = false;
-            for (final StatePair pair : linkedPairs) {
-                pair.unMark();
-            }
-        }
-
         public void addLinkedPair(final StatePair pair) {
             linkedPairs.add(pair);
         }
@@ -67,10 +71,6 @@ public class EquivalentRemover implements AutomatonTransform<DFAutomaton, DFAuto
 
         public State getSecond() {
             return second;
-        }
-
-        public boolean contains(final State state) {
-            return first.equals(state) || second.equals(state);
         }
 
         @Override
@@ -210,7 +210,7 @@ public class EquivalentRemover implements AutomatonTransform<DFAutomaton, DFAuto
         final Set<DeterministicTransition> usefulTransitions = new HashSet<>();
         usefulTransitions.addAll(rewiredTransitions);
         final Set<State> acceptStates = new HashSet<>();
-        final Set<Input> inputs = source.getInputs();
+        final Set<Input> inputs = source.getAlphabet();
 
         for (final State currentState : candidates) {
             final List<Transition> oldStateTransitions = oldStateTransitionsIndex.get(currentState);
@@ -286,7 +286,7 @@ public class EquivalentRemover implements AutomatonTransform<DFAutomaton, DFAuto
 
     private void markPairs(final DFAutomaton automaton) {
 
-        final Set<Input> inputs = automaton.getInputs();
+        final Set<Input> inputs = automaton.getAlphabet();
 
         for (final Input input : inputs) {
             for (final StatePair pair : pairs) {

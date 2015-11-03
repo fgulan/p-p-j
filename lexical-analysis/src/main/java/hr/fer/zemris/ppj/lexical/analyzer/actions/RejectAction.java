@@ -2,8 +2,19 @@ package hr.fer.zemris.ppj.lexical.analyzer.actions;
 
 import hr.fer.zemris.ppj.lexical.analyzer.LexicalAnalyzer;
 
+/**
+ * <code>RejectAction</code> is a lexical analyzer action which rejects the matched lexeme.
+ *
+ * @author Filip Gulan
+ * @author Jan Kelemen
+ *
+ * @version 1.0
+ */
 public class RejectAction implements LexerAction {
 
+    /**
+     * Action name.
+     */
     public static final String ACTION_STRING = "-";
 
     private final int PRIORITY = 1;
@@ -24,7 +35,7 @@ public class RejectAction implements LexerAction {
     }
 
     @Override
-    public int compareTo(LexerAction o) {
+    public int compareTo(final LexerAction o) {
         return Integer.compare(priority(), o.priority());
     }
 }

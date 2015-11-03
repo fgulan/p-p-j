@@ -1,4 +1,4 @@
-package hr.fer.zemris.ppj.finite.automaton.generator.builders.interfaces;
+package hr.fer.zemris.ppj.finite.automaton.generator.interfaces;
 
 import hr.fer.zemris.ppj.finite.automaton.interfaces.State;
 
@@ -15,7 +15,6 @@ public interface StateBuilder {
      * Creates the state.
      *
      * @return the state.
-     * @since 1.0
      */
     State build();
 
@@ -24,7 +23,6 @@ public interface StateBuilder {
      *
      * @param acceptance
      *            new acceptance.
-     * @since 1.0
      */
     void changeAcceptance(final boolean acceptance);
 
@@ -32,7 +30,6 @@ public interface StateBuilder {
      * Checks if a state is a accepting state.
      *
      * @return acceptance of the state.
-     * @since 1.0
      */
     boolean isAccepting();
 
@@ -40,7 +37,6 @@ public interface StateBuilder {
      * Returns the state number.
      *
      * @return the state number.
-     * @since 1.0
      */
     String getId();
 }

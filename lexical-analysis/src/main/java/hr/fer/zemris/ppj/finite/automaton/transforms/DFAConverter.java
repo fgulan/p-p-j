@@ -11,11 +11,18 @@ import hr.fer.zemris.ppj.finite.automaton.interfaces.AutomatonTransform;
 import hr.fer.zemris.ppj.finite.automaton.interfaces.Input;
 import hr.fer.zemris.ppj.finite.automaton.interfaces.State;
 import hr.fer.zemris.ppj.finite.automaton.interfaces.TransferFunction;
-import hr.fer.zemris.ppj.finite.automaton.interfaces.Transition;
 import hr.fer.zemris.ppj.finite.automaton.transfer.DFAutomatonTransferFunction;
 import hr.fer.zemris.ppj.finite.automaton.transfer.DeterministicTransition;
 
-public class ENFAtoDFA implements AutomatonTransform<ENFAutomaton, DFAutomaton> {
+/**
+ * <code>DFAConverter</code> is a automaton transformer which converts a nondeterminist
+ *
+ * @author Matea Sabolic
+ * @author Jan Kelemen
+ *
+ * @version beta
+ */
+public class DFAConverter implements AutomatonTransform<ENFAutomaton, DFAutomaton> {
 
     Set<State> states = new HashSet<>();
     Set<State> acceptStates = new HashSet<>();
@@ -26,8 +33,7 @@ public class ENFAtoDFA implements AutomatonTransform<ENFAutomaton, DFAutomaton> 
     @Override
     public DFAutomaton transform(final ENFAutomaton source) {
 
-        final Set<Input> inputs = source.getInputs();
-        final Set<Transition> transitions = source.getTransferFunction().getTransitions();
+        final Set<Input> inputs = source.getAlphabet();
 
         final Set<State> newState = getNewStartState(source);
         final State DFAStartState = getNewDFAStateName(newState);
@@ -44,18 +50,18 @@ public class ENFAtoDFA implements AutomatonTransform<ENFAutomaton, DFAutomaton> 
         return new DFAutomaton(states, acceptStates, inputs, function, DFAStartState);
     }
 
-    public Set<State> getNewStates(final Set<State> currentStates, final TransferFunction transferfunction,
+    private Set<State> getNewStates(final Set<State> currentStates, final TransferFunction transferfunction,
             final Input input) {
         return transferfunction.getNewStates(currentStates, input);
     }
 
-    public Set<State> getEpsilonClosure(final Set<State> currentStates, final TransferFunction transferFunction) {
+    private Set<State> getEpsilonClosure(final Set<State> currentStates, final TransferFunction transferFunction) {
         Set<State> epsilonClosure = new HashSet<>();
         epsilonClosure = transferFunction.getNewStates(currentStates, null);
         return epsilonClosure;
     }
 
-    public Set<State> getNewStartState(final ENFAutomaton source) {
+    private Set<State> getNewStartState(final ENFAutomaton source) {
         final Set<State> newStateName = new TreeSet<State>();
         Set<State> newState = new HashSet<>();
         newState.add(source.getStartState());
@@ -64,7 +70,7 @@ public class ENFAtoDFA implements AutomatonTransform<ENFAutomaton, DFAutomaton> 
         return newState;
     }
 
-    public State getNewDFAStateName(final Set<State> newStateName) {
+    private State getNewDFAStateName(final Set<State> newStateName) {
         String Name = "";
         for (final State state : newStateName) {
             Name = Name + state.getId();
@@ -73,7 +79,7 @@ public class ENFAtoDFA implements AutomatonTransform<ENFAutomaton, DFAutomaton> 
         return newName;
     }
 
-    public Set<State> getNewDFAState(final ENFAutomaton source, final Set<State> current) {
+    private Set<State> getNewDFAState(final ENFAutomaton source, final Set<State> current) {
         final Set<State> newStateName = new TreeSet<State>();
         Set<State> newState = new HashSet<>();
         newState = getEpsilonClosure(current, source.getTransferFunction());
@@ -88,14 +94,14 @@ public class ENFAtoDFA implements AutomatonTransform<ENFAutomaton, DFAutomaton> 
         }
     }
 
-    public boolean isAcceptStateDFA(final Set<State> states, final ENFAutomaton source) {
+    private boolean isAcceptStateDFA(final Set<State> states, final ENFAutomaton source) {
         final Set<State> uncheckedStates = new HashSet<>(states);
         uncheckedStates.retainAll(source.getAcceptStates());
         return !uncheckedStates.isEmpty();
     }
 
-    public void newStateTransitions(final Set<State> oldState, final ENFAutomaton source) {
-        final Set<Input> inputs = source.getInputs();
+    private void newStateTransitions(final Set<State> oldState, final ENFAutomaton source) {
+        final Set<Input> inputs = source.getAlphabet();
         Set<State> newState = new HashSet<>();
         boolean isNew = true;
 
