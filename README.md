@@ -2,23 +2,29 @@
 Laboratory exercise for Programming Language Translation course.
 
 ###Task description
-Check *ppj-labos-upute*. (Possibly outdated)
+Check *ppj-labos-upute*.
+
+###Results of automatic evaluation
+1. Lexical analysis: x/y
+2. Syntax analysis: x/y
+3. Semantic analysis: x/y
+4. Code generation: x/y
 
 ###Deadlines
-1. Lexical analyzer
+1. Lexical analysis
   - Deadline: 1.11.2015.
-2. Syntax analyzer
+2. Syntax analysis
   - Deadline: 22.11.2015.
-3. Semantic analyzer
+3. Semantic analysis
   - Deadline: 20.12.2015.
-4. Code generator
+4. Code generation
   - Deadline: 24.1.2016.
   
 ###Oral exams
-1. oral exam
+1. Oral exam
   - Content: Lexical analyzer, Syntax analyzer
   - Date: 7.12.2015. - 11.12.2015.
-2. oral exam
+2. Oral exam
   - Content: Semantic analyzer, Code generator
   - Date: 25.01.2016. - 29.01.2016.
   
