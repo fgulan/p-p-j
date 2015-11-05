@@ -6,12 +6,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import hr.fer.zemris.ppj.finite.automaton.BasicState;
 import hr.fer.zemris.ppj.finite.automaton.ENFAutomaton;
 import hr.fer.zemris.ppj.finite.automaton.generator.builders.AlphabetBuilder;
-import hr.fer.zemris.ppj.finite.automaton.generator.builders.BasicStateBuilder;
 import hr.fer.zemris.ppj.finite.automaton.generator.builders.ENFATransferFunctionBuilder;
 import hr.fer.zemris.ppj.finite.automaton.generator.interfaces.AutomatonGenerator;
-import hr.fer.zemris.ppj.finite.automaton.generator.interfaces.StateBuilder;
 import hr.fer.zemris.ppj.finite.automaton.interfaces.Automaton;
 import hr.fer.zemris.ppj.finite.automaton.interfaces.Input;
 import hr.fer.zemris.ppj.finite.automaton.interfaces.State;
@@ -29,44 +28,35 @@ import hr.fer.zemris.ppj.utility.text.manipulation.RegularExpressionManipulator;
 public class ENFAutomatonGenerator implements AutomatonGenerator {
 
     /**
-     * <code>StateBuilderPair</code> utility class used when generating automaton, contains the initial and the
-     * accepting state of the automaton.
+     * <code>StatePair</code> utility class used when generating automaton, contains the initial and the accepting state
+     * of the automaton.
      *
      * @author Jan Kelemen
      *
      * @version 1.0
      */
-    private class StateBuilderPair {
+    private class StatePair {
 
-        public StateBuilderPair(final StateBuilder initial, final StateBuilder accepting) {
+        public StatePair(final State initial, final State accepting) {
             this.initial = initial;
             this.accepting = accepting;
         }
 
-        public StateBuilder initial;
-        public StateBuilder accepting;
+        public State initial;
+        public State accepting;
     }
 
     private static final char EMPTY_SEQUENCE = '\0';
 
-    private final Map<String, StateBuilder> stateBuilders;
+    private final Map<String, State> states = new HashMap<>();
 
-    private final ENFATransferFunctionBuilder transferFunctionBuilder;
+    private final Map<String, State> acceptStates = new HashMap<>();
 
-    private final AlphabetBuilder alphabetBuilder;
+    private final ENFATransferFunctionBuilder transferFunctionBuilder = new ENFATransferFunctionBuilder();
+
+    private final AlphabetBuilder alphabetBuilder = new AlphabetBuilder();
 
     private String initial;
-
-    /**
-     * Class constructor, does nothing. use some method to generate the automaton.
-     *
-     * @since 1.0
-     */
-    public ENFAutomatonGenerator() {
-        stateBuilders = new HashMap<>();
-        transferFunctionBuilder = new ENFATransferFunctionBuilder();
-        alphabetBuilder = new AlphabetBuilder();
-    }
 
     /**
      * {@inheritDoc}
@@ -75,11 +65,11 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
      */
     @Override
     public ENFAutomaton fromRegularExpression(final String expression) {
-        final StateBuilderPair pair = fromRegularExpressionImpl(expression);
+        final StatePair pair = fromRegularExpressionImpl(expression);
 
-        for (final StateBuilder builder : stateBuilders.values()) {
-            if (pair.initial.getId().equals(builder.getId())) {
-                initial = builder.getId();
+        for (final State state : states.values()) {
+            if (pair.initial.getId().equals(state.getId())) {
+                initial = state.getId();
                 break;
             }
         }
@@ -96,11 +86,11 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
     public Automaton fromTextDefinition(final String states, final String acceptStates, final String alphabet,
             final List<String> transitions, final String startState) {
         for (final String stateId : states.split(" ")) {
-            stateBuilders.put(stateId, new BasicStateBuilder(stateId, false));
+            this.states.put(stateId, new BasicState(stateId));
         }
 
         for (final String stateId : acceptStates.split(" ")) {
-            stateBuilders.get(stateId).changeAcceptance(true);
+            this.acceptStates.put(stateId, new BasicState(stateId));
         }
 
         initial = startState;
@@ -121,28 +111,27 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
     /*
      * Implements Thompson's construction algorithm:
      */
-    private StateBuilderPair fromRegularExpressionImpl(final String expression) {
+    private StatePair fromRegularExpressionImpl(final String expression) {
         final List<String> subexpressions = RegularExpressionManipulator.splitOnOperator(expression, '|');
-        final StateBuilderPair pair = new StateBuilderPair(newStateBuilder(false), newStateBuilder(true));
+        final StatePair pair = new StatePair(newBasicState(false), newBasicState(true));
 
         if (subexpressions.size() > 1) {
             for (final String subexpression : subexpressions) {
-                final StateBuilderPair subpair = fromRegularExpressionImpl(subexpression);
+                final StatePair subpair = fromRegularExpressionImpl(subexpression);
                 addTransition(pair.initial, subpair.initial);
                 addTransition(subpair.accepting, pair.accepting);
-                subpair.accepting.changeAcceptance(false);
             }
         }
         else {
             boolean prefixed = false;
-            StateBuilder lastState = pair.initial;
+            State lastState = pair.initial;
 
             for (int i = 0; i < expression.length(); i++) {
-                StateBuilderPair subpair = new StateBuilderPair(null, null);
+                StatePair subpair = new StatePair(null, null);
 
                 if (prefixed) { // Slucaj 1
                     prefixed = false;
-                    subpair = new StateBuilderPair(newStateBuilder(false), newStateBuilder(false));
+                    subpair = new StatePair(newBasicState(false), newBasicState(false));
                     addTransition(subpair.initial, subpair.accepting, unprefixedSymbol(expression.charAt(i)));
                 }
                 else { // Slucaj 2
@@ -155,12 +144,11 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
                         final int j = RegularExpressionManipulator.findClosingBracket(expression, i, '(', ')');
 
                         subpair = fromRegularExpressionImpl(expression.substring(i + 1, j));
-                        subpair.accepting.changeAcceptance(false);
 
                         i = j;
                     }
                     else {
-                        subpair = new StateBuilderPair(newStateBuilder(false), newStateBuilder(false));
+                        subpair = new StatePair(newBasicState(false), newBasicState(false));
                         addTransition(subpair.initial, subpair.accepting,
                                 expression.charAt(i) == '$' ? EMPTY_SEQUENCE : expression.charAt(i));
                     }
@@ -168,8 +156,8 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
 
                 // Kleene operator check
                 if (((i + 1) < expression.length()) && (expression.charAt(i + 1) == '*')) {
-                    final StateBuilderPair oldPair = subpair;
-                    subpair = new StateBuilderPair(newStateBuilder(false), newStateBuilder(false));
+                    final StatePair oldPair = subpair;
+                    subpair = new StatePair(newBasicState(false), newBasicState(false));
 
                     addTransition(subpair.initial, oldPair.initial);
                     addTransition(subpair.initial, subpair.accepting);
@@ -192,46 +180,41 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
      * Builds the automaton. EVERYTHING must be correctly defined.
      */
     private ENFAutomaton build() {
-        final Map<String, State> statesMap = new HashMap<>();
-        final Set<State> states = new HashSet<State>();
-        final Set<State> acceptStates = new HashSet<State>();
-
-        for (final StateBuilder builder : stateBuilders.values()) {
-            final State state = builder.build();
-            statesMap.put(state.getId(), state);
-            states.add(state);
-            if (builder.isAccepting()) {
-                acceptStates.add(state);
-            }
-        }
+        final Set<State> states = new HashSet<State>(this.states.values());
+        final Set<State> acceptStates = new HashSet<State>(this.acceptStates.values());
 
         final Set<Input> alphabet = alphabetBuilder.build();
 
-        final ENFAutomatonTransferFunction transferFunction = transferFunctionBuilder.build(statesMap);
+        final ENFAutomatonTransferFunction transferFunction = transferFunctionBuilder.build(this.states);
 
-        return new ENFAutomaton(states, acceptStates, alphabet, transferFunction, statesMap.get(initial));
+        return new ENFAutomaton(states, acceptStates, alphabet, transferFunction, this.states.get(initial));
     }
 
     /*
-     * Creates a new state builder used in automaton creation.
+     * Creates a new state of the automaton.
      */
-    private StateBuilder newStateBuilder(final boolean acceptance) {
-        final StateBuilder builder = new BasicStateBuilder(String.valueOf(stateBuilders.size()), acceptance);
-        stateBuilders.put(builder.getId(), builder);
-        return builder;
+    private State newBasicState(final boolean acceptance) {
+        final State state = new BasicState(String.valueOf(states.size()));
+
+        states.put(state.getId(), state);
+        if (acceptance) {
+            acceptStates.put(state.getId(), state);
+        }
+
+        return state;
     }
 
     /*
      * Adds a transition for the empty sequence (e-move) to the automaton.
      */
-    private void addTransition(final StateBuilder oldState, final StateBuilder newState) {
+    private void addTransition(final State oldState, final State newState) {
         transferFunctionBuilder.addTransition(oldState.getId(), EMPTY_SEQUENCE, newState.getId());
     }
 
     /*
      * Adds a transition for the specified symbol to the automaton.
      */
-    private void addTransition(final StateBuilder oldState, final StateBuilder newState, final Character symbol) {
+    private void addTransition(final State oldState, final State newState, final Character symbol) {
         transferFunctionBuilder.addTransition(oldState.getId(), symbol, newState.getId());
 
         alphabetBuilder.addSymbol(symbol);
