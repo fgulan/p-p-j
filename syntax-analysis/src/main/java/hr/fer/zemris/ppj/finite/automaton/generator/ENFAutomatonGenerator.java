@@ -56,7 +56,7 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
 
     private final AlphabetBuilder alphabetBuilder = new AlphabetBuilder();
 
-    private String initial;
+    private State initial;
 
     /**
      * {@inheritDoc}
@@ -67,12 +67,10 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
     public ENFAutomaton fromRegularExpression(final String expression) {
         final StatePair pair = fromRegularExpressionImpl(expression);
 
-        for (final State state : states.values()) {
-            if (pair.initial.getId().equals(state.getId())) {
-                initial = state.getId();
-                break;
-            }
-        }
+        initial = pair.initial;
+
+        acceptStates.clear();
+        acceptStates.put(pair.accepting.getId(), pair.accepting);
 
         return build();
     }
@@ -93,7 +91,7 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
             this.acceptStates.put(stateId, new BasicState(stateId));
         }
 
-        initial = startState;
+        initial = this.states.get(startState);
 
         for (final String symbol : alphabet.split(" ")) {
             alphabetBuilder.addSymbol(escapeString(symbol));
