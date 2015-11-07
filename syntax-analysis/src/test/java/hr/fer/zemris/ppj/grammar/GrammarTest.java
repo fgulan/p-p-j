@@ -34,16 +34,16 @@ public class GrammarTest {
         String startSymbol = "<A>";
 
         GrammarBuilder builder = new GrammarBuilder(nonterminalSymbols, terminalSymbols, startSymbol);
-        builder.addProduction("<A>", "<B> <C> c");
-        builder.addProduction("<A>", "e <D> <B>");
-        builder.addProduction("<B>", "$");
-        builder.addProduction("<B>", "b <C> <D> <E>");
-        builder.addProduction("<C>", "<D> a <B>");
-        builder.addProduction("<C>", "c a");
-        builder.addProduction("<D>", "$");
-        builder.addProduction("<D>", "d <D>");
-        builder.addProduction("<E>", "e <A> f");
-        builder.addProduction("<E>", "c");
+        builder.addProduction(ProductionParser.fromText("<A>", "<B> <C> c"));
+        builder.addProduction(ProductionParser.fromText("<A>", "e <D> <B>"));
+        builder.addProduction(ProductionParser.fromText("<B>", "$"));
+        builder.addProduction(ProductionParser.fromText("<B>", "b <C> <D> <E>"));
+        builder.addProduction(ProductionParser.fromText("<C>", "<D> a <B>"));
+        builder.addProduction(ProductionParser.fromText("<C>", "c a"));
+        builder.addProduction(ProductionParser.fromText("<D>", "$"));
+        builder.addProduction(ProductionParser.fromText("<D>", "d <D>"));
+        builder.addProduction(ProductionParser.fromText("<E>", "e <A> f"));
+        builder.addProduction(ProductionParser.fromText("<E>", "c"));
 
         grammar = builder.build();
     }

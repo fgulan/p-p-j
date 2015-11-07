@@ -8,8 +8,6 @@ import java.util.Map;
 import java.util.Set;
 
 import hr.fer.zemris.ppj.grammar.interfaces.Symbol;
-import hr.fer.zemris.ppj.grammar.symbols.NonterminalSymbol;
-import hr.fer.zemris.ppj.grammar.symbols.TerminalSymbol;
 
 /**
  * <code>Grammar</code> represents a context free grammar
@@ -221,18 +219,15 @@ public class Grammar {
      */
     public boolean isEmptySequence(String sequence) {
         List<Symbol> newSequence = new ArrayList<>();
-        for (String name : sequence.split(" ")) {
-            if (name.equals("$")) {
-                break;
-            }
 
-            if (name.startsWith("<")) {
-                newSequence.add(new NonterminalSymbol(name));
-            }
-            else {
-                newSequence.add(new TerminalSymbol(name));
-            }
+        if (sequence.equals("$")) {
+            return true;
         }
+
+        for (String name : sequence.split(" ")) {
+            newSequence.add(ProductionParser.parseSymbol(name));
+        }
+
         return isEmptySequence(newSequence);
     }
 
@@ -284,20 +279,23 @@ public class Grammar {
         return result;
     }
 
+    /**
+     * Calculates the set of symbols that can appear instead of the specified sequence of symbols.
+     *
+     * @param sequence
+     *            the sequence.
+     * @return symbols that are possible instead of the specified sequence.
+     * @since alpha
+     */
     public Set<Symbol> startsWith(String sequence) {
         List<Symbol> newSequence = new ArrayList<>();
-        for (String name : sequence.split(" ")) {
-            if (name.equals("$")) {
-                break;
-            }
 
-            if (name.startsWith("<")) {
-                newSequence.add(new NonterminalSymbol(name));
-            }
-            else {
-                newSequence.add(new TerminalSymbol(name));
+        if (!sequence.equals("$")) {
+            for (String name : sequence.split(" ")) {
+                newSequence.add(ProductionParser.parseSymbol(name));
             }
         }
+
         return startsWith(newSequence);
     }
 
