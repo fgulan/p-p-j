@@ -1,6 +1,8 @@
 package hr.fer.zemris.ppj.finite.automaton.transforms;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -27,6 +29,7 @@ public class DFAConverter implements AutomatonTransform<ENFAutomaton, DFAutomato
     Set<State> states = new HashSet<>();
     Set<State> acceptStates = new HashSet<>();
     Set<DeterministicTransition> newTransitions = new HashSet<>();
+    Map<State, State> stateMap = new HashMap<>();
 
     private State errorState;
 
@@ -37,10 +40,13 @@ public class DFAConverter implements AutomatonTransform<ENFAutomaton, DFAutomato
 
         final Set<State> newState = getNewStartState(source);
         final State DFAStartState = getNewDFAStateName(newState);
-        states.add(DFAStartState);
+        final State stateName = new BasicState("0");
+        states.add(stateName);
         if (isAcceptStateDFA(newState, source)) {
-            acceptStates.add(DFAStartState);
+            acceptStates.add(stateName);
         }
+
+        stateMap.put(DFAStartState, stateName);
 
         constructErrorState(inputs);
         newStateTransitions(newState, source);
@@ -73,7 +79,7 @@ public class DFAConverter implements AutomatonTransform<ENFAutomaton, DFAutomato
     private State getNewDFAStateName(final Set<State> newStateName) {
         String Name = "";
         for (final State state : newStateName) {
-            Name = Name + state.getId();
+            Name = Name + state.getId() + "_";
         }
         final State newName = new BasicState(Name);
         return newName;
@@ -89,6 +95,8 @@ public class DFAConverter implements AutomatonTransform<ENFAutomaton, DFAutomato
 
     private void constructErrorState(final Set<Input> inputs) {
         errorState = new BasicState("ERR");
+        State errorStateName = new BasicState("1");
+        stateMap.put(errorState, errorStateName);
         for (final Input input : inputs) {
             newTransitions.add(new DeterministicTransition(errorState, errorState, input));
         }
@@ -112,21 +120,27 @@ public class DFAConverter implements AutomatonTransform<ENFAutomaton, DFAutomato
                 newState = getEpsilonClosure(newState, source.getTransferFunction());
                 newState = getNewDFAState(source, newState);
                 final State stateName = newState.isEmpty() ? errorState : getNewDFAStateName(newState);
-                if (!states.contains(stateName)) {
+                if (!stateMap.containsKey(stateName)) {
                     isNew = true;
-                    states.add(stateName);
+                    final State stateNumName = new BasicState(String.valueOf(stateMap.size()));
+                    stateMap.put(stateName, stateNumName);
+                    states.add(stateNumName);
                     if (isAcceptStateDFA(newState, source)) {
-                        acceptStates.add(stateName);
+                        acceptStates.add(stateNumName);
                     }
                     final State oldStateName = getNewDFAStateName(oldState);
                     final DeterministicTransition transition =
-                            new DeterministicTransition(oldStateName, stateName, input);
+                            new DeterministicTransition(stateMap.get(oldStateName), stateNumName, input);
                     newTransitions.add(transition);
                     newStateTransitions(newState, source);
                 }
+                else {
+                    final State oldStateName = getNewDFAStateName(oldState);
+                    final DeterministicTransition transition =
+                            new DeterministicTransition(stateMap.get(oldStateName), stateMap.get(stateName), input);
+                    newTransitions.add(transition);
+                }
             }
         }
-
     }
-
 }
