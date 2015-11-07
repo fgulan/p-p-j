@@ -15,6 +15,7 @@ import hr.fer.zemris.ppj.finite.automaton.interfaces.Automaton;
 import hr.fer.zemris.ppj.finite.automaton.interfaces.Input;
 import hr.fer.zemris.ppj.finite.automaton.interfaces.State;
 import hr.fer.zemris.ppj.finite.automaton.transfer.ENFAutomatonTransferFunction;
+import hr.fer.zemris.ppj.grammar.Grammar;
 import hr.fer.zemris.ppj.utility.text.manipulation.RegularExpressionManipulator;
 
 /**
@@ -73,6 +74,11 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
         acceptStates.put(pair.accepting.getId(), pair.accepting);
 
         return build();
+    }
+    
+    public ENFAutomaton fromLR1Grammar(Grammar grammar) {
+        //TODO working on it.
+        return null;
     }
 
     /**
