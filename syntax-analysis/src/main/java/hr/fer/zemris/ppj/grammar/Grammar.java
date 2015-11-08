@@ -1,6 +1,7 @@
 package hr.fer.zemris.ppj.grammar;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import hr.fer.zemris.ppj.grammar.interfaces.Symbol;
+import hr.fer.zemris.ppj.grammar.symbols.NonterminalSymbol;
 
 /**
  * <code>Grammar</code> represents a context free grammar
@@ -21,7 +23,7 @@ public class Grammar {
     private final Map<String, Symbol> nonterminalSymbols = new HashMap<>();
     private final Map<String, Symbol> terminalSymbols = new HashMap<>();
     private final Map<Symbol, List<Production>> productions = new HashMap<>();
-    private final Symbol startSymbol;
+    private Symbol startSymbol;
 
     private Set<Symbol> emptySymbols = new HashSet<>();
     private Map<Symbol, Set<Symbol>> startsWith = new HashMap<>();
@@ -342,4 +344,5 @@ public class Grammar {
     public Symbol startSymbol() {
         return startSymbol;
     }
+
 }

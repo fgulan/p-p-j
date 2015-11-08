@@ -137,10 +137,10 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
                 LRItem nextItem = getItemWithNextDot(item, items);
                 if (nextItem != null) {
                     Symbol symbol = item.getProduction().rightSide().get(dotIndex);
-                    // Neki vrag s terminalnim simbolima
                     LRState nextState = states.get(nextItem);
                     LRState addedState = addedStates.get(nextItem);
-
+                    nextItem.addTerminalSymbols(item.getTerminalSymbols());
+                    
                     if (nextState == null && addedState == null) {
                         nextState = new LRState(new ArrayList<LRItem>(Arrays.asList(nextItem)), stateIndex++);
                         addedStates.put(nextItem, nextState);
@@ -153,16 +153,20 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
 
                 }
                 if (currentSymbol != null && !currentSymbol.isTerminal()) {
-                    // int size = item.getProduction().rightSide().size();
-                    // List<Symbol> leftSymbols = new ArrayList<>();
-                    // for(int i = dotIndex + 1; i < size; i++) {
-                    // leftSymbols.add(item.getProduction().rightSide().get(i));
-                    // }
-                    // boolean emptySequence = grammar.isEmptySequence(leftSymbols);
-                    // //Opet neki vrag s terminalnim sibpmila
-
+                    int size = item.getProduction().rightSide().size();
+                    List<Symbol> leftSymbols = new ArrayList<>();
+                    for (int i = dotIndex + 1; i < size; i++) {
+                        leftSymbols.add(item.getProduction().rightSide().get(i));
+                    }
+                    boolean emptySequence = grammar.isEmptySequence(leftSymbols);
+                    Set<Symbol> startsWith = grammar.startsWith(leftSymbols);
+                    if (emptySequence) {
+                        startsWith.addAll(item.getTerminalSymbols());
+                    }
+                    
                     List<LRItem> newItems = getStartItems(currentSymbol, items);
                     for (LRItem currItem : newItems) {
+                        currItem.addTerminalSymbols(startsWith);
                         LRState nextState = states.get(currItem);
                         LRState addedState = addedStates.get(currItem);
 
@@ -191,7 +195,7 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
     private LRState createStartState(Grammar grammar) {
         NonterminalSymbol startSymbol = new NonterminalSymbol("Demon_Napasni");
         Production production = new Production(startSymbol, Arrays.asList(new Symbol[] { grammar.startSymbol() }));
-        LRItem startItem = new LRItem(production, 0, null);
+        LRItem startItem = new LRItem(production, 0, new HashSet<>());
         return new LRState(Arrays.asList(new LRItem[] { startItem }), 0);
     }
 

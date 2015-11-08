@@ -10,10 +10,10 @@ import hr.fer.zemris.ppj.grammar.symbols.TerminalSymbol;
 public class LRItem {
 
     private final Production production;
-    private final Set<TerminalSymbol> terminalSymbols;
+    private final Set<Symbol> terminalSymbols;
     private int dotIndex;
 
-    public LRItem(Production production, int dotIndex, Set<TerminalSymbol> terminalSymbols) {
+    public LRItem(Production production, int dotIndex, Set<Symbol> terminalSymbols) {
         super();
         this.production = production;
         this.dotIndex = dotIndex;
@@ -41,10 +41,14 @@ public class LRItem {
         return production;
     }
 
-    public Set<TerminalSymbol> getTerminalSymbols() {
+    public Set<Symbol> getTerminalSymbols() {
         return terminalSymbols;
     }
 
+    public void addTerminalSymbols(Set<Symbol> startsWith) {
+        terminalSymbols.addAll(startsWith);
+    }
+    
     public void addTerminalSymbol(TerminalSymbol symbol) {
         terminalSymbols.add(symbol);
     }
