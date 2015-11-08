@@ -1,25 +1,29 @@
 package hr.fer.zemris.ppj.lr1.parser;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import hr.fer.zemris.ppj.finite.automaton.BasicState;
 
 public class LRState extends BasicState {
     
-    private final Set<LRItem> items;
+    private final List<LRItem> items;
     
-    public LRState(Set<LRItem> items, String id) {
+    public LRState(List<LRItem> items, String id) {
         super(id);
         this.items = items;
+    }
+    
+    public LRState(List<LRItem> items, Integer id) {
+        this(items, id.toString());
     }
     
     public void addItem(LRItem item) {
         items.add(item);
     }
 
-    public Set<LRItem> getItems() {
-        return new HashSet<>(items);
+    public List<LRItem> getItems() {
+        return new ArrayList<>(items);
     }
 
     @Override

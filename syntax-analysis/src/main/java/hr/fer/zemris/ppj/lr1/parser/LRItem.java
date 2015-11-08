@@ -5,23 +5,26 @@ import java.util.Set;
 
 import hr.fer.zemris.ppj.grammar.Production;
 import hr.fer.zemris.ppj.grammar.interfaces.Symbol;
+import hr.fer.zemris.ppj.grammar.symbols.TerminalSymbol;
 
 public class LRItem {
 
     private final Production production;
+    private final Set<TerminalSymbol> terminalSymbols;
     private int dotIndex;
 
-    public LRItem(Production production, int dotIndex) {
+    public LRItem(Production production, int dotIndex, Set<TerminalSymbol> terminalSymbols) {
         super();
         this.production = production;
         this.dotIndex = dotIndex;
+        this.terminalSymbols = terminalSymbols;
     }
     
     public static Set<LRItem> fromProduction(Production production) {
         Set<LRItem> result = new HashSet<LRItem>();
         
         for (int i = 0, size = production.rightSide().size(); i <= size; i++) {
-            result.add(new LRItem(production, i));
+            result.add(new LRItem(production, i, new HashSet<>()));
         }
         return result;
     }
@@ -38,6 +41,14 @@ public class LRItem {
         return production;
     }
 
+    public Set<TerminalSymbol> getTerminalSymbols() {
+        return terminalSymbols;
+    }
+
+    public void addTerminalSymbol(TerminalSymbol symbol) {
+        terminalSymbols.add(symbol);
+    }
+    
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -74,12 +85,15 @@ public class LRItem {
 
     @Override
     public String toString() {
-        String result = production.leftSide().toString() + ((production.rightSide().isEmpty()) ? " null" : "");
+        String result = production.leftSide().toString() + ((production.rightSide().isEmpty()) ? "-> null" : "->");
         for (int i = 0, size = production.rightSide().size(); i < size; i++) {
             Symbol symbol = production.rightSide().get(i);
-            if (i == dotIndex) {
+            if (dotIndex == size && i == size-1) {
+                result += symbol.toString() + "*";
+            } else if (i == dotIndex) {
                 result += " *" + symbol.toString();
-            } else {
+            } 
+            else {
                 result += " " + symbol.toString();
             }
         }
