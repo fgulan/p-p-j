@@ -3,11 +3,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import hr.fer.zemris.ppj.Lexeme;
 import hr.fer.zemris.ppj.UniformSymbol;
+import hr.fer.zemris.ppj.lr1.parser.LR1Parser;
 import hr.fer.zemris.ppj.lr1.parser.LR1ParserActionTable;
 
 /**
@@ -49,6 +51,8 @@ public class SA {
             System.err.println("io on reading parser table");
             System.exit(0);
         }
+
+        new LR1Parser(parserTable).analyze(lexemes, new PrintStream(System.out), new PrintStream(System.err));
     }
 
     /*
