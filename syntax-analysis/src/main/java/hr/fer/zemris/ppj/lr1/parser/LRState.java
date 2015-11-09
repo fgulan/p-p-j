@@ -58,7 +58,7 @@ public class LRState extends BasicState {
 
     @Override
     public String toString() {
-        String result = this.getId() + ". ";
+        String result = this.getId() + ".";
         int count = items.size();
         int i = 0;
         for (LRItem item : items) {

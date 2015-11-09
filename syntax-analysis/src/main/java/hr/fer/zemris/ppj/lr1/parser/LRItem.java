@@ -19,10 +19,10 @@ public class LRItem {
         this.dotIndex = dotIndex;
         this.terminalSymbols = terminalSymbols;
     }
-    
+
     public static Set<LRItem> fromProduction(Production production) {
         Set<LRItem> result = new HashSet<LRItem>();
-        
+
         for (int i = 0, size = production.rightSide().size(); i <= size; i++) {
             result.add(new LRItem(production, i, new HashSet<>()));
         }
@@ -48,11 +48,11 @@ public class LRItem {
     public void addTerminalSymbols(Set<Symbol> startsWith) {
         terminalSymbols.addAll(startsWith);
     }
-    
+
     public void addTerminalSymbol(TerminalSymbol symbol) {
         terminalSymbols.add(symbol);
     }
-    
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -89,18 +89,21 @@ public class LRItem {
 
     @Override
     public String toString() {
-        String result = production.leftSide().toString() + ((production.rightSide().isEmpty()) ? "-> null" : "->");
+        String result = production.leftSide().toString() + ((production.rightSide().isEmpty()) ? "->null" : "->");
         for (int i = 0, size = production.rightSide().size(); i < size; i++) {
             Symbol symbol = production.rightSide().get(i);
-            if (dotIndex == size && i == size-1) {
+            if (dotIndex == size && i == size - 1) {
                 result += symbol.toString() + "*";
             } else if (i == dotIndex) {
-                result += " *" + symbol.toString();
-            } 
-            else {
-                result += " " + symbol.toString();
+                result += "*" + symbol.toString();
+            } else {
+                result += symbol.toString();
             }
         }
-        return result;
+        result += "{";
+        for (Symbol symbol : terminalSymbols) {
+            result += symbol.name();
+        }
+        return result + "}";
     }
 }
