@@ -24,9 +24,9 @@ import hr.fer.zemris.ppj.finite.automaton.transfer.NormalTransition;
  */
 public class ENFATransferFunctionBuilder implements TransferFunctionBuilder {
 
-    private static final char EMPTY_SEQUENCE = '\0';
+    private static final String EMPTY_SEQUENCE = "\0";
 
-    Map<String, Map<Character, Set<String>>> rawTransitions;
+    Map<String, Map<String, Set<String>>> rawTransitions;
 
     /**
      * Class constructor.
@@ -45,13 +45,13 @@ public class ENFATransferFunctionBuilder implements TransferFunctionBuilder {
     @Override
     public ENFAutomatonTransferFunction build(final Map<String, State> states) {
         final Set<FAutomatonTransition> automatonTransitions = new HashSet<>();
-        for (final Entry<String, Map<Character, Set<String>>> transition : rawTransitions.entrySet()) {
+        for (final Entry<String, Map<String, Set<String>>> transition : rawTransitions.entrySet()) {
             final State oldState = states.get(transition.getKey());
-            for (final Entry<Character, Set<String>> stateTransition : transition.getValue().entrySet()) {
-                final Character symbol = stateTransition.getKey();
+            for (final Entry<String, Set<String>> stateTransition : transition.getValue().entrySet()) {
+                final String symbol = stateTransition.getKey();
                 for (final String newStateId : stateTransition.getValue()) {
                     final State newState = states.get(newStateId);
-                    if (symbol == EMPTY_SEQUENCE) {
+                    if (symbol.equals(EMPTY_SEQUENCE)) {
                         automatonTransitions.add(new EpsilonTransition(oldState, newState));
                     }
                     else {
@@ -70,8 +70,18 @@ public class ENFATransferFunctionBuilder implements TransferFunctionBuilder {
      */
     @Override
     public void addTransition(final String oldState, final Character symbol, final String newState) {
-        final Map<Character, Set<String>> rawStateTransitions = (rawTransitions.containsKey(oldState)
-                ? rawTransitions.get(oldState) : new HashMap<Character, Set<String>>());
+        addTransition(oldState, symbol.toString(), newState);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @since 1.0
+     */
+    @Override
+    public void addTransition(final String oldState, final String symbol, final String newState) {
+        final Map<String, Set<String>> rawStateTransitions = (rawTransitions.containsKey(oldState)
+                ? rawTransitions.get(oldState) : new HashMap<String, Set<String>>());
         final Set<String> rawTransitionResult =
                 (rawStateTransitions.containsKey(symbol) ? rawStateTransitions.get(symbol) : new HashSet<String>());
 
@@ -80,5 +90,4 @@ public class ENFATransferFunctionBuilder implements TransferFunctionBuilder {
         rawStateTransitions.put(symbol, rawTransitionResult);
         rawTransitions.put(oldState, rawStateTransitions);
     }
-
 }

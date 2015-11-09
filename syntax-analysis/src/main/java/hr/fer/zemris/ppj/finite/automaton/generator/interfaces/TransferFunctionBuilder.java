@@ -34,4 +34,16 @@ public interface TransferFunctionBuilder {
      *            id of the new state of the transition.
      */
     void addTransition(String oldState, Character symbol, String newState);
+
+    /**
+     * Adds a transition to the transition function.
+     *
+     * @param oldState
+     *            id of the original state of the transition.
+     * @param symbol
+     *            symbol of the transition.
+     * @param newState
+     *            id of the new state of the transition.
+     */
+    void addTransition(String oldState, String symbol, String newState);
 }
