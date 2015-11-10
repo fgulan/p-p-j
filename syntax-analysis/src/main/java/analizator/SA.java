@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hr.fer.zemris.ppj.Lexeme;
-import hr.fer.zemris.ppj.UniformSymbol;
+import hr.fer.zemris.ppj.grammar.ProductionParser;
 import hr.fer.zemris.ppj.lr1.parser.LR1Parser;
 import hr.fer.zemris.ppj.lr1.parser.LR1ParserActionTable;
 
@@ -61,7 +61,8 @@ public class SA {
     private static void readUniformSymbols(BufferedReader reader) throws IOException {
         String uniformSymbol = reader.readLine();
         do {
-            lexemes.addAll(new UniformSymbol(uniformSymbol).toLexemes());
+            String[] split = uniformSymbol.split(" ", 3);
+            lexemes.add(new Lexeme(split[0], Integer.valueOf(split[1]), ProductionParser.parseSymbol(split[2])));
             uniformSymbol = reader.readLine();
         } while (uniformSymbol != null);
     }
