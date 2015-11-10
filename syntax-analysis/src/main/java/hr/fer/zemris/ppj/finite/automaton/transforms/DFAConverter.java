@@ -1,12 +1,16 @@
 package hr.fer.zemris.ppj.finite.automaton.transforms;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Queue;
 import java.util.Set;
-import java.util.TreeSet;
 
-import hr.fer.zemris.ppj.finite.automaton.BasicState;
 import hr.fer.zemris.ppj.finite.automaton.DFAutomaton;
 import hr.fer.zemris.ppj.finite.automaton.ENFAutomaton;
 import hr.fer.zemris.ppj.finite.automaton.interfaces.AutomatonTransform;
@@ -26,121 +30,84 @@ import hr.fer.zemris.ppj.finite.automaton.transfer.DeterministicTransition;
  */
 public class DFAConverter implements AutomatonTransform<ENFAutomaton, DFAutomaton> {
 
-    Set<State> states = new HashSet<>();
-    Set<State> acceptStates = new HashSet<>();
-    Set<DeterministicTransition> newTransitions = new HashSet<>();
-    Map<State, State> stateMap = new HashMap<>();
+    private Map<Set<State>, State> newStates = new HashMap<>();
+    private Map<State, Map<Input, Set<State>>> newTransitions = new HashMap<>();
 
-    private State errorState;
+    private State stateExample; // Used for creating new instances of the states.
+
+    // Used to build the automaton after transformation
+    private Set<State> states = new HashSet<>();
+    private Set<State> acceptStates = new HashSet<>();
+    private Set<Input> alphabet = new HashSet<>();
+    private Set<DeterministicTransition> transitions = new HashSet<>();
+    private State startState;
 
     @Override
     public DFAutomaton transform(final ENFAutomaton source) {
+        stateExample = source.getStartState();
+        List<Input> tempAlphabet = new ArrayList<>(source.getAlphabet());
+        Collections.sort(tempAlphabet);
 
-        final Set<Input> inputs = source.getAlphabet();
+        TransferFunction function = source.getTransferFunction();
 
-        final Set<State> newState = getNewStartState(source);
-        final State DFAStartState = getNewDFAStateName(newState);
-        final State stateName = new BasicState("0");
-        states.add(stateName);
-        if (isAcceptStateDFA(newState, source)) {
-            acceptStates.add(stateName);
-        }
+        Set<State> closure = new HashSet<>();
+        closure.add(source.getStartState());
+        closure = function.getNewStates(closure, null);
 
-        stateMap.put(DFAStartState, stateName);
+        Queue<Set<State>> unprocessed = new ArrayDeque<>(); // Queue is used instead of the stack to get state numbers
+                                                            // that are easier to check by hand
+        unprocessed.add(closure);
 
-        constructErrorState(inputs);
-        newStateTransitions(newState, source);
+        while (!unprocessed.isEmpty()) {
+            Set<State> current = unprocessed.poll();
+            State newState = stateExample.newInstance(String.valueOf(newStates.size())).combine(current);
+            newStates.put(current, newState);
 
-        final DFAutomatonTransferFunction function = new DFAutomatonTransferFunction(newTransitions);
+            if (startState == null) {
+                startState = newState;
+            }
 
-        return new DFAutomaton(states, acceptStates, inputs, function, DFAStartState);
-    }
+            Map<Input, Set<State>> stateTransitions = new HashMap<>();
 
-    private Set<State> getNewStates(final Set<State> currentStates, final TransferFunction transferfunction,
-            final Input input) {
-        return transferfunction.getNewStates(currentStates, input);
-    }
-
-    private Set<State> getEpsilonClosure(final Set<State> currentStates, final TransferFunction transferFunction) {
-        Set<State> epsilonClosure = new HashSet<>();
-        epsilonClosure = transferFunction.getNewStates(currentStates, null);
-        return epsilonClosure;
-    }
-
-    private Set<State> getNewStartState(final ENFAutomaton source) {
-        final Set<State> newStateName = new TreeSet<State>();
-        Set<State> newState = new HashSet<>();
-        newState.add(source.getStartState());
-        newState = getEpsilonClosure(newState, source.getTransferFunction());
-        newStateName.addAll(newState);
-        return newState;
-    }
-
-    private State getNewDFAStateName(final Set<State> newStateName) {
-        String Name = "";
-        for (final State state : newStateName) {
-            Name = Name + state.getId() + "_";
-        }
-        final State newName = new BasicState(Name);
-        return newName;
-    }
-
-    private Set<State> getNewDFAState(final ENFAutomaton source, final Set<State> current) {
-        final Set<State> newStateName = new TreeSet<State>();
-        Set<State> newState = new HashSet<>();
-        newState = getEpsilonClosure(current, source.getTransferFunction());
-        newStateName.addAll(newState);
-        return newStateName;
-    }
-
-    private void constructErrorState(final Set<Input> inputs) {
-        errorState = new BasicState("ERR");
-        State errorStateName = new BasicState("1");
-        stateMap.put(errorState, errorStateName);
-        for (final Input input : inputs) {
-            newTransitions.add(new DeterministicTransition(errorState, errorState, input));
-        }
-    }
-
-    private boolean isAcceptStateDFA(final Set<State> states, final ENFAutomaton source) {
-        final Set<State> uncheckedStates = new HashSet<>(states);
-        uncheckedStates.retainAll(source.getAcceptStates());
-        return !uncheckedStates.isEmpty();
-    }
-
-    private void newStateTransitions(final Set<State> oldState, final ENFAutomaton source) {
-        final Set<Input> inputs = source.getAlphabet();
-        Set<State> newState = new HashSet<>();
-        boolean isNew = true;
-
-        while (isNew) {
-            isNew = false;
-            for (final Input input : inputs) {
-                newState = getNewStates(oldState, source.getTransferFunction(), input);
-                newState = getEpsilonClosure(newState, source.getTransferFunction());
-                newState = getNewDFAState(source, newState);
-                final State stateName = newState.isEmpty() ? errorState : getNewDFAStateName(newState);
-                if (!stateMap.containsKey(stateName)) {
-                    isNew = true;
-                    final State stateNumName = new BasicState(String.valueOf(stateMap.size()));
-                    stateMap.put(stateName, stateNumName);
-                    states.add(stateNumName);
-                    if (isAcceptStateDFA(newState, source)) {
-                        acceptStates.add(stateNumName);
+            for (Input symbol : tempAlphabet) {
+                Set<State> newClosure = function.getNewStates(function.getNewStates(current, symbol), null);
+                if (!newClosure.isEmpty()) {
+                    if (!newStates.containsKey(newClosure) && !unprocessed.contains(newClosure)) {
+                        unprocessed.add(newClosure);
                     }
-                    final State oldStateName = getNewDFAStateName(oldState);
-                    final DeterministicTransition transition =
-                            new DeterministicTransition(stateMap.get(oldStateName), stateNumName, input);
-                    newTransitions.add(transition);
-                    newStateTransitions(newState, source);
+                    stateTransitions.put(symbol, newClosure);
                 }
-                else {
-                    final State oldStateName = getNewDFAStateName(oldState);
-                    final DeterministicTransition transition =
-                            new DeterministicTransition(stateMap.get(oldStateName), stateMap.get(stateName), input);
-                    newTransitions.add(transition);
+            }
+            newTransitions.put(newState, stateTransitions);
+        }
+
+        for (Set<State> newState : newStates.keySet()) {
+            State DFAState = newStates.get(newState);
+            states.add(DFAState);
+            if (acceptingDFAState(newState, source)) {
+                acceptStates.add(DFAState);
+            }
+
+            if (newTransitions.containsKey(DFAState)) {
+                for (Entry<Input, Set<State>> transition : newTransitions.get(DFAState).entrySet()) {
+                    transitions.add(new DeterministicTransition(DFAState, newStates.get(transition.getValue()),
+                            transition.getKey()));
                 }
             }
         }
+
+        alphabet.addAll(source.getAlphabet());
+
+        return new DFAutomaton(states, acceptStates, alphabet, new DFAutomatonTransferFunction(transitions),
+                startState);
+    }
+
+    private boolean acceptingDFAState(Set<State> states, ENFAutomaton source) {
+        for (State accept : source.getAcceptStates()) {
+            if (states.contains(accept)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

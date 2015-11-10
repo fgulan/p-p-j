@@ -1,5 +1,7 @@
 package hr.fer.zemris.ppj.finite.automaton;
 
+import java.util.Set;
+
 import hr.fer.zemris.ppj.finite.automaton.interfaces.State;
 
 /**
@@ -68,6 +70,16 @@ public class BasicState implements State {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public BasicState newInstance(String id) {
+        return new BasicState(id);
+    }
+
+    @Override
+    public BasicState combine(Set<State> existing) {
+        return this;
     }
 
 }

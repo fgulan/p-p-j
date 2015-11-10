@@ -24,7 +24,7 @@ import hr.fer.zemris.ppj.finite.automaton.transfer.NormalTransition;
  */
 public class ENFATransferFunctionBuilder implements TransferFunctionBuilder {
 
-    private static final String EMPTY_SEQUENCE = "\0";
+    private static final String EMPTY_SEQUENCE = "null";
 
     Map<String, Map<String, Set<String>>> rawTransitions;
 
