@@ -107,8 +107,6 @@ public class ParserBuilder {
 
                         LRState nextState = states.get(newItem);
                         LRState addedState = addedStates.get(newItem);
-                        
-
                         if (nextState == null && addedState == null) {
                             nextState = new LRState(new ArrayList<LRItem>(Arrays.asList(newItem)), stateIndex++);
                             addedStates.put(newItem, nextState);
