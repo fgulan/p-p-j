@@ -53,12 +53,15 @@ public class LRItem {
         terminalSymbols.add(symbol);
     }
 
+    
+
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + dotIndex;
         result = prime * result + ((production == null) ? 0 : production.hashCode());
+        result = prime * result + ((terminalSymbols == null) ? 0 : terminalSymbols.hashCode());
         return result;
     }
 
@@ -82,6 +85,13 @@ public class LRItem {
                 return false;
             }
         } else if (!production.equals(other.production)) {
+            return false;
+        }
+        if (terminalSymbols == null) {
+            if (other.terminalSymbols != null) {
+                return false;
+            }
+        } else if (!terminalSymbols.equals(other.terminalSymbols)) {
             return false;
         }
         return true;

@@ -10,33 +10,33 @@ import hr.fer.zemris.ppj.finite.automaton.ENFAutomaton;
 import hr.fer.zemris.ppj.lr1.parser.ParserBuilder;
 
 @SuppressWarnings("javadoc")
-public class ParserTest {
+public class ParserTest2 {
 
     private Grammar grammar;
 
     /*
-     * See SS: PPJ - 148.
+     * See SS: PPJ - 151.
      */
     @Before
     public void setUpBeforeClass() throws Exception {
         Set<String> nonterminalSymbols = new HashSet<>();
+        nonterminalSymbols.add("<S'>");
         nonterminalSymbols.add("<S>");
-        nonterminalSymbols.add("<A>");
-        nonterminalSymbols.add("<B>");
-
+        nonterminalSymbols.add("<C>");
+        
         Set<String> terminalSymbols = new HashSet<>();
-        terminalSymbols.add("a");
-        terminalSymbols.add("b");
+        terminalSymbols.add("c");
+        terminalSymbols.add("d");
 
 
-        String startSymbol = "<S>";
+        String startSymbol = "<S'>";
 
         GrammarBuilder builder = new GrammarBuilder(nonterminalSymbols, terminalSymbols, startSymbol);
-        builder.addProduction(ProductionParser.fromText("<S>", "<A>"));
-        builder.addProduction(ProductionParser.fromText("<A>", "<B> <A>"));
-        builder.addProduction(ProductionParser.fromText("<A>", "$"));
-        builder.addProduction(ProductionParser.fromText("<B>", "a <B>"));
-        builder.addProduction(ProductionParser.fromText("<B>", "b"));
+        builder.addProduction(ProductionParser.fromText("<S>", "<C> <C>"));
+        builder.addProduction(ProductionParser.fromText("<S'>", "<S>"));
+        builder.addProduction(ProductionParser.fromText("<C>", "c <C>"));
+        builder.addProduction(ProductionParser.fromText("<C>", "d"));
+
 
         grammar = builder.build();
     }

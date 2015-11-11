@@ -37,11 +37,12 @@ public class ParserBuilder {
                 items.add(item);
             }
         }
+        // TODO warning need to replace it.
         LRState startState = createStartState(grammar);
         states.put(startState.getItems().get(0), startState);
         automatonStates.add(startState);
 
-        // Generate symbols
+        // Generate alphabet symbols
         for (Symbol symbol : grammar.terminalSymbols()) {
             alphabet.add(new BasicInput(symbol));
         }
@@ -72,14 +73,14 @@ public class ParserBuilder {
                 LRItem nextItem = getItemWithNextDot(item, items);
                 if (nextItem != null) {
                     Symbol symbol = item.getProduction().rightSide().get(dotIndex);
-                    LRState nextState = states.get(nextItem);
-                    LRState addedState = addedStates.get(nextItem);
-                    nextItem.addTerminalSymbols(item.getTerminalSymbols());
-
+                    LRItem newItem = new LRItem(nextItem.getProduction(), nextItem.getDotIndex(), item.getTerminalSymbols());
+                    LRState nextState = states.get(newItem);
+                    LRState addedState = addedStates.get(newItem);
+                    
                     if (nextState == null && addedState == null) {
-                        nextState = new LRState(new ArrayList<LRItem>(Arrays.asList(nextItem)), stateIndex++);
+                        nextState = new LRState(new ArrayList<LRItem>(Arrays.asList(newItem)), stateIndex++);
                         automatonStates.add(nextState);
-                        addedStates.put(nextItem, nextState);
+                        addedStates.put(newItem, nextState);
                         changed = true;
                     } else if (nextState == null) {
                         nextState = addedState;
@@ -102,13 +103,13 @@ public class ParserBuilder {
 
                     List<LRItem> newItems = getStartItems(currentSymbol, items);
                     for (LRItem currItem : newItems) {
-                        currItem.addTerminalSymbols(startsWith);
-                        LRState nextState = states.get(currItem);
-                        LRState addedState = addedStates.get(currItem);
+                        LRItem newItem = new LRItem(currItem.getProduction(), currItem.getDotIndex(), startsWith);
 
+                        LRState nextState = states.get(newItem);
+                        LRState addedState = addedStates.get(newItem);
                         if (nextState == null && addedState == null) {
-                            nextState = new LRState(new ArrayList<LRItem>(Arrays.asList(currItem)), stateIndex++);
-                            addedStates.put(currItem, nextState);
+                            nextState = new LRState(new ArrayList<LRItem>(Arrays.asList(newItem)), stateIndex++);
+                            addedStates.put(newItem, nextState);
                             automatonStates.add(nextState);
                             changed = true;
                         } else if (nextState == null) {

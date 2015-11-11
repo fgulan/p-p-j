@@ -11,7 +11,6 @@ import hr.fer.zemris.ppj.finite.automaton.ENFAutomaton;
 import hr.fer.zemris.ppj.finite.automaton.generator.builders.AlphabetBuilder;
 import hr.fer.zemris.ppj.finite.automaton.generator.builders.ENFATransferFunctionBuilder;
 import hr.fer.zemris.ppj.finite.automaton.generator.interfaces.AutomatonGenerator;
-import hr.fer.zemris.ppj.finite.automaton.interfaces.Automaton;
 import hr.fer.zemris.ppj.finite.automaton.interfaces.Input;
 import hr.fer.zemris.ppj.finite.automaton.interfaces.State;
 import hr.fer.zemris.ppj.finite.automaton.transfer.ENFAutomatonTransferFunction;
@@ -47,7 +46,7 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
         public State accepting;
     }
 
-    private static final String EMPTY_SEQUENCE = "\0";
+    private static final String EMPTY_SEQUENCE = "null";
 
     private final Map<String, State> states = new HashMap<>();
 
@@ -215,7 +214,7 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
      * @since 1.1
      */
     @Override
-    public Automaton fromTextDefinition(final String states, final String acceptStates, final String alphabet,
+    public ENFAutomaton fromTextDefinition(final String states, final String acceptStates, final String alphabet,
             final List<String> transitions, final String startState) {
         for (final String stateId : states.split(" ")) {
             this.states.put(stateId, new BasicState(stateId));
@@ -264,7 +263,8 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
                 if (prefixed) { // Slucaj 1
                     prefixed = false;
                     subpair = new StatePair(newBasicState(false), newBasicState(false));
-                    addTransition(subpair.initial, subpair.accepting, unprefixedSymbol(expression.charAt(i)));
+                    addTransition(subpair.initial, subpair.accepting,
+                            String.valueOf(unprefixedSymbol(expression.charAt(i))));
                 }
                 else { // Slucaj 2
                     if (expression.charAt(i) == '\\') {
@@ -319,7 +319,7 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
 
         final ENFAutomatonTransferFunction transferFunction = transferFunctionBuilder.build(this.states);
 
-        return new ENFAutomaton(states, acceptStates, alphabet, transferFunction, this.states.get(initial));
+        return new ENFAutomaton(states, acceptStates, alphabet, transferFunction, initial);
     }
 
     /*
@@ -341,13 +341,6 @@ public class ENFAutomatonGenerator implements AutomatonGenerator {
      */
     private void addTransition(final State oldState, final State newState) {
         transferFunctionBuilder.addTransition(oldState.getId(), EMPTY_SEQUENCE, newState.getId());
-    }
-
-    /*
-     * Adds a transition for the specified symbol to the automaton.
-     */
-    private void addTransition(final State oldState, final State newState, final Character symbol) {
-        addTransition(oldState, newState, symbol.toString());
     }
 
     /*
