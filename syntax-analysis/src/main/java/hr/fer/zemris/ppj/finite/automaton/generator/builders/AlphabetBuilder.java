@@ -15,7 +15,7 @@ import hr.fer.zemris.ppj.finite.automaton.interfaces.Input;
  */
 public class AlphabetBuilder {
 
-    private final Set<Character> rawInput;
+    private final Set<String> rawInput;
 
     /**
      * Class constructor.
@@ -34,7 +34,7 @@ public class AlphabetBuilder {
      */
     public Set<Input> build() {
         final Set<Input> alphabet = new HashSet<>();
-        for (final Character symbol : rawInput) {
+        for (final String symbol : rawInput) {
             alphabet.add(new BasicInput(symbol));
         }
         return alphabet;
@@ -48,6 +48,17 @@ public class AlphabetBuilder {
      * @since 1.0
      */
     public void addSymbol(final char symbol) {
+        addSymbol(String.valueOf(symbol));
+    }
+
+    /**
+     * Adds a symbol to the alphabet.
+     *
+     * @param symbol
+     *            the symbol.
+     * @since 1.0
+     */
+    public void addSymbol(final String symbol) {
         rawInput.add(symbol);
     }
 }

@@ -1,21 +1,17 @@
 package hr.fer.zemris.ppj.finite.automaton.transforms;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
 
-import hr.fer.zemris.ppj.finite.automaton.BasicInput;
-import hr.fer.zemris.ppj.finite.automaton.BasicState;
 import hr.fer.zemris.ppj.finite.automaton.DFAutomaton;
 import hr.fer.zemris.ppj.finite.automaton.ENFAutomaton;
+import hr.fer.zemris.ppj.finite.automaton.generator.ENFAutomatonGenerator;
 import hr.fer.zemris.ppj.finite.automaton.interfaces.Input;
 import hr.fer.zemris.ppj.finite.automaton.interfaces.State;
-import hr.fer.zemris.ppj.finite.automaton.interfaces.TransferFunction;
-import hr.fer.zemris.ppj.finite.automaton.interfaces.Transition;
-import hr.fer.zemris.ppj.finite.automaton.transfer.DeterministicTransition;
-import hr.fer.zemris.ppj.finite.automaton.transfer.ENFAutomatonTransferFunction;
-import hr.fer.zemris.ppj.finite.automaton.transfer.EpsilonTransition;
 import hr.fer.zemris.ppj.finite.automaton.transfer.FAutomatonTransition;
 
 @SuppressWarnings("javadoc")
@@ -29,57 +25,39 @@ public class DFAConverterTest {
 
     @Test
     public void test() {
+        ENFAutomatonGenerator generator = new ENFAutomatonGenerator();
+        String states = "0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17";
+        String acceptStates = "0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17";
+        String alphabet = "a b <S> <A> <B>";
+        List<String> transitions = new ArrayList<>();
+        transitions.add("0 <S> 1");
+        transitions.add("0 null 2");
+        transitions.add("0 null 6");
+        transitions.add("0 null 9");
+        transitions.add("0 null 12");
+        transitions.add("2 <A> 3");
+        transitions.add("3 <A> 4");
+        transitions.add("4 <B> 5");
+        transitions.add("4 null 16");
+        transitions.add("6 <B> 7");
+        transitions.add("7 <S> 8");
+        transitions.add("7 null 2");
+        transitions.add("7 null 6");
+        transitions.add("7 null 9");
+        transitions.add("7 null 12");
+        transitions.add("9 <A> 10");
+        transitions.add("10 <A> 11");
+        transitions.add("10 null 14");
+        transitions.add("12 <B> 13");
+        transitions.add("12 null 16");
+        transitions.add("14 a 15");
+        transitions.add("16 b 17");
+        String startState = "0";
 
-        final State state1 = new BasicState("1");
-        states.add(state1);
-        final State state2 = new BasicState("2");
-        states.add(state2);
-        final State state3 = new BasicState("3");
-        states.add(state3);
-        final State state4 = new BasicState("4");
-        states.add(state4);
+        ENFAutomaton eNFA = generator.fromTextDefinition(states, acceptStates, alphabet, transitions, startState);
+        DFAutomaton DFA = new DFAConverter().transform(eNFA);
+        System.out.println(DFA);
 
-        final Input inputA = new BasicInput("a");
-        inputs.add(inputA);
-        final Input inputB = new BasicInput("b");
-        inputs.add(inputB);
-        final Input inputC = new BasicInput("c");
-        inputs.add(inputC);
-
-        final DeterministicTransition transition1 = new DeterministicTransition(state1, state2, inputA);
-        newTransitions.add(transition1);
-        final DeterministicTransition transition2 = new DeterministicTransition(state1, state4, inputC);
-        newTransitions.add(transition2);
-        final DeterministicTransition transition3 = new DeterministicTransition(state2, state3, inputB);
-        newTransitions.add(transition2);
-        final DeterministicTransition transition4 = new DeterministicTransition(state3, state2, inputA);
-        newTransitions.add(transition4);
-        final DeterministicTransition transition5 = new DeterministicTransition(state4, state3, inputC);
-        newTransitions.add(transition5);
-
-        final EpsilonTransition transition6 = new EpsilonTransition(state1, state1);
-        newTransitions.add(transition6);
-        final EpsilonTransition transition7 = new EpsilonTransition(state2, state1);
-        newTransitions.add(transition7);
-        final EpsilonTransition transition8 = new EpsilonTransition(state4, state3);
-        newTransitions.add(transition8);
-        final EpsilonTransition transition9 = new EpsilonTransition(state3, state3);
-        newTransitions.add(transition9);
-
-        final ENFAutomatonTransferFunction function = new ENFAutomatonTransferFunction(newTransitions);
-        final ENFAutomaton source = new ENFAutomaton(states, acceptStates, inputs, function, state1);
-        converter = new DFAConverter();
-        final DFAutomaton newDFA = converter.transform(source);
-
-        final Set<Input> inputsDFA = newDFA.getAlphabet();
-        final Set<State> statesDFA = newDFA.getAcceptStates();
-        final TransferFunction transferFunction = newDFA.getTransferFunction();
-        final Set<Transition> transitionsDFA = transferFunction.getTransitions();
-
-        for (final Transition trans : transitionsDFA) {
-            System.out.println(trans);
-        }
-        System.out.println(converter.stateMap);
     }
 
 }
