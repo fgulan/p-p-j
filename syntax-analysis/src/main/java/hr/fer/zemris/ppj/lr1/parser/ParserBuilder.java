@@ -20,10 +20,11 @@ import hr.fer.zemris.ppj.finite.automaton.transfer.NormalTransition;
 import hr.fer.zemris.ppj.grammar.Grammar;
 import hr.fer.zemris.ppj.grammar.Production;
 import hr.fer.zemris.ppj.grammar.interfaces.Symbol;
-import hr.fer.zemris.ppj.grammar.symbols.NonterminalSymbol;
+import hr.fer.zemris.ppj.grammar.symbols.TerminalSymbol;
 
 public class ParserBuilder {
-
+    public final static TerminalSymbol END_SYMBOL = new TerminalSymbol("#");
+    
     public static ENFAutomaton fromLR1Grammar(Grammar grammar) {
         Set<Input> alphabet = new HashSet<>();
         Set<FAutomatonTransition> transitions = new HashSet<>();
@@ -37,7 +38,6 @@ public class ParserBuilder {
                 items.add(item);
             }
         }
-        // TODO warning need to replace it.
         LRState startState = createStartState(grammar);
         states.put(startState.getItems().get(0), startState);
         automatonStates.add(startState);
@@ -78,7 +78,7 @@ public class ParserBuilder {
                     LRState nextState = states.get(newItem);
                     LRState addedState = addedStates.get(newItem);
 
-                    if ((nextState == null) && (addedState == null)) {
+                    if (nextState == null && addedState == null) {
                         nextState = new LRState(new ArrayList<LRItem>(Arrays.asList(newItem)), stateIndex++);
                         automatonStates.add(nextState);
                         addedStates.put(newItem, nextState);
@@ -109,13 +109,12 @@ public class ParserBuilder {
 
                         LRState nextState = states.get(newItem);
                         LRState addedState = addedStates.get(newItem);
-                        if ((nextState == null) && (addedState == null)) {
+                        if (nextState == null && addedState == null) {
                             nextState = new LRState(new ArrayList<LRItem>(Arrays.asList(newItem)), stateIndex++);
                             addedStates.put(newItem, nextState);
                             automatonStates.add(nextState);
                             changed = true;
-                        }
-                        else if (nextState == null) {
+                        } else if (nextState == null) {
                             nextState = addedState;
                         }
                         EpsilonTransition transition = new EpsilonTransition(state, nextState);
@@ -134,9 +133,10 @@ public class ParserBuilder {
     }
 
     private static LRState createStartState(Grammar grammar) {
-        NonterminalSymbol startSymbol = new NonterminalSymbol("Demon_Napasni");
-        Production production = new Production(startSymbol, Arrays.asList(new Symbol[] { grammar.startSymbol() }), -1);
-        LRItem startItem = new LRItem(production, 0, new HashSet<>());
+        Production production = grammar.getStartProduction();
+        HashSet<Symbol> terminalSymbols = new HashSet<>();
+        terminalSymbols.add(END_SYMBOL);
+        LRItem startItem = new LRItem(production, 0, terminalSymbols);
         return new LRState(Arrays.asList(new LRItem[] { startItem }), 0);
     }
 

@@ -1,7 +1,6 @@
 package hr.fer.zemris.ppj.grammar;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -344,5 +343,8 @@ public class Grammar {
     public Symbol startSymbol() {
         return startSymbol;
     }
-
+    
+    public Production getStartProduction() {
+        return productions.get(startSymbol).get(0);
+    }
 }
