@@ -7,7 +7,7 @@ package hr.fer.zemris.ppj.grammar.interfaces;
  *
  * @version alpha
  */
-public interface Symbol {
+public interface Symbol{
 
     /**
      * Checks if the symbol is a terminal symbol of the grammar.

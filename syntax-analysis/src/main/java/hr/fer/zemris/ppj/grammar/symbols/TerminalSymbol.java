@@ -55,7 +55,7 @@ public class TerminalSymbol implements Symbol {
         }
 
         if ((o instanceof String) || (o instanceof TerminalSymbol)) {
-            return name.equals(((TerminalSymbol) o).name);
+            return name.equals(o.toString());
         }
 
         return false;

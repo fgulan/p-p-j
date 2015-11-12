@@ -10,7 +10,7 @@ import java.util.List;
 import hr.fer.zemris.ppj.Lexeme;
 import hr.fer.zemris.ppj.grammar.ProductionParser;
 import hr.fer.zemris.ppj.lr1.parser.LR1Parser;
-import hr.fer.zemris.ppj.lr1.parser.LR1ParserActionTable;
+import hr.fer.zemris.ppj.lr1.parser.LR1ParserTable;
 
 /**
  * <code>SA</code> class is required by the evaluator, to contain a entry point for the syntax analyzer.
@@ -22,7 +22,7 @@ import hr.fer.zemris.ppj.lr1.parser.LR1ParserActionTable;
 public class SA {
 
     private static final List<Lexeme> lexemes = new ArrayList<>();
-    private static LR1ParserActionTable parserTable;
+    private static LR1ParserTable parserTable;
 
     /**
      * Entry point for the syntax analyzer.

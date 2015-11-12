@@ -32,7 +32,7 @@ public class LR1Parser {
      *            the table of actions.
      * @since alpha
      */
-    public LR1Parser(final LR1ParserActionTable table) {
+    public LR1Parser(final LR1ParserTable table) {
     	public ParserAction getAction(Symbol, String) { return micamaca; }
     }
 
