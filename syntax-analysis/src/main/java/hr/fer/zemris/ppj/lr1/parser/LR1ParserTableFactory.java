@@ -1,16 +1,13 @@
 package hr.fer.zemris.ppj.lr1.parser;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import hr.fer.zemris.ppj.finite.automaton.BasicInput;
 import hr.fer.zemris.ppj.finite.automaton.DFAutomaton;
 import hr.fer.zemris.ppj.finite.automaton.interfaces.State;
-import hr.fer.zemris.ppj.finite.automaton.interfaces.TransferFunction;
 import hr.fer.zemris.ppj.finite.automaton.interfaces.Transition;
-import hr.fer.zemris.ppj.grammar.Grammar;
 import hr.fer.zemris.ppj.grammar.Production;
 import hr.fer.zemris.ppj.grammar.interfaces.Symbol;
 import hr.fer.zemris.ppj.lr1.parser.LR1ParserTable.TablePair;

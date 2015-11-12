@@ -1,6 +1,7 @@
 package hr.fer.zemris.ppj.lr1.parser;
 
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -131,7 +132,32 @@ public class LR1ParserTable {
     
     @Override
     public String toString() {
-        // TODO Auto-generated method stub
-        return super.toString();
+        Map<String, List<String>> stateList = new HashMap<>();
+        for (TablePair pair: actionTable.keySet()){
+            if (stateList.get(pair.stateId) == null){
+                stateList.put(pair.stateId, new ArrayList<>());
+            }
+            
+            stateList.get(pair.stateId).add(pair.symbol.toString() + " " + actionTable.get(pair).toString());
+        }
+        
+        String result = "";
+        for (Entry<String, List<String>> entry: stateList.entrySet()){
+            result += entry.getKey() + "\n" + " " + printList(entry.getValue()) + "\n";
+        }
+        
+        return result;
+    }
+
+    private String printList(List<String> value) {
+        String result = "";
+        int listSize = value.size();
+        for (int i = 0; i < listSize; i++){
+            result += value.get(i);
+            if (i != listSize - 1){
+                result += "\n";
+            }
+        }
+        return result;
     }
 }
