@@ -16,6 +16,8 @@ import hr.fer.zemris.ppj.grammar.symbols.TerminalSymbol;
  */
 public class ProductionParser {
 
+    private static int productionCounter = 0;
+
     /**
      * Parses a production from the string definition.
      *
@@ -36,7 +38,7 @@ public class ProductionParser {
             }
         }
 
-        return new Production(leftSide, rightSide);
+        return new Production(leftSide, rightSide, productionCounter++);
     }
 
     /**

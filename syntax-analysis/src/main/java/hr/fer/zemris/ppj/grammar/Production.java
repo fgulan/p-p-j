@@ -12,8 +12,9 @@ import hr.fer.zemris.ppj.grammar.interfaces.Symbol;
  *
  * @version alpha
  */
-public class Production {
+public class Production implements Comparable {
 
+    private final int order;
     private final Symbol leftSide;
     private final List<Symbol> rightSide = new ArrayList<>();
 
@@ -24,11 +25,14 @@ public class Production {
      *            the left side.
      * @param rightSide
      *            the right side.
+     * @param order
+     *            order of the production, used to resolve grammar ambiguities.
      * @since alpha
      */
-    public Production(Symbol leftSide, List<Symbol> rightSide) {
+    public Production(Symbol leftSide, List<Symbol> rightSide, int order) {
         this.leftSide = leftSide;
         this.rightSide.addAll(rightSide);
+        this.order = order;
     }
 
     /**
@@ -96,5 +100,10 @@ public class Production {
         }
 
         return result;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return Integer.compare(order, ((Production) o).order);
     }
 }

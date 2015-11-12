@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import hr.fer.zemris.ppj.finite.automaton.BasicInput;
 import hr.fer.zemris.ppj.finite.automaton.ENFAutomaton;
@@ -28,7 +28,7 @@ public class ParserBuilder {
         Set<Input> alphabet = new HashSet<>();
         Set<FAutomatonTransition> transitions = new HashSet<>();
         Set<State> automatonStates = new HashSet<>();
-        
+
         List<LRItem> items = new ArrayList<LRItem>();
         Map<LRItem, LRState> states = new HashMap<>();
 
@@ -73,23 +73,25 @@ public class ParserBuilder {
                 LRItem nextItem = getItemWithNextDot(item, items);
                 if (nextItem != null) {
                     Symbol symbol = item.getProduction().rightSide().get(dotIndex);
-                    LRItem newItem = new LRItem(nextItem.getProduction(), nextItem.getDotIndex(), item.getTerminalSymbols());
+                    LRItem newItem =
+                            new LRItem(nextItem.getProduction(), nextItem.getDotIndex(), item.getTerminalSymbols());
                     LRState nextState = states.get(newItem);
                     LRState addedState = addedStates.get(newItem);
-                    
-                    if (nextState == null && addedState == null) {
+
+                    if ((nextState == null) && (addedState == null)) {
                         nextState = new LRState(new ArrayList<LRItem>(Arrays.asList(newItem)), stateIndex++);
                         automatonStates.add(nextState);
                         addedStates.put(newItem, nextState);
                         changed = true;
-                    } else if (nextState == null) {
+                    }
+                    else if (nextState == null) {
                         nextState = addedState;
                     }
                     NormalTransition transition = new NormalTransition(state, nextState, new BasicInput(symbol));
                     transitions.add(transition);
                 }
 
-                if (currentSymbol != null && !currentSymbol.isTerminal()) {
+                if ((currentSymbol != null) && !currentSymbol.isTerminal()) {
                     int size = item.getProduction().rightSide().size();
                     List<Symbol> leftSymbols = new ArrayList<>();
                     for (int i = dotIndex + 1; i < size; i++) {
@@ -107,12 +109,13 @@ public class ParserBuilder {
 
                         LRState nextState = states.get(newItem);
                         LRState addedState = addedStates.get(newItem);
-                        if (nextState == null && addedState == null) {
+                        if ((nextState == null) && (addedState == null)) {
                             nextState = new LRState(new ArrayList<LRItem>(Arrays.asList(newItem)), stateIndex++);
                             addedStates.put(newItem, nextState);
                             automatonStates.add(nextState);
                             changed = true;
-                        } else if (nextState == null) {
+                        }
+                        else if (nextState == null) {
                             nextState = addedState;
                         }
                         EpsilonTransition transition = new EpsilonTransition(state, nextState);
@@ -132,7 +135,7 @@ public class ParserBuilder {
 
     private static LRState createStartState(Grammar grammar) {
         NonterminalSymbol startSymbol = new NonterminalSymbol("Demon_Napasni");
-        Production production = new Production(startSymbol, Arrays.asList(new Symbol[] { grammar.startSymbol() }));
+        Production production = new Production(startSymbol, Arrays.asList(new Symbol[] { grammar.startSymbol() }), -1);
         LRItem startItem = new LRItem(production, 0, new HashSet<>());
         return new LRState(Arrays.asList(new LRItem[] { startItem }), 0);
     }
@@ -140,7 +143,7 @@ public class ParserBuilder {
     private static List<LRItem> getStartItems(Symbol symbol, List<LRItem> items) {
         List<LRItem> newItems = new ArrayList<>();
         for (LRItem item : items) {
-            if (item.getProduction().leftSide().equals(symbol) && item.getDotIndex() == 0) {
+            if (item.getProduction().leftSide().equals(symbol) && (item.getDotIndex() == 0)) {
                 newItems.add(item);
             }
         }
@@ -149,7 +152,7 @@ public class ParserBuilder {
 
     private static LRItem getItemWithNextDot(LRItem item, List<LRItem> items) {
         for (LRItem tempItem : items) {
-            if (tempItem.getDotIndex() == item.getDotIndex() + 1
+            if ((tempItem.getDotIndex() == (item.getDotIndex() + 1))
                     && tempItem.getProduction().equals(item.getProduction())) {
                 return tempItem;
             }
