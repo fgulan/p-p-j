@@ -19,17 +19,19 @@ import hr.fer.zemris.ppj.lr1.parser.actions.ShiftAction;
 
 /**
  * Factory class that creates LR(1) parser tables.
+ * 
  * @author Domagoj Polancec
  *
  */
 public class LR1ParserTableFactory {
 
     /**
-     * Creates an LR(1) parser table from the given Deterministic Finite Automaton and the given
-     * grammar start symbol.
-     * @param dfa automaton to generate the table from
-     * @param startSymbol grammar start symbol, used to determine which state and symbol to call
-     * AcceptAction for
+     * Creates an LR(1) parser table from the given Deterministic Finite Automaton and the given grammar start symbol.
+     * 
+     * @param dfa
+     *            automaton to generate the table from
+     * @param startSymbol
+     *            grammar start symbol, used to determine which state and symbol to call AcceptAction for
      * @return the generated parser table
      */
     public static LR1ParserTable fromDFA(DFAutomaton dfa, Symbol startSymbol) {
@@ -50,7 +52,7 @@ public class LR1ParserTableFactory {
             separate(lrState, completeItems, nonCompleteItems);
 
             completeItems.sort(null);
-            for (int i = completeItems.size() - 1; i >= 0; i++) {
+            for (int i = completeItems.size() - 1; i >= 0; i--) {
                 fillTableReduce(state, builder, completeItems.get(i), startSymbol);
             }
 
@@ -108,7 +110,7 @@ public class LR1ParserTableFactory {
     private static void separate(LRState lrState, List<LRItem> completeItems, List<LRItem> nonCompleteItems) {
         for (LRItem item : lrState.getItems()) {
             Production production = item.getProduction();
-            if (production.isEpsilonProduction() || item.getDotIndex() == production.rightSide().size()) {
+            if (production.isEpsilonProduction() || (item.getDotIndex() == production.rightSide().size())) {
                 completeItems.add(item);
             }
             else {
