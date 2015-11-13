@@ -1,7 +1,7 @@
 package hr.fer.zemris.ppj.grammar;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,14 +16,14 @@ public class GrammarTest {
      */
     @Before
     public void setUpBeforeClass() throws Exception {
-        Set<String> nonterminalSymbols = new HashSet<>();
+        List<String> nonterminalSymbols = new ArrayList<>();
         nonterminalSymbols.add("<A>");
         nonterminalSymbols.add("<B>");
         nonterminalSymbols.add("<C>");
         nonterminalSymbols.add("<D>");
         nonterminalSymbols.add("<E>");
 
-        Set<String> terminalSymbols = new HashSet<>();
+        List<String> terminalSymbols = new ArrayList<>();
         terminalSymbols.add("a");
         terminalSymbols.add("b");
         terminalSymbols.add("c");

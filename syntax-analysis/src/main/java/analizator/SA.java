@@ -9,8 +9,12 @@ import java.util.List;
 
 import hr.fer.zemris.ppj.Lexeme;
 import hr.fer.zemris.ppj.grammar.ProductionParser;
+import hr.fer.zemris.ppj.grammar.interfaces.Symbol;
 import hr.fer.zemris.ppj.lr1.parser.LR1Parser;
 import hr.fer.zemris.ppj.lr1.parser.LR1ParserTable;
+import hr.fer.zemris.ppj.lr1.parser.LR1ParserTableBuilder;
+import hr.fer.zemris.ppj.lr1.parser.actions.ActionFactory;
+import hr.fer.zemris.ppj.lr1.parser.actions.ParserAction;
 
 /**
  * <code>SA</code> class is required by the evaluator, to contain a entry point for the syntax analyzer.
@@ -22,6 +26,10 @@ import hr.fer.zemris.ppj.lr1.parser.LR1ParserTable;
 public class SA {
 
     private static final List<Lexeme> lexemes = new ArrayList<>();
+
+    private static final List<Symbol> nonterminalSymbols = new ArrayList<>();
+    private static final List<Symbol> terminalSymbols = new ArrayList<>();
+    private static final List<Symbol> syncSymbols = new ArrayList<>();
     private static LR1ParserTable parserTable;
 
     /**
@@ -40,7 +48,19 @@ public class SA {
             System.exit(0);
         }
 
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("table.txt")))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("definition.txt")))) {
+            for (String symbol : reader.readLine().split(" ")) {
+                nonterminalSymbols.add(ProductionParser.parseSymbol(symbol));
+            }
+
+            for (String symbol : reader.readLine().split(" ")) {
+                terminalSymbols.add(ProductionParser.parseSymbol(symbol));
+            }
+
+            for (String symbol : reader.readLine().split(" ")) {
+                syncSymbols.add(ProductionParser.parseSymbol(symbol));
+            }
+
             readParserActionTable(reader);
         }
         catch (FileNotFoundException e) {
@@ -52,7 +72,8 @@ public class SA {
             System.exit(0);
         }
 
-        new LR1Parser(parserTable).analyze(lexemes, new PrintStream(System.out), new PrintStream(System.err));
+        new LR1Parser(parserTable, syncSymbols).analyze(lexemes, new PrintStream(System.out),
+                new PrintStream(System.err));
     }
 
     /*
@@ -71,6 +92,19 @@ public class SA {
      * Reads the LR(1) parser action table.
      */
     private static void readParserActionTable(BufferedReader reader) throws IOException {
-        // TODO: Wait for Domagoj
+        LR1ParserTableBuilder builder = new LR1ParserTableBuilder();
+        String line = reader.readLine();
+        while (line != null) {
+            String stateID = line.trim();
+            line = reader.readLine();
+            while ((line != null) && line.startsWith(" ")) {
+                String[] split = line.trim().split(" ", 1);
+                Symbol symbol = ProductionParser.parseSymbol(split[0]);
+                ParserAction action = ActionFactory.fromString(split[1]);
+                builder.addAction(new LR1ParserTable.TablePair(stateID, symbol), action);
+                line = reader.readLine();
+            }
+        }
+        parserTable = builder.build();
     }
 }

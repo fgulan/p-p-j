@@ -13,7 +13,7 @@ public class ActionFactory {
 
     /**
      * Creates a action from the the string.
-     * 
+     *
      * @param definition
      *            the action definiton.
      * @return created action.
@@ -34,6 +34,8 @@ public class ActionFactory {
                 return new PutAction(argument);
             case RejectAction.ACTION_NAME:
                 return new RejectAction();
+            case AcceptAction.ACTION_NAME:
+                return new AcceptAction();
             default:
                 throw new IllegalArgumentException("Undefined action: " + definition + ".");
         }

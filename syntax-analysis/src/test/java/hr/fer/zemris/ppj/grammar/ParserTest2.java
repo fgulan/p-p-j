@@ -1,7 +1,7 @@
 package hr.fer.zemris.ppj.grammar;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -19,15 +19,14 @@ public class ParserTest2 {
      */
     @Before
     public void setUpBeforeClass() throws Exception {
-        Set<String> nonterminalSymbols = new HashSet<>();
+        List<String> nonterminalSymbols = new ArrayList<>();
         nonterminalSymbols.add("<S'>");
         nonterminalSymbols.add("<S>");
         nonterminalSymbols.add("<C>");
-        
-        Set<String> terminalSymbols = new HashSet<>();
+
+        List<String> terminalSymbols = new ArrayList<>();
         terminalSymbols.add("c");
         terminalSymbols.add("d");
-
 
         String startSymbol = "<S'>";
 
@@ -36,7 +35,6 @@ public class ParserTest2 {
         builder.addProduction(ProductionParser.fromText("<S'>", "<S>"));
         builder.addProduction(ProductionParser.fromText("<C>", "c <C>"));
         builder.addProduction(ProductionParser.fromText("<C>", "d"));
-
 
         grammar = builder.build();
     }

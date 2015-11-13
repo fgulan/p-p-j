@@ -1,6 +1,7 @@
 package hr.fer.zemris.ppj.grammar;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import hr.fer.zemris.ppj.grammar.interfaces.Symbol;
@@ -30,7 +31,7 @@ public class GrammarBuilder {
      *            the start
      * @since alpha
      */
-    public GrammarBuilder(final Set<String> nonterminalSymbols, final Set<String> terminalSymbols,
+    public GrammarBuilder(final List<String> nonterminalSymbols, final List<String> terminalSymbols,
             final String startSymbol) {
 
         for (String name : nonterminalSymbols) {

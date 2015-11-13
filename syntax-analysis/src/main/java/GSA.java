@@ -4,12 +4,17 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
+import hr.fer.zemris.ppj.finite.automaton.DFAutomaton;
+import hr.fer.zemris.ppj.finite.automaton.transforms.DFAConverter;
 import hr.fer.zemris.ppj.grammar.Grammar;
 import hr.fer.zemris.ppj.grammar.GrammarBuilder;
 import hr.fer.zemris.ppj.grammar.ProductionParser;
+import hr.fer.zemris.ppj.lr1.parser.LR1ParserTable;
+import hr.fer.zemris.ppj.lr1.parser.LR1ParserTableFactory;
+import hr.fer.zemris.ppj.lr1.parser.ParserBuilder;
 
 /**
  * <code>GSA</code> class is required by the evaluator, to contain a entry point for the syntax analyzer generator.
@@ -20,9 +25,9 @@ import hr.fer.zemris.ppj.grammar.ProductionParser;
  */
 public class GSA {
 
-    private static final Set<String> nonterminalSymbols = new HashSet<>();
-    private static final Set<String> terminalSymbols = new HashSet<>();
-    private static final Set<String> syncSymbols = new HashSet<>();
+    private static final List<String> nonterminalSymbols = new ArrayList<>();
+    private static final List<String> terminalSymbols = new ArrayList<>();
+    private static final List<String> syncSymbols = new ArrayList<>();
     private static Grammar grammar;
 
     /**
@@ -41,7 +46,9 @@ public class GSA {
         }
 
         try (OutputStreamWriter writer = new FileWriter(new File("analizator/definition.txt"))) {
-            // writeAnalyzerDefinition(writer, new AnalyzerDefinition(analyzerStates, lexemeNames, rules));
+            DFAutomaton automaton = new DFAConverter().transform(ParserBuilder.fromLR1Grammar(grammar));
+            LR1ParserTable parserTable = LR1ParserTableFactory.fromDFA(automaton, ProductionParser.parseSymbol("<%>"));
+            writeParserTable(parserTable, writer);
         }
         catch (final IOException e) {
             System.err.println(e.getMessage());
@@ -67,7 +74,8 @@ public class GSA {
             syncSymbols.add(symbol);
         }
 
-        GrammarBuilder builder = new GrammarBuilder(nonterminalSymbols, terminalSymbols, "<$>");
+        GrammarBuilder builder = new GrammarBuilder(nonterminalSymbols, terminalSymbols, "<%>");
+        builder.addProduction(ProductionParser.fromText("<%> " + originalStartSymbol));
         String line = reader.readLine();
         do {
             String leftSide = line;
@@ -77,10 +85,23 @@ public class GSA {
                 builder.addProduction(ProductionParser.fromText(leftSide, rightSide));
             } while ((line != null) && line.startsWith(" "));
         } while (line != null);
-
-        builder.addProduction(ProductionParser.fromText("<$> " + originalStartSymbol));
-
         grammar = builder.build();
+    }
+
+    private static void writeParserTable(LR1ParserTable table, OutputStreamWriter writer) throws IOException {
+        for (String symbol : nonterminalSymbols) {
+            writer.write(symbol + " ");
+        }
+        writer.write("\n");
+        for (String symbol : terminalSymbols) {
+            writer.write(symbol + " ");
+        }
+        writer.write("\n");
+        for (String symbol : syncSymbols) {
+            writer.write(symbol + " ");
+        }
+        writer.write("\n");
+        writer.write(table.toString());
     }
 
 }
