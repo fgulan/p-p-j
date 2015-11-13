@@ -12,7 +12,7 @@ import hr.fer.zemris.ppj.grammar.interfaces.Symbol;
  *
  * @version alpha
  */
-public class Production implements Comparable {
+public class Production implements Comparable<Production> {
 
     private final int order;
     private final Symbol leftSide;
@@ -102,8 +102,14 @@ public class Production implements Comparable {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     * @since
+     */
     @Override
-    public int compareTo(Object o) {
-        return Integer.compare(order, ((Production) o).order);
+    public int compareTo(Production o) {
+        return Integer.compare(order, o.order);
     }
 }

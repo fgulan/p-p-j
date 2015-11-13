@@ -23,8 +23,9 @@ import hr.fer.zemris.ppj.grammar.interfaces.Symbol;
 import hr.fer.zemris.ppj.grammar.symbols.TerminalSymbol;
 
 public class ParserBuilder {
+
     public final static TerminalSymbol END_SYMBOL = new TerminalSymbol("#");
-    
+
     public static ENFAutomaton fromLR1Grammar(Grammar grammar) {
         Set<Input> alphabet = new HashSet<>();
         Set<FAutomatonTransition> transitions = new HashSet<>();
@@ -78,7 +79,7 @@ public class ParserBuilder {
                     LRState nextState = states.get(newItem);
                     LRState addedState = addedStates.get(newItem);
 
-                    if (nextState == null && addedState == null) {
+                    if ((nextState == null) && (addedState == null)) {
                         nextState = new LRState(new ArrayList<LRItem>(Arrays.asList(newItem)), stateIndex++);
                         automatonStates.add(nextState);
                         addedStates.put(newItem, nextState);
@@ -109,12 +110,13 @@ public class ParserBuilder {
 
                         LRState nextState = states.get(newItem);
                         LRState addedState = addedStates.get(newItem);
-                        if (nextState == null && addedState == null) {
+                        if ((nextState == null) && (addedState == null)) {
                             nextState = new LRState(new ArrayList<LRItem>(Arrays.asList(newItem)), stateIndex++);
                             addedStates.put(newItem, nextState);
                             automatonStates.add(nextState);
                             changed = true;
-                        } else if (nextState == null) {
+                        }
+                        else if (nextState == null) {
                             nextState = addedState;
                         }
                         EpsilonTransition transition = new EpsilonTransition(state, nextState);

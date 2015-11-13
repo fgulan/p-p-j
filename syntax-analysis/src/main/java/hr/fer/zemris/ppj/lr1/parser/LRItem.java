@@ -7,7 +7,7 @@ import hr.fer.zemris.ppj.grammar.Production;
 import hr.fer.zemris.ppj.grammar.interfaces.Symbol;
 import hr.fer.zemris.ppj.grammar.symbols.TerminalSymbol;
 
-public class LRItem {
+public class LRItem implements Comparable<LRItem> {
 
     private final Production production;
     private final Set<Symbol> terminalSymbols;
@@ -53,15 +53,13 @@ public class LRItem {
         terminalSymbols.add(symbol);
     }
 
-    
-
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + dotIndex;
-        result = prime * result + ((production == null) ? 0 : production.hashCode());
-        result = prime * result + ((terminalSymbols == null) ? 0 : terminalSymbols.hashCode());
+        result = (prime * result) + dotIndex;
+        result = (prime * result) + ((production == null) ? 0 : production.hashCode());
+        result = (prime * result) + ((terminalSymbols == null) ? 0 : terminalSymbols.hashCode());
         return result;
     }
 
@@ -84,14 +82,16 @@ public class LRItem {
             if (other.production != null) {
                 return false;
             }
-        } else if (!production.equals(other.production)) {
+        }
+        else if (!production.equals(other.production)) {
             return false;
         }
         if (terminalSymbols == null) {
             if (other.terminalSymbols != null) {
                 return false;
             }
-        } else if (!terminalSymbols.equals(other.terminalSymbols)) {
+        }
+        else if (!terminalSymbols.equals(other.terminalSymbols)) {
             return false;
         }
         return true;
@@ -102,11 +102,13 @@ public class LRItem {
         String result = production.leftSide().toString() + ((production.rightSide().isEmpty()) ? "->null" : "->");
         for (int i = 0, size = production.rightSide().size(); i < size; i++) {
             Symbol symbol = production.rightSide().get(i);
-            if (dotIndex == size && i == size - 1) {
+            if ((dotIndex == size) && (i == (size - 1))) {
                 result += symbol.toString() + "*";
-            } else if (i == dotIndex) {
+            }
+            else if (i == dotIndex) {
                 result += "*" + symbol.toString();
-            } else {
+            }
+            else {
                 result += symbol.toString();
             }
         }
@@ -115,5 +117,10 @@ public class LRItem {
             result += symbol.name();
         }
         return result + "}";
+    }
+
+    @Override
+    public int compareTo(LRItem o) {
+        return production.compareTo(o.production);
     }
 }

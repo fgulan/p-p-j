@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hr.fer.zemris.ppj.finite.automaton.DFAutomaton;
+import hr.fer.zemris.ppj.finite.automaton.ENFAutomaton;
 import hr.fer.zemris.ppj.finite.automaton.transforms.DFAConverter;
 import hr.fer.zemris.ppj.grammar.Grammar;
 import hr.fer.zemris.ppj.grammar.GrammarBuilder;
@@ -38,7 +40,7 @@ public class GSA {
      * @since alpha
      */
     public static void main(String[] args) {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("test.san")))) {
             readInputData(reader);
         }
         catch (final IOException e) {
@@ -46,7 +48,11 @@ public class GSA {
         }
 
         try (OutputStreamWriter writer = new FileWriter(new File("analizator/definition.txt"))) {
-            DFAutomaton automaton = new DFAConverter().transform(ParserBuilder.fromLR1Grammar(grammar));
+            System.out.println(1);
+            ENFAutomaton enfa = ParserBuilder.fromLR1Grammar(grammar);
+            System.out.println(2);
+            DFAutomaton automaton = new DFAConverter().transform(enfa);
+            System.out.println(3);
             LR1ParserTable parserTable = LR1ParserTableFactory.fromDFA(automaton, ProductionParser.parseSymbol("<%>"));
             writeParserTable(parserTable, writer);
         }
@@ -64,7 +70,7 @@ public class GSA {
                 originalStartSymbol = symbol;
             }
         }
-        nonterminalSymbols.add("<$>");
+        nonterminalSymbols.add("<%>");
 
         for (String symbol : reader.readLine().substring(3).split(" ")) {
             terminalSymbols.add(symbol);
@@ -80,10 +86,11 @@ public class GSA {
         do {
             String leftSide = line;
             do {
-                String rightSide = reader.readLine();
-                line = reader.readLine();
-                builder.addProduction(ProductionParser.fromText(leftSide, rightSide));
-            } while ((line != null) && line.startsWith(" "));
+                String rightSide = line = reader.readLine();
+                if (line != null) {
+                    builder.addProduction(ProductionParser.fromText(leftSide, rightSide.trim()));
+                }
+            } while ((line != null) && !line.startsWith("<"));
         } while (line != null);
         grammar = builder.build();
     }
