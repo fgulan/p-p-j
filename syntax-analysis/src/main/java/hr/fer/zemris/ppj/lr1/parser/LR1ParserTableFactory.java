@@ -19,7 +19,7 @@ import hr.fer.zemris.ppj.lr1.parser.actions.ShiftAction;
 
 /**
  * Factory class that creates LR(1) parser tables.
- * 
+ *
  * @author Domagoj Polancec
  *
  */
@@ -27,7 +27,7 @@ public class LR1ParserTableFactory {
 
     /**
      * Creates an LR(1) parser table from the given Deterministic Finite Automaton and the given grammar start symbol.
-     * 
+     *
      * @param dfa
      *            automaton to generate the table from
      * @param startSymbol
@@ -72,7 +72,7 @@ public class LR1ParserTableFactory {
             TablePair pair = new TablePair(state.getId(), nextSymbol);
             if (nextSymbol.isTerminal()) {
                 ParserAction oldAction = builder.getAction(pair);
-                ParserAction newAction = new ShiftAction(state.getId());
+                ParserAction newAction = new ShiftAction(transition.getNewState().getId());
                 if (oldAction != null) {
                     System.err.println("Resolved shift/reduce conflict for state: " + state.getId() + " symbol: "
                             + nextSymbol + ". Old action: " + oldAction + " New action:" + newAction);

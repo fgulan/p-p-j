@@ -27,7 +27,7 @@ public class GeneratorTest {
     @Before
     public void setUpBeforeClass() throws Exception {
         List<String> nonterminalSymbols = new ArrayList<>();
-        nonterminalSymbols.add("<%>");
+        // nonterminalSymbols.add("<%>");
         nonterminalSymbols.add("<S>");
         nonterminalSymbols.add("<A>");
         nonterminalSymbols.add("<B>");
@@ -36,10 +36,11 @@ public class GeneratorTest {
         terminalSymbols.add("a");
         terminalSymbols.add("b");
 
-        String startSymbol = "<%>";
+        // String startSymbol = "<%>";
+        String startSymbol = "<S>";
 
         GrammarBuilder builder = new GrammarBuilder(nonterminalSymbols, terminalSymbols, startSymbol);
-        builder.addProduction(ProductionParser.fromText("<%>", "<S>"));
+        // builder.addProduction(ProductionParser.fromText("<%>", "<S>"));
         builder.addProduction(ProductionParser.fromText("<S>", "<A>"));
         builder.addProduction(ProductionParser.fromText("<A>", "<B> <A>"));
         builder.addProduction(ProductionParser.fromText("<A>", "$"));
