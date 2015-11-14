@@ -2,12 +2,10 @@ package hr.fer.zemris.ppj.finite.automaton.transforms;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
@@ -17,6 +15,7 @@ import hr.fer.zemris.ppj.finite.automaton.ENFAutomaton;
 import hr.fer.zemris.ppj.finite.automaton.interfaces.AutomatonTransform;
 import hr.fer.zemris.ppj.finite.automaton.interfaces.Input;
 import hr.fer.zemris.ppj.finite.automaton.interfaces.State;
+import hr.fer.zemris.ppj.finite.automaton.interfaces.TransferFunction;
 import hr.fer.zemris.ppj.finite.automaton.interfaces.Transition;
 import hr.fer.zemris.ppj.finite.automaton.transfer.DFAutomatonTransferFunction;
 import hr.fer.zemris.ppj.finite.automaton.transfer.DeterministicTransition;
@@ -32,16 +31,15 @@ import hr.fer.zemris.ppj.finite.automaton.transfer.DeterministicTransition;
 public class DFAConverter implements AutomatonTransform<ENFAutomaton, DFAutomaton> {
 
     private Map<Set<State>, State> newStates = new HashMap<>();
-    private Map<State, Map<Input, Set<State>>> newTransitions = new HashMap<>();
 
     private State stateExample; // Used for creating new instances of the states.
     private Map<State, Map<Input, Set<State>>> oldTransitions = new HashMap<>();
     private Map<State, Set<State>> eClosures = new HashMap<>();
 
     // Used to build the automaton after transformation
-    private Set<State> states = new HashSet<>();
+    private Set<State> states;
     private Set<State> acceptStates = new HashSet<>();
-    private Set<Input> alphabet = new HashSet<>();
+    private Set<Input> alphabet;
     private Set<DeterministicTransition> transitions = new HashSet<>();
     private State startState;
 
@@ -49,29 +47,33 @@ public class DFAConverter implements AutomatonTransform<ENFAutomaton, DFAutomato
     public DFAutomaton transform(final ENFAutomaton source) {
         // System.out.println(source.getStates().size());
         stateExample = source.getStartState();
-        List<Input> tempAlphabet = new ArrayList<>(source.getAlphabet());
-        Collections.sort(tempAlphabet);
+        alphabet = source.getAlphabet();
 
-        unrollTransitions(source.getTransferFunction().getTransitions());
-        calculateEClosures(source.getStates());
+        List<Input> tempAlphabet = new ArrayList<>(alphabet);
+        tempAlphabet.sort(null);
 
-        Set<State> closure = eClosures.get(source.getStartState());
+        TransferFunction function = source.getTransferFunction();
+
+        unrollTransitions(source.getStates(), function);
+        calculateEClosures(oldTransitions.keySet());
 
         Queue<Set<State>> unprocessed = new ArrayDeque<>(); // Queue is used instead of the stack to get state numbers
                                                             // that are easier to check by hand
+
+        Set<State> closure = eClosure(source.getStartState());
+        startState = getState(closure);
+        newStates.put(closure, startState);
         unprocessed.add(closure);
 
         while (!unprocessed.isEmpty()) {
             Set<State> current = unprocessed.poll();
-            System.out.println(newStates.size() + " " + System.currentTimeMillis());
-            State newState = stateExample.newInstance(String.valueOf(newStates.size())).combine(current);
-            states.add(newState);
+            // System.out.println(newStates.size() + " " + System.currentTimeMillis());
+
+            State newState = getState(current);
+
             if (acceptingDFAState(current, source)) {
                 acceptStates.add(newState);
             }
-            newStates.put(current, newState);
-
-            Map<Input, Set<State>> stateTransitions = new HashMap<>();
 
             for (Input symbol : tempAlphabet) {
                 Set<State> newClosure = transition(current, symbol);
@@ -79,53 +81,48 @@ public class DFAConverter implements AutomatonTransform<ENFAutomaton, DFAutomato
                     if (!newStates.containsKey(newClosure) && !unprocessed.contains(newClosure)) {
                         unprocessed.add(newClosure);
                     }
-                    stateTransitions.put(symbol, newClosure);
+                    State transitionState = getState(newClosure);
+                    transitions.add(new DeterministicTransition(newState, transitionState, symbol));
+                    newStates.put(newClosure, transitionState);
                 }
             }
-            newTransitions.put(newState, stateTransitions);
         }
 
-        for (State newState : newTransitions.keySet()) {
-            if (newState.getId().equals("0")) {
-                startState = newState;
-            }
-
-            for (Entry<Input, Set<State>> transition : newTransitions.get(newState).entrySet()) {
-                transitions.add(new DeterministicTransition(newState, newStates.get(transition.getValue()),
-                        transition.getKey()));
-            }
-        }
-
-        alphabet = source.getAlphabet();
+        states = new HashSet<>(newStates.values());
 
         return new DFAutomaton(states, acceptStates, alphabet, new DFAutomatonTransferFunction(transitions),
                 startState);
     }
 
-    private void unrollTransitions(Set<Transition> transitions) {
-        for (Transition transition : transitions) {
-            Map<Input, Set<State>> stateTransitions = oldTransitions.containsKey(transition.getOldState())
-                    ? oldTransitions.get(transition.getOldState()) : new HashMap<>();
-            Set<State> inputTransitions = stateTransitions.containsKey(transition.getInput())
-                    ? stateTransitions.get(transition.getInput()) : new HashSet<>();
-            inputTransitions.add(transition.getNewState());
-            stateTransitions.put(transition.getInput(), inputTransitions);
-            oldTransitions.put(transition.getOldState(), stateTransitions);
+    private void unrollTransitions(Set<State> states, TransferFunction function) {
+        for (State state : states) {
+            Map<Input, Set<State>> stateTransitions = new HashMap<>();
+            for (Transition transition : function.getTransitionsFromState(state)) {
+                Set<State> nextStates = stateTransitions.get(transition.getInput());
+                if (nextStates == null) {
+                    nextStates = new HashSet<>();
+                }
+                nextStates.add(transition.getNewState());
+                stateTransitions.put(transition.getInput(), nextStates);
+            }
+            oldTransitions.put(state, stateTransitions);
         }
     }
 
     private void calculateEClosures(Set<State> states) {
         for (State state : states) {
             Set<State> closure = new HashSet<>();
-            closure.add(state);
             Stack<State> stack = new Stack<>();
-            stack.add(state);
+
+            closure.add(state);
+            stack.push(state);
             while (!stack.isEmpty()) {
                 State top = stack.pop();
-                if (oldTransitions.containsKey(top)) {
-                    Map<Input, Set<State>> stateTransitions = oldTransitions.get(top);
-                    if (stateTransitions.containsKey(null)) {
-                        for (State eState : stateTransitions.get(null)) {
+                Map<Input, Set<State>> stateTransitions = oldTransitions.get(top);
+                if (stateTransitions != null) {
+                    Set<State> epsilonStates = stateTransitions.get(null);
+                    if (epsilonStates != null) {
+                        for (State eState : epsilonStates) {
                             if (!closure.contains(eState)) {
                                 closure.add(eState);
                                 stack.push(eState);
@@ -134,8 +131,34 @@ public class DFAConverter implements AutomatonTransform<ENFAutomaton, DFAutomato
                     }
                 }
             }
+
             eClosures.put(state, closure);
         }
+    }
+
+    private State getState(Set<State> states) {
+        State state = newStates.get(states);
+        if (state == null) {
+            state = stateExample.newInstance(String.valueOf(newStates.size())).combine(states);
+        }
+        return state;
+    }
+
+    private Set<State> eClosure(State state) {
+        if (!eClosures.containsKey(state)) {
+            Set<State> closure = new HashSet<>();
+            closure.add(state);
+            eClosures.put(state, closure);
+        }
+        return eClosures.get(state);
+    }
+
+    private Set<State> eClosure(Set<State> states) {
+        Set<State> closure = new HashSet<>();
+        for (State state : states) {
+            closure.addAll(eClosure(state));
+        }
+        return closure;
     }
 
     private Set<State> transition(Set<State> states, Input symbol) {
@@ -144,19 +167,11 @@ public class DFAConverter implements AutomatonTransform<ENFAutomaton, DFAutomato
             if (oldTransitions.containsKey(state)) {
                 Map<Input, Set<State>> stateTransitions = oldTransitions.get(state);
                 if (stateTransitions.containsKey(symbol)) {
-                    closure.addAll(eClosure(stateTransitions.get(symbol)));
+                    closure.addAll(stateTransitions.get(symbol));
                 }
             }
         }
-        return closure;
-    }
-
-    private Set<State> eClosure(Set<State> states) {
-        Set<State> closure = new HashSet<>();
-        for (State state : states) {
-            closure.addAll(eClosures.get(state));
-        }
-        return closure;
+        return eClosure(closure);
     }
 
     private boolean acceptingDFAState(Set<State> states, ENFAutomaton source) {

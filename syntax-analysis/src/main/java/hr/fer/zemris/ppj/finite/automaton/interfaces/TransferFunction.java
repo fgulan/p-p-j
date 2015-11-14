@@ -65,4 +65,13 @@ public interface TransferFunction {
      */
     Set<State> getNewStates(Set<State> currentStates, Input input);
 
+    /**
+     * Gets all transitions from specified state.
+     *
+     * @param state
+     *            the current states of the automaton.
+     * @return transitions from the state.
+     */
+    Set<Transition> getTransitionsFromState(State state);
+
 }

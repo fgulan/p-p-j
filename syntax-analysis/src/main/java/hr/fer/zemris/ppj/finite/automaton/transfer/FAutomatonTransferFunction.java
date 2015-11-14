@@ -20,7 +20,7 @@ import hr.fer.zemris.ppj.finite.automaton.interfaces.Transition;
  * @version 1.0
  */
 public abstract class FAutomatonTransferFunction implements TransferFunction {
-    
+
     private final Set<FAutomatonTransition> allTransitions = new HashSet<>();
     private final Set<FAutomatonTransition> allEpsilonTransitions = new HashSet<>();
     private final Set<FAutomatonTransition> allNormalTransitions = new HashSet<>();
@@ -39,22 +39,22 @@ public abstract class FAutomatonTransferFunction implements TransferFunction {
 
         for (final FAutomatonTransition transition : transitions) {
             allTransitions.add(transition);
-            putTransition(this.oldStateTransitions, transition.getOldState(), transition);
+            putTransition(oldStateTransitions, transition.getOldState(), transition);
             if (transition.isEpsilonTransition()) {
                 allEpsilonTransitions.add(transition);
-                putTransition(this.oldStateEpsilonTransitions, transition.getOldState(), transition);
+                putTransition(oldStateEpsilonTransitions, transition.getOldState(), transition);
             }
             else {
                 allNormalTransitions.add(transition);
-                putTransition(this.oldStateNormalTransitions, transition.getOldState(), transition);
-            }  
+                putTransition(oldStateNormalTransitions, transition.getOldState(), transition);
+            }
         }
     }
 
     private void putTransition(Map<State, Set<FAutomatonTransition>> transitionMap, State state,
             FAutomatonTransition transition) {
         Set<FAutomatonTransition> transitionSet = transitionMap.get(state);
-        if (transitionSet == null){
+        if (transitionSet == null) {
             transitionSet = new HashSet<>();
             transitionMap.put(state, transitionSet);
         }
@@ -79,7 +79,7 @@ public abstract class FAutomatonTransferFunction implements TransferFunction {
     @Override
     public Set<Transition> getTransitions(final State oldState, final State newState, final Input input) {
         Set<FAutomatonTransition> transitions = allTransitions;
-        if (oldState != null){
+        if (oldState != null) {
             transitions = oldStateTransitions.get(oldState);
         }
         return new HashSet<>(findMatching(oldState, newState, input, transitions));
@@ -97,17 +97,26 @@ public abstract class FAutomatonTransferFunction implements TransferFunction {
         return newStates;
     }
 
+    @Override
+    public Set<Transition> getTransitionsFromState(final State state) {
+        Set<FAutomatonTransition> transitions = oldStateTransitions.get(state);
+        if (transitions == null) {
+            transitions = new HashSet<>();
+        }
+        return new HashSet<>(transitions);
+    }
+
     /*
      * Finds transitions that match the specified criteria.
      */
-    private Set<Transition> findMatching(final State oldState, final State newState, final Input input, 
+    private Set<Transition> findMatching(final State oldState, final State newState, final Input input,
             Set<FAutomatonTransition> transitions) {
         final Set<Transition> found = new HashSet<>();
 
-        if (transitions == null){
+        if (transitions == null) {
             return found;
         }
-        
+
         for (final Transition transition : transitions) {
             final boolean inputBool = (input != null) && !input.equals(transition.getInput());
             final boolean oldBool = (oldState != null) && !oldState.equals(transition.getOldState());
@@ -141,9 +150,9 @@ public abstract class FAutomatonTransferFunction implements TransferFunction {
 
             final int oldCount = returnStates.size();
             for (final State currentState : returnStates) {
-                newStates
-                        .addAll(extractStates(findMatching(currentState, null, null, 
-                                oldStateEpsilonTransitions.get(currentState)), false, true));
+                newStates.addAll(extractStates(
+                        findMatching(currentState, null, null, oldStateEpsilonTransitions.get(currentState)), false,
+                        true));
             }
 
             returnStates.addAll(newStates);
@@ -166,8 +175,8 @@ public abstract class FAutomatonTransferFunction implements TransferFunction {
 
         final Set<State> newStates = new HashSet<>();
         for (final State currentState : currentStates) {
-            newStates.addAll(extractStates(findMatching(currentState, null, input, 
-                    oldStateNormalTransitions.get(currentState)), false, true));
+            newStates.addAll(extractStates(
+                    findMatching(currentState, null, input, oldStateNormalTransitions.get(currentState)), false, true));
         }
 
         return newStates;

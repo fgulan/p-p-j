@@ -43,7 +43,7 @@ public class LR1ParserTableFactory {
         Set<State> states = dfa.getStates();
         int br = 0;
         for (State state : states) {
-            System.out.println(br++ + " " + System.currentTimeMillis());
+            // System.out.println(br++ + " " + System.currentTimeMillis());
             LRState lrState;
             try {
                 lrState = (LRState) state;
