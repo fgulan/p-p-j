@@ -39,9 +39,11 @@ public class LR1ParserTableFactory {
      */
     public static LR1ParserTable fromDFA(DFAutomaton dfa, Symbol startSymbol) {
         LR1ParserTableBuilder builder = new LR1ParserTableBuilder();
-        
+
         Set<State> states = dfa.getStates();
+        int br = 0;
         for (State state : states) {
+            System.out.println(br++ + " " + System.currentTimeMillis());
             LRState lrState;
             try {
                 lrState = (LRState) state;
@@ -49,10 +51,9 @@ public class LR1ParserTableFactory {
             catch (ClassCastException cce) {
                 throw new IllegalArgumentException("Can't create LR parser table from this automaton!");
             }
-            
 
             Map<Input, Transition> transitions = new HashMap<>();
-            for (Transition transition: dfa.getTransferFunction().getTransitions(state, null, null)){
+            for (Transition transition : dfa.getTransferFunction().getTransitions(state, null, null)) {
                 transitions.put(transition.getInput(), transition);
             }
             List<LRItem> completeItems = new ArrayList<>();
@@ -73,7 +74,7 @@ public class LR1ParserTableFactory {
         return builder.build();
     }
 
-    private static void fillTableShiftPut(State state, DFAutomaton dfa, LR1ParserTableBuilder builder, LRItem lrItem, 
+    private static void fillTableShiftPut(State state, DFAutomaton dfa, LR1ParserTableBuilder builder, LRItem lrItem,
             Map<Input, Transition> transitions) {
         Symbol nextSymbol = lrItem.getProduction().rightSide().get(lrItem.getDotIndex());
         Transition transition = transitions.get(new BasicInput(nextSymbol.toString()));
@@ -83,8 +84,8 @@ public class LR1ParserTableFactory {
                 ParserAction oldAction = builder.getAction(pair);
                 ParserAction newAction = new ShiftAction(transition.getNewState().getId());
                 if (oldAction != null) {
-//                    System.err.println("Resolved shift/reduce conflict for state: " + state.getId() + " symbol: "
-//                            + nextSymbol + ". Old action: " + oldAction + " New action:" + newAction);
+                    // System.err.println("Resolved shift/reduce conflict for state: " + state.getId() + " symbol: "
+                    // + nextSymbol + ". Old action: " + oldAction + " New action:" + newAction);
                 }
                 builder.addAction(pair, newAction);
             }
@@ -108,18 +109,19 @@ public class LR1ParserTableFactory {
             TablePair pair = new TablePair(state.getId(), termSymbol);
             ParserAction oldAction = builder.getAction(pair);
             ReduceAction newAction = new ReduceAction(lrItem.getProduction());
-            if (oldAction != null && oldAction instanceof ReduceAction){
-                if (newAction.production().compareTo(((ReduceAction) oldAction).production()) > 0){
+            if ((oldAction != null) && (oldAction instanceof ReduceAction)) {
+                if (newAction.production().compareTo(((ReduceAction) oldAction).production()) > 0) {
                     continue;
                 }
-//                System.err.println("Resolved reduce/reduce conflict for state: " + state.getId() + " symbol: "
-//                        + termSymbol + ". Old action: " + oldAction + " New action:" + newAction);
-            } else {
-                if (oldAction instanceof ShiftAction){
+                // System.err.println("Resolved reduce/reduce conflict for state: " + state.getId() + " symbol: "
+                // + termSymbol + ". Old action: " + oldAction + " New action:" + newAction);
+            }
+            else {
+                if (oldAction instanceof ShiftAction) {
                     continue;
                 }
             }
-            
+
             builder.addAction(pair, newAction);
         }
     }

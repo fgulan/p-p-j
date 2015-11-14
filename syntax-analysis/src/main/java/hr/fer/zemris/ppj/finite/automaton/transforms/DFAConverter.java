@@ -63,7 +63,7 @@ public class DFAConverter implements AutomatonTransform<ENFAutomaton, DFAutomato
 
         while (!unprocessed.isEmpty()) {
             Set<State> current = unprocessed.poll();
-            System.out.println("Found new state: " + newStates.size());
+            System.out.println(newStates.size() + " " + System.currentTimeMillis());
             State newState = stateExample.newInstance(String.valueOf(newStates.size())).combine(current);
             states.add(newState);
             if (acceptingDFAState(current, source)) {
