@@ -20,10 +20,13 @@ import hr.fer.zemris.ppj.finite.automaton.interfaces.Transition;
  * @version 1.0
  */
 public abstract class FAutomatonTransferFunction implements TransferFunction {
-
-    private final Map<State, Set<FAutomatonTransition>> transitions = new HashMap<>();
-    private final Map<State, Set<FAutomatonTransition>> epsilonTransitions = new HashMap<>();
-    private final Map<State, Set<FAutomatonTransition>> normalTransitions = new HashMap<>();
+    
+    private final Set<FAutomatonTransition> allTransitions = new HashSet<>();
+    private final Set<FAutomatonTransition> allEpsilonTransitions = new HashSet<>();
+    private final Set<FAutomatonTransition> allNormalTransitions = new HashSet<>();
+    private final Map<State, Set<FAutomatonTransition>> oldStateTransitions = new HashMap<>();
+    private final Map<State, Set<FAutomatonTransition>> oldStateEpsilonTransitions = new HashMap<>();
+    private final Map<State, Set<FAutomatonTransition>> oldStateNormalTransitions = new HashMap<>();
 
     /**
      * Class constructor, specifies the transitions of the transfer function.
@@ -35,22 +38,25 @@ public abstract class FAutomatonTransferFunction implements TransferFunction {
     public FAutomatonTransferFunction(final Set<FAutomatonTransition> transitions) {
 
         for (final FAutomatonTransition transition : transitions) {
-            putTransition(this.transitions, transition);
+            allTransitions.add(transition);
+            putTransition(this.oldStateTransitions, transition.getOldState(), transition);
             if (transition.isEpsilonTransition()) {
-                putTransition(epsilonTransitions, transition);
+                allEpsilonTransitions.add(transition);
+                putTransition(this.oldStateEpsilonTransitions, transition.getOldState(), transition);
             }
             else {
-                putTransition(normalTransitions, transition);
-            }
+                allNormalTransitions.add(transition);
+                putTransition(this.oldStateNormalTransitions, transition.getOldState(), transition);
+            }  
         }
     }
 
-    private void putTransition(Map<State, Set<FAutomatonTransition>> transitionMap,
+    private void putTransition(Map<State, Set<FAutomatonTransition>> transitionMap, State state,
             FAutomatonTransition transition) {
-        Set<FAutomatonTransition> transitionSet = transitionMap.get(transition.getOldState());
+        Set<FAutomatonTransition> transitionSet = transitionMap.get(state);
         if (transitionSet == null){
             transitionSet = new HashSet<>();
-            transitionMap.put(transition.getOldState(), transitionSet);
+            transitionMap.put(state, transitionSet);
         }
         transitionSet.add(transition);
     }
@@ -72,7 +78,11 @@ public abstract class FAutomatonTransferFunction implements TransferFunction {
 
     @Override
     public Set<Transition> getTransitions(final State oldState, final State newState, final Input input) {
-        return new HashSet<>(findMatching(oldState, newState, input, transitions.get(oldState)));
+        Set<FAutomatonTransition> transitions = allTransitions;
+        if (oldState != null){
+            transitions = oldStateTransitions.get(oldState);
+        }
+        return new HashSet<>(findMatching(oldState, newState, input, transitions));
     }
 
     @Override
@@ -90,13 +100,14 @@ public abstract class FAutomatonTransferFunction implements TransferFunction {
     /*
      * Finds transitions that match the specified criteria.
      */
-    private Set<Transition> findMatching(final State oldState, final State newState, final Input input,
-            final Set<FAutomatonTransition> transitions) {
+    private Set<Transition> findMatching(final State oldState, final State newState, final Input input, 
+            Set<FAutomatonTransition> transitions) {
         final Set<Transition> found = new HashSet<>();
+
         if (transitions == null){
             return found;
         }
-
+        
         for (final Transition transition : transitions) {
             final boolean inputBool = (input != null) && !input.equals(transition.getInput());
             final boolean oldBool = (oldState != null) && !oldState.equals(transition.getOldState());
@@ -119,7 +130,7 @@ public abstract class FAutomatonTransferFunction implements TransferFunction {
             return new HashSet<>();
         }
 
-        if (epsilonTransitions.isEmpty()) {
+        if (allEpsilonTransitions.isEmpty()) {
             return currentStates;
         }
 
@@ -132,7 +143,7 @@ public abstract class FAutomatonTransferFunction implements TransferFunction {
             for (final State currentState : returnStates) {
                 newStates
                         .addAll(extractStates(findMatching(currentState, null, null, 
-                                epsilonTransitions.get(currentState)), false, true));
+                                oldStateEpsilonTransitions.get(currentState)), false, true));
             }
 
             returnStates.addAll(newStates);
@@ -156,7 +167,7 @@ public abstract class FAutomatonTransferFunction implements TransferFunction {
         final Set<State> newStates = new HashSet<>();
         for (final State currentState : currentStates) {
             newStates.addAll(extractStates(findMatching(currentState, null, input, 
-                    normalTransitions.get(currentState)), false, true));
+                    oldStateNormalTransitions.get(currentState)), false, true));
         }
 
         return newStates;
