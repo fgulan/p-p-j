@@ -34,7 +34,8 @@ public class DFAConverter implements AutomatonTransform<ENFAutomaton, DFAutomato
 
     private State stateExample; // Used for creating new instances of the states.
     private Map<State, Map<Input, Set<State>>> oldTransitions = new HashMap<>();
-    private Map<State, Set<State>> eClosures = new HashMap<>();
+    // private Map<State, Set<State>> eClosures = new HashMap<>();
+    private List<Set<State>> eClosures;
 
     // Used to build the automaton after transformation
     private Set<State> states;
@@ -55,7 +56,7 @@ public class DFAConverter implements AutomatonTransform<ENFAutomaton, DFAutomato
         TransferFunction function = source.getTransferFunction();
 
         unrollTransitions(source.getStates(), function);
-        calculateEClosures(oldTransitions.keySet());
+        eClosures = calculateEClosures(source.getStates());
 
         Queue<Set<State>> unprocessed = new ArrayDeque<>(); // Queue is used instead of the stack to get state numbers
                                                             // that are easier to check by hand
@@ -109,7 +110,12 @@ public class DFAConverter implements AutomatonTransform<ENFAutomaton, DFAutomato
         }
     }
 
-    private void calculateEClosures(Set<State> states) {
+    private List<Set<State>> calculateEClosures(Set<State> states) {
+        List<Set<State>> closureList = new ArrayList<>(states.size());
+        for (int i = 0; i < states.size(); i++) { // Who thought this was a good idea?
+            closureList.add(null);
+        }
+
         for (State state : states) {
             Set<State> closure = new HashSet<>();
             Stack<State> stack = new Stack<>();
@@ -131,9 +137,9 @@ public class DFAConverter implements AutomatonTransform<ENFAutomaton, DFAutomato
                     }
                 }
             }
-
-            eClosures.put(state, closure);
+            closureList.set(Integer.valueOf(state.getId()), closure);
         }
+        return closureList;
     }
 
     private State getState(Set<State> states) {
@@ -145,12 +151,7 @@ public class DFAConverter implements AutomatonTransform<ENFAutomaton, DFAutomato
     }
 
     private Set<State> eClosure(State state) {
-        if (!eClosures.containsKey(state)) {
-            Set<State> closure = new HashSet<>();
-            closure.add(state);
-            eClosures.put(state, closure);
-        }
-        return eClosures.get(state);
+        return eClosures.get(Integer.valueOf(state.getId()));
     }
 
     private Set<State> eClosure(Set<State> states) {

@@ -39,7 +39,8 @@ public class GSA {
      *            command line arguments aren't used
      * @since alpha
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        new java.util.Scanner(System.in).nextLine();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("test.san")))) {
             readInputData(reader);
         }

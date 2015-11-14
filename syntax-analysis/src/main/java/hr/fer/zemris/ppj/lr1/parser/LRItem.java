@@ -55,12 +55,13 @@ public class LRItem implements Comparable<LRItem> {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = (prime * result) + dotIndex;
-        result = (prime * result) + ((production == null) ? 0 : production.hashCode());
-        result = (prime * result) + ((terminalSymbols == null) ? 0 : terminalSymbols.hashCode());
-        return result;
+        // final int prime = 31;
+        // int result = 1;
+        // result = (prime * result) + dotIndex;
+        // result = (prime * result) + ((production == null) ? 0 : production.hashCode());
+        // result = (prime * result) + ((terminalSymbols == null) ? 0 : terminalSymbols.hashCode());
+        // return result;
+        return production.hashCode();
     }
 
     @Override

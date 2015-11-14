@@ -74,7 +74,8 @@ public class Production implements Comparable<Production> {
         if (o instanceof Production) {
             Production production = (Production) o;
 
-            return leftSide.equals(production.leftSide()) && rightSide.equals(production.rightSide());
+            // return leftSide.equals(production.leftSide()) && rightSide.equals(production.rightSide());
+            return order == production.order;
         }
 
         return false;
@@ -82,13 +83,14 @@ public class Production implements Comparable<Production> {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-
-        result = (prime * result) + leftSide.hashCode();
-        result = (prime * result) + rightSide.hashCode();
-
-        return result;
+        // final int prime = 31;
+        // int result = 1;
+        //
+        // result = (prime * result) + leftSide.hashCode();
+        // result = (prime * result) + rightSide.hashCode();
+        //
+        // return result;
+        return order;
     }
 
     @Override
