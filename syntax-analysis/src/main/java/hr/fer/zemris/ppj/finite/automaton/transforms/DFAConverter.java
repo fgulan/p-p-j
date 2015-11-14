@@ -47,7 +47,7 @@ public class DFAConverter implements AutomatonTransform<ENFAutomaton, DFAutomato
 
     @Override
     public DFAutomaton transform(final ENFAutomaton source) {
-        System.out.println(source.getStates().size());
+        // System.out.println(source.getStates().size());
         stateExample = source.getStartState();
         List<Input> tempAlphabet = new ArrayList<>(source.getAlphabet());
         Collections.sort(tempAlphabet);
@@ -65,11 +65,11 @@ public class DFAConverter implements AutomatonTransform<ENFAutomaton, DFAutomato
             Set<State> current = unprocessed.poll();
             System.out.println("Found new state: " + newStates.size());
             State newState = stateExample.newInstance(String.valueOf(newStates.size())).combine(current);
-            newStates.put(current, newState);
-
-            if (startState == null) {
-                startState = newState;
+            states.add(newState);
+            if (acceptingDFAState(current, source)) {
+                acceptStates.add(newState);
             }
+            newStates.put(current, newState);
 
             Map<Input, Set<State>> stateTransitions = new HashMap<>();
 
@@ -85,22 +85,18 @@ public class DFAConverter implements AutomatonTransform<ENFAutomaton, DFAutomato
             newTransitions.put(newState, stateTransitions);
         }
 
-        for (Set<State> newState : newStates.keySet()) {
-            State DFAState = newStates.get(newState);
-            states.add(DFAState);
-            if (acceptingDFAState(newState, source)) {
-                acceptStates.add(DFAState);
+        for (State newState : newTransitions.keySet()) {
+            if (newState.getId().equals("0")) {
+                startState = newState;
             }
 
-            if (newTransitions.containsKey(DFAState)) {
-                for (Entry<Input, Set<State>> transition : newTransitions.get(DFAState).entrySet()) {
-                    transitions.add(new DeterministicTransition(DFAState, newStates.get(transition.getValue()),
-                            transition.getKey()));
-                }
+            for (Entry<Input, Set<State>> transition : newTransitions.get(newState).entrySet()) {
+                transitions.add(new DeterministicTransition(newState, newStates.get(transition.getValue()),
+                        transition.getKey()));
             }
         }
 
-        alphabet.addAll(source.getAlphabet());
+        alphabet = source.getAlphabet();
 
         return new DFAutomaton(states, acceptStates, alphabet, new DFAutomatonTransferFunction(transitions),
                 startState);
