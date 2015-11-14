@@ -98,11 +98,19 @@ public class LR1ParserTableFactory {
         for (Symbol termSymbol : lrItem.getTerminalSymbols()) {
             TablePair pair = new TablePair(state.getId(), termSymbol);
             ParserAction oldAction = builder.getAction(pair);
-            ParserAction newAction = new ReduceAction(lrItem.getProduction());
-            if (oldAction != null) {
+            ReduceAction newAction = new ReduceAction(lrItem.getProduction());
+            if (oldAction != null && oldAction instanceof ReduceAction){
+                if (newAction.production().compareTo(((ReduceAction) oldAction).production()) > 0){
+                    continue;
+                }
                 System.err.println("Resolved reduce/reduce conflict for state: " + state.getId() + " symbol: "
                         + termSymbol + ". Old action: " + oldAction + " New action:" + newAction);
+            } else {
+                if (oldAction instanceof ShiftAction){
+                    continue;
+                }
             }
+            
             builder.addAction(pair, newAction);
         }
     }
