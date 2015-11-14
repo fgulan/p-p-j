@@ -1,11 +1,14 @@
 package hr.fer.zemris.ppj.lr1.parser;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import hr.fer.zemris.ppj.finite.automaton.BasicInput;
 import hr.fer.zemris.ppj.finite.automaton.DFAutomaton;
+import hr.fer.zemris.ppj.finite.automaton.interfaces.Input;
 import hr.fer.zemris.ppj.finite.automaton.interfaces.State;
 import hr.fer.zemris.ppj.finite.automaton.interfaces.Transition;
 import hr.fer.zemris.ppj.grammar.Production;
@@ -36,7 +39,7 @@ public class LR1ParserTableFactory {
      */
     public static LR1ParserTable fromDFA(DFAutomaton dfa, Symbol startSymbol) {
         LR1ParserTableBuilder builder = new LR1ParserTableBuilder();
-
+        
         Set<State> states = dfa.getStates();
         for (State state : states) {
             LRState lrState;
@@ -46,18 +49,23 @@ public class LR1ParserTableFactory {
             catch (ClassCastException cce) {
                 throw new IllegalArgumentException("Can't create LR parser table from this automaton!");
             }
+            
 
+            Map<Input, Transition> transitions = new HashMap<>();
+            for (Transition transition: dfa.getTransferFunction().getTransitions(state, null, null)){
+                transitions.put(transition.getInput(), transition);
+            }
             List<LRItem> completeItems = new ArrayList<>();
             List<LRItem> nonCompleteItems = new ArrayList<>();
             separate(lrState, completeItems, nonCompleteItems);
 
-            completeItems.sort(null);
+            // completeItems.sort(null);
             for (int i = completeItems.size() - 1; i >= 0; i--) {
                 fillTableReduce(state, builder, completeItems.get(i), startSymbol);
             }
 
             for (LRItem item : nonCompleteItems) {
-                fillTableShiftPut(state, dfa, builder, item);
+                fillTableShiftPut(state, dfa, builder, item, transitions);
             }
 
         }
@@ -65,17 +73,18 @@ public class LR1ParserTableFactory {
         return builder.build();
     }
 
-    private static void fillTableShiftPut(State state, DFAutomaton dfa, LR1ParserTableBuilder builder, LRItem lrItem) {
+    private static void fillTableShiftPut(State state, DFAutomaton dfa, LR1ParserTableBuilder builder, LRItem lrItem, 
+            Map<Input, Transition> transitions) {
         Symbol nextSymbol = lrItem.getProduction().rightSide().get(lrItem.getDotIndex());
-        Transition transition = dfa.getTransition(state, new BasicInput(nextSymbol.toString()));
+        Transition transition = transitions.get(new BasicInput(nextSymbol.toString()));
         if (transition != null) {
             TablePair pair = new TablePair(state.getId(), nextSymbol);
             if (nextSymbol.isTerminal()) {
                 ParserAction oldAction = builder.getAction(pair);
                 ParserAction newAction = new ShiftAction(transition.getNewState().getId());
                 if (oldAction != null) {
-                    System.err.println("Resolved shift/reduce conflict for state: " + state.getId() + " symbol: "
-                            + nextSymbol + ". Old action: " + oldAction + " New action:" + newAction);
+//                    System.err.println("Resolved shift/reduce conflict for state: " + state.getId() + " symbol: "
+//                            + nextSymbol + ". Old action: " + oldAction + " New action:" + newAction);
                 }
                 builder.addAction(pair, newAction);
             }
@@ -103,8 +112,8 @@ public class LR1ParserTableFactory {
                 if (newAction.production().compareTo(((ReduceAction) oldAction).production()) > 0){
                     continue;
                 }
-                System.err.println("Resolved reduce/reduce conflict for state: " + state.getId() + " symbol: "
-                        + termSymbol + ". Old action: " + oldAction + " New action:" + newAction);
+//                System.err.println("Resolved reduce/reduce conflict for state: " + state.getId() + " symbol: "
+//                        + termSymbol + ". Old action: " + oldAction + " New action:" + newAction);
             } else {
                 if (oldAction instanceof ShiftAction){
                     continue;
