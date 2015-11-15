@@ -26,6 +26,7 @@ public class LR1Parser {
 
     private final LR1ParserTable table;
     private final List<Symbol> syncSymbols = new ArrayList<>();
+    private final Symbol startSymbol;
 
     /**
      * Class constructor, specifies the actions of the parser.
@@ -36,9 +37,10 @@ public class LR1Parser {
      *            sync symbols of the parser.
      * @since alpha
      */
-    public LR1Parser(final LR1ParserTable table, final List<Symbol> syncSymbols) {
+    public LR1Parser(final LR1ParserTable table, final List<Symbol> syncSymbols, final Symbol startSymbol) {
         this.table = table;
         this.syncSymbols.addAll(syncSymbols);
+        this.startSymbol = startSymbol;
     }
 
     /**
@@ -52,92 +54,84 @@ public class LR1Parser {
      *            the error output stream.
      * @since alpha
      */
-    public void analyze(List<Lexeme> lexemes, PrintStream outputStream, PrintStream errorStream) {
-        Stack<StackItem> stack = new Stack<StackItem>();
-        String currentState = new String();
-        StackItem currentItem = new StackItem();
-        Lexeme currentLexeme = null;
-        Symbol currentSymbol = null;
-        int reduce = 0;
-        List<Node> currentNodes = new ArrayList<Node>();
+    public Node analyze(List<Lexeme> lexemes, PrintStream outputStream, PrintStream errorStream) {
+        Stack<String> stack = new Stack<>();
+        stack.push("0");
 
-        for (int i = 0; i < lexemes.size(); i++) {
-            if (stack.isEmpty()) {
-                currentState = "0";
-            }
-            else {
-                currentItem = stack.pop();
-                currentState = currentItem.stateID;
-                stack.push(currentItem);
-            }
-            if (reduce == 1) {
-                reduce = 0;
-            }
-            else {
-                currentLexeme = lexemes.get(i);
-                currentSymbol = currentLexeme.value();
-            }
+        Stack<Node> tree = new Stack<>();
 
-            ParserAction action = table.getAction(currentState, currentSymbol);
+        for (int i = 0; i < lexemes.size();) { // Increment expression is left out on purpose
+            Lexeme lexeme = lexemes.get(i);
+            String symbol = lexeme.value().toString();
+            String state = stack.peek();
 
-            if (action instanceof PutAction) {
-                Lexeme newStackItem = new Lexeme(null, 0, currentSymbol);
-                currentItem.lexeme = newStackItem;
-                stack.push(currentItem);
-                currentItem.stateID = ((PutAction) action).stateID();
-                stack.push(currentItem);
+            ParserAction action = table.getAction(state, symbol);
+            errorStream.println(state + " " + symbol + " " + action.toString());
+            if (action instanceof ShiftAction) {
+                ShiftAction shift = (ShiftAction) action;
+                stack.push(symbol);
+                stack.push(shift.stateID());
+
+                tree.push(new Node(lexeme.toString(), null));
+                i++;
             }
             else if (action instanceof ReduceAction) {
-                i--;
-                Production currentProduction = ((ReduceAction) action).production();
-                currentSymbol = currentProduction.leftSide();
-                int x = currentProduction.rightSide().size();
-                boolean isEpsilon = currentProduction.isEpsilonProduction();
-                if (isEpsilon) {
-                    x = 0;
+                ReduceAction reduce = (ReduceAction) action;
+                Production production = reduce.production();
+
+                Node node = new Node(production.leftSide().toString(), null);
+                if (production.isEpsilonProduction()) {
+                    node.addChild(new Node("$", null));
+                }
+                else {
+                    Stack<Node> subTree = new Stack<>();
+                    for (int j = 0; j < (production.rightSide().size() * 2); j++) {
+                        stack.pop();
+                        if ((j % 2) == 0) {
+                            subTree.push(tree.pop());
+                        }
+                    }
+                    for (int j = 0, size = subTree.size(); j < size; j++) {
+                        node.addChild(subTree.pop());
+                    }
                 }
 
-                for (int j = 0; j < (2 * x); j++) {
-                    StackItem remove = stack.pop();
-                }
+                tree.push(node);
 
-                Node newNode = new Node();
-                Lexeme newLex = new Lexeme("", 0, currentSymbol);
-                newNode.lexeme = newLex;
-                List<Node> Children = new ArrayList<Node>();
-
-                if (isEpsilon) {
-                    Lexeme epsilon = new Lexeme("$", 0, null);
-                    Node epsilonNode = new Node();
-                    epsilonNode.parent = newNode;
-                    epsilonNode.lexeme = epsilon;
+                ParserAction newAction = table.getAction(stack.peek(), production.leftSide().toString());
+                if (newAction instanceof PutAction) {
+                    PutAction put = (PutAction) newAction;
+                    stack.push(production.leftSide().toString());
+                    stack.push(put.stateID());
                 }
-                for (int j = 0; j < x; j++) {
-                    Node temp = currentNodes.get(currentNodes.size() - 1);
-                    temp.parent = newNode;
-                    Children.add(temp);
-                    currentNodes.remove(currentNodes.size() - 1);
-                }
-                currentNodes.add(newNode);
-            }
-            else if (action instanceof ShiftAction) {
-                currentItem.lexeme = currentLexeme;
-                stack.push(currentItem);
-                currentItem.stateID = ((ShiftAction) action).stateID();
-                stack.push(currentItem);
-
-                Node newNode = new Node();
-                newNode.lexeme = currentLexeme;
-                currentNodes.add(newNode);
-            }
-            else if (action instanceof RejectAction) {
-                errorStream.println("Dogodila se pogreska u " + currentLexeme.lineNumber() + ". retku.");
             }
             else if (action instanceof AcceptAction) {
-                return;
+                if ("#".equals(symbol)) {
+                    break;
+                }
+                break; // Shouldn't happen.
+            }
+            else if (action instanceof RejectAction) {
+                errorStream.println("Error on line: " + lexeme.lineNumber() + ", found: (" + symbol + "), expected: "
+                        + table.symbolsWithActionsFromState(state));
+
+                // Find next sync symbol
+                while (!syncSymbols.contains(lexemes.get(i).value())) {
+                    i++;
+                }
+
+                String syncSymbol = lexemes.get(i).value().toString();
+                // Find first state with defined action for the sync symbol
+                while (table.getAction(stack.peek(), syncSymbol) instanceof RejectAction) {
+                    stack.pop();
+                    stack.pop();
+                }
+            }
+            else {
+                errorStream.println("Unimplemented action.");
             }
         }
-
+        return tree.pop();
     }
 
 }

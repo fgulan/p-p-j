@@ -22,7 +22,7 @@ public class ActionFactory {
      * @since alpha
      */
     public static ParserAction fromString(final String definition) {
-        String actionName = definition.substring(0, definition.indexOf(')'));
+        String actionName = definition.substring(0, definition.indexOf('('));
         String argument = definition.substring(definition.indexOf('(') + 1, definition.length() - 1);
 
         switch (actionName) {

@@ -4,7 +4,7 @@ import hr.fer.zemris.ppj.lr1.parser.LR1Parser;
 
 /**
  * <code>RejectAction</code> represents the LR(1) parser action which accepts lexemes.
- * 
+ *
  * @author Domagoj Polancec
  *
  */
@@ -13,7 +13,7 @@ public class AcceptAction implements ParserAction {
     /**
      * Action name.
      */
-    public static final String ACTION_NAME = "ACCPET";
+    public static final String ACTION_NAME = "ACCEPT";
 
     /**
      * {@inheritDoc}

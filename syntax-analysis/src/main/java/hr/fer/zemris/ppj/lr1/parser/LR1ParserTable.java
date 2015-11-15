@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import hr.fer.zemris.ppj.grammar.ProductionParser;
 import hr.fer.zemris.ppj.grammar.interfaces.Symbol;
 import hr.fer.zemris.ppj.lr1.parser.actions.ParserAction;
 import hr.fer.zemris.ppj.lr1.parser.actions.RejectAction;
@@ -90,7 +91,7 @@ public class LR1ParserTable {
 
     /**
      * Constructs a new LR(1) parser table from the given action table.
-     * 
+     *
      * @param actionTable
      *            LR(1) parser action table as map
      */
@@ -99,8 +100,30 @@ public class LR1ParserTable {
     }
 
     /**
+     * Returns a list of symbols for which a action is defined from the state.
+     *
+     * @param stateID
+     *            the state id.
+     * @return list of symbols.
+     */
+    public List<String> symbolsWithActionsFromState(String stateID) {
+        List<String> list = new ArrayList<>();
+
+        for (TablePair pair : actionTable.keySet()) {
+            if (pair.getState().equals(stateID)) {
+                list.add(pair.getSymbol().toString());
+            }
+        }
+
+        if (list.isEmpty()) {
+            list.add("$");
+        }
+        return list;
+    }
+
+    /**
      * Gets the action for the given pair.
-     * 
+     *
      * @param pair
      *            pair to get the action for
      * @return action for this pair
@@ -112,7 +135,7 @@ public class LR1ParserTable {
 
     /**
      * Gets the action for the given state and symbol.
-     * 
+     *
      * @param state
      *            state to get the action for
      * @param symbol
@@ -125,7 +148,20 @@ public class LR1ParserTable {
 
     /**
      * Gets the action for the given state id and symbol.
-     * 
+     *
+     * @param stateId
+     *            state id to get the action for
+     * @param symbol
+     *            symbol to get the action for
+     * @return action for the given state id and symbol
+     */
+    public ParserAction getAction(String stateId, String symbol) {
+        return getAction(new TablePair(stateId, ProductionParser.parseSymbol(symbol)));
+    }
+
+    /**
+     * Gets the action for the given state id and symbol.
+     *
      * @param stateId
      *            state id to get the action for
      * @param symbol

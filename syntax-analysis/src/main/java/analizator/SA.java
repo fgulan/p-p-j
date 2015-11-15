@@ -13,6 +13,7 @@ import hr.fer.zemris.ppj.grammar.interfaces.Symbol;
 import hr.fer.zemris.ppj.lr1.parser.LR1Parser;
 import hr.fer.zemris.ppj.lr1.parser.LR1ParserTable;
 import hr.fer.zemris.ppj.lr1.parser.LR1ParserTableBuilder;
+import hr.fer.zemris.ppj.lr1.parser.Node;
 import hr.fer.zemris.ppj.lr1.parser.actions.ActionFactory;
 import hr.fer.zemris.ppj.lr1.parser.actions.ParserAction;
 
@@ -40,7 +41,7 @@ public class SA {
      * @since alpha
      */
     public static void main(String[] args) {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("test.in")))) {
             readUniformSymbols(reader);
         }
         catch (IOException e) {
@@ -72,8 +73,9 @@ public class SA {
             System.exit(0);
         }
 
-        new LR1Parser(parserTable, syncSymbols).analyze(lexemes, new PrintStream(System.out),
-                new PrintStream(System.err));
+        LR1Parser parser = new LR1Parser(parserTable, syncSymbols, nonterminalSymbols.get(0));
+        Node tree = parser.analyze(lexemes, new PrintStream(System.out), new PrintStream(System.err));
+        System.out.println(tree);
     }
 
     /*
@@ -86,6 +88,7 @@ public class SA {
             lexemes.add(new Lexeme(split[0], Integer.valueOf(split[1]), ProductionParser.parseSymbol(split[2])));
             uniformSymbol = reader.readLine();
         } while (uniformSymbol != null);
+        lexemes.add(new Lexeme("", -1, ProductionParser.parseSymbol("#")));
     }
 
     /*
@@ -98,7 +101,7 @@ public class SA {
             String stateID = line.trim();
             line = reader.readLine();
             while ((line != null) && line.startsWith(" ")) {
-                String[] split = line.trim().split(" ", 1);
+                String[] split = line.trim().split(" ", 2);
                 Symbol symbol = ProductionParser.parseSymbol(split[0]);
                 ParserAction action = ActionFactory.fromString(split[1]);
                 builder.addAction(new LR1ParserTable.TablePair(stateID, symbol), action);
