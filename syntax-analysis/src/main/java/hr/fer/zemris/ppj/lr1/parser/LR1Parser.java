@@ -1,7 +1,6 @@
 package hr.fer.zemris.ppj.lr1.parser;
 
 import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
@@ -25,7 +24,7 @@ import hr.fer.zemris.ppj.lr1.parser.actions.ShiftAction;
 public class LR1Parser {
 
     private final LR1ParserTable table;
-    private final List<Symbol> syncSymbols = new ArrayList<>();
+    private final List<Symbol> syncSymbols;
     private final Symbol startSymbol;
 
     /**
@@ -39,7 +38,7 @@ public class LR1Parser {
      */
     public LR1Parser(final LR1ParserTable table, final List<Symbol> syncSymbols, final Symbol startSymbol) {
         this.table = table;
-        this.syncSymbols.addAll(syncSymbols);
+        this.syncSymbols = syncSymbols;
         this.startSymbol = startSymbol;
     }
 
@@ -115,7 +114,7 @@ public class LR1Parser {
                         + table.symbolsWithActionsFromState(state));
 
                 // Find next sync symbol
-                while (!syncSymbols.contains(lexemes.get(i).type())) {
+                while ((i < (lexemes.size() - 1)) && !syncSymbols.contains(lexemes.get(i).value())) {
                     i++;
                 }
 
@@ -124,13 +123,14 @@ public class LR1Parser {
                 while (table.getAction(stack.peek(), syncSymbol) instanceof RejectAction) {
                     stack.pop();
                     stack.pop();
+                    tree.pop();
                 }
             }
             else {
                 errorStream.println("Unimplemented action.");
             }
         }
-        return new Node("Error", null);
+        return tree.pop();
     }
 
 }
