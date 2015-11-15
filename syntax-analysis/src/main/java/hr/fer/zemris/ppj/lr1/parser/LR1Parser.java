@@ -62,7 +62,7 @@ public class LR1Parser {
 
         for (int i = 0; i < lexemes.size();) { // Increment expression is left out on purpose
             Lexeme lexeme = lexemes.get(i);
-            String symbol = lexeme.value().toString();
+            String symbol = lexeme.type().toString();
             String state = stack.peek();
 
             ParserAction action = table.getAction(state, symbol);
@@ -115,11 +115,11 @@ public class LR1Parser {
                         + table.symbolsWithActionsFromState(state));
 
                 // Find next sync symbol
-                while (!syncSymbols.contains(lexemes.get(i).value())) {
+                while (!syncSymbols.contains(lexemes.get(i).type())) {
                     i++;
                 }
 
-                String syncSymbol = lexemes.get(i).value().toString();
+                String syncSymbol = lexemes.get(i).type().toString();
                 // Find first state with defined action for the sync symbol
                 while (table.getAction(stack.peek(), syncSymbol) instanceof RejectAction) {
                     stack.pop();

@@ -88,7 +88,7 @@ public class SA {
             lexemes.add(new Lexeme(split[0], Integer.valueOf(split[1]), ProductionParser.parseSymbol(split[2])));
             uniformSymbol = reader.readLine();
         } while (uniformSymbol != null);
-        lexemes.add(new Lexeme("", -1, ProductionParser.parseSymbol("#")));
+        lexemes.add(new Lexeme("#", -1, ProductionParser.parseSymbol("#")));
     }
 
     /*
