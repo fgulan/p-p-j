@@ -1,6 +1,5 @@
 package hr.fer.zemris.ppj.grammar.symbols;
 
-import hr.fer.zemris.ppj.finite.automaton.interfaces.Input;
 import hr.fer.zemris.ppj.grammar.interfaces.Symbol;
 
 /**
@@ -71,5 +70,13 @@ public class NonterminalSymbol implements Symbol {
     public String toString() {
         return name;
     }
-    
+
+    @Override
+    public int compareTo(Symbol o) {
+        if (o instanceof TerminalSymbol) {
+            return -1;
+        }
+        return name.compareTo(o.name());
+    }
+
 }

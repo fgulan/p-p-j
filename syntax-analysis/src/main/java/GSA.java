@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -39,7 +40,7 @@ public class GSA {
      * @since alpha
      */
     public static void main(String[] args) {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("test.san")))) {
             readInputData(reader);
         }
         catch (final IOException e) {
@@ -49,9 +50,9 @@ public class GSA {
         try (OutputStreamWriter writer = new FileWriter(new File("analizator/definition.txt"))) {
             System.out.println(System.currentTimeMillis());
             ENFAutomaton enfa = ParserBuilder.fromLR1Grammar(grammar);
-            System.out.println(System.currentTimeMillis());
+            System.out.println(System.currentTimeMillis() + " " + enfa.getStates().size());
             DFAutomaton automaton = new DFAConverter().transform(enfa);
-            System.out.println(System.currentTimeMillis());
+            System.out.println(System.currentTimeMillis() + " " + automaton.getStates().size());
             LR1ParserTable parserTable = LR1ParserTableFactory.fromDFA(automaton, ProductionParser.parseSymbol("<%>"));
             System.out.println(System.currentTimeMillis());
             writeParserTable(parserTable, writer);
@@ -65,13 +66,13 @@ public class GSA {
 
     private static void readInputData(BufferedReader reader) throws IOException {
         String originalStartSymbol = null;
+        nonterminalSymbols.add("<%>");
         for (String symbol : reader.readLine().substring(3).split(" ")) {
             nonterminalSymbols.add(symbol);
             if (originalStartSymbol == null) {
                 originalStartSymbol = symbol;
             }
         }
-        nonterminalSymbols.add("<%>");
 
         for (String symbol : reader.readLine().substring(3).split(" ")) {
             terminalSymbols.add(symbol);
@@ -88,7 +89,7 @@ public class GSA {
             String leftSide = line;
             do {
                 String rightSide = line = reader.readLine();
-                if (line != null) {
+                if ((line != null) && rightSide.startsWith(" ")) {
                     builder.addProduction(ProductionParser.fromText(leftSide, rightSide.trim()));
                 }
             } while ((line != null) && !line.startsWith("<"));

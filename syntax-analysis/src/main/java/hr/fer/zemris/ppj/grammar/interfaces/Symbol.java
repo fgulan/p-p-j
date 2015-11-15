@@ -7,7 +7,7 @@ package hr.fer.zemris.ppj.grammar.interfaces;
  *
  * @version alpha
  */
-public interface Symbol{
+public interface Symbol extends Comparable<Symbol> {
 
     /**
      * Checks if the symbol is a terminal symbol of the grammar.
@@ -18,7 +18,7 @@ public interface Symbol{
 
     /**
      * Returns the name of the symbol.
-     * 
+     *
      * @return the name.
      */
     String name();

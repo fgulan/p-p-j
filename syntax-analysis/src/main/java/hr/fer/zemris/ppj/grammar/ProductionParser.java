@@ -64,7 +64,7 @@ public class ProductionParser {
      * @since 1.0
      */
     public static Symbol parseSymbol(final String symbol) {
-        if (symbol.equals("$")) {
+        if (symbol.equals("$") || symbol.equals("null")) {
             return null;
         }
         if (symbol.startsWith("<")) {

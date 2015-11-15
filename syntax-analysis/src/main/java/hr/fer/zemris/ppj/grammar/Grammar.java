@@ -1,6 +1,7 @@
 package hr.fer.zemris.ppj.grammar;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -8,7 +9,6 @@ import java.util.Map;
 import java.util.Set;
 
 import hr.fer.zemris.ppj.grammar.interfaces.Symbol;
-import hr.fer.zemris.ppj.grammar.symbols.NonterminalSymbol;
 
 /**
  * <code>Grammar</code> represents a context free grammar
@@ -73,48 +73,39 @@ public class Grammar {
     }
 
     private void calculateEmptySymbols() {
-        List<Production> allProductions = new ArrayList<>();
-        for (List<Production> production : productions.values()) {
-            allProductions.addAll(production);
-        }
-
         boolean change = false;
         do {
             change = false;
             for (Symbol symbol : nonterminalSymbols.values()) {
                 if (!emptySymbols.contains(symbol)) {
-                    boolean isEmpty = false;
-
                     for (Production production : productions.get(symbol)) {
                         boolean allEmpty = true;
-
-                        for (Symbol productionSymbol : production.rightSide()) {
-                            if (!emptySymbols.contains(productionSymbol)) {
-                                allEmpty = false;
-                                break;
+                        if (!production.isEpsilonProduction()) {
+                            for (Symbol productionSymbol : production.rightSide()) {
+                                if (!productionSymbol.isTerminal() || !emptySymbols.contains(productionSymbol)) {
+                                    allEmpty = false;
+                                    break;
+                                }
                             }
                         }
-
                         if (allEmpty) {
-                            isEmpty = true;
+                            change = true;
+                            emptySymbols.add(symbol);
                             break;
                         }
-                    }
-
-                    if (isEmpty) {
-                        emptySymbols.add(symbol);
-                        change = true;
-                        continue;
                     }
                 }
             }
         } while (change);
+
+        emptySymbols.add(ProductionParser.parseSymbol("$"));
     }
 
     private void calculateStartsWith() {
         List<Symbol> orderedSymbols = new ArrayList<>();
-        orderedSymbols.addAll(terminalSymbols.values());
         orderedSymbols.addAll(nonterminalSymbols.values());
+        orderedSymbols.addAll(terminalSymbols.values());
+        Collections.sort(orderedSymbols);
 
         boolean[][] table = new boolean[orderedSymbols.size()][];
         for (int i = 0; i < table.length; i++) {
@@ -127,20 +118,14 @@ public class Grammar {
             if (productions.containsKey(symbol)) {
                 for (Production production : productions.get(symbol)) {
                     if (!production.isEpsilonProduction()) {
-                        List<Symbol> rightSide = production.rightSide();
-
-                        // try for each prefix of the right side
-                        List<Symbol> prefix = new ArrayList<>();
-                        for (int j = -1; j < (rightSide.size() - 1); j++) {
-                            if (isEmptySequence(prefix)) {
-                                table[i][orderedSymbols.indexOf(rightSide.get(j + 1))] = true;
-                                prefix.add(rightSide.get(j + 1));
-                            }
-                            else {
+                        for (Symbol productionSymbol : production.rightSide()) {
+                            table[i][orderedSymbols.indexOf(productionSymbol)] = true;
+                            if (!emptySymbols.contains(productionSymbol)) {
                                 break;
                             }
                         }
                     }
+
                 }
             }
         }
@@ -150,13 +135,11 @@ public class Grammar {
             for (int j = 0; j < table[i].length; j++) {
                 if (table[i][j]) {
                     for (int k = 0; k < table[j].length; k++) {
-                        if (table[j][k] && (i != j) && (j != k)) {
+                        if (table[j][k]) {
                             table[i][k] = true;
                         }
                     }
                 }
-
-                // Mark diagonals
                 if (i == j) {
                     table[i][j] = true;
                 }
@@ -343,7 +326,7 @@ public class Grammar {
     public Symbol startSymbol() {
         return startSymbol;
     }
-    
+
     public Production getStartProduction() {
         return productions.get(startSymbol).get(0);
     }

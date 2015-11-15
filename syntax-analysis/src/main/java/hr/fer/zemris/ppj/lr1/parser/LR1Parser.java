@@ -80,34 +80,33 @@ public class LR1Parser {
                 Production production = reduce.production();
 
                 Node node = new Node(production.leftSide().toString(), null);
+
                 if (production.isEpsilonProduction()) {
                     node.addChild(new Node("$", null));
                 }
                 else {
-                    Stack<Node> subTree = new Stack<>();
+                    Stack<Node> temp = new Stack<>();
                     for (int j = 0; j < (production.rightSide().size() * 2); j++) {
                         stack.pop();
                         if ((j % 2) == 0) {
-                            subTree.push(tree.pop());
+                            temp.push(tree.pop());
                         }
                     }
-                    for (int j = 0, size = subTree.size(); j < size; j++) {
-                        node.addChild(subTree.pop());
+                    int size = temp.size();
+                    for (int j = 0; j < size; j++) {
+                        node.addChild(temp.pop());
                     }
                 }
 
                 tree.push(node);
 
-                ParserAction newAction = table.getAction(stack.peek(), production.leftSide().toString());
-                if (newAction instanceof PutAction) {
-                    PutAction put = (PutAction) newAction;
-                    stack.push(production.leftSide().toString());
-                    stack.push(put.stateID());
-                }
+                PutAction put = (PutAction) table.getAction(stack.peek(), production.leftSide().toString());
+                stack.push(production.leftSide().toString());
+                stack.push(put.stateID());
             }
             else if (action instanceof AcceptAction) {
                 if ("#".equals(symbol)) {
-                    break;
+                    return tree.pop();
                 }
                 break; // Shouldn't happen.
             }
@@ -131,7 +130,7 @@ public class LR1Parser {
                 errorStream.println("Unimplemented action.");
             }
         }
-        return tree.pop();
+        return new Node("Error", null);
     }
 
 }

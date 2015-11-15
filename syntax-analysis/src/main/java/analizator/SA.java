@@ -41,7 +41,7 @@ public class SA {
      * @since alpha
      */
     public static void main(String[] args) {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("test.in")))) {
             readUniformSymbols(reader);
         }
         catch (IOException e) {

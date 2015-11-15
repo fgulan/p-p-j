@@ -71,4 +71,12 @@ public class TerminalSymbol implements Symbol {
         return name;
     }
 
+    @Override
+    public int compareTo(Symbol o) {
+        if (o instanceof NonterminalSymbol) {
+            return 1;
+        }
+        return name.compareTo(o.name());
+    }
+
 }
