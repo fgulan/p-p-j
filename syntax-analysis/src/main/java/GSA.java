@@ -48,15 +48,10 @@ public class GSA {
         }
 
         try (OutputStreamWriter writer = new FileWriter(new File("analizator/definition.txt"))) {
-            System.out.println(System.currentTimeMillis());
             ENFAutomaton enfa = ParserBuilder.fromLR1Grammar(grammar);
-            System.out.println(System.currentTimeMillis() + " " + enfa.getStates().size());
             DFAutomaton automaton = new DFAConverter().transform(enfa);
-            System.out.println(System.currentTimeMillis() + " " + automaton.getStates().size());
             LR1ParserTable parserTable = LR1ParserTableFactory.fromDFA(automaton, ProductionParser.parseSymbol("<%>"));
-            System.out.println(System.currentTimeMillis());
             writeParserTable(parserTable, writer);
-            System.out.println(System.currentTimeMillis());
         }
         catch (final IOException e) {
             System.err.println(e.getMessage());
