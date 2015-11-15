@@ -103,7 +103,7 @@ public abstract class FAutomatonTransferFunction implements TransferFunction {
         if (transitions == null) {
             transitions = new HashSet<>();
         }
-        return new HashSet<>(transitions);
+        return new HashSet<Transition>(transitions);
     }
 
     /*

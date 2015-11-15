@@ -10,7 +10,7 @@ public class Node {
 
     public Node(final String name, final List<Node> children) {
         this.name = name;
-        this.children = children == null ? new ArrayList<>() : children;
+        this.children = children == null ? new ArrayList<Node>() : children;
     }
 
     public void addChild(Node child) {

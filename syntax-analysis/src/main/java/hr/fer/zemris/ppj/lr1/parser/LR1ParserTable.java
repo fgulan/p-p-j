@@ -177,7 +177,7 @@ public class LR1ParserTable {
         Map<String, List<String>> stateList = new HashMap<>();
         for (TablePair pair : actionTable.keySet()) {
             if (stateList.get(pair.stateId) == null) {
-                stateList.put(pair.stateId, new ArrayList<>());
+                stateList.put(pair.stateId, new ArrayList<String>());
             }
 
             stateList.get(pair.stateId).add(pair.symbol.toString() + " " + actionTable.get(pair).toString());

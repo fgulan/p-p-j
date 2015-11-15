@@ -28,7 +28,7 @@ public class LRItem implements Comparable<LRItem> {
         Set<LRItem> result = new HashSet<LRItem>();
 
         for (int i = 0, size = production.rightSide().size(); i <= size; i++) {
-            result.add(new LRItem(production, i, new HashSet<>()));
+            result.add(new LRItem(production, i, new HashSet<Symbol>()));
         }
         return result;
     }

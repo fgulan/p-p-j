@@ -51,7 +51,7 @@ public class DFAConverter implements AutomatonTransform<ENFAutomaton, DFAutomato
         alphabet = source.getAlphabet();
 
         List<Input> tempAlphabet = new ArrayList<>(alphabet);
-        tempAlphabet.sort(null);
+        // tempAlphabet.sort(null);
 
         TransferFunction function = source.getTransferFunction();
 
