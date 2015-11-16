@@ -79,7 +79,7 @@ public class LR1Parser {
                 i++;
             }
             else if (action instanceof ReduceAction) {
-                // Apply grammar rule rm: Lhs → S1 S2 ... SL
+                // Apply grammar rule rm: Lhs -> S1 S2 ... SL
                 // Remove the matched topmost L symbols (and parse trees and associated state numbers) from the parse
                 // stack.
                 // This exposes a prior state p that was expecting an instance of the Lhs symbol.
