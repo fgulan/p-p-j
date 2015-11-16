@@ -41,7 +41,7 @@ public class SA {
      * @since alpha
      */
     public static void main(String[] args) {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("test.in")))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
             readUniformSymbols(reader);
         }
         catch (IOException e) {
@@ -61,6 +61,7 @@ public class SA {
             for (String symbol : reader.readLine().split(" ")) {
                 syncSymbols.add(ProductionParser.parseSymbol(symbol));
             }
+            syncSymbols.add(ProductionParser.parseSymbol("#"));
 
             readParserActionTable(reader);
         }
@@ -75,7 +76,7 @@ public class SA {
 
         LR1Parser parser = new LR1Parser(parserTable, syncSymbols, nonterminalSymbols.get(0));
         Node tree = parser.analyze(lexemes, new PrintStream(System.out), new PrintStream(System.err));
-        System.out.println(tree);
+        System.out.print(tree.print(0));
     }
 
     /*

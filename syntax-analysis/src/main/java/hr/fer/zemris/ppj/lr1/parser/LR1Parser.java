@@ -1,11 +1,14 @@
 package hr.fer.zemris.ppj.lr1.parser;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
 import hr.fer.zemris.ppj.Lexeme;
 import hr.fer.zemris.ppj.grammar.Production;
+import hr.fer.zemris.ppj.grammar.ProductionParser;
 import hr.fer.zemris.ppj.grammar.interfaces.Symbol;
 import hr.fer.zemris.ppj.lr1.parser.actions.AcceptAction;
 import hr.fer.zemris.ppj.lr1.parser.actions.ParserAction;
@@ -58,63 +61,70 @@ public class LR1Parser {
         stack.push("0");
 
         Stack<Node> tree = new Stack<>();
-
         for (int i = 0; i < lexemes.size();) { // Increment expression is left out on purpose
             Lexeme lexeme = lexemes.get(i);
-            String symbol = lexeme.type().toString();
             String state = stack.peek();
+            String symbol = lexeme.type();
 
             ParserAction action = table.getAction(state, symbol);
             errorStream.println(state + " " + symbol + " " + action.toString());
             if (action instanceof ShiftAction) {
+                // Shift the matched terminal t onto the parse stack and scan the next input symbol into the lookahead
+                // buffer.
+                // Push next state n onto the parse stack as the new current state.
                 ShiftAction shift = (ShiftAction) action;
                 stack.push(symbol);
+                tree.push(new Node(lexeme.toString()));
                 stack.push(shift.stateID());
-
-                tree.push(new Node(lexeme.toString(), null));
                 i++;
             }
             else if (action instanceof ReduceAction) {
+                // Apply grammar rule rm: Lhs → S1 S2 ... SL
+                // Remove the matched topmost L symbols (and parse trees and associated state numbers) from the parse
+                // stack.
+                // This exposes a prior state p that was expecting an instance of the Lhs symbol.
+                // Join the L parse trees together as one parse tree with new root symbol Lhs.
+                // Lookup the next state n from row p and column Lhs of the LHS Goto table.
+                // Push the symbol and tree for Lhs onto the parse stack.
+                // Push next state n onto the parse stack as the new current state.
+                // The lookahead and input stream remain unchanged.
                 ReduceAction reduce = (ReduceAction) action;
                 Production production = reduce.production();
 
-                Node node = new Node(production.leftSide().toString(), null);
-
                 if (production.isEpsilonProduction()) {
-                    node.addChild(new Node("$", null));
+                    tree.push(new Node(production.leftSide().toString(), Arrays.asList(new Node("$"))));
                 }
                 else {
-                    Stack<Node> temp = new Stack<>();
+                    List<Node> children = new ArrayList<>();
                     for (int j = 0; j < (production.rightSide().size() * 2); j++) {
                         stack.pop();
                         if ((j % 2) == 0) {
-                            temp.push(tree.pop());
+                            children.add(0, tree.pop());
                         }
                     }
-                    int size = temp.size();
-                    for (int j = 0; j < size; j++) {
-                        node.addChild(temp.pop());
-                    }
+                    tree.push(new Node(production.leftSide().toString(), children));
                 }
-
-                tree.push(node);
 
                 PutAction put = (PutAction) table.getAction(stack.peek(), production.leftSide().toString());
                 stack.push(production.leftSide().toString());
                 stack.push(put.stateID());
             }
             else if (action instanceof AcceptAction) {
+                // Lookahead t is the eof marker. End of parsing. If the state stack contains just the start state
+                // report success. Otherwise, report a syntax error.
                 if ("#".equals(symbol)) {
                     return tree.pop();
                 }
                 break; // Shouldn't happen.
             }
             else if (action instanceof RejectAction) {
-                errorStream.println("Error on line: " + lexeme.lineNumber() + ", found: (" + symbol + "), expected: "
+                // Report a syntax error. The parser ends, or attempts some recovery.
+                errorStream.println("Error on line: " + lexeme.lineNumber() + ", found: (" + lexeme + "), expected: "
                         + table.symbolsWithActionsFromState(state));
 
                 // Find next sync symbol
-                while ((i < (lexemes.size() - 1)) && !syncSymbols.contains(lexemes.get(i).value())) {
+                while ((i < (lexemes.size() - 1))
+                        && !syncSymbols.contains(ProductionParser.parseSymbol(lexemes.get(i).type()))) {
                     i++;
                 }
 
@@ -130,7 +140,7 @@ public class LR1Parser {
                 errorStream.println("Unimplemented action.");
             }
         }
-        return tree.pop();
+        return new Node("Error");
     }
 
 }

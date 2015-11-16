@@ -8,9 +8,13 @@ public class Node {
     private String name;
     private List<Node> children;
 
+    public Node(final String name) {
+        this(name, new ArrayList<Node>());
+    }
+
     public Node(final String name, final List<Node> children) {
         this.name = name;
-        this.children = children == null ? new ArrayList<Node>() : children;
+        this.children = children;
     }
 
     public void addChild(Node child) {
@@ -27,11 +31,5 @@ public class Node {
             result += child.print(depth + 1);
         }
         return result;
-    }
-
-    @Override
-    public String toString() {
-        String result = print(0);
-        return result.substring(0, result.length() - 1);
     }
 }
