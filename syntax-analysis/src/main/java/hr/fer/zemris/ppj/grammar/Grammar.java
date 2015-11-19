@@ -71,14 +71,6 @@ public class Grammar {
         calculateEmptySymbols();
 
         calculateStartsWith();
-
-        // for (Entry<Symbol, Set<Symbol>> entry : startsWith.entrySet()) {
-        // System.out.print(entry.getKey() + " ->");
-        // for (Symbol symbol : entry.getValue()) {
-        // System.out.print(symbol + ", ");
-        // }
-        // System.out.print("\n");
-        // }
     }
 
     private void calculateEmptySymbols() {
