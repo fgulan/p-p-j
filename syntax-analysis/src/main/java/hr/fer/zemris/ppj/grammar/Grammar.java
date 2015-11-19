@@ -69,7 +69,16 @@ public class Grammar {
         this.startSymbol = startSymbol;
 
         calculateEmptySymbols();
+
         calculateStartsWith();
+
+        // for (Entry<Symbol, Set<Symbol>> entry : startsWith.entrySet()) {
+        // System.out.print(entry.getKey() + " ->");
+        // for (Symbol symbol : entry.getValue()) {
+        // System.out.print(symbol + ", ");
+        // }
+        // System.out.print("\n");
+        // }
     }
 
     private void calculateEmptySymbols() {
@@ -132,16 +141,20 @@ public class Grammar {
 
         // ZapocinjeZnakom
         for (int i = 0; i < table.length; i++) {
-            for (int j = 0; j < table[i].length; j++) {
-                if (table[i][j]) {
-                    for (int k = 0; k < table[j].length; k++) {
-                        if (table[j][k]) {
-                            table[i][k] = true;
+            table[i][i] = true;
+        }
+
+        for (int n = 0; n < table.length; n++) {
+            for (int i = 0; i < table.length; i++) {
+                for (int j = 0; j < table[i].length; j++) {
+                    if (table[i][j]) {
+                        for (int k = 0; k < table[j].length; k++) {
+                            if (table[j][k]) {
+                                table[i][k] = true;
+                            }
                         }
                     }
-                }
-                if (i == j) {
-                    table[i][j] = true;
+
                 }
             }
         }
