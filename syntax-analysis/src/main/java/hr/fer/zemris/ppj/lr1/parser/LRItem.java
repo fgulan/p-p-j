@@ -13,15 +13,11 @@ public class LRItem implements Comparable<LRItem> {
     private final Set<Symbol> terminalSymbols;
     private int dotIndex;
 
-    private String representation;
-
     public LRItem(Production production, int dotIndex, Set<Symbol> terminalSymbols) {
         super();
         this.production = production;
         this.dotIndex = dotIndex;
         this.terminalSymbols = terminalSymbols;
-
-        representation = toString();
     }
 
     public static Set<LRItem> fromProduction(Production production) {
@@ -80,27 +76,27 @@ public class LRItem implements Comparable<LRItem> {
             return false;
         }
         LRItem other = (LRItem) obj;
-        // if (dotIndex != other.dotIndex) {
-        // return false;
-        // }
-        // if (production == null) {
-        // if (other.production != null) {
-        // return false;
-        // }
-        // }
-        // else if (!production.equals(other.production)) {
-        // return false;
-        // }
-        // if (terminalSymbols == null) {
-        // if (other.terminalSymbols != null) {
-        // return false;
-        // }
-        // }
-        // else if (!terminalSymbols.equals(other.terminalSymbols)) {
-        // return false;
-        // }
-        // return true;
-        return representation.equals(other.representation);
+        if (dotIndex != other.dotIndex) {
+            return false;
+        }
+        if (production == null) {
+            if (other.production != null) {
+                return false;
+            }
+        }
+        else if (!production.equals(other.production)) {
+            return false;
+        }
+        if (terminalSymbols == null) {
+            if (other.terminalSymbols != null) {
+                return false;
+            }
+        }
+        else if (!terminalSymbols.equals(other.terminalSymbols)) {
+            return false;
+        }
+        return true;
+        // return representation.equals(other.representation);
     }
 
     @Override
