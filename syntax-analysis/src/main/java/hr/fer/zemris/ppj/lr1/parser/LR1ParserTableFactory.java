@@ -83,7 +83,7 @@ public class LR1ParserTableFactory {
             if (nextSymbol.isTerminal()) {
                 ParserAction oldAction = builder.getAction(pair);
                 ParserAction newAction = new ShiftAction(transition.getNewState().getId());
-                if (oldAction != null) {
+                if ((oldAction != null) && !oldAction.equals(newAction)) {
                     System.err.println("Resolved shift/reduce conflict for state: " + state.getId() + " symbol: "
                             + nextSymbol + ". Old action: " + oldAction + " New action:" + newAction);
                 }
@@ -113,8 +113,11 @@ public class LR1ParserTableFactory {
                 if (newAction.production().compareTo(((ReduceAction) oldAction).production()) > 0) {
                     continue;
                 }
-                System.err.println("Resolved reduce/reduce conflict for state: " + state.getId() + " symbol: "
-                        + termSymbol + ". Old action: " + oldAction + " New action:" + newAction);
+
+                if (!oldAction.equals(newAction)) {
+                    System.err.println("Resolved reduce/reduce conflict for state: " + state.getId() + " symbol: "
+                            + termSymbol + ". Old action: " + oldAction + " New action:" + newAction);
+                }
             }
             else {
                 if (oldAction instanceof ShiftAction) {
