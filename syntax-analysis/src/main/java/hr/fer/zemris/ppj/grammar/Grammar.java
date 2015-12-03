@@ -15,19 +15,19 @@ import hr.fer.zemris.ppj.grammar.interfaces.Symbol;
  *
  * @author Jan Kelemen
  *
- * @version alpha
+ * @version 1.0
  */
 public class Grammar {
 
     private final Map<String, Symbol> nonterminalSymbols = new HashMap<>();
     private final Map<String, Symbol> terminalSymbols = new HashMap<>();
     private final Map<Symbol, List<Production>> productions = new HashMap<>();
-    private Symbol startSymbol;
+    private final Symbol startSymbol;
 
-    private Set<Symbol> emptySymbols = new HashSet<>();
-    private Map<Symbol, Set<Symbol>> startsWith = new HashMap<>();
+    private final Set<Symbol> emptySymbols = new HashSet<>();
+    private final Map<Symbol, Set<Symbol>> startsWith = new HashMap<>();
 
-    private Set<Production> productionSet = new HashSet<>();
+    private final Set<Production> productionSet = new HashSet<>();
 
     /**
      * Class constructor, specifies the formal definition of the grammar.
@@ -42,22 +42,22 @@ public class Grammar {
      *            the start symbol.
      * @since alpha
      */
-    public Grammar(Set<Symbol> nonterminalSymbols, Set<Symbol> terminalSymbols, Set<Production> productions,
-            Symbol startSymbol) {
+    public Grammar(final Set<Symbol> nonterminalSymbols, final Set<Symbol> terminalSymbols,
+            final Set<Production> productions, final Symbol startSymbol) {
 
-        for (Symbol symbol : nonterminalSymbols) {
+        for (final Symbol symbol : nonterminalSymbols) {
             this.nonterminalSymbols.put(symbol.toString(), symbol);
         }
 
-        for (Symbol symbol : terminalSymbols) {
+        for (final Symbol symbol : terminalSymbols) {
             this.terminalSymbols.put(symbol.toString(), symbol);
         }
 
-        for (Production production : productions) {
-            Symbol leftSide = production.leftSide();
+        for (final Production production : productions) {
+            final Symbol leftSide = production.leftSide();
 
-            List<Production> productionList = this.productions.containsKey(leftSide) ? this.productions.get(leftSide)
-                    : new ArrayList<Production>();
+            final List<Production> productionList = this.productions.containsKey(leftSide)
+                    ? this.productions.get(leftSide) : new ArrayList<Production>();
 
             productionList.add(production);
 
@@ -77,12 +77,12 @@ public class Grammar {
         boolean change = false;
         do {
             change = false;
-            for (Symbol symbol : nonterminalSymbols.values()) {
+            for (final Symbol symbol : nonterminalSymbols.values()) {
                 if (!emptySymbols.contains(symbol)) {
-                    for (Production production : productions.get(symbol)) {
+                    for (final Production production : productions.get(symbol)) {
                         boolean allEmpty = true;
                         if (!production.isEpsilonProduction()) {
-                            for (Symbol productionSymbol : production.rightSide()) {
+                            for (final Symbol productionSymbol : production.rightSide()) {
                                 if (!productionSymbol.isTerminal() || !emptySymbols.contains(productionSymbol)) {
                                     allEmpty = false;
                                     break;
@@ -103,23 +103,23 @@ public class Grammar {
     }
 
     private void calculateStartsWith() {
-        List<Symbol> orderedSymbols = new ArrayList<>();
+        final List<Symbol> orderedSymbols = new ArrayList<>();
         orderedSymbols.addAll(nonterminalSymbols.values());
         orderedSymbols.addAll(terminalSymbols.values());
         Collections.sort(orderedSymbols);
 
-        boolean[][] table = new boolean[orderedSymbols.size()][];
+        final boolean[][] table = new boolean[orderedSymbols.size()][];
         for (int i = 0; i < table.length; i++) {
             table[i] = new boolean[orderedSymbols.size()];
         }
 
         // ZapocinjeIzravnoZnakom
         for (int i = 0; i < table.length; i++) {
-            Symbol symbol = orderedSymbols.get(i);
+            final Symbol symbol = orderedSymbols.get(i);
             if (productions.containsKey(symbol)) {
-                for (Production production : productions.get(symbol)) {
+                for (final Production production : productions.get(symbol)) {
                     if (!production.isEpsilonProduction()) {
-                        for (Symbol productionSymbol : production.rightSide()) {
+                        for (final Symbol productionSymbol : production.rightSide()) {
                             table[i][orderedSymbols.indexOf(productionSymbol)] = true;
                             if (!emptySymbols.contains(productionSymbol)) {
                                 break;
@@ -153,7 +153,7 @@ public class Grammar {
 
         // Read from table
         for (int i = 0; i < table.length; i++) {
-            Set<Symbol> starts = new HashSet<>();
+            final Set<Symbol> starts = new HashSet<>();
             for (int j = 0; j < table[i].length; j++) {
                 if (table[i][j] && orderedSymbols.get(j).isTerminal()) {
                     starts.add(orderedSymbols.get(j));
@@ -172,7 +172,7 @@ public class Grammar {
      * @return <code>true</code> if a symbol can generatea empty
      * @since alpha
      */
-    public boolean isEmptySymbol(Symbol symbol) {
+    public boolean isEmptySymbol(final Symbol symbol) {
         if (symbol == null) {
             return true;
         }
@@ -188,8 +188,8 @@ public class Grammar {
      * @return <code>true</code> if the empty sequence can be generated, <code>false</code> otherwise.
      * @since alpha
      */
-    public boolean isEmptySequence(List<Symbol> sequence) {
-        for (Symbol symbol : sequence) {
+    public boolean isEmptySequence(final List<Symbol> sequence) {
+        for (final Symbol symbol : sequence) {
             if (!emptySymbols.contains(symbol)) {
                 return false;
             }
@@ -206,14 +206,14 @@ public class Grammar {
      * @return <code>true</code> if the empty sequence can be generated, <code>false</code> otherwise.
      * @since alpha
      */
-    public boolean isEmptySequence(String sequence) {
-        List<Symbol> newSequence = new ArrayList<>();
+    public boolean isEmptySequence(final String sequence) {
+        final List<Symbol> newSequence = new ArrayList<>();
 
         if (sequence.equals("$")) {
             return true;
         }
 
-        for (String name : sequence.split(" ")) {
+        for (final String name : sequence.split(" ")) {
             newSequence.add(ProductionParser.parseSymbol(name));
         }
 
@@ -228,8 +228,8 @@ public class Grammar {
      * @return symbols that are possible instead of the specified symbol.
      * @since alpha
      */
-    public Set<Symbol> startsWith(Symbol symbol) {
-        Set<Symbol> result = new HashSet<>();
+    public Set<Symbol> startsWith(final Symbol symbol) {
+        final Set<Symbol> result = new HashSet<>();
 
         if (symbol == null) {
             return result;
@@ -248,10 +248,10 @@ public class Grammar {
      * @return symbols that are possible instead of the specified sequence.
      * @since alpha
      */
-    public Set<Symbol> startsWith(List<Symbol> sequence) {
-        Set<Symbol> result = new HashSet<>();
+    public Set<Symbol> startsWith(final List<Symbol> sequence) {
+        final Set<Symbol> result = new HashSet<>();
 
-        for (Symbol symbol : sequence) {
+        for (final Symbol symbol : sequence) {
             if (symbol.isTerminal()) {
                 result.add(symbol);
                 break;
@@ -276,11 +276,11 @@ public class Grammar {
      * @return symbols that are possible instead of the specified sequence.
      * @since alpha
      */
-    public Set<Symbol> startsWith(String sequence) {
-        List<Symbol> newSequence = new ArrayList<>();
+    public Set<Symbol> startsWith(final String sequence) {
+        final List<Symbol> newSequence = new ArrayList<>();
 
         if (!sequence.equals("$")) {
-            for (String name : sequence.split(" ")) {
+            for (final String name : sequence.split(" ")) {
                 newSequence.add(ProductionParser.parseSymbol(name));
             }
         }
@@ -305,7 +305,7 @@ public class Grammar {
      * @since alpha
      */
     public Set<Symbol> terminalSymbols() {
-        Set<Symbol> result = new HashSet<>();
+        final Set<Symbol> result = new HashSet<>();
         result.addAll(terminalSymbols.values());
         return result;
     }
@@ -317,7 +317,7 @@ public class Grammar {
      * @since alpha
      */
     public Set<Symbol> nonterminalSymbols() {
-        Set<Symbol> result = new HashSet<>();
+        final Set<Symbol> result = new HashSet<>();
         result.addAll(nonterminalSymbols.values());
         return result;
     }
@@ -332,6 +332,12 @@ public class Grammar {
         return startSymbol;
     }
 
+    /**
+     * Returns the starting production of the grammar.
+     *
+     * @return -
+     * @since alpha
+     */
     public Production getStartProduction() {
         return productions.get(startSymbol).get(0);
     }

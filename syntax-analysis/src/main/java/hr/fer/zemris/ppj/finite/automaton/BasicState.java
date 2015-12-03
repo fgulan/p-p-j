@@ -73,12 +73,12 @@ public class BasicState implements State {
     }
 
     @Override
-    public BasicState newInstance(String id) {
+    public BasicState newInstance(final String id) {
         return new BasicState(id);
     }
 
     @Override
-    public BasicState combine(Set<State> existing) {
+    public BasicState combine(final Set<State> existing) {
         return this;
     }
 

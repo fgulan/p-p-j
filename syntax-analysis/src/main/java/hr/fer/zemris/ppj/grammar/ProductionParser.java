@@ -27,12 +27,12 @@ public class ProductionParser {
      * @since 1.0
      */
     public static Production fromText(final String production) {
-        String[] symbols = production.split(" ");
+        final String[] symbols = production.split(" ");
 
-        Symbol leftSide = parseSymbol(symbols[0]);
-        List<Symbol> rightSide = new ArrayList<>();
+        final Symbol leftSide = parseSymbol(symbols[0]);
+        final List<Symbol> rightSide = new ArrayList<>();
         for (int i = 1; i < symbols.length; i++) {
-            Symbol symbol = parseSymbol(symbols[i]);
+            final Symbol symbol = parseSymbol(symbols[i]);
             if (symbol != null) {
                 rightSide.add(symbol);
             }

@@ -9,13 +9,13 @@ import java.util.List;
 
 import hr.fer.zemris.ppj.finite.automaton.DFAutomaton;
 import hr.fer.zemris.ppj.finite.automaton.ENFAutomaton;
+import hr.fer.zemris.ppj.finite.automaton.generator.ENFAutomatonGenerator;
 import hr.fer.zemris.ppj.finite.automaton.transforms.DFAConverter;
 import hr.fer.zemris.ppj.grammar.Grammar;
 import hr.fer.zemris.ppj.grammar.GrammarBuilder;
 import hr.fer.zemris.ppj.grammar.ProductionParser;
 import hr.fer.zemris.ppj.lr1.parser.LR1ParserTable;
 import hr.fer.zemris.ppj.lr1.parser.LR1ParserTableFactory;
-import hr.fer.zemris.ppj.lr1.parser.ParserBuilder;
 
 /**
  * <code>GSA</code> class is required by the evaluator, to contain a entry point for the syntax analyzer generator.
@@ -47,9 +47,10 @@ public class GSA {
         }
 
         try (OutputStreamWriter writer = new FileWriter(new File("analizator/definition.txt"))) {
-            ENFAutomaton enfa = ParserBuilder.fromLR1Grammar(grammar);
-            DFAutomaton automaton = new DFAConverter().transform(enfa);
-            LR1ParserTable parserTable = LR1ParserTableFactory.fromDFA(automaton, ProductionParser.parseSymbol("<%>"));
+            final ENFAutomaton enfa = new ENFAutomatonGenerator().fromLR1Grammar(grammar);
+            final DFAutomaton automaton = new DFAConverter().transform(enfa);
+            final LR1ParserTable parserTable =
+                    LR1ParserTableFactory.fromDFA(automaton, ProductionParser.parseSymbol("<%>"));
             writeParserTable(parserTable, writer);
         }
         catch (final IOException e) {
@@ -58,31 +59,31 @@ public class GSA {
 
     }
 
-    private static void readInputData(BufferedReader reader) throws IOException {
+    private static void readInputData(final BufferedReader reader) throws IOException {
         String originalStartSymbol = null;
         nonterminalSymbols.add("<%>");
-        for (String symbol : reader.readLine().substring(3).split(" ")) {
+        for (final String symbol : reader.readLine().substring(3).split(" ")) {
             nonterminalSymbols.add(symbol);
             if (originalStartSymbol == null) {
                 originalStartSymbol = symbol;
             }
         }
 
-        for (String symbol : reader.readLine().substring(3).split(" ")) {
+        for (final String symbol : reader.readLine().substring(3).split(" ")) {
             terminalSymbols.add(symbol);
         }
 
-        for (String symbol : reader.readLine().substring(5).split(" ")) {
+        for (final String symbol : reader.readLine().substring(5).split(" ")) {
             syncSymbols.add(symbol);
         }
 
-        GrammarBuilder builder = new GrammarBuilder(nonterminalSymbols, terminalSymbols, "<%>");
+        final GrammarBuilder builder = new GrammarBuilder(nonterminalSymbols, terminalSymbols, "<%>");
         builder.addProduction(ProductionParser.fromText("<%> " + originalStartSymbol));
         String line = reader.readLine();
         do {
-            String leftSide = line;
+            final String leftSide = line;
             do {
-                String rightSide = line = reader.readLine();
+                final String rightSide = line = reader.readLine();
                 if ((line != null) && rightSide.startsWith(" ")) {
                     builder.addProduction(ProductionParser.fromText(leftSide, rightSide.trim()));
                 }
@@ -91,16 +92,17 @@ public class GSA {
         grammar = builder.build();
     }
 
-    private static void writeParserTable(LR1ParserTable table, OutputStreamWriter writer) throws IOException {
-        for (String symbol : nonterminalSymbols) {
+    private static void writeParserTable(final LR1ParserTable table,
+            final OutputStreamWriter writer) throws IOException {
+        for (final String symbol : nonterminalSymbols) {
             writer.write(symbol + " ");
         }
         writer.write("\n");
-        for (String symbol : terminalSymbols) {
+        for (final String symbol : terminalSymbols) {
             writer.write(symbol + " ");
         }
         writer.write("\n");
-        for (String symbol : syncSymbols) {
+        for (final String symbol : syncSymbols) {
             writer.write(symbol + " ");
         }
         writer.write("\n");

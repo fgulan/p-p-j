@@ -37,7 +37,7 @@ public class ReduceAction implements ParserAction {
      * @since alpha
      */
     @Override
-    public void execute(LR1Parser parser) {
+    public void execute(final LR1Parser parser) {
         // TODO Auto-generated method stub
 
     }
@@ -55,12 +55,12 @@ public class ReduceAction implements ParserAction {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (!(o instanceof ReduceAction)) {
             return false;
         }
 
-        ReduceAction action = (ReduceAction) o;
+        final ReduceAction action = (ReduceAction) o;
         return production.equals(action.production());
     }
 

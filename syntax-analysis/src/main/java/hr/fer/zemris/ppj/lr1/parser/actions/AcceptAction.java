@@ -21,7 +21,7 @@ public class AcceptAction implements ParserAction {
      * @since alpha
      */
     @Override
-    public void execute(LR1Parser parser) {
+    public void execute(final LR1Parser parser) {
         // TODO Auto-generated method stub
 
     }
@@ -32,7 +32,7 @@ public class AcceptAction implements ParserAction {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (!(o instanceof RejectAction)) {
             return false;
         }

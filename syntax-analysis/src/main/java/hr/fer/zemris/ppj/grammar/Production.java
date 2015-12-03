@@ -29,7 +29,7 @@ public class Production implements Comparable<Production> {
      *            order of the production, used to resolve grammar ambiguities.
      * @since alpha
      */
-    public Production(Symbol leftSide, List<Symbol> rightSide, int order) {
+    public Production(final Symbol leftSide, final List<Symbol> rightSide, final int order) {
         this.leftSide = leftSide;
         this.rightSide.addAll(rightSide);
         this.order = order;
@@ -62,7 +62,7 @@ public class Production implements Comparable<Production> {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (o == null) {
             return false;
         }
@@ -72,7 +72,7 @@ public class Production implements Comparable<Production> {
         }
 
         if (o instanceof Production) {
-            Production production = (Production) o;
+            final Production production = (Production) o;
 
             // return leftSide.equals(production.leftSide()) && rightSide.equals(production.rightSide());
             return order == production.order;
@@ -97,7 +97,7 @@ public class Production implements Comparable<Production> {
     public String toString() {
         String result = leftSide.toString() + ((rightSide.isEmpty()) ? " null" : "");
 
-        for (Symbol symbol : rightSide) {
+        for (final Symbol symbol : rightSide) {
             result += " " + symbol.toString();
         }
 
@@ -111,7 +111,7 @@ public class Production implements Comparable<Production> {
      * @since
      */
     @Override
-    public int compareTo(Production o) {
+    public int compareTo(final Production o) {
         return Integer.compare(order, o.order);
     }
 }

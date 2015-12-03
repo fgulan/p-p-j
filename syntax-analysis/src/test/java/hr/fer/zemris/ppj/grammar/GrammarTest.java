@@ -16,14 +16,14 @@ public class GrammarTest {
      */
     @Before
     public void setUpBeforeClass() throws Exception {
-        List<String> nonterminalSymbols = new ArrayList<>();
+        final List<String> nonterminalSymbols = new ArrayList<>();
         nonterminalSymbols.add("<A>");
         nonterminalSymbols.add("<B>");
         nonterminalSymbols.add("<C>");
         nonterminalSymbols.add("<D>");
         nonterminalSymbols.add("<E>");
 
-        List<String> terminalSymbols = new ArrayList<>();
+        final List<String> terminalSymbols = new ArrayList<>();
         terminalSymbols.add("a");
         terminalSymbols.add("b");
         terminalSymbols.add("c");
@@ -31,9 +31,9 @@ public class GrammarTest {
         terminalSymbols.add("e");
         terminalSymbols.add("f");
 
-        String startSymbol = "<A>";
+        final String startSymbol = "<A>";
 
-        GrammarBuilder builder = new GrammarBuilder(nonterminalSymbols, terminalSymbols, startSymbol);
+        final GrammarBuilder builder = new GrammarBuilder(nonterminalSymbols, terminalSymbols, startSymbol);
         builder.addProduction(ProductionParser.fromText("<A>", "<B> <C> c"));
         builder.addProduction(ProductionParser.fromText("<A>", "e <D> <B>"));
         builder.addProduction(ProductionParser.fromText("<B>", "$"));

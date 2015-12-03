@@ -51,8 +51,8 @@ public abstract class FAutomatonTransferFunction implements TransferFunction {
         }
     }
 
-    private void putTransition(Map<State, Set<FAutomatonTransition>> transitionMap, State state,
-            FAutomatonTransition transition) {
+    private void putTransition(final Map<State, Set<FAutomatonTransition>> transitionMap, final State state,
+            final FAutomatonTransition transition) {
         Set<FAutomatonTransition> transitionSet = transitionMap.get(state);
         if (transitionSet == null) {
             transitionSet = new HashSet<>();
@@ -110,7 +110,7 @@ public abstract class FAutomatonTransferFunction implements TransferFunction {
      * Finds transitions that match the specified criteria.
      */
     private Set<Transition> findMatching(final State oldState, final State newState, final Input input,
-            Set<FAutomatonTransition> transitions) {
+            final Set<FAutomatonTransition> transitions) {
         final Set<Transition> found = new HashSet<>();
 
         if (transitions == null) {

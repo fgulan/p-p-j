@@ -45,7 +45,7 @@ public class NonterminalSymbol implements Symbol {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (o == null) {
             return false;
         }
@@ -72,7 +72,7 @@ public class NonterminalSymbol implements Symbol {
     }
 
     @Override
-    public int compareTo(Symbol o) {
+    public int compareTo(final Symbol o) {
         if (o instanceof TerminalSymbol) {
             return -1;
         }

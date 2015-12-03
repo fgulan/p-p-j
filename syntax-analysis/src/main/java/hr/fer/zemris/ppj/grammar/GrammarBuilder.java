@@ -34,8 +34,8 @@ public class GrammarBuilder {
     public GrammarBuilder(final List<String> nonterminalSymbols, final List<String> terminalSymbols,
             final String startSymbol) {
 
-        for (String name : nonterminalSymbols) {
-            Symbol symbol = ProductionParser.parseSymbol(name);
+        for (final String name : nonterminalSymbols) {
+            final Symbol symbol = ProductionParser.parseSymbol(name);
 
             if (name.equals(startSymbol)) {
                 this.startSymbol = symbol;
@@ -44,7 +44,7 @@ public class GrammarBuilder {
             this.nonterminalSymbols.add(ProductionParser.parseSymbol(name));
         }
 
-        for (String name : terminalSymbols) {
+        for (final String name : terminalSymbols) {
             this.terminalSymbols.add(ProductionParser.parseSymbol(name));
         }
 
@@ -68,7 +68,7 @@ public class GrammarBuilder {
      *
      * @since alpha
      */
-    public void addProduction(Production production) {
+    public void addProduction(final Production production) {
         productions.add(production);
     }
 }

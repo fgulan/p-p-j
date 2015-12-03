@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import hr.fer.zemris.ppj.finite.automaton.ENFAutomaton;
-import hr.fer.zemris.ppj.lr1.parser.ParserBuilder;
+import hr.fer.zemris.ppj.finite.automaton.generator.ENFAutomatonGenerator;
 
 @SuppressWarnings("javadoc")
 public class ParserTest {
@@ -19,18 +19,18 @@ public class ParserTest {
      */
     @Before
     public void setUpBeforeClass() throws Exception {
-        List<String> nonterminalSymbols = new ArrayList<>();
+        final List<String> nonterminalSymbols = new ArrayList<>();
         nonterminalSymbols.add("<S>");
         nonterminalSymbols.add("<A>");
         nonterminalSymbols.add("<B>");
 
-        List<String> terminalSymbols = new ArrayList<>();
+        final List<String> terminalSymbols = new ArrayList<>();
         terminalSymbols.add("a");
         terminalSymbols.add("b");
 
-        String startSymbol = "<S>";
+        final String startSymbol = "<S>";
 
-        GrammarBuilder builder = new GrammarBuilder(nonterminalSymbols, terminalSymbols, startSymbol);
+        final GrammarBuilder builder = new GrammarBuilder(nonterminalSymbols, terminalSymbols, startSymbol);
         builder.addProduction(ProductionParser.fromText("<S>", "<A>"));
         builder.addProduction(ProductionParser.fromText("<A>", "<B> <A>"));
         builder.addProduction(ProductionParser.fromText("<A>", "$"));
@@ -42,7 +42,7 @@ public class ParserTest {
 
     @Test
     public void testStartsWith() {
-        ENFAutomaton automaton = ParserBuilder.fromLR1Grammar(grammar);
+        final ENFAutomaton automaton = new ENFAutomatonGenerator().fromLR1Grammar(grammar);
         System.out.println(automaton);
     }
 }

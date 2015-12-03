@@ -3,6 +3,7 @@ package hr.fer.zemris.ppj.finite.automaton.generator.interfaces;
 import java.util.List;
 
 import hr.fer.zemris.ppj.finite.automaton.interfaces.Automaton;
+import hr.fer.zemris.ppj.grammar.Grammar;
 
 /**
  * <code>AutomatonGenerator</code> offers set of functions to generate automatons.
@@ -41,4 +42,14 @@ public interface AutomatonGenerator {
      */
     Automaton fromTextDefinition(String states, String acceptStates, String alphabet, List<String> transitions,
             String startState);
+
+    /**
+     * Generates a automaton from LR(1) grammar, used for LR(1) parser generation.
+     *
+     * @param grammar
+     *            the grammar.
+     * @return generated automaton.
+     * @since 1.2
+     */
+    Automaton fromLR1Grammar(Grammar grammar);
 }

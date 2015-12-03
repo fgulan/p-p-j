@@ -37,27 +37,25 @@ public class LR1ParserTableFactory {
      *            grammar start symbol, used to determine which state and symbol to call AcceptAction for
      * @return the generated parser table
      */
-    public static LR1ParserTable fromDFA(DFAutomaton dfa, Symbol startSymbol) {
-        LR1ParserTableBuilder builder = new LR1ParserTableBuilder();
+    public static LR1ParserTable fromDFA(final DFAutomaton dfa, final Symbol startSymbol) {
+        final LR1ParserTableBuilder builder = new LR1ParserTableBuilder();
 
-        Set<State> states = dfa.getStates();
-        int br = 0;
-        for (State state : states) {
-            // System.out.println(br++ + " " + System.currentTimeMillis());
+        final Set<State> states = dfa.getStates();
+        for (final State state : states) {
             LRState lrState;
             try {
                 lrState = (LRState) state;
             }
-            catch (ClassCastException cce) {
+            catch (final ClassCastException cce) {
                 throw new IllegalArgumentException("Can't create LR parser table from this automaton!");
             }
 
-            Map<Input, Transition> transitions = new HashMap<>();
-            for (Transition transition : dfa.getTransferFunction().getTransitions(state, null, null)) {
+            final Map<Input, Transition> transitions = new HashMap<>();
+            for (final Transition transition : dfa.getTransferFunction().getTransitions(state, null, null)) {
                 transitions.put(transition.getInput(), transition);
             }
-            List<LRItem> completeItems = new ArrayList<>();
-            List<LRItem> nonCompleteItems = new ArrayList<>();
+            final List<LRItem> completeItems = new ArrayList<>();
+            final List<LRItem> nonCompleteItems = new ArrayList<>();
             separate(lrState, completeItems, nonCompleteItems);
 
             // completeItems.sort(null);
@@ -65,7 +63,7 @@ public class LR1ParserTableFactory {
                 fillTableReduce(state, builder, completeItems.get(i), startSymbol);
             }
 
-            for (LRItem item : nonCompleteItems) {
+            for (final LRItem item : nonCompleteItems) {
                 fillTableShiftPut(state, dfa, builder, item, transitions);
             }
 
@@ -74,15 +72,15 @@ public class LR1ParserTableFactory {
         return builder.build();
     }
 
-    private static void fillTableShiftPut(State state, DFAutomaton dfa, LR1ParserTableBuilder builder, LRItem lrItem,
-            Map<Input, Transition> transitions) {
-        Symbol nextSymbol = lrItem.getProduction().rightSide().get(lrItem.getDotIndex());
-        Transition transition = transitions.get(new BasicInput(nextSymbol.toString()));
+    private static void fillTableShiftPut(final State state, final DFAutomaton dfa, final LR1ParserTableBuilder builder,
+            final LRItem lrItem, final Map<Input, Transition> transitions) {
+        final Symbol nextSymbol = lrItem.getProduction().rightSide().get(lrItem.getDotIndex());
+        final Transition transition = transitions.get(new BasicInput(nextSymbol.toString()));
         if (transition != null) {
-            TablePair pair = new TablePair(state.getId(), nextSymbol);
+            final TablePair pair = new TablePair(state.getId(), nextSymbol);
             if (nextSymbol.isTerminal()) {
-                ParserAction oldAction = builder.getAction(pair);
-                ParserAction newAction = new ShiftAction(transition.getNewState().getId());
+                final ParserAction oldAction = builder.getAction(pair);
+                final ParserAction newAction = new ShiftAction(transition.getNewState().getId());
                 if ((oldAction != null) && !oldAction.equals(newAction)) {
                     System.err.println("Resolved shift/reduce conflict for state: " + state.getId() + " symbol: "
                             + nextSymbol + ". Old action: " + oldAction + " New action:" + newAction);
@@ -96,19 +94,20 @@ public class LR1ParserTableFactory {
 
     }
 
-    private static void fillTableReduce(State state, LR1ParserTableBuilder builder, LRItem lrItem, Symbol startSymbol) {
+    private static void fillTableReduce(final State state, final LR1ParserTableBuilder builder, final LRItem lrItem,
+            final Symbol startSymbol) {
 
-        Symbol leftSide = lrItem.getProduction().leftSide();
+        final Symbol leftSide = lrItem.getProduction().leftSide();
         if (leftSide.equals(startSymbol)) {
             builder.addAction(new TablePair(state.getId(), new ArrayList<>(lrItem.getTerminalSymbols()).get(0)),
                     new AcceptAction());
             return;
         }
 
-        for (Symbol termSymbol : lrItem.getTerminalSymbols()) {
-            TablePair pair = new TablePair(state.getId(), termSymbol);
-            ParserAction oldAction = builder.getAction(pair);
-            ReduceAction newAction = new ReduceAction(lrItem.getProduction());
+        for (final Symbol termSymbol : lrItem.getTerminalSymbols()) {
+            final TablePair pair = new TablePair(state.getId(), termSymbol);
+            final ParserAction oldAction = builder.getAction(pair);
+            final ReduceAction newAction = new ReduceAction(lrItem.getProduction());
             if ((oldAction != null) && (oldAction instanceof ReduceAction)) {
                 if (newAction.production().compareTo(((ReduceAction) oldAction).production()) > 0) {
                     continue;
@@ -129,9 +128,10 @@ public class LR1ParserTableFactory {
         }
     }
 
-    private static void separate(LRState lrState, List<LRItem> completeItems, List<LRItem> nonCompleteItems) {
-        for (LRItem item : lrState.getItems()) {
-            Production production = item.getProduction();
+    private static void separate(final LRState lrState, final List<LRItem> completeItems,
+            final List<LRItem> nonCompleteItems) {
+        for (final LRItem item : lrState.getItems()) {
+            final Production production = item.getProduction();
             if (production.isEpsilonProduction() || (item.getDotIndex() == production.rightSide().size())) {
                 completeItems.add(item);
             }

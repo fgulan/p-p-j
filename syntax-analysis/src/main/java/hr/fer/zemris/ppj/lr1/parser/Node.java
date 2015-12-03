@@ -3,31 +3,70 @@ package hr.fer.zemris.ppj.lr1.parser;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * <code>Node</code> represents a generative tree node.
+ *
+ * @author Jan Kelemen
+ * @author Matea Sabolic
+ *
+ * @version 1.0
+ */
 public class Node {
 
-    private String name;
-    private List<Node> children;
+    private final String name;
+    private final List<Node> children;
 
+    /**
+     * Class constructor, specifies the name of the node.
+     *
+     * @param name
+     *            the name.
+     * @since 1.0
+     */
     public Node(final String name) {
         this(name, new ArrayList<Node>());
     }
 
+    /**
+     * Class constructor, specifies the name and the children of the node.
+     *
+     * @param name
+     *            the name.
+     * @param children
+     *            the children.
+     * @since 1.0
+     */
     public Node(final String name, final List<Node> children) {
         this.name = name;
         this.children = children;
     }
 
-    public void addChild(Node child) {
+    /**
+     * Adds a child to the node.
+     *
+     * @param child
+     *            the child to be added.
+     * @since 1.0
+     */
+    public void addChild(final Node child) {
         children.add(child);
     }
 
-    public String print(int depth) {
+    /**
+     * Prints the tree.
+     *
+     * @param depth
+     *            starting depth of the node.
+     * @return textual representation of the tree.
+     * @since 1.0
+     */
+    public String print(final int depth) {
         String result = "";
         for (int i = 0; i < depth; i++) {
             result += " ";
         }
         result += name + "\n";
-        for (Node child : children) {
+        for (final Node child : children) {
             result += child.print(depth + 1);
         }
         return result;

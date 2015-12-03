@@ -16,7 +16,7 @@ import hr.fer.zemris.ppj.lr1.parser.actions.RejectAction;
  *
  * @author Domagoj Polancec
  *
- * @version alpha
+ * @version 1.0
  */
 public class LR1ParserTable {
 
@@ -28,19 +28,37 @@ public class LR1ParserTable {
      */
     public static class TablePair {
 
-        private String stateId;
-        private Symbol symbol;
+        private final String stateId;
+        private final Symbol symbol;
 
-        public TablePair(String stateId, Symbol symbol) {
+        /**
+         * Class constructor, specifies the state id and the symbol.
+         *
+         * @param stateId
+         *            the state id.
+         * @param symbol
+         *            the symbol.
+         */
+        public TablePair(final String stateId, final Symbol symbol) {
             super();
             this.stateId = stateId;
             this.symbol = symbol;
         }
 
+        /**
+         * Returns the state id.
+         *
+         * @return -
+         */
         public String getState() {
             return stateId;
         }
 
+        /**
+         * Returns the symbol.
+         *
+         * @return -
+         */
         public Symbol getSymbol() {
             return symbol;
         }
@@ -55,7 +73,7 @@ public class LR1ParserTable {
         }
 
         @Override
-        public boolean equals(Object obj) {
+        public boolean equals(final Object obj) {
             if (this == obj) {
                 return true;
             }
@@ -65,7 +83,7 @@ public class LR1ParserTable {
             if (getClass() != obj.getClass()) {
                 return false;
             }
-            TablePair other = (TablePair) obj;
+            final TablePair other = (TablePair) obj;
             if (stateId == null) {
                 if (other.stateId != null) {
                     return false;
@@ -87,7 +105,7 @@ public class LR1ParserTable {
 
     }
 
-    private Map<TablePair, ParserAction> actionTable = new HashMap<>();
+    private final Map<TablePair, ParserAction> actionTable = new HashMap<>();
 
     /**
      * Constructs a new LR(1) parser table from the given action table.
@@ -95,7 +113,7 @@ public class LR1ParserTable {
      * @param actionTable
      *            LR(1) parser action table as map
      */
-    public LR1ParserTable(Map<TablePair, ParserAction> actionTable) {
+    public LR1ParserTable(final Map<TablePair, ParserAction> actionTable) {
         this.actionTable.putAll(actionTable);
     }
 
@@ -106,10 +124,10 @@ public class LR1ParserTable {
      *            the state id.
      * @return list of symbols.
      */
-    public List<String> symbolsWithActionsFromState(String stateID) {
-        List<String> list = new ArrayList<>();
+    public List<String> symbolsWithActionsFromState(final String stateID) {
+        final List<String> list = new ArrayList<>();
 
-        for (TablePair pair : actionTable.keySet()) {
+        for (final TablePair pair : actionTable.keySet()) {
             if (pair.getState().equals(stateID)) {
                 list.add(pair.getSymbol().toString());
             }
@@ -128,8 +146,8 @@ public class LR1ParserTable {
      *            pair to get the action for
      * @return action for this pair
      */
-    public ParserAction getAction(TablePair pair) {
-        ParserAction action = actionTable.get(pair);
+    public ParserAction getAction(final TablePair pair) {
+        final ParserAction action = actionTable.get(pair);
         return action == null ? new RejectAction() : action;
     }
 
@@ -142,7 +160,7 @@ public class LR1ParserTable {
      *            symbol to get the action for
      * @return action for the given state and symbol
      */
-    public ParserAction getAction(LRState state, Symbol symbol) {
+    public ParserAction getAction(final LRState state, final Symbol symbol) {
         return getAction(state.getId(), symbol);
     }
 
@@ -155,7 +173,7 @@ public class LR1ParserTable {
      *            symbol to get the action for
      * @return action for the given state id and symbol
      */
-    public ParserAction getAction(String stateId, String symbol) {
+    public ParserAction getAction(final String stateId, final String symbol) {
         return getAction(new TablePair(stateId, ProductionParser.parseSymbol(symbol)));
     }
 
@@ -168,14 +186,14 @@ public class LR1ParserTable {
      *            symbol to get the action for
      * @return action for the given state id and symbol
      */
-    public ParserAction getAction(String stateId, Symbol symbol) {
+    public ParserAction getAction(final String stateId, final Symbol symbol) {
         return getAction(new TablePair(stateId, symbol));
     }
 
     @Override
     public String toString() {
-        Map<String, List<String>> stateList = new HashMap<>();
-        for (TablePair pair : actionTable.keySet()) {
+        final Map<String, List<String>> stateList = new HashMap<>();
+        for (final TablePair pair : actionTable.keySet()) {
             if (stateList.get(pair.stateId) == null) {
                 stateList.put(pair.stateId, new ArrayList<String>());
             }
@@ -184,16 +202,16 @@ public class LR1ParserTable {
         }
 
         String result = "";
-        for (Entry<String, List<String>> entry : stateList.entrySet()) {
+        for (final Entry<String, List<String>> entry : stateList.entrySet()) {
             result += entry.getKey() + "\n" + printList(entry.getValue()) + "\n";
         }
 
         return result;
     }
 
-    private String printList(List<String> value) {
+    private String printList(final List<String> value) {
         String result = "";
-        int listSize = value.size();
+        final int listSize = value.size();
         for (int i = 0; i < listSize; i++) {
             result += " " + value.get(i);
             if (i != (listSize - 1)) {

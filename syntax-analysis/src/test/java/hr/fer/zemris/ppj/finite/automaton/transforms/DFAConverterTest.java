@@ -21,15 +21,14 @@ public class DFAConverterTest {
     static Set<State> acceptStates = new HashSet<>();
     static Set<FAutomatonTransition> newTransitions = new HashSet<>();
     static Set<Input> inputs = new HashSet<>();
-    private static DFAConverter converter = new DFAConverter();
 
     @Test
     public void test() {
-        ENFAutomatonGenerator generator = new ENFAutomatonGenerator();
-        String states = "0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17";
-        String acceptStates = "0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17";
-        String alphabet = "a b <S> <A> <B>";
-        List<String> transitions = new ArrayList<>();
+        final ENFAutomatonGenerator generator = new ENFAutomatonGenerator();
+        final String states = "0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17";
+        final String acceptStates = "0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17";
+        final String alphabet = "a b <S> <A> <B>";
+        final List<String> transitions = new ArrayList<>();
         transitions.add("0 <S> 1");
         transitions.add("0 null 2");
         transitions.add("0 null 6");
@@ -52,10 +51,10 @@ public class DFAConverterTest {
         transitions.add("12 null 16");
         transitions.add("14 a 15");
         transitions.add("16 b 17");
-        String startState = "0";
+        final String startState = "0";
 
-        ENFAutomaton eNFA = generator.fromTextDefinition(states, acceptStates, alphabet, transitions, startState);
-        DFAutomaton DFA = new DFAConverter().transform(eNFA);
+        final ENFAutomaton eNFA = generator.fromTextDefinition(states, acceptStates, alphabet, transitions, startState);
+        final DFAutomaton DFA = new DFAConverter().transform(eNFA);
         System.out.println(DFA);
 
     }

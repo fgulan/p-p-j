@@ -28,7 +28,6 @@ public class LR1Parser {
 
     private final LR1ParserTable table;
     private final List<Symbol> syncSymbols;
-    private final Symbol startSymbol;
 
     /**
      * Class constructor, specifies the actions of the parser.
@@ -39,10 +38,9 @@ public class LR1Parser {
      *            sync symbols of the parser.
      * @since alpha
      */
-    public LR1Parser(final LR1ParserTable table, final List<Symbol> syncSymbols, final Symbol startSymbol) {
+    public LR1Parser(final LR1ParserTable table, final List<Symbol> syncSymbols) {
         this.table = table;
         this.syncSymbols = syncSymbols;
-        this.startSymbol = startSymbol;
     }
 
     /**
@@ -50,29 +48,28 @@ public class LR1Parser {
      *
      * @param lexemes
      *            the lexemes.
-     * @param outputStream
-     *            the output stream.
      * @param errorStream
      *            the error output stream.
+     * @return root of the generative tree.
      * @since alpha
      */
-    public Node analyze(List<Lexeme> lexemes, PrintStream outputStream, PrintStream errorStream) {
-        Stack<String> stack = new Stack<>();
+    public Node analyze(final List<Lexeme> lexemes, final PrintStream errorStream) {
+        final Stack<String> stack = new Stack<>();
         stack.push("0");
 
-        Stack<Node> tree = new Stack<>();
+        final Stack<Node> tree = new Stack<>();
         for (int i = 0; i < lexemes.size();) { // Increment expression is left out on purpose
-            Lexeme lexeme = lexemes.get(i);
-            String state = stack.peek();
-            String symbol = lexeme.type();
+            final Lexeme lexeme = lexemes.get(i);
+            final String state = stack.peek();
+            final String symbol = lexeme.type();
 
-            ParserAction action = table.getAction(state, symbol);
+            final ParserAction action = table.getAction(state, symbol);
             errorStream.println(state + " " + symbol + " " + action.toString());
             if (action instanceof ShiftAction) {
                 // Shift the matched terminal t onto the parse stack and scan the next input symbol into the lookahead
                 // buffer.
                 // Push next state n onto the parse stack as the new current state.
-                ShiftAction shift = (ShiftAction) action;
+                final ShiftAction shift = (ShiftAction) action;
                 stack.push(symbol);
                 tree.push(new Node(lexeme.toString()));
                 stack.push(shift.stateID());
@@ -88,14 +85,14 @@ public class LR1Parser {
                 // Push the symbol and tree for Lhs onto the parse stack.
                 // Push next state n onto the parse stack as the new current state.
                 // The lookahead and input stream remain unchanged.
-                ReduceAction reduce = (ReduceAction) action;
-                Production production = reduce.production();
+                final ReduceAction reduce = (ReduceAction) action;
+                final Production production = reduce.production();
 
                 if (production.isEpsilonProduction()) {
                     tree.push(new Node(production.leftSide().toString(), Arrays.asList(new Node("$"))));
                 }
                 else {
-                    List<Node> children = new ArrayList<>();
+                    final List<Node> children = new ArrayList<>();
                     for (int j = 0; j < (production.rightSide().size() * 2); j++) {
                         stack.pop();
                         if ((j % 2) == 0) {
@@ -105,7 +102,7 @@ public class LR1Parser {
                     tree.push(new Node(production.leftSide().toString(), children));
                 }
 
-                PutAction put = (PutAction) table.getAction(stack.peek(), production.leftSide().toString());
+                final PutAction put = (PutAction) table.getAction(stack.peek(), production.leftSide().toString());
                 stack.push(production.leftSide().toString());
                 stack.push(put.stateID());
             }
@@ -128,7 +125,7 @@ public class LR1Parser {
                     i++;
                 }
 
-                String syncSymbol = lexemes.get(i).type().toString();
+                final String syncSymbol = lexemes.get(i).type().toString();
                 // Find first state with defined action for the sync symbol
                 while (table.getAction(stack.peek(), syncSymbol) instanceof RejectAction) {
                     stack.pop();

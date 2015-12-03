@@ -4,7 +4,7 @@ import hr.fer.zemris.ppj.lr1.parser.LR1Parser;
 
 /**
  * <code>RejectAction</code> represents a action of the LR(1) parser which rejects lexemes.
- * 
+ *
  * @author Jan Kelemen
  * @author Matea Sabolic
  *
@@ -23,7 +23,7 @@ public class RejectAction implements ParserAction {
      * @since alpha
      */
     @Override
-    public void execute(LR1Parser parser) {
+    public void execute(final LR1Parser parser) {
         // TODO Auto-generated method stub
 
     }
@@ -34,7 +34,7 @@ public class RejectAction implements ParserAction {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (!(o instanceof RejectAction)) {
             return false;
         }

@@ -36,7 +36,7 @@ public class PutAction implements ParserAction {
      * @since alpha
      */
     @Override
-    public void execute(LR1Parser parser) {
+    public void execute(final LR1Parser parser) {
         // TODO Auto-generated method stub
 
     }
@@ -55,12 +55,12 @@ public class PutAction implements ParserAction {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (!(o instanceof PutAction)) {
             return false;
         }
 
-        PutAction action = (PutAction) o;
+        final PutAction action = (PutAction) o;
         return stateID.equals(action.stateID());
     }
 

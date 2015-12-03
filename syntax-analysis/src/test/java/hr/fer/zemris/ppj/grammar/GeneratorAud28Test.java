@@ -8,10 +8,10 @@ import org.junit.Test;
 
 import hr.fer.zemris.ppj.finite.automaton.DFAutomaton;
 import hr.fer.zemris.ppj.finite.automaton.ENFAutomaton;
+import hr.fer.zemris.ppj.finite.automaton.generator.ENFAutomatonGenerator;
 import hr.fer.zemris.ppj.finite.automaton.transforms.DFAConverter;
 import hr.fer.zemris.ppj.lr1.parser.LR1ParserTable;
 import hr.fer.zemris.ppj.lr1.parser.LR1ParserTableFactory;
-import hr.fer.zemris.ppj.lr1.parser.ParserBuilder;
 
 @SuppressWarnings("javadoc")
 public class GeneratorAud28Test {
@@ -26,18 +26,18 @@ public class GeneratorAud28Test {
      */
     @Before
     public void setUpBeforeClass() throws Exception {
-        List<String> nonterminalSymbols = new ArrayList<>();
+        final List<String> nonterminalSymbols = new ArrayList<>();
         nonterminalSymbols.add("<S>");
         nonterminalSymbols.add("<A>");
         nonterminalSymbols.add("<B>");
 
-        List<String> terminalSymbols = new ArrayList<>();
+        final List<String> terminalSymbols = new ArrayList<>();
         terminalSymbols.add("b");
         terminalSymbols.add("c");
 
-        String startSymbol = "<S>";
+        final String startSymbol = "<S>";
 
-        GrammarBuilder builder = new GrammarBuilder(nonterminalSymbols, terminalSymbols, startSymbol);
+        final GrammarBuilder builder = new GrammarBuilder(nonterminalSymbols, terminalSymbols, startSymbol);
         builder.addProduction(ProductionParser.fromText("<S>", "b <A> <B>"));
         builder.addProduction(ProductionParser.fromText("<A>", "b <B> c"));
         builder.addProduction(ProductionParser.fromText("<B>", "b"));
@@ -47,7 +47,7 @@ public class GeneratorAud28Test {
 
     @Test
     public void test() {
-        eNFA = ParserBuilder.fromLR1Grammar(grammar);
+        eNFA = new ENFAutomatonGenerator().fromLR1Grammar(grammar);
         System.out.println(eNFA);
         DFA = new DFAConverter().transform(eNFA);
         System.out.println(DFA);

@@ -36,7 +36,7 @@ public class ShiftAction implements ParserAction {
      * @since alpha
      */
     @Override
-    public void execute(LR1Parser parser) {
+    public void execute(final LR1Parser parser) {
         // TODO Auto-generated method stub
 
     }
@@ -55,12 +55,12 @@ public class ShiftAction implements ParserAction {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (!(o instanceof ShiftAction)) {
             return false;
         }
 
-        ShiftAction action = (ShiftAction) o;
+        final ShiftAction action = (ShiftAction) o;
         return stateID.equals(action.stateID());
     }
 
