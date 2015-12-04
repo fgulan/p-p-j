@@ -3,18 +3,21 @@ package hr.fer.zemris.ppj;
 import java.util.ArrayList;
 import java.util.List;
 
+import hr.fer.zemris.ppj.semantic.rule.Checker;
+
 /**
  * <code>Node</code> represents a generative tree node.
  *
  * @author Jan Kelemen
  * @author Matea Sabolic
  *
- * @version 1.0
+ * @version 1.1
  */
 public class Node {
 
     private final String name;
     private final List<Node> children;
+    private final Checker checker;
 
     /**
      * Class constructor, specifies the name of the node.
@@ -24,7 +27,7 @@ public class Node {
      * @since 1.0
      */
     public Node(final String name) {
-        this(name, new ArrayList<Node>());
+        this(name, new ArrayList<Node>(), null);
     }
 
     /**
@@ -34,11 +37,14 @@ public class Node {
      *            the name.
      * @param children
      *            the children.
+     * @param checker
+     *            the semantic checker for the node
      * @since 1.0
      */
-    public Node(final String name, final List<Node> children) {
+    public Node(final String name, final List<Node> children, final Checker checker) {
         this.name = name;
         this.children = children;
+        this.checker = checker;
     }
 
     /**
@@ -50,6 +56,16 @@ public class Node {
      */
     public void addChild(final Node child) {
         children.add(child);
+    }
+
+    /**
+     * Checks the semantics of the node.
+     * 
+     * @return <code>true</code> if the node is semantically correct, <code>false</code> otherwise.
+     * @since 1.1
+     */
+    public boolean check() {
+        return checker.check(this);
     }
 
     /**
