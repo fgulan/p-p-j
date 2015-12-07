@@ -143,7 +143,7 @@ public class TreeParser {
 
             Node parent = stack.isEmpty() ? null : stack.peek();
             Checker checker = checkers.get(line.trim());
-            Node child = new Node(line.trim(), new ArrayList<>(), parent, checker);
+            Node child = new Node(line.trim(), new ArrayList<>(), parent, new HashMap<>(), checker);
             if (parent != null) {
                 parent.addChild(child);
             }

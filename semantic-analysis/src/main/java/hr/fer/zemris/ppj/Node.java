@@ -1,6 +1,7 @@
 package hr.fer.zemris.ppj;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +23,7 @@ public class Node {
     private final List<Node> children;
     private final Checker checker;
 
-    private final Map<SemanticAttribute, Object> attributes = new HashMap<>();
+    private final Map<Attribute, Object> attributes = new HashMap<>();
 
     /**
      * Class constructor, specifies the name of the node.
@@ -32,7 +33,7 @@ public class Node {
      * @since 1.0
      */
     public Node(final String name, final Node parent) {
-        this(name, new ArrayList<Node>(), parent, null);
+        this(name, new ArrayList<Node>(), parent, new HashMap<>(), null);
     }
 
     /**
@@ -42,14 +43,20 @@ public class Node {
      *            the name.
      * @param children
      *            the children.
+     * @param parent
+     *            parent of the node.
+     * @param attributes
+     *            attributes of the node.
      * @param checker
      *            the semantic checker for the node
      * @since 1.0
      */
-    public Node(final String name, final List<Node> children, final Node parent, final Checker checker) {
+    public Node(final String name, final List<Node> children, final Node parent,
+            final Map<Attribute, Object> attributes, final Checker checker) {
         this.name = name;
         this.parent = parent;
         this.children = children;
+        this.attributes.putAll(attributes);
         this.checker = checker;
     }
 
@@ -59,6 +66,14 @@ public class Node {
      */
     public String name() {
         return name;
+    }
+
+    /**
+     * @return number of children.
+     * @since 1.1
+     */
+    public int childrenCount() {
+        return children.size();
     }
 
     /**
@@ -73,15 +88,33 @@ public class Node {
     }
 
     /**
+     * @param index
+     *            index of the child.
+     * @return child at specified index.
+     * @since 1.1
+     */
+    public Node getChild(final int index) {
+        return children.get(index);
+    }
+
+    /**
+     * @return children of the node.
+     * @since 1.1
+     */
+    public List<Node> getChildren() {
+        return Collections.unmodifiableList(children);
+    }
+
+    /**
      * Adds a attribute to the node.
-     * 
+     *
      * @param type
      *            type of the attribute.
      * @param value
      *            value of the attribute.
      * @since 1.1
      */
-    public void addAttribute(final SemanticAttribute type, final Object value) {
+    public void addAttribute(final Attribute type, final Object value) {
         attributes.put(type, value);
     }
 
@@ -91,7 +124,7 @@ public class Node {
      * @return value of the specified attribute.
      * @since 1.1
      */
-    public Object getAttribute(final SemanticAttribute type) {
+    public Object getAttribute(final Attribute type) {
         return attributes.get(type);
     }
 
@@ -123,5 +156,15 @@ public class Node {
             result += child.print(depth + 1);
         }
         return result;
+    }
+
+    // DEFINIRANO ISKLJUCIVO ZA POTREBE DOJAVE GRESKE
+    @Override
+    public String toString() {
+        if (name.startsWith("<")) {
+            return name;
+        }
+
+        return name + "(" + attributes.get(Attribute.LINE_NUMBER) + ", " + attributes.get(Attribute.VALUE) + ")";
     }
 }
