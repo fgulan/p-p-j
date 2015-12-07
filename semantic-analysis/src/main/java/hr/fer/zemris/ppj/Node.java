@@ -1,7 +1,9 @@
 package hr.fer.zemris.ppj;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import hr.fer.zemris.ppj.semantic.rule.Checker;
 
@@ -19,6 +21,8 @@ public class Node {
     private final Node parent;
     private final List<Node> children;
     private final Checker checker;
+
+    private final Map<SemanticAttribute, Object> attributes = new HashMap<>();
 
     /**
      * Class constructor, specifies the name of the node.
@@ -66,6 +70,29 @@ public class Node {
      */
     public void addChild(final Node child) {
         children.add(child);
+    }
+
+    /**
+     * Adds a attribute to the node.
+     * 
+     * @param type
+     *            type of the attribute.
+     * @param value
+     *            value of the attribute.
+     * @since 1.1
+     */
+    public void addAttribute(final SemanticAttribute type, final Object value) {
+        attributes.put(type, value);
+    }
+
+    /**
+     * @param type
+     *            type of the attribute.
+     * @return value of the specified attribute.
+     * @since 1.1
+     */
+    public Object getAttribute(final SemanticAttribute type) {
+        return attributes.get(type);
     }
 
     /**
