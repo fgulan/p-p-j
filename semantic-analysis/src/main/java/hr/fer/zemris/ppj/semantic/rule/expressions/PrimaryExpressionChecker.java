@@ -44,8 +44,6 @@ public class PrimaryExpressionChecker implements Checker {
 
         // <primarni_izraz> ::= IDN
         if ("IDN".equals(firstChild.name())) {
-            node.addAttribute(Attribute.TYPE, firstChild.getAttribute(Attribute.TYPE));
-            node.addAttribute(Attribute.L_EXPRESSION, firstChild.getAttribute(Attribute.L_EXPRESSION));
 
             // 1. IDN.ime je deklarirano
             if (!firstChild.check()) {
@@ -53,12 +51,12 @@ public class PrimaryExpressionChecker implements Checker {
                 return false;
             }
 
+            node.addAttribute(Attribute.TYPE, firstChild.getAttribute(Attribute.TYPE));
+            node.addAttribute(Attribute.L_EXPRESSION, firstChild.getAttribute(Attribute.L_EXPRESSION));
             return true;
         }
         // <primarni_izraz> ::= BROJ
         if ("BROJ".equals(firstChild.name())) {
-            node.addAttribute(Attribute.TYPE, VariableType.INT);
-            node.addAttribute(Attribute.L_EXPRESSION, false);
 
             // 1. vrijednost je u rasponu tipa int
             if (!firstChild.check()) {
@@ -66,12 +64,12 @@ public class PrimaryExpressionChecker implements Checker {
                 return false;
             }
 
+            node.addAttribute(Attribute.TYPE, VariableType.INT);
+            node.addAttribute(Attribute.L_EXPRESSION, false);
             return true;
         }
         // <primarni_izraz> ::= ZNAK
         if ("ZNAK".equals(firstChild.name())) {
-            node.addAttribute(Attribute.TYPE, VariableType.CHAR);
-            node.addAttribute(Attribute.L_EXPRESSION, false);
 
             // 1. znak je ispravan po 4.3.2
             if (!firstChild.check()) {
@@ -79,12 +77,12 @@ public class PrimaryExpressionChecker implements Checker {
                 return false;
             }
 
+            node.addAttribute(Attribute.TYPE, VariableType.CHAR);
+            node.addAttribute(Attribute.L_EXPRESSION, false);
             return true;
         }
         // <primarni_izraz> ::= NIZ_ZNAKOVA
         if ("NIZ_ZNAKOVA".equals(firstChild.name())) {
-            node.addAttribute(Attribute.TYPE, VariableType.CONST_CHAR_ARRAY);
-            node.addAttribute(Attribute.L_EXPRESSION, false);
 
             // 1. konstantni niz znakova je ispravan po 4.3.2
             if (!firstChild.check()) {
@@ -92,20 +90,22 @@ public class PrimaryExpressionChecker implements Checker {
                 return false;
             }
 
+            node.addAttribute(Attribute.TYPE, VariableType.CONST_CHAR_ARRAY);
+            node.addAttribute(Attribute.L_EXPRESSION, false);
             return true;
         }
         // <primarni_izraz> ::= L_ZAGRADA <izraz> D_ZAGRADA
         if ("L_ZAGRADA".equals(firstChild.name())) {
             Node expression = node.getChild(1);
 
-            node.addAttribute(Attribute.TYPE, expression.getAttribute(Attribute.TYPE));
-            node.addAttribute(Attribute.L_EXPRESSION, expression.getAttribute(Attribute.L_EXPRESSION));
-
+            // 1. provjeri(<izraz>)
             if (!expression.check()) {
                 SemanticErrorReporter.report(node);
                 return false;
             }
 
+            node.addAttribute(Attribute.TYPE, expression.getAttribute(Attribute.TYPE));
+            node.addAttribute(Attribute.L_EXPRESSION, expression.getAttribute(Attribute.L_EXPRESSION));
             return true;
         }
 
