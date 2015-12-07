@@ -27,7 +27,7 @@ public class PostfixExpressionChecker implements Checker {
     /**
      * Name of the node in Croatian.
      */
-    public static final String HR_NAME = "<postfiks_expression>";
+    public static final String HR_NAME = "<postfiks_izraz>";
 
     /**
      * {@inheritDoc} <br>

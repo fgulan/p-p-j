@@ -1,8 +1,10 @@
 package hr.fer.zemris.ppj;
 
-import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
+import java.util.Stack;
 
 import hr.fer.zemris.ppj.semantic.rule.Checker;
 import hr.fer.zemris.ppj.semantic.rule.declarations.DeclarationChecker;
@@ -57,7 +59,7 @@ public class TreeParser {
 
     private static final Map<String, Checker> checkers = new HashMap<>();
 
-    {
+    static {
         // declarations
         checkers.put(DeclarationChecker.HR_NAME, new DeclarationChecker());
         checkers.put(DeclarationListChecker.HR_NAME, new DeclarationListChecker());
@@ -112,13 +114,55 @@ public class TreeParser {
     /**
      * Parses a tree from the defined input stream.
      *
-     * @param input
-     *            the input stream.
+     * @param scanner
+     *            scanner.
      * @return parsed tree.
      * @since alpha
      */
-    public static Node parse(final InputStream input) {
-        return null;
+    public static Node parse(final Scanner scanner) {
+        Stack<Node> stack = new Stack<>();
+        String line = null;
+        int depth = 0;
+        while (scanner.hasNextLine()) {
+            line = scanner.nextLine();
+            if (line == null) {
+                break;
+            }
+
+            if (!stack.isEmpty() && !stack.peek().name().startsWith("<")) {
+                stack.pop();
+            }
+
+            int lineDepth = countDepth(line);
+            if (depth > lineDepth) {
+                for (int i = 0; i < (depth - lineDepth); i++) {
+                    stack.pop();
+                }
+            }
+            depth = lineDepth;
+
+            Node parent = stack.isEmpty() ? null : stack.peek();
+            Checker checker = checkers.get(line.trim());
+            Node child = new Node(line.trim(), new ArrayList<>(), parent, checker);
+            if (parent != null) {
+                parent.addChild(child);
+            }
+            stack.push(child);
+        }
+
+        while (stack.size() > 1) {
+            stack.pop();
+        }
+
+        return stack.pop();
+    }
+
+    private static int countDepth(final String line) {
+        int i = 0;
+        for (i = 0; (i < line.length()) && (line.charAt(i) == ' '); i++) {
+            ;
+        }
+        return i;
     }
 
 }

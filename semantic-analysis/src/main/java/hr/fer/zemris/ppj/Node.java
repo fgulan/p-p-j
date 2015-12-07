@@ -16,6 +16,7 @@ import hr.fer.zemris.ppj.semantic.rule.Checker;
 public class Node {
 
     private final String name;
+    private final Node parent;
     private final List<Node> children;
     private final Checker checker;
 
@@ -26,8 +27,8 @@ public class Node {
      *            the name.
      * @since 1.0
      */
-    public Node(final String name) {
-        this(name, new ArrayList<Node>(), null);
+    public Node(final String name, final Node parent) {
+        this(name, new ArrayList<Node>(), parent, null);
     }
 
     /**
@@ -41,10 +42,19 @@ public class Node {
      *            the semantic checker for the node
      * @since 1.0
      */
-    public Node(final String name, final List<Node> children, final Checker checker) {
+    public Node(final String name, final List<Node> children, final Node parent, final Checker checker) {
         this.name = name;
+        this.parent = parent;
         this.children = children;
         this.checker = checker;
+    }
+
+    /**
+     * @return name of the node.
+     * @since 1.1
+     */
+    public String name() {
+        return name;
     }
 
     /**
@@ -60,7 +70,7 @@ public class Node {
 
     /**
      * Checks the semantics of the node.
-     * 
+     *
      * @return <code>true</code> if the node is semantically correct, <code>false</code> otherwise.
      * @since 1.1
      */
