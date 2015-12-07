@@ -1,6 +1,9 @@
 package hr.fer.zemris.ppj.semantic.rule.expressions;
 
+import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
+import hr.fer.zemris.ppj.SemanticErrorReporter;
+import hr.fer.zemris.ppj.VariableType;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
 
 /**
@@ -37,8 +40,71 @@ public class PrimaryExpressionChecker implements Checker {
      */
     @Override
     public boolean check(Node node) {
-        // TODO Auto-generated method stub
-        return false;
+        Node firstChild = node.getChild(0);
+
+        // <primarni_izraz> ::= IDN
+        if ("IDN".equals(firstChild.name())) {
+            node.addAttribute(Attribute.TYPE, firstChild.getAttribute(Attribute.TYPE));
+            node.addAttribute(Attribute.L_EXPRESSION, firstChild.getAttribute(Attribute.L_EXPRESSION));
+
+            // 1. IDN.ime je deklarirano
+            if (!firstChild.check()) {
+                System.out.println(HR_NAME + " ::= " + firstChild.toString());
+                return false;
+            }
+        }
+        // <primarni_izraz> ::= BROJ
+        else if ("BROJ".equals(firstChild.name())) {
+            node.addAttribute(Attribute.TYPE, VariableType.INT);
+            node.addAttribute(Attribute.L_EXPRESSION, false);
+
+            // 1. vrijednost je u rasponu tipa int
+            if (!firstChild.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+        }
+        // <primarni_izraz> ::= ZNAK
+        else if ("ZNAK".equals(firstChild.name())) {
+            node.addAttribute(Attribute.TYPE, VariableType.CHAR);
+            node.addAttribute(Attribute.L_EXPRESSION, false);
+
+            // 1. znak je ispravan po 4.3.2
+            if (!firstChild.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+        }
+        // <primarni_izraz> ::= NIZ_ZNAKOVA
+        else if ("NIZ_ZNAKOVA".equals(firstChild.name())) {
+            node.addAttribute(Attribute.TYPE, VariableType.CONST_CHAR_ARRAY);
+            node.addAttribute(Attribute.L_EXPRESSION, false);
+
+            // 1. konstantni niz znakova je ispravan po 4.3.2
+            if (!firstChild.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+        }
+        // <primarni_izraz> ::= L_ZAGRADA <izraz> D_ZAGRADA
+        else if ("L_ZAGRADA".equals(firstChild.name())) {
+            Node expression = node.getChild(1);
+
+            node.addAttribute(Attribute.TYPE, expression.getAttribute(Attribute.TYPE));
+            node.addAttribute(Attribute.L_EXPRESSION, expression.getAttribute(Attribute.L_EXPRESSION));
+
+            if (!expression.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+        }
+        else {
+            System.err.println("Shold never happen");
+            SemanticErrorReporter.report(node);
+            return false;
+        }
+
+        return true;
     }
 
 }
