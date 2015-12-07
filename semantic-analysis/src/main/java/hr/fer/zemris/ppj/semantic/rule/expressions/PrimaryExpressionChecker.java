@@ -52,9 +52,11 @@ public class PrimaryExpressionChecker implements Checker {
                 System.out.println(HR_NAME + " ::= " + firstChild.toString());
                 return false;
             }
+
+            return true;
         }
         // <primarni_izraz> ::= BROJ
-        else if ("BROJ".equals(firstChild.name())) {
+        if ("BROJ".equals(firstChild.name())) {
             node.addAttribute(Attribute.TYPE, VariableType.INT);
             node.addAttribute(Attribute.L_EXPRESSION, false);
 
@@ -63,9 +65,11 @@ public class PrimaryExpressionChecker implements Checker {
                 SemanticErrorReporter.report(node);
                 return false;
             }
+
+            return true;
         }
         // <primarni_izraz> ::= ZNAK
-        else if ("ZNAK".equals(firstChild.name())) {
+        if ("ZNAK".equals(firstChild.name())) {
             node.addAttribute(Attribute.TYPE, VariableType.CHAR);
             node.addAttribute(Attribute.L_EXPRESSION, false);
 
@@ -74,9 +78,11 @@ public class PrimaryExpressionChecker implements Checker {
                 SemanticErrorReporter.report(node);
                 return false;
             }
+
+            return true;
         }
         // <primarni_izraz> ::= NIZ_ZNAKOVA
-        else if ("NIZ_ZNAKOVA".equals(firstChild.name())) {
+        if ("NIZ_ZNAKOVA".equals(firstChild.name())) {
             node.addAttribute(Attribute.TYPE, VariableType.CONST_CHAR_ARRAY);
             node.addAttribute(Attribute.L_EXPRESSION, false);
 
@@ -85,9 +91,11 @@ public class PrimaryExpressionChecker implements Checker {
                 SemanticErrorReporter.report(node);
                 return false;
             }
+
+            return true;
         }
         // <primarni_izraz> ::= L_ZAGRADA <izraz> D_ZAGRADA
-        else if ("L_ZAGRADA".equals(firstChild.name())) {
+        if ("L_ZAGRADA".equals(firstChild.name())) {
             Node expression = node.getChild(1);
 
             node.addAttribute(Attribute.TYPE, expression.getAttribute(Attribute.TYPE));
@@ -97,14 +105,13 @@ public class PrimaryExpressionChecker implements Checker {
                 SemanticErrorReporter.report(node);
                 return false;
             }
-        }
-        else {
-            System.err.println("Shold never happen");
-            SemanticErrorReporter.report(node);
-            return false;
+
+            return true;
         }
 
-        return true;
+        System.err.println("Shold never happen");
+        SemanticErrorReporter.report(node);
+        return false;
     }
 
 }
