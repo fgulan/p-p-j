@@ -81,7 +81,34 @@ public enum VariableType {
      * @since alpha
      */
     public static boolean implicitConversion(VariableType from, VariableType to) {
-        // TODO: implementacija ovoga
+        if (from == INT) {
+        	if (to== CONST_INT) return true;
+        	else return false;
+        }
+        else if (from == CHAR) {
+        	if (to == CONST_CHAR | to == INT | to == CONST_INT) return true;
+        	else return false;
+        }
+        else if (from == CONST_INT) {
+        	if (to== INT) return true;
+        	else return false;
+        }
+        else if (from == CONST_CHAR) {
+        	if (to == CHAR | to == CONST_INT | to == INT) return true;
+        	else return false;
+        }
+        else if (from == INT_ARRAY) {
+        	if (to == CONST_INT_ARRAY) return true;
+        	else return false;
+        }
+        else if (from == CHAR_ARRAY) {
+        	if (to == CONST_CHAR_ARRAY | to == CONST_INT_ARRAY | to == INT_ARRAY) return true;
+        	else return false;
+        }
+        else if (from == CONST_CHAR_ARRAY) {
+        	if (to == CONST_INT_ARRAY) return true;
+        	else return false;
+        }
         return false;
     }
 
