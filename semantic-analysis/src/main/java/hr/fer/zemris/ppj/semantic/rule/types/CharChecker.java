@@ -1,7 +1,7 @@
 package hr.fer.zemris.ppj.semantic.rule.types;
 
+import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
-import hr.fer.zemris.ppj.SemanticAttribute;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
 
 /**
@@ -34,7 +34,7 @@ public class CharChecker implements Checker {
      */
     @Override
     public boolean check(Node node) {
-        String value = (String) node.getAttribute(SemanticAttribute.VALUE);
+        String value = (String) node.getAttribute(Attribute.VALUE);
 
         // KILL ME NOW
         return value.matches("'(\\w|\\t|\\n|\\0|\\'|\\\"|\\\\)'");

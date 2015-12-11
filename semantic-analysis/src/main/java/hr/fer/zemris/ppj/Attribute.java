@@ -16,7 +16,7 @@ public enum Attribute {
     /**
      * tipovi
      */
-    TYPES,
+    TYPES, // List<VariableType>
 
     /**
      * l-izraz
@@ -41,7 +41,12 @@ public enum Attribute {
     /**
      * redak leksicke jedinke
      */
-    LINE_NUMBER // Integer
+    LINE_NUMBER, // Integer
+
+    /**
+     * pov
+     */
+    RETURN_VALUE, // VariableType
 
     // IDK ovo treba popuniti po potrebi
 

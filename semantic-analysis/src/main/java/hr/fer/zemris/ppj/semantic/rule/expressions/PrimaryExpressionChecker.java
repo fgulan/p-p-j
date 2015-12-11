@@ -41,9 +41,10 @@ public class PrimaryExpressionChecker implements Checker {
     @Override
     public boolean check(Node node) {
         Node firstChild = node.getChild(0);
+        String firstSymbol = firstChild.name();
 
         // <primarni_izraz> ::= IDN
-        if ("IDN".equals(firstChild.name())) {
+        if ("IDN".equals(firstSymbol)) {
 
             // 1. IDN.ime je deklarirano
             if (!firstChild.check()) {
@@ -55,8 +56,9 @@ public class PrimaryExpressionChecker implements Checker {
             node.addAttribute(Attribute.L_EXPRESSION, firstChild.getAttribute(Attribute.L_EXPRESSION));
             return true;
         }
+
         // <primarni_izraz> ::= BROJ
-        if ("BROJ".equals(firstChild.name())) {
+        if ("BROJ".equals(firstSymbol)) {
 
             // 1. vrijednost je u rasponu tipa int
             if (!firstChild.check()) {
@@ -68,8 +70,9 @@ public class PrimaryExpressionChecker implements Checker {
             node.addAttribute(Attribute.L_EXPRESSION, false);
             return true;
         }
+
         // <primarni_izraz> ::= ZNAK
-        if ("ZNAK".equals(firstChild.name())) {
+        if ("ZNAK".equals(firstSymbol)) {
 
             // 1. znak je ispravan po 4.3.2
             if (!firstChild.check()) {
@@ -81,8 +84,9 @@ public class PrimaryExpressionChecker implements Checker {
             node.addAttribute(Attribute.L_EXPRESSION, false);
             return true;
         }
+
         // <primarni_izraz> ::= NIZ_ZNAKOVA
-        if ("NIZ_ZNAKOVA".equals(firstChild.name())) {
+        if ("NIZ_ZNAKOVA".equals(firstSymbol)) {
 
             // 1. konstantni niz znakova je ispravan po 4.3.2
             if (!firstChild.check()) {
@@ -94,8 +98,9 @@ public class PrimaryExpressionChecker implements Checker {
             node.addAttribute(Attribute.L_EXPRESSION, false);
             return true;
         }
+
         // <primarni_izraz> ::= L_ZAGRADA <izraz> D_ZAGRADA
-        if ("L_ZAGRADA".equals(firstChild.name())) {
+        if ("L_ZAGRADA".equals(firstSymbol)) {
             Node expression = node.getChild(1);
 
             // 1. provjeri(<izraz>)
