@@ -55,7 +55,7 @@ public enum VariableType {
      * @return type of a element in the array.
      * @since alpha
      */
-    public VariableType fromArrayType(VariableType arrayType) {
+    public static VariableType fromArrayType(VariableType arrayType) {
         switch (arrayType) {
             case INT_ARRAY:
                 return INT;
@@ -71,6 +71,50 @@ public enum VariableType {
     }
 
     /**
+     * @param type
+     *            raw type
+     * @return array type of the raw type
+     * @since alpha
+     */
+    public static VariableType toArrayType(VariableType type) {
+        switch (type) {
+            case INT:
+                return INT_ARRAY;
+            case CONST_INT:
+                return CONST_INT_ARRAY;
+            case CHAR:
+                return CHAR_ARRAY;
+            case CONST_CHAR:
+                return CONST_CHAR_ARRAY;
+            default:
+                return null;
+        }
+    }
+
+    /**
+     * Checks if a type is const.
+     *
+     * @param type
+     *            the type.
+     * @return <code>true</code> if the type is const, <code>false</code> otherwise.
+     * @since alpha
+     */
+    public static boolean isConst(VariableType type) {
+        switch (type) {
+            case CONST_INT:
+                return true;
+            case CONST_INT_ARRAY:
+                return true;
+            case CONST_CHAR:
+                return true;
+            case CONST_CHAR_ARRAY:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    /**
      * Checks if the type can be implicitly cast to another type.
      *
      * @param from
@@ -82,32 +126,60 @@ public enum VariableType {
      */
     public static boolean implicitConversion(VariableType from, VariableType to) {
         if (from == INT) {
-        	if (to== CONST_INT) return true;
-        	else return false;
+            if (to == CONST_INT) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
         else if (from == CHAR) {
-        	if (to == CONST_CHAR | to == INT | to == CONST_INT) return true;
-        	else return false;
+            if ((to == CONST_CHAR) | (to == INT) | (to == CONST_INT)) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
         else if (from == CONST_INT) {
-        	if (to== INT) return true;
-        	else return false;
+            if (to == INT) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
         else if (from == CONST_CHAR) {
-        	if (to == CHAR | to == CONST_INT | to == INT) return true;
-        	else return false;
+            if ((to == CHAR) | (to == CONST_INT) | (to == INT)) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
         else if (from == INT_ARRAY) {
-        	if (to == CONST_INT_ARRAY) return true;
-        	else return false;
+            if (to == CONST_INT_ARRAY) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
         else if (from == CHAR_ARRAY) {
-        	if (to == CONST_CHAR_ARRAY | to == CONST_INT_ARRAY | to == INT_ARRAY) return true;
-        	else return false;
+            if ((to == CONST_CHAR_ARRAY) | (to == CONST_INT_ARRAY) | (to == INT_ARRAY)) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
         else if (from == CONST_CHAR_ARRAY) {
-        	if (to == CONST_INT_ARRAY) return true;
-        	else return false;
+            if (to == CONST_INT_ARRAY) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
         return false;
     }
