@@ -132,6 +132,7 @@ public class UnaryExpressionChecker implements Checker {
             node.addAttribute(Attribute.L_EXPRESSION, false);
             return true;
         }
+
         System.err.println("Shold never happen");
         SemanticErrorReporter.report(node);
         return false;
