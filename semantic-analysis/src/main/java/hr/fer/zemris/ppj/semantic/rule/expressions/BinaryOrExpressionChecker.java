@@ -1,6 +1,9 @@
 package hr.fer.zemris.ppj.semantic.rule.expressions;
 
+import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
+import hr.fer.zemris.ppj.SemanticErrorReporter;
+import hr.fer.zemris.ppj.VariableType;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
 
 /**
@@ -34,7 +37,60 @@ public class BinaryOrExpressionChecker implements Checker {
      */
     @Override
     public boolean check(Node node) {
-        // TODO Auto-generated method stub
+        Node firstChild = node.getChild(0);
+        String firstSymbol = firstChild.name();
+
+        // <bin_ili_izraz> ::= <bin_xili_izraz>
+        if ("<bin_xili_izraz>".equals(firstSymbol)) {
+
+            // 1. provjeri(<bin_xili_izraz>)
+            if (!firstChild.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+
+            node.addAttribute(Attribute.TYPE, firstChild.getAttribute(Attribute.TYPE));
+            node.addAttribute(Attribute.L_EXPRESSION, firstChild.getAttribute(Attribute.L_EXPRESSION));
+            return true;
+        }
+
+        Node thirdChild = node.getChild(2);
+        // <bin_ili_izraz> ::= <bin_ili_izraz> OP_BIN_ILI <bin_xili_izraz>
+        if ("<bin_ili_izraz>".equals(firstSymbol)) {
+
+            // 1. provjeri(<bin_ili_izraz>)
+            if (!firstChild.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+
+            // 2. <bin_ili_izraz>.tip ~ int
+            if (!VariableType.implicitConversion((VariableType) firstChild.getAttribute(Attribute.TYPE),
+                    VariableType.INT)) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+
+            // 3. provjeri(<bin_xili_izraz>)
+            if (!thirdChild.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+
+            // 4. <bin_xili_izraz>.tip ~ int
+            if (!VariableType.implicitConversion((VariableType) thirdChild.getAttribute(Attribute.TYPE),
+                    VariableType.INT)) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+
+            node.addAttribute(Attribute.TYPE, VariableType.INT);
+            node.addAttribute(Attribute.L_EXPRESSION, false);
+            return true;
+        }
+
+        System.err.println("Shold never happen");
+        SemanticErrorReporter.report(node);
         return false;
     }
 

@@ -1,6 +1,13 @@
 package hr.fer.zemris.ppj.semantic.rule.expressions;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
+import hr.fer.zemris.ppj.SemanticErrorReporter;
+import hr.fer.zemris.ppj.VariableType;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
 
 /**
@@ -34,7 +41,51 @@ public class AssignExpressionListChecker implements Checker {
      */
     @Override
     public boolean check(Node node) {
-        // TODO Auto-generated method stub
+        Node firstChild = node.getChild(0);
+        String firstSymbol = firstChild.name();
+
+        // <lista_izraza_pridruzivanja> ::= <izraz_pridruzivanja>
+        if ("<izraz_pridruzivanja>".equals(firstSymbol)) {
+
+            // 1. provjeri(<izraz_pridruzivanja>)
+            if (!firstChild.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+
+            List<VariableType> types =
+                    new ArrayList<>(Arrays.asList((VariableType) firstChild.getAttribute(Attribute.TYPE)));
+            node.addAttribute(Attribute.TYPES, types);
+            node.addAttribute(Attribute.ELEMENT_COUNT, 1);
+            return true;
+        }
+
+        Node thirdChild = node.getChild(2);
+        // <lista_izraza_pridruzivanja> ::= <lista_izraza_pridruzivanja> ZAREZ <izraz_pridruzivanja>
+        if ("<lista_izraza_pridruzivanja>".equals(firstSymbol)) {
+
+            // 1. provjeri(<lista_izraza_pridruzivanja>)
+            if (!firstChild.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+
+            // 2. provjeri(<izraz_pridruzivanja>)
+            if (!thirdChild.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+
+            List<VariableType> types = new ArrayList<>((List<VariableType>) firstChild.getAttribute(Attribute.TYPES));
+            types.add((VariableType) thirdChild.getAttribute(Attribute.TYPE));
+            int elementCount = (Integer) firstChild.getAttribute(Attribute.ELEMENT_COUNT) + 1;
+            node.addAttribute(Attribute.TYPES, types);
+            node.addAttribute(Attribute.ELEMENT_COUNT, elementCount);
+            return true;
+        }
+
+        System.err.println("Shold never happen");
+        SemanticErrorReporter.report(node);
         return false;
     }
 
