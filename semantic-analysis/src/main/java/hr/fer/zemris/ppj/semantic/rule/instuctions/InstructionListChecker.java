@@ -1,6 +1,7 @@
 package hr.fer.zemris.ppj.semantic.rule.instuctions;
 
 import hr.fer.zemris.ppj.Node;
+import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
 
 /**
@@ -34,7 +35,33 @@ public class InstructionListChecker implements Checker {
      */
     @Override
     public boolean check(Node node) {
-        // TODO Auto-generated method stub
+        // <lista_naredbi> ::= <naredba>
+        Node instruction = node.getChild(0);
+        if ("<naredba>".equals(instruction.name())) {
+            if (!instruction.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+            return true;
+        }
+
+        // <lista_naredbi> ::= <lista_naredbi> <naredba>
+        Node instructionList = node.getChild(0);
+        instruction = node.getChild(1);
+        if ("<lista_naredbi>".equals(instructionList.name()) && "<naredba>".equals(instruction.name())) {
+            if (!instructionList.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+            if (!instruction.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+            return true;
+        }
+
+        System.err.println("Shold never happen");
+        SemanticErrorReporter.report(node);
         return false;
     }
 

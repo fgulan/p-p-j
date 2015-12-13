@@ -1,6 +1,8 @@
 package hr.fer.zemris.ppj.semantic.rule.instuctions;
 
+import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
+import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
 
 /**
@@ -34,7 +36,27 @@ public class ExpressionInstructionChecker implements Checker {
      */
     @Override
     public boolean check(Node node) {
-        // TODO Auto-generated method stub
+        Node expression = node.getChild(0);
+
+        // <izraz_naredba> ::= <izraz> TOCKAZAREZ
+        if ("<izraz>".equals(expression.name())) {
+
+            if (!expression.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+            node.addAttribute(Attribute.TYPE, expression.getAttribute(Attribute.TYPE));
+            return true;
+        }
+        
+        // <izraz_naredba> ::= TOCKAZAREZ
+        if ("TOCKAZAREZ".equals(expression.name())) {
+            node.addAttribute(Attribute.TYPE, expression.getAttribute(Attribute.TYPE));
+            return true;
+        }
+        
+        System.err.println("Shold never happen");
+        SemanticErrorReporter.report(node);
         return false;
     }
 

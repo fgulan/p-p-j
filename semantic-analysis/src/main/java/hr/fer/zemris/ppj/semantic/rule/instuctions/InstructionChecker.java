@@ -1,6 +1,7 @@
 package hr.fer.zemris.ppj.semantic.rule.instuctions;
 
 import hr.fer.zemris.ppj.Node;
+import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
 
 /**
@@ -37,7 +38,55 @@ public class InstructionChecker implements Checker {
      */
     @Override
     public boolean check(Node node) {
-        // TODO Auto-generated method stub
+        Node instruction = node.getChild(0);
+        
+        // <naredba> ::= <slozena_naredba>
+        if ("<slozena_naredba>".equals(instruction.name())) {
+            if (!instruction.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+            return true;
+        }
+        
+        // <naredba> ::= <izraz_naredba>
+        if ("<izraz_naredba>".equals(instruction.name())) {
+            if (!instruction.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+            return true;
+        }
+        
+        // <naredba> ::= <naredba_grananja>
+        if ("<naredba_grananja>".equals(instruction.name())) {
+            if (!instruction.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+            return true;
+        }
+        
+        // <naredba> ::= <naredba_petlje>
+        if ("<naredba_petlje>".equals(instruction.name())) {
+            if (!instruction.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+            return true;
+        }
+        
+        // <naredba> ::= <naredba_skoka>
+        if ("<naredba_skoka>".equals(instruction.name())) {
+            if (!instruction.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+            return true;
+        }
+        
+        System.err.println("Shold never happen");
+        SemanticErrorReporter.report(node);
         return false;
     }
 
