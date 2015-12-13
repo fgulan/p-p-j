@@ -204,6 +204,7 @@ public class PostfixExpressionChecker implements Checker {
 
             node.addAttribute(Attribute.TYPE, type);
             node.addAttribute(Attribute.L_EXPRESSION, !VariableType.isConst(type));
+            return true;
         }
 
         System.err.println("Shold never happen");

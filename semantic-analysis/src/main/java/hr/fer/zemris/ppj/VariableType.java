@@ -10,6 +10,11 @@ package hr.fer.zemris.ppj;
 public enum VariableType {
 
     /**
+     * void
+     */
+    VOID,
+
+    /**
      * int
      */
     INT,
@@ -182,6 +187,50 @@ public enum VariableType {
             }
         }
         return false;
+    }
+
+    /**
+     * Checks if the type can be explicitly cast to another type.
+     *
+     * @param from
+     *            original type.
+     * @param to
+     *            new type.
+     * @return <code>true</code> if the type can be implicitly converted to another type, <code>false</code> otherwise.
+     * @since alpha
+     */
+    public static boolean explicitConversion(VariableType from, VariableType to) {
+        switch (from) {
+            case INT:
+            case CHAR:
+            case CONST_INT:
+            case CONST_CHAR:
+                if (to.equals(INT) || to.equals(CHAR) || to.equals(CONST_INT) || to.equals(CONST_CHAR)) {
+                    return true;
+                }
+                return false;
+            default:
+                return false;
+        }
+    }
+
+    /**
+     * Casts a type to const.
+     *
+     * @param original
+     *            type to be casted.
+     * @return const type.
+     * @since alpha
+     */
+    public static VariableType toConst(VariableType original) {
+        switch (original) {
+            case INT:
+                return CONST_INT;
+            case CHAR:
+                return CONST_CHAR;
+            default:
+                return null;
+        }
     }
 
 }

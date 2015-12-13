@@ -144,6 +144,9 @@ public class TreeParser {
             Node parent = stack.isEmpty() ? null : stack.peek();
             Checker checker = checkers.get(line.trim());
             Node child = new Node(line.trim(), new ArrayList<>(), parent, new HashMap<>(), checker);
+
+            // TODO: process terminal symbols during parsing
+
             if (parent != null) {
                 parent.addChild(child);
             }
