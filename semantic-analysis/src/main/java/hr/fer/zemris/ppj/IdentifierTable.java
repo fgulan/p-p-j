@@ -166,4 +166,26 @@ public class IdentifierTable {
         // TODO: IMPLEMENT THIS
         return null;
     }
+
+    /**
+     * @param name
+     *            identifier of the variable.
+     * @return type of the variable.
+     * @since alpha
+     */
+    public VariableType variable(String name) {
+        // TODO; IMPLEMENT THIS
+        return null;
+    }
+
+    /**
+     * @param name
+     *            identifier of the function.
+     * @return info for the function
+     * @since alpha
+     */
+    public FunctionWrapper function(String name) {
+        // TODO: IMPLEMENT THISđ
+        return null;
+    }
 }
