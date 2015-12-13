@@ -48,6 +48,11 @@ public enum Attribute {
      */
     RETURN_VALUE, // VariableType
 
+    /**
+     * Unutar petlje
+     */
+    INSIDE_LOOP, // boolean
+    
     // IDK ovo treba popuniti po potrebi
 
 }

@@ -1,6 +1,9 @@
 package hr.fer.zemris.ppj.semantic.rule.instuctions;
 
+import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
+import hr.fer.zemris.ppj.SemanticErrorReporter;
+import hr.fer.zemris.ppj.VariableType;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
 
 /**
@@ -35,7 +38,107 @@ public class LoopInstructionChecker implements Checker {
      */
     @Override
     public boolean check(Node node) {
-        // TODO Auto-generated method stub
+        // <naredba_petlje> ::= KR_WHILE L_ZAGRADA <izraz> D_ZAGRADA <naredba>
+        Node expression = node.getChild(2);
+        Node instruction = node.getChild(4);
+        if ("<naredba>".equals(instruction.name()) && "<izraz>".equals(expression.name())) {
+            node.addAttributeRecursive(Attribute.INSIDE_LOOP, true);
+
+            if (!expression.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+
+            VariableType type = (VariableType) expression.getAttribute(Attribute.TYPE);
+            boolean ableToConvert = VariableType.implicitConversion(type, VariableType.INT);
+
+            if (!ableToConvert) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+
+            if (!instruction.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+            return true;
+        }
+
+        // <naredba_petlje> ::= KR_FOR L_ZAGRADA <izraz_naredba> <izraz_naredba> D_ZAGRADA <naredba>
+        Node firstExpInstruction = node.getChild(2);
+        Node secondExpInstruction = node.getChild(3);
+        instruction = node.getChild(5);
+
+        if ("<naredba>".equals(instruction.name()) && "<izraz_naredba>".equals(firstExpInstruction.name())
+                && "<izraz_naredba>".equals(secondExpInstruction.name())) {
+            node.addAttributeRecursive(Attribute.INSIDE_LOOP, true);
+
+            if (!firstExpInstruction.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+
+            if (!secondExpInstruction.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+
+            VariableType type = (VariableType) secondExpInstruction.getAttribute(Attribute.TYPE);
+            boolean ableToConvert = VariableType.implicitConversion(type, VariableType.INT);
+
+            if (!ableToConvert) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+
+            if (!instruction.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+            return true;
+        }
+
+        firstExpInstruction = node.getChild(2);
+        secondExpInstruction = node.getChild(3);
+        expression = node.getChild(4);
+        instruction = node.getChild(6);
+
+        if ("<naredba>".equals(instruction.name()) && "<izraz_naredba>".equals(firstExpInstruction.name())
+                && "<izraz_naredba>".equals(secondExpInstruction.name()) && "<izraz>".equals(expression.name())) {
+            node.addAttributeRecursive(Attribute.INSIDE_LOOP, true);
+
+            if (!firstExpInstruction.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+
+            if (!secondExpInstruction.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+
+            VariableType type = (VariableType) secondExpInstruction.getAttribute(Attribute.TYPE);
+            boolean ableToConvert = VariableType.implicitConversion(type, VariableType.INT);
+
+            if (!ableToConvert) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+            
+            if (!expression.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+            
+            if (!instruction.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+            return true;
+        }
+
+        System.err.println("Shold never happen");
+        SemanticErrorReporter.report(node);
         return false;
     }
 
