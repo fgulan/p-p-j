@@ -2,6 +2,7 @@ package hr.fer.zemris.ppj;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -138,8 +139,7 @@ public class IdentifierTable {
      * @since alpha
      */
     public boolean isVariableDeclared(String name) {
-        // TODO: IMPLEMENT THIS
-        return true;
+        return variable(name) != null;
     }
 
     /**
@@ -167,8 +167,14 @@ public class IdentifierTable {
      * @since alpha
      */
     public Set<String> declaredVariables() {
-        // TODO: IMPLEMENT THIS
-        return null;
+        if (parent == null) {
+            return new HashSet<>(declaredVariables.keySet());
+        }
+
+        Set<String> variables = new HashSet<>(declaredVariables.keySet());
+        variables.addAll(parent.declaredVariables());
+
+        return variables;
     }
 
     /**
@@ -194,8 +200,15 @@ public class IdentifierTable {
      * @since alpha
      */
     public VariableType variable(String name) {
-        // TODO; IMPLEMENT THIS
-        return null;
+        if (parent == null) {
+            return declaredVariables.get(name);
+        }
+
+        if (declaredVariables.containsKey(name)) {
+            return declaredVariables.get(name);
+        }
+
+        return parent.variable(name);
     }
 
     /**

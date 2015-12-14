@@ -181,8 +181,6 @@ public class TreeParser {
                 child.addAttribute(Attribute.VALUE, value);
             }
 
-            // TODO: process terminal symbols during parsing
-
             if (parent != null) {
                 parent.addChild(child);
 
