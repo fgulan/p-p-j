@@ -48,12 +48,12 @@ public enum Attribute {
      */
     RETURN_VALUE, // VariableType
     
-    ITYPE // inherited type
+    ITYPE, // inherited type
 
     /**
      * Unutar petlje
      */
-    INSIDE_LOOP, // boolean
+    INSIDE_LOOP,// boolean
     
     // IDK ovo treba popuniti po potrebi
 

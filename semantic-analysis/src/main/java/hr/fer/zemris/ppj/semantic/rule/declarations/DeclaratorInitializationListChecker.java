@@ -1,6 +1,11 @@
 package hr.fer.zemris.ppj.semantic.rule.declarations;
 
+import java.util.function.Consumer;
+import java.util.stream.IntStream;
+
+import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
+import hr.fer.zemris.ppj.Utils;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
 
 /**
@@ -34,8 +39,15 @@ public class DeclaratorInitializationListChecker implements Checker {
      */
     @Override
     public boolean check(Node node) {
-        // TODO Auto-generated method stub
-        return false;
+        
+        for (Node child: node.getChildren()){
+            child.addAttribute(Attribute.ITYPE, node.getAttribute(Attribute.ITYPE));
+            if (!child.check()){
+                return Utils.badNode(child);
+            }
+        }
+        
+        return true;
     }
 
 }

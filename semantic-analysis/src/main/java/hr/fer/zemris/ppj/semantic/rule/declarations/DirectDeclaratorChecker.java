@@ -1,6 +1,8 @@
 package hr.fer.zemris.ppj.semantic.rule.declarations;
 
+import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
+import hr.fer.zemris.ppj.Utils;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
 
 /**
@@ -36,7 +38,20 @@ public class DirectDeclaratorChecker implements Checker {
      */
     @Override
     public boolean check(Node node) {
-        // TODO Auto-generated method stub
+
+        Node idn = node.getChild(0);
+        if (!idn.check()){
+            return Utils.badNode(node);
+        }
+        
+        String name = (String) idn.getAttribute(Attribute.VALUE);
+        if (node.identifierTable().isFunctionDeclared(name)
+                || node.identifierTable().isVariableDeclared(name)){
+            return Utils.badNode(node);
+        }
+        
+        //TODO check other productions
+        
         return false;
     }
 
