@@ -125,8 +125,7 @@ public class IdentifierTable {
      * @since alpha
      */
     public boolean isFunctionDeclared(String name) {
-        // TODO: IMPLEMENT THIS
-        return true;
+        return GLOBAL_SCOPE.declaredFunctions.containsKey(name);
     }
 
     /**
@@ -136,8 +135,7 @@ public class IdentifierTable {
      * @since alpha
      */
     public boolean isFunctionDefined(String name) {
-        // TODO: IMPLEMENT THIS
-        return true;
+        return GLOBAL_SCOPE.definedFunctions.containsKey(name);
     }
 
     /**
@@ -154,8 +152,7 @@ public class IdentifierTable {
      * @since alpha
      */
     public Set<String> definedFunctions() {
-        // TODO: IMPLEMENT THIS
-        return null;
+        return GLOBAL_SCOPE.definedFunctions.keySet();
     }
 
     /**
@@ -163,8 +160,7 @@ public class IdentifierTable {
      * @since alpha
      */
     public Set<String> declaredFunctions() {
-        // TODO: IMPLEMENT THIS
-        return null;
+        return GLOBAL_SCOPE.declaredFunctions.keySet();
     }
 
     /**
@@ -185,7 +181,8 @@ public class IdentifierTable {
      * @since alpha
      */
     public FunctionWrapper function(String name) {
-        // TODO: IMPLEMENT THISđ
-        return null;
+        // Function is always declared, if it's defined
+        return GLOBAL_SCOPE.declaredFunctions.get(name);
     }
+
 }

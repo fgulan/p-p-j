@@ -47,6 +47,10 @@ import hr.fer.zemris.ppj.semantic.rule.instuctions.LoopInstructionChecker;
 import hr.fer.zemris.ppj.semantic.rule.misc.DefinedFunctionsChecker;
 import hr.fer.zemris.ppj.semantic.rule.misc.MainFunctionChecker;
 import hr.fer.zemris.ppj.semantic.rule.misc.TranslationUnitChecker;
+import hr.fer.zemris.ppj.semantic.rule.terminals.CharChecker;
+import hr.fer.zemris.ppj.semantic.rule.terminals.ConstCharArrayChecker;
+import hr.fer.zemris.ppj.semantic.rule.terminals.IdentifierChecker;
+import hr.fer.zemris.ppj.semantic.rule.terminals.IntChecker;
 
 /**
  * <code>TreeParser</code> is a parser for generative trees.
@@ -109,6 +113,12 @@ public class TreeParser {
         checkers.put(DefinedFunctionsChecker.HR_NAME, new DefinedFunctionsChecker());
         checkers.put(MainFunctionChecker.HR_NAME, new MainFunctionChecker());
         checkers.put(TranslationUnitChecker.HR_NAME, new TranslationUnitChecker());
+
+        // terminals
+        checkers.put(CharChecker.HR_NAME, new CharChecker());
+        checkers.put(ConstCharArrayChecker.HR_NAME, new ConstCharArrayChecker());
+        checkers.put(IdentifierChecker.HR_NAME, new IdentifierChecker());
+        checkers.put(IntChecker.HR_NAME, new IntChecker());
     }
 
     /**
@@ -129,10 +139,6 @@ public class TreeParser {
                 break;
             }
 
-            if (!stack.isEmpty() && !stack.peek().name().startsWith("<")) {
-                stack.pop();
-            }
-
             int lineDepth = countDepth(line);
             if (depth > lineDepth) {
                 for (int i = 0; i < (depth - lineDepth); i++) {
@@ -140,17 +146,34 @@ public class TreeParser {
                 }
             }
             depth = lineDepth;
-
             Node parent = stack.isEmpty() ? null : stack.peek();
-            Checker checker = checkers.get(line.trim());
-            Node child = new Node(line.trim(), new ArrayList<>(), parent, new HashMap<>(), checker);
+
+            Node child = null;
+
+            line = line.trim();
+            if (line.startsWith("<")) {
+                // nonterminal node
+                Checker checker = checkers.get(line);
+                child = new Node(line, new ArrayList<>(), parent, new HashMap<>(), checker);
+                stack.push(child);
+            }
+            else {
+                // terminal node
+                String[] split = line.split(" ");
+                String name = split[0];
+                int lineNumber = Integer.valueOf(split[1]);
+                String value = split[2];
+                Checker checker = checkers.get(name);
+                child = new Node(name, new ArrayList<>(), parent, new HashMap<>(), checker);
+                child.addAttribute(Attribute.LINE_NUMBER, lineNumber);
+                child.addAttribute(Attribute.VALUE, value);
+            }
 
             // TODO: process terminal symbols during parsing
 
             if (parent != null) {
                 parent.addChild(child);
             }
-            stack.push(child);
         }
 
         while (stack.size() > 1) {

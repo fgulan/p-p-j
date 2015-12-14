@@ -25,7 +25,7 @@ public class SemantickiAnalizator {
     public static void main(String[] args) {
         try {
             Node node = TreeParser.parse(new Scanner(new FileInputStream("test.in")));
-            System.out.println(node.print(0));
+            System.out.print(node.print(0));
         }
         catch (FileNotFoundException e) {
             // TODO Auto-generated catch block

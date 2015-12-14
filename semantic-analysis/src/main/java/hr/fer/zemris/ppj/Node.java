@@ -28,7 +28,8 @@ public class Node {
     /**
      * Class constructor, specifies the name of the node.
      *
-     * @param name the name.
+     * @param name
+     *            the name.
      * @since 1.0
      */
     public Node(final String name, final Node parent) {
@@ -38,11 +39,16 @@ public class Node {
     /**
      * Class constructor, specifies the name and the children of the node.
      *
-     * @param name the name.
-     * @param children the children.
-     * @param parent parent of the node.
-     * @param attributes attributes of the node.
-     * @param checker the semantic checker for the node
+     * @param name
+     *            the name.
+     * @param children
+     *            the children.
+     * @param parent
+     *            parent of the node.
+     * @param attributes
+     *            attributes of the node.
+     * @param checker
+     *            the semantic checker for the node
      * @since 1.0
      */
     public Node(final String name, final List<Node> children, final Node parent,
@@ -73,7 +79,8 @@ public class Node {
     /**
      * Adds a child to the node.
      *
-     * @param child the child to be added.
+     * @param child
+     *            the child to be added.
      * @since 1.0
      */
     public void addChild(final Node child) {
@@ -81,7 +88,8 @@ public class Node {
     }
 
     /**
-     * @param index index of the child.
+     * @param index
+     *            index of the child.
      * @return child at specified index.
      * @since 1.1
      */
@@ -100,8 +108,10 @@ public class Node {
     /**
      * Adds a attribute to the node.
      *
-     * @param type type of the attribute.
-     * @param value value of the attribute.
+     * @param type
+     *            type of the attribute.
+     * @param value
+     *            value of the attribute.
      * @since 1.1
      */
     public void addAttribute(final Attribute type, final Object value) {
@@ -110,7 +120,7 @@ public class Node {
 
     public void addAttributeRecursive(final Attribute type, final Object value) {
         attributes.put(type, value);
-        
+
         if (children != null) {
             for (Node child : children) {
                 child.addAttributeRecursive(type, value);
@@ -119,7 +129,8 @@ public class Node {
     }
 
     /**
-     * @param type type of the attribute.
+     * @param type
+     *            type of the attribute.
      * @return value of the specified attribute.
      * @since 1.1
      */
@@ -134,13 +145,18 @@ public class Node {
      * @since 1.1
      */
     public boolean check() {
+        // if a checker isn't defined, the node is a terminal \ {ZNAK, BROJ, IDN, NIZ_ZNAKOVA}
+        if (checker == null) {
+            return true;
+        }
         return checker.check(this);
     }
 
     /**
      * Prints the tree.
      *
-     * @param depth starting depth of the node.
+     * @param depth
+     *            starting depth of the node.
      * @return textual representation of the tree.
      * @since 1.0
      */
@@ -149,7 +165,7 @@ public class Node {
         for (int i = 0; i < depth; i++) {
             result += " ";
         }
-        result += name + "\n";
+        result += toString() + "\n";
         for (final Node child : children) {
             result += child.print(depth + 1);
         }
@@ -163,6 +179,7 @@ public class Node {
             return name;
         }
 
-        return name + "(" + attributes.get(Attribute.LINE_NUMBER) + ", " + attributes.get(Attribute.VALUE) + ")";
+        // return name + "(" + attributes.get(Attribute.LINE_NUMBER) + ", " + attributes.get(Attribute.VALUE) + ")";
+        return name + " " + attributes.get(Attribute.LINE_NUMBER) + " " + attributes.get(Attribute.VALUE);
     }
 }

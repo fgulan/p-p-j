@@ -1,4 +1,4 @@
-package hr.fer.zemris.ppj.semantic.rule.types;
+package hr.fer.zemris.ppj.semantic.rule.terminals;
 
 import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
@@ -23,7 +23,7 @@ public class IntChecker implements Checker {
     /**
      * Name of the node in Croatian.
      */
-    public static final String HR_NAME = "KR_INT";
+    public static final String HR_NAME = "INT";
 
     /**
      * {@inheritDoc} <br>
