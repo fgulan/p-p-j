@@ -156,10 +156,12 @@ public class TreeParser {
             line = line.trim();
 
             if (parent != null) {
-                if ("<slozena_naredba>".equals(line) || "<definicija_funkcije>".equals(line)) {
+                if ("<definicija_funkcije>".equals(line)) {
                     identifierTableStack.push(new IdentifierTable(identifierTableStack.peek()));
                 }
-
+                else if ("<slozena_naredba>".equals(line) && !"<definicija_funkcije>".equals(parent.name())) {
+                    identifierTableStack.push(new IdentifierTable(identifierTableStack.peek()));
+                }
             }
             IdentifierTable identifierTable = identifierTableStack.peek();
 
@@ -184,9 +186,15 @@ public class TreeParser {
             if (parent != null) {
                 parent.addChild(child);
 
-                if (("<slozena_naredba>".equals(parent.name()) && "D_VIT_ZAGRADA".equals(child.name()))
-                        || ("<definicija_funkcije>".equals(parent.name()) && "D_ZAGRADA".equals(child.name()))) {
-                    identifierTableStack.pop();
+                if ("<definicija_funkcije>".equals(parent.name())) {
+                    if ("D_VIT_ZAGRADA".equals(child.name())) {
+                        identifierTableStack.pop();
+                    }
+                }
+                else if ("<slozena_naredba>".equals(parent.name())) {
+                    if ("D_VIT_ZAGRADA".equals(child.name())) {
+                        identifierTableStack.pop();
+                    }
                 }
             }
         }

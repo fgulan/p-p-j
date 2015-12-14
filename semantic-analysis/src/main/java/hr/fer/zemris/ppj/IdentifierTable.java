@@ -235,6 +235,6 @@ public class IdentifierTable {
 
     @Override
     public String toString() {
-        return String.valueOf(this_id);
+        return String.valueOf(this_id) + (parent != null ? parent.toString() : "");
     }
 }
