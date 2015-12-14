@@ -1,5 +1,6 @@
 package hr.fer.zemris.ppj.semantic.rule.expressions;
 
+import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
 
@@ -35,8 +36,8 @@ public class TypeSpecifierChecker implements Checker {
      */
     @Override
     public boolean check(Node node) {
-        // TODO Auto-generated method stub
-        return false;
+        node.addAttribute(Attribute.TYPE, node.getChild(0).getAttribute(Attribute.TYPE));
+        return true;
     }
 
 }

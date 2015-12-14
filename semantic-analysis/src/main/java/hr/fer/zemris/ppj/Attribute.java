@@ -50,6 +50,11 @@ public enum Attribute {
     
     ITYPE // inherited type
 
+    /**
+     * Unutar petlje
+     */
+    INSIDE_LOOP, // boolean
+    
     // IDK ovo treba popuniti po potrebi
 
 }

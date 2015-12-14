@@ -3,6 +3,7 @@ package hr.fer.zemris.ppj.semantic.rule.expressions;
 import java.util.List;
 
 import hr.fer.zemris.ppj.Attribute;
+import hr.fer.zemris.ppj.FunctionWrapper;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.VariableType;
@@ -119,8 +120,8 @@ public class PostfixExpressionChecker implements Checker {
 
             // 2. <postfiks_izraz>.tip = funkcija(void -> pov)
             String identificator = (String) firstChild.getChild(0).getChild(0).getAttribute(Attribute.VALUE);
-            // TODO: provjera
-            if (false) {
+            FunctionWrapper function = node.identifierTable().function(identificator);
+            if (!function.argumentList().isEmpty()) {
                 SemanticErrorReporter.report(node);
                 return false;
             }
@@ -147,15 +148,14 @@ public class PostfixExpressionChecker implements Checker {
 
             // 3. <postfiks_izraz>.tip = funkcija(params -> pov)
             String identificator = (String) firstChild.getChild(0).getChild(0).getAttribute(Attribute.VALUE);
-            // TODO: provjera
-            if (false) {
+            FunctionWrapper function = node.identifierTable().function(identificator);
+            if (function.argumentList().isEmpty()) {
                 SemanticErrorReporter.report(node);
                 return false;
             }
 
             // 3. provjera implicitnih konverzija parametara
-            // TODO: nabavi iz tablice simbola
-            List<VariableType> declarationTypes = null;
+            List<VariableType> declarationTypes = function.argumentList();
             List<VariableType> callingArguments = (List<VariableType>) thirdChild.getAttribute(Attribute.TYPES);
             if (declarationTypes.size() != callingArguments.size()) {
                 SemanticErrorReporter.report(node);
@@ -177,8 +177,8 @@ public class PostfixExpressionChecker implements Checker {
         if ("<postfiks_izraz>".equals(firstSymbol) && "L_UGL_ZAGRADA".equals(secondSymbol)
                 && "<izraz>".equals(thirdSymbol)) {
 
-            // TODO: dohvati iz tablice simbola
-            VariableType type = VariableType.fromArrayType(null);
+            String name = (String) firstChild.getChild(0).getChild(0).getAttribute(Attribute.VALUE);
+            VariableType type = VariableType.fromArrayType(node.identifierTable().variable(name));
 
             // 1. provjeri(<postfiks_izraz>)
             if (!firstChild.check()) {
@@ -204,6 +204,7 @@ public class PostfixExpressionChecker implements Checker {
 
             node.addAttribute(Attribute.TYPE, type);
             node.addAttribute(Attribute.L_EXPRESSION, !VariableType.isConst(type));
+            return true;
         }
 
         System.err.println("Shold never happen");

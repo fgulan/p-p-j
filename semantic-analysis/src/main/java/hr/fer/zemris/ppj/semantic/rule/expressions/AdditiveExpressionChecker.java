@@ -1,6 +1,9 @@
 package hr.fer.zemris.ppj.semantic.rule.expressions;
 
+import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
+import hr.fer.zemris.ppj.SemanticErrorReporter;
+import hr.fer.zemris.ppj.VariableType;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
 
 /**
@@ -35,7 +38,97 @@ public class AdditiveExpressionChecker implements Checker {
      */
     @Override
     public boolean check(Node node) {
-        // TODO Auto-generated method stub
+        Node firstChild = node.getChild(0);
+        String firstSymbol = firstChild.name();
+
+        // <aditivni_izraz> ::= <multiplikativni_izraz>
+        if ("<multiplikativni_izraz>".equals(firstSymbol)) {
+
+            // 1. provjeri(<multiplikativni_izraz>)
+            if (!firstChild.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+
+            node.addAttribute(Attribute.TYPE, firstChild.getAttribute(Attribute.TYPE));
+            node.addAttribute(Attribute.L_EXPRESSION, firstChild.getAttribute(Attribute.L_EXPRESSION));
+            return true;
+        }
+
+        Node secondChild = node.getChild(1);
+        String secondSymbol = secondChild.name();
+        Node thirdChild = node.getChild(2);
+
+        // <aditivni_izraz> ::= <aditivni_izraz> PLUS <multiplikativni_izraz>
+        if ("PLUS".equals(secondSymbol)) {
+
+            // 1. provjeri(<aditivni_izraz>)
+            if (!firstChild.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+
+            // 2. <aditivni_izraz>.tip ~ int
+            if (!VariableType.implicitConversion((VariableType) firstChild.getAttribute(Attribute.TYPE),
+                    VariableType.INT)) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+
+            // 3. provjeri(<multiplikativni_izraz>)
+            if (!thirdChild.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+
+            // 4. <multiplikativni_izraz>.tip ~ int
+            if (!VariableType.implicitConversion((VariableType) thirdChild.getAttribute(Attribute.TYPE),
+                    VariableType.INT)) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+
+            node.addAttribute(Attribute.TYPE, VariableType.INT);
+            node.addAttribute(Attribute.L_EXPRESSION, false);
+            return true;
+        }
+
+        // <aditivni_izraz> ::= <aditivni_izraz> MINUS <multiplikativni_izraz>
+        if ("MINUS".equals(secondSymbol)) {
+
+            // 1. provjeri(<aditivni_izraz>)
+            if (!firstChild.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+
+            // 2. <aditivni_izraz>.tip ~ int
+            if (!VariableType.implicitConversion((VariableType) firstChild.getAttribute(Attribute.TYPE),
+                    VariableType.INT)) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+
+            // 3. provjeri(<multiplikativni_izraz>)
+            if (!thirdChild.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+
+            // 4. <multiplikativni_izraz>.tip ~ int
+            if (!VariableType.implicitConversion((VariableType) thirdChild.getAttribute(Attribute.TYPE),
+                    VariableType.INT)) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+
+            node.addAttribute(Attribute.TYPE, VariableType.INT);
+            node.addAttribute(Attribute.L_EXPRESSION, false);
+            return true;
+        }
+
+        System.err.println("Shold never happen");
+        SemanticErrorReporter.report(node);
         return false;
     }
 

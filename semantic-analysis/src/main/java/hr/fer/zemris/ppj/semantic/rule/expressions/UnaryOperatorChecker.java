@@ -36,8 +36,7 @@ public class UnaryOperatorChecker implements Checker {
      */
     @Override
     public boolean check(Node node) {
-        // TODO Auto-generated method stub
-        return false;
+        return true;
     }
 
 }

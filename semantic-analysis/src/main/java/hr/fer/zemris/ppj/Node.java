@@ -25,6 +25,8 @@ public class Node {
 
     private final Map<Attribute, Object> attributes = new HashMap<>();
 
+    private final IdentifierTable identifierTable;
+
     /**
      * Class constructor, specifies the name of the node.
      *
@@ -33,7 +35,7 @@ public class Node {
      * @since 1.0
      */
     public Node(final String name, final Node parent) {
-        this(name, new ArrayList<Node>(), parent, new HashMap<>(), null);
+        this(name, new ArrayList<Node>(), parent, new HashMap<>(), new IdentifierTable(), null);
     }
 
     /**
@@ -52,11 +54,12 @@ public class Node {
      * @since 1.0
      */
     public Node(final String name, final List<Node> children, final Node parent,
-            final Map<Attribute, Object> attributes, final Checker checker) {
+            final Map<Attribute, Object> attributes, final IdentifierTable identifierTable, final Checker checker) {
         this.name = name;
         this.parent = parent;
         this.children = children;
         this.attributes.putAll(attributes);
+        this.identifierTable = identifierTable;
         this.checker = checker;
     }
 
@@ -118,6 +121,16 @@ public class Node {
         attributes.put(type, value);
     }
 
+    public void addAttributeRecursive(final Attribute type, final Object value) {
+        attributes.put(type, value);
+
+        if (children != null) {
+            for (Node child : children) {
+                child.addAttributeRecursive(type, value);
+            }
+        }
+    }
+
     /**
      * @param type
      *            type of the attribute.
@@ -129,12 +142,24 @@ public class Node {
     }
 
     /**
+     * @return identifier table of the node.
+     * @since 1.1
+     */
+    public IdentifierTable identifierTable() {
+        return identifierTable;
+    }
+
+    /**
      * Checks the semantics of the node.
      *
      * @return <code>true</code> if the node is semantically correct, <code>false</code> otherwise.
      * @since 1.1
      */
     public boolean check() {
+        // if a checker isn't defined, the node is a terminal \ {ZNAK, BROJ, IDN, NIZ_ZNAKOVA}
+        if (checker == null) {
+            return true;
+        }
         return checker.check(this);
     }
 
@@ -151,7 +176,7 @@ public class Node {
         for (int i = 0; i < depth; i++) {
             result += " ";
         }
-        result += name + "\n";
+        result += toString() + "\n";
         for (final Node child : children) {
             result += child.print(depth + 1);
         }
@@ -162,9 +187,11 @@ public class Node {
     @Override
     public String toString() {
         if (name.startsWith("<")) {
-            return name;
+            return name + " " + identifierTable;
         }
 
-        return name + "(" + attributes.get(Attribute.LINE_NUMBER) + ", " + attributes.get(Attribute.VALUE) + ")";
+        // return name + "(" + attributes.get(Attribute.LINE_NUMBER) + ", " + attributes.get(Attribute.VALUE) + ")";
+        return name + " " + attributes.get(Attribute.LINE_NUMBER) + " " + attributes.get(Attribute.VALUE) + " "
+                + identifierTable;
     }
 }

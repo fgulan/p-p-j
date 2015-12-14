@@ -1,6 +1,8 @@
 package hr.fer.zemris.ppj.semantic.rule.instuctions;
 
+import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
+import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
 
 /**
@@ -35,8 +37,25 @@ public class JumpInstructionChecker implements Checker {
      * @since alpha
      */
     @Override
+    @Deprecated
     public boolean check(Node node) {
-        // TODO Auto-generated method stub
+        // <naredba_skoka> ::= KR_CONTINUE TOCKAZAREZ
+        // <naredba_skoka> ::= KR_BREAK TOCKAZAREZ
+        if ("KR_CONTINUE".equals(node.getChild(0).name()) || "KR_BREAK".equals(node.getChild(0).name())) {
+            boolean insideLoop = (Boolean) node.getAttribute(Attribute.INSIDE_LOOP);
+            if (!insideLoop) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+            return true;
+        }
+
+        // <naredba_skoka> ::= KR_RETURN TOCKAZAREZ
+        // TODO for now
+        // <naredba_skoka> ::= KR_RETURN <izraz> TOCKAZAREZ
+        // TODO for now
+        System.err.println("Shold never happen");
+        SemanticErrorReporter.report(node);
         return false;
     }
 

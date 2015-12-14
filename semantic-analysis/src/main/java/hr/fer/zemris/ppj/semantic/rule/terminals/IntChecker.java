@@ -1,4 +1,4 @@
-package hr.fer.zemris.ppj.semantic.rule.types;
+package hr.fer.zemris.ppj.semantic.rule.terminals;
 
 import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
@@ -23,7 +23,7 @@ public class IntChecker implements Checker {
     /**
      * Name of the node in Croatian.
      */
-    public static final String HR_NAME = "KR_INT";
+    public static final String HR_NAME = "INT";
 
     /**
      * {@inheritDoc} <br>
@@ -34,18 +34,19 @@ public class IntChecker implements Checker {
      */
     @Override
     public boolean check(Node node) {
+        String value = (String) node.getAttribute((Attribute.VALUE));
+
+        if (!value.matches("(-|\\+)?\\d+)")) {
+            return false;
+        }
+
         try {
-            String value = (String) node.getAttribute(Attribute.VALUE);
-            if (value.matches("(-|\\+)?\\d+)")) {
-                Integer.parseInt((String) node.getAttribute(Attribute.VALUE));
-            }
-            else {
-                return false;
-            }
+            node.addAttribute(Attribute.VALUE, Integer.parseInt((String) node.getAttribute(Attribute.VALUE)));
         }
         catch (NumberFormatException e) {
             return false;
         }
+
         return true;
     }
 

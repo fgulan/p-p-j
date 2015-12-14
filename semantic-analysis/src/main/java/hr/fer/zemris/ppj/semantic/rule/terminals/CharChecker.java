@@ -1,4 +1,4 @@
-package hr.fer.zemris.ppj.semantic.rule.types;
+package hr.fer.zemris.ppj.semantic.rule.terminals;
 
 import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
@@ -23,7 +23,7 @@ public class CharChecker implements Checker {
     /**
      * Name of the node in Croatian.
      */
-    public static final String HR_NAME = "KR_CHAR";
+    public static final String HR_NAME = "ZNAK";
 
     /**
      * {@inheritDoc} <br>
@@ -37,6 +37,11 @@ public class CharChecker implements Checker {
         String value = (String) node.getAttribute(Attribute.VALUE);
 
         // KILL ME NOW
-        return value.matches("'(\\w|\\t|\\n|\\0|\\'|\\\"|\\\\)'");
+        if (!value.matches("'(\\w|\\t|\\n|\\0|\\'|\\\"|\\\\)'")) {
+            return false;
+        }
+
+        node.addAttribute(Attribute.VALUE, Character.valueOf(value.charAt(1)));
+        return true;
     }
 }

@@ -37,63 +37,67 @@ public class BranchInstructionChecker implements Checker {
      */
     @Override
     public boolean check(Node node) {
+        int count = node.getChildren().size();
         
-        // TODO check with Ker, my master.
-        // <naredba_grananja> ::= KR_IF L_ZAGRADA <izraz> D_ZAGRADA <naredba>
-        Node expression = node.getChild(2);
-        Node firstInstruction = node.getChild(4);
-        Node secondInstruction = node.getChild(6);
+        // <naredba_grananja> ::= KR_IF L_ZAGRADA <izraz> D_ZAGRADA <naredba> KR_ELSE <naredba>
+        if (count == 7) {
+            Node expression = node.getChild(2);
+            Node firstInstruction = node.getChild(4);
+            Node secondInstruction = node.getChild(6);
 
-        if ("<naredba>".equals(firstInstruction.name()) && "<naredba>".equals(secondInstruction.name()) && "<izraz>".equals(expression.name())) {
-            if (!expression.check()) {
-                SemanticErrorReporter.report(node);
-                return false;
-            }
-            
-            VariableType type = (VariableType) expression.getAttribute(Attribute.TYPE);
-            boolean ableToConvert = VariableType.implicitConversion(type, VariableType.INT);
-            
-            if (!ableToConvert) {
-                SemanticErrorReporter.report(node);
-                return false;
-            }
-            
-            if (!firstInstruction.check()) {
-                SemanticErrorReporter.report(node);
-                return false;
-            }
-            if (!secondInstruction.check()) {
-                SemanticErrorReporter.report(node);
-                return false;
-            }
-            
-            return true;
+            if ("<naredba>".equals(firstInstruction.name()) && "<naredba>".equals(secondInstruction.name()) && "<izraz>".equals(expression.name())) {
+                if (!expression.check()) {
+                    SemanticErrorReporter.report(node);
+                    return false;
+                }
+                
+                VariableType type = (VariableType) expression.getAttribute(Attribute.TYPE);
+                boolean ableToConvert = VariableType.implicitConversion(type, VariableType.INT);
+                
+                if (!ableToConvert) {
+                    SemanticErrorReporter.report(node);
+                    return false;
+                }
+                
+                if (!firstInstruction.check()) {
+                    SemanticErrorReporter.report(node);
+                    return false;
+                }
+                if (!secondInstruction.check()) {
+                    SemanticErrorReporter.report(node);
+                    return false;
+                }
+                
+                return true;
+            } 
         }
         
         // <naredba_grananja> ::= KR_IF L_ZAGRADA <izraz> D_ZAGRADA <naredba>
-        expression = node.getChild(2);
-        firstInstruction = node.getChild(4);
-        
-        if ("<naredba>".equals(firstInstruction.name()) && "<izraz>".equals(expression.name())) {
-            if (!expression.check()) {
-                SemanticErrorReporter.report(node);
-                return false;
+        if (count == 5) {
+            Node expression = node.getChild(2);
+            Node firstInstruction = node.getChild(4);
+            
+            if ("<naredba>".equals(firstInstruction.name()) && "<izraz>".equals(expression.name())) {
+                if (!expression.check()) {
+                    SemanticErrorReporter.report(node);
+                    return false;
+                }
+                
+                VariableType type = (VariableType) expression.getAttribute(Attribute.TYPE);
+                boolean ableToConvert = VariableType.implicitConversion(type, VariableType.INT);
+                
+                if (!ableToConvert) {
+                    SemanticErrorReporter.report(node);
+                    return false;
+                }
+                
+                if (!firstInstruction.check()) {
+                    SemanticErrorReporter.report(node);
+                    return false;
+                }
+                
+                return true;
             }
-            
-            VariableType type = (VariableType) expression.getAttribute(Attribute.TYPE);
-            boolean ableToConvert = VariableType.implicitConversion(type, VariableType.INT);
-            
-            if (!ableToConvert) {
-                SemanticErrorReporter.report(node);
-                return false;
-            }
-            
-            if (!firstInstruction.check()) {
-                SemanticErrorReporter.report(node);
-                return false;
-            }
-            
-            return true;
         }
         
         System.err.println("Shold never happen");

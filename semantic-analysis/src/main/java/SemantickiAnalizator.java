@@ -3,6 +3,7 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import hr.fer.zemris.ppj.Node;
+import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.TreeParser;
 
 /**
@@ -25,7 +26,9 @@ public class SemantickiAnalizator {
     public static void main(String[] args) {
         try {
             Node node = TreeParser.parse(new Scanner(new FileInputStream("test.in")));
-            System.out.println(node.print(0));
+            // System.out.print(node.print(0));
+            node.check();
+            SemanticErrorReporter.finalReport();
         }
         catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
