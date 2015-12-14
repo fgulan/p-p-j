@@ -25,6 +25,8 @@ public class Node {
 
     private final Map<Attribute, Object> attributes = new HashMap<>();
 
+    private final IdentifierTable identifierTable;
+
     /**
      * Class constructor, specifies the name of the node.
      *
@@ -33,7 +35,7 @@ public class Node {
      * @since 1.0
      */
     public Node(final String name, final Node parent) {
-        this(name, new ArrayList<Node>(), parent, new HashMap<>(), null);
+        this(name, new ArrayList<Node>(), parent, new HashMap<>(), new IdentifierTable(), null);
     }
 
     /**
@@ -52,11 +54,12 @@ public class Node {
      * @since 1.0
      */
     public Node(final String name, final List<Node> children, final Node parent,
-            final Map<Attribute, Object> attributes, final Checker checker) {
+            final Map<Attribute, Object> attributes, final IdentifierTable identifierTable, final Checker checker) {
         this.name = name;
         this.parent = parent;
         this.children = children;
         this.attributes.putAll(attributes);
+        this.identifierTable = identifierTable;
         this.checker = checker;
     }
 
@@ -136,6 +139,14 @@ public class Node {
      */
     public Object getAttribute(final Attribute type) {
         return attributes.get(type);
+    }
+
+    /**
+     * @return identifier table of the node.
+     * @since 1.1
+     */
+    public IdentifierTable identifierTable() {
+        return identifierTable;
     }
 
     /**

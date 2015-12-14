@@ -147,6 +147,7 @@ public class TreeParser {
             }
             depth = lineDepth;
             Node parent = stack.isEmpty() ? null : stack.peek();
+            IdentifierTable parentIdentifierTable = parent == null ? new IdentifierTable() : parent.identifierTable();
 
             Node child = null;
 
@@ -154,7 +155,7 @@ public class TreeParser {
             if (line.startsWith("<")) {
                 // nonterminal node
                 Checker checker = checkers.get(line);
-                child = new Node(line, new ArrayList<>(), parent, new HashMap<>(), checker);
+                child = new Node(line, new ArrayList<>(), parent, new HashMap<>(), parentIdentifierTable, checker);
                 stack.push(child);
             }
             else {
@@ -164,7 +165,7 @@ public class TreeParser {
                 int lineNumber = Integer.valueOf(split[1]);
                 String value = split[2];
                 Checker checker = checkers.get(name);
-                child = new Node(name, new ArrayList<>(), parent, new HashMap<>(), checker);
+                child = new Node(name, new ArrayList<>(), parent, new HashMap<>(), parentIdentifierTable, checker);
                 child.addAttribute(Attribute.LINE_NUMBER, lineNumber);
                 child.addAttribute(Attribute.VALUE, value);
             }
