@@ -131,6 +131,9 @@ public class TreeParser {
      */
     public static Node parse(final Scanner scanner) {
         Stack<Node> stack = new Stack<>();
+        Stack<IdentifierTable> identifierTableStack = new Stack<>();
+        identifierTableStack.push(IdentifierTable.GLOBAL_SCOPE);
+
         String line = null;
         int depth = 0;
         while (scanner.hasNextLine()) {
@@ -147,15 +150,23 @@ public class TreeParser {
             }
             depth = lineDepth;
             Node parent = stack.isEmpty() ? null : stack.peek();
-            IdentifierTable parentIdentifierTable = parent == null ? new IdentifierTable() : parent.identifierTable();
 
             Node child = null;
 
             line = line.trim();
+
+            if (parent != null) {
+                if ("<slozena_naredba>".equals(line) || "<definicija_funkcije>".equals(line)) {
+                    identifierTableStack.push(new IdentifierTable(identifierTableStack.peek()));
+                }
+
+            }
+            IdentifierTable identifierTable = identifierTableStack.peek();
+
             if (line.startsWith("<")) {
                 // nonterminal node
                 Checker checker = checkers.get(line);
-                child = new Node(line, new ArrayList<>(), parent, new HashMap<>(), parentIdentifierTable, checker);
+                child = new Node(line, new ArrayList<>(), parent, new HashMap<>(), identifierTable, checker);
                 stack.push(child);
             }
             else {
@@ -165,7 +176,7 @@ public class TreeParser {
                 int lineNumber = Integer.valueOf(split[1]);
                 String value = split[2];
                 Checker checker = checkers.get(name);
-                child = new Node(name, new ArrayList<>(), parent, new HashMap<>(), parentIdentifierTable, checker);
+                child = new Node(name, new ArrayList<>(), parent, new HashMap<>(), identifierTable, checker);
                 child.addAttribute(Attribute.LINE_NUMBER, lineNumber);
                 child.addAttribute(Attribute.VALUE, value);
             }
@@ -174,6 +185,11 @@ public class TreeParser {
 
             if (parent != null) {
                 parent.addChild(child);
+
+                if (("<slozena_naredba>".equals(parent.name()) && "D_VIT_ZAGRADA".equals(child.name()))
+                        || ("<definicija_funkcije>".equals(parent.name()) && "D_ZAGRADA".equals(child.name()))) {
+                    identifierTableStack.pop();
+                }
             }
         }
 

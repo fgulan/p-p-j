@@ -1,6 +1,8 @@
 package hr.fer.zemris.ppj;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -13,12 +15,18 @@ import java.util.Set;
  */
 public class IdentifierTable {
 
+    private static int id = 0;
+
     /**
      * Global scope of the translation unit.
      */
     public static final IdentifierTable GLOBAL_SCOPE = new IdentifierTable();
 
+    private int this_id;
+
     private IdentifierTable parent;
+
+    private List<IdentifierTable> children = new ArrayList<>();
 
     private Map<String, VariableType> declaredVariables;
 
@@ -32,7 +40,22 @@ public class IdentifierTable {
      * @since alpha
      */
     public IdentifierTable() {
-        this(null, new HashMap<>(), new HashMap<>(), new HashMap<>());
+        this(null);
+    }
+
+    /**
+     * Class constructor, creates a child identifier table.
+     *
+     * @param parent
+     *            the parent table.
+     * @since alpha
+     */
+    public IdentifierTable(IdentifierTable parent) {
+        this(parent, new HashMap<>(), new HashMap<>(), new HashMap<>());
+
+        if (parent != null) {
+            parent.addChild(this);
+        }
     }
 
     /**
@@ -54,6 +77,7 @@ public class IdentifierTable {
         this.declaredVariables = declaredVariables;
         this.declaredFunctions = declaredFunctions;
         this.definedFunctions = definedFunctions;
+        this_id = id++;
     }
 
     /**
@@ -185,4 +209,19 @@ public class IdentifierTable {
         return GLOBAL_SCOPE.declaredFunctions.get(name);
     }
 
+    /**
+     * Adds a child scope to the table.
+     *
+     * @param child
+     *            the child to be added.
+     * @since alpha
+     */
+    public void addChild(IdentifierTable child) {
+        children.add(child);
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(this_id);
+    }
 }
