@@ -47,6 +47,8 @@ public enum Attribute {
      * pov
      */
     RETURN_VALUE, // VariableType
+    
+    ITYPE // inherited type
 
     // IDK ovo treba popuniti po potrebi
 
