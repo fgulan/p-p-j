@@ -37,6 +37,10 @@ public class ConstCharArrayChecker implements Checker {
         String value = (String) node.getAttribute(Attribute.VALUE);
 
         // KILL ME NOW
-        return value.matches("\"(\\w|\\t|\\n|\\0|\\'|\\\"|\\\\)*\"");
+        if (!value.matches("\"(\\w|\\t|\\n|\\0|\\'|\\\"|\\\\)*\"")) {
+            return false;
+        }
+
+        return true;
     }
 }

@@ -34,18 +34,19 @@ public class IntChecker implements Checker {
      */
     @Override
     public boolean check(Node node) {
+        String value = (String) node.getAttribute((Attribute.VALUE));
+
+        if (!value.matches("(-|\\+)?\\d+)")) {
+            return false;
+        }
+
         try {
-            String value = (String) node.getAttribute(Attribute.VALUE);
-            if (value.matches("(-|\\+)?\\d+)")) {
-                Integer.parseInt((String) node.getAttribute(Attribute.VALUE));
-            }
-            else {
-                return false;
-            }
+            node.addAttribute(Attribute.VALUE, Integer.parseInt((String) node.getAttribute(Attribute.VALUE)));
         }
         catch (NumberFormatException e) {
             return false;
         }
+
         return true;
     }
 
