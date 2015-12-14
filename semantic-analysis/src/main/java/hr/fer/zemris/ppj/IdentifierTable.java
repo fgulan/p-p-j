@@ -82,11 +82,11 @@ public class IdentifierTable {
      * @since alpha
      */
     public boolean declareFunction(String name, FunctionWrapper function) {
-        if (declaredFunctions.containsKey(name)) {
+        if (GLOBAL_SCOPE.declaredFunctions.containsKey(name)) {
             return false;
         }
 
-        declaredFunctions.put(name, function);
+        GLOBAL_SCOPE.declaredFunctions.put(name, function);
         return true;
     }
 
@@ -103,7 +103,7 @@ public class IdentifierTable {
             return false;
         }
 
-        definedFunctions.put(name, function);
+        GLOBAL_SCOPE.definedFunctions.put(name, function);
         return true;
     }
 
