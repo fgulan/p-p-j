@@ -131,7 +131,7 @@ public enum VariableType {
      */
     public static boolean implicitConversion(VariableType from, VariableType to) {
         if (from == INT) {
-            if (to == CONST_INT) {
+            if ((to == CONST_INT) | (to == INT)) {
                 return true;
             }
             else {
@@ -139,7 +139,7 @@ public enum VariableType {
             }
         }
         else if (from == CHAR) {
-            if ((to == CONST_CHAR) | (to == INT) | (to == CONST_INT)) {
+            if ((to == CONST_CHAR) | (to == INT) | (to == CONST_INT) | (to == CHAR)) {
                 return true;
             }
             else {
@@ -147,7 +147,7 @@ public enum VariableType {
             }
         }
         else if (from == CONST_INT) {
-            if (to == INT) {
+            if ((to == INT) | (to == CONST_INT)) {
                 return true;
             }
             else {
@@ -155,7 +155,7 @@ public enum VariableType {
             }
         }
         else if (from == CONST_CHAR) {
-            if ((to == CHAR) | (to == CONST_INT) | (to == INT)) {
+            if ((to == CHAR) | (to == CONST_INT) | (to == INT) | (to == CONST_CHAR)) {
                 return true;
             }
             else {
@@ -163,6 +163,14 @@ public enum VariableType {
             }
         }
         else if (from == INT_ARRAY) {
+            if ((to == CONST_INT_ARRAY) | (to == INT_ARRAY)) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        else if (from == CONST_INT_ARRAY) {
             if (to == CONST_INT_ARRAY) {
                 return true;
             }
@@ -171,7 +179,7 @@ public enum VariableType {
             }
         }
         else if (from == CHAR_ARRAY) {
-            if ((to == CONST_CHAR_ARRAY) | (to == CONST_INT_ARRAY) | (to == INT_ARRAY)) {
+            if ((to == CONST_CHAR_ARRAY) | (to == CHAR_ARRAY)) {
                 return true;
             }
             else {
@@ -179,7 +187,15 @@ public enum VariableType {
             }
         }
         else if (from == CONST_CHAR_ARRAY) {
-            if (to == CONST_INT_ARRAY) {
+            if (to == CONST_CHAR_ARRAY) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        else if (from == VOID) {
+            if (to == VOID) {
                 return true;
             }
             else {
