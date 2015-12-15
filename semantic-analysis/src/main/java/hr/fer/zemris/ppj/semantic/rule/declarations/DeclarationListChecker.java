@@ -1,6 +1,7 @@
 package hr.fer.zemris.ppj.semantic.rule.declarations;
 
 import hr.fer.zemris.ppj.Node;
+import hr.fer.zemris.ppj.Utils;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
 
 /**
@@ -34,8 +35,14 @@ public class DeclarationListChecker implements Checker {
      */
     @Override
     public boolean check(Node node) {
-        // TODO Auto-generated method stub
-        return false;
+        
+        for (Node current: node.getChildren()){
+            if (!current.check()){
+                return Utils.badNode(node);
+            }
+        }
+        
+        return true;
     }
 
 }

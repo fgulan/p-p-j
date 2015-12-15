@@ -150,6 +150,14 @@ public class Node {
     }
 
     /**
+     * @return parent of the node.
+     * @since 1.1
+     */
+    public Node parent() {
+        return parent;
+    }
+
+    /**
      * Checks the semantics of the node.
      *
      * @return <code>true</code> if the node is semantically correct, <code>false</code> otherwise.
