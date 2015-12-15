@@ -1,8 +1,5 @@
 package hr.fer.zemris.ppj.semantic.rule.declarations;
 
-import java.util.function.Consumer;
-import java.util.stream.IntStream;
-
 import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Utils;

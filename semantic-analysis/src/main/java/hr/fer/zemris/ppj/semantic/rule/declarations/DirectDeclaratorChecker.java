@@ -1,9 +1,16 @@
 package hr.fer.zemris.ppj.semantic.rule.declarations;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import hr.fer.zemris.ppj.Attribute;
+import hr.fer.zemris.ppj.FunctionWrapper;
+import hr.fer.zemris.ppj.IdentifierTable;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Utils;
+import hr.fer.zemris.ppj.VariableType;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
+import hr.fer.zemris.ppj.semantic.rule.definitions.ParameterListChecker;
 
 /**
  * <code>DirectDeclaratorChecker</code> is a checker for direct declarator.
@@ -14,6 +21,9 @@ import hr.fer.zemris.ppj.semantic.rule.Checker;
  */
 public class DirectDeclaratorChecker implements Checker {
 
+    private static final int MIN_ARRAY_SIZE = 1;
+    private static final int MAX_ARRAY_SIZE = 1024;
+    
     // <izravni_deklarator> ::= IDN
     // <izravni_deklarator> ::= IDN L_UGL_ZAGRADA BROJ D_UGL_ZAGRADA
     // <izravni_deklarator> ::= IDN L_ZAGRADA KR_VOID D_ZAGRADA
@@ -44,15 +54,89 @@ public class DirectDeclaratorChecker implements Checker {
             return Utils.badNode(node);
         }
         
-        String name = (String) idn.getAttribute(Attribute.VALUE);
-        if (node.identifierTable().isFunctionDeclared(name)
-                || node.identifierTable().isVariableDeclared(name)){
+        VariableType type = (VariableType) node.getAttribute(Attribute.ITYPE);
+        if (type.equals(VariableType.VOID)){
             return Utils.badNode(node);
         }
         
-        //TODO check other productions
+        String name = (String) idn.getAttribute(Attribute.VALUE);
+        
+        int size = node.childrenCount();
+        if (size == 1){
+            if(!node.identifierTable().declareVariable(name, type)){
+                return Utils.badNode(node);
+            }
+            node.addAttribute(Attribute.TYPE, type);
+            return true;
+        }
+        
+        for (int i = 1; i < size; i++){
+            Node child = node.getChild(i);
+            
+            if(!child.check()){
+                return Utils.badNode(node);
+            }
+            
+            if (child.name() == "BROJ"){
+                VariableType arrayType = VariableType.toArrayType(type);
+                if(!node.identifierTable().declareVariable(name, type)){
+                    return Utils.badNode(node);
+                }
+                
+                int value = (int) child.getAttribute(Attribute.VALUE);
+                if (value < MIN_ARRAY_SIZE || value > MAX_ARRAY_SIZE){
+                    return Utils.badNode(node);
+                }
+                
+                node.addAttribute(Attribute.TYPE, arrayType);
+                
+                return true;
+            }
+            
+            if (child.name() == "KR_VOID"){
+               
+                List<VariableType> args = new ArrayList<>();
+                args.add(VariableType.VOID);
+                if (!handleFunction(node.identifierTable(), name, args, type)){
+                    return Utils.badNode(node);
+                }
+                
+                node.addAttribute(Attribute.TYPES, args);
+                node.addAttribute(Attribute.RETURN_VALUE, type);
+                
+                return true;
+            }
+            
+            if (child.name() == ParameterListChecker.HR_NAME){
+                @SuppressWarnings("unchecked")
+                List<VariableType> args = (List<VariableType>) child.getAttribute(Attribute.TYPES);
+                
+                if (!handleFunction(node.identifierTable(), name, args, type)){
+                    return Utils.badNode(node);
+                }
+                
+                node.addAttribute(Attribute.TYPES, args);
+                node.addAttribute(Attribute.RETURN_VALUE, type);
+                
+                return true;
+            }
+            
+        }
         
         return false;
     }
 
+    private boolean handleFunction(IdentifierTable table, String name, 
+            List<VariableType> arguments, VariableType returnType){
+        FunctionWrapper function = table.localFunction(name);
+        if (function != null){
+            if (!function.argumentList().equals(arguments) || !function.returnType().equals(returnType)){
+                return false;
+            }
+        } else {
+            return table.declareFunction(name, new FunctionWrapper(returnType, arguments));
+        }
+        
+        return true;
+    }
 }

@@ -10,7 +10,7 @@ import java.util.Set;
 /**
  * <code>IdentifierTable</code> is a hierarhical identifier table.
  *
- * @author Jan Kelemen
+ * @author Jan Kelemen, Domagoj Polancec
  *
  * @version alpha.
  */
@@ -90,7 +90,7 @@ public class IdentifierTable {
      * @since alpha
      */
     public boolean declareVariable(String name, VariableType type) {
-        if (declaredVariables.containsKey(name)) {
+        if (isLocalDeclared(name)) {
             return false;
         }
 
@@ -107,11 +107,11 @@ public class IdentifierTable {
      * @since alpha
      */
     public boolean declareFunction(String name, FunctionWrapper function) {
-        if (GLOBAL_SCOPE.declaredFunctions.containsKey(name)) {
+        if (isLocalVariableDeclared(name)){
             return false;
         }
 
-        GLOBAL_SCOPE.declaredFunctions.put(name, function);
+        declaredFunctions.put(name, function);
         return true;
     }
 
@@ -128,7 +128,8 @@ public class IdentifierTable {
             return false;
         }
 
-        GLOBAL_SCOPE.definedFunctions.put(name, function);
+        definedFunctions.put(name, function);
+        //GLOBAL_SCOPE.definedFunctions.put(name, function);
         return true;
     }
 
@@ -149,7 +150,7 @@ public class IdentifierTable {
      * @since alpha
      */
     public boolean isFunctionDeclared(String name) {
-        return GLOBAL_SCOPE.declaredFunctions.containsKey(name);
+        return function(name) != null;
     }
 
     /**
@@ -190,7 +191,14 @@ public class IdentifierTable {
      * @since alpha
      */
     public Set<String> declaredFunctions() {
-        return GLOBAL_SCOPE.declaredFunctions.keySet();
+        if (parent == null){
+            return new HashSet<>(declaredFunctions.keySet());
+        }
+        
+        Set<String> functions = new HashSet<>(declaredFunctions.keySet());
+        functions.addAll(parent.declaredFunctions());
+        
+        return functions;
     }
 
     /**
@@ -218,8 +226,15 @@ public class IdentifierTable {
      * @since alpha
      */
     public FunctionWrapper function(String name) {
-        // Function is always declared, if it's defined
-        return GLOBAL_SCOPE.declaredFunctions.get(name);
+        if (parent == null) {
+            return declaredFunctions.get(name);
+        }
+
+        if (declaredVariables.containsKey(name)) {
+            return declaredFunctions.get(name);
+        }
+
+        return parent.function(name);
     }
 
     /**
@@ -236,5 +251,25 @@ public class IdentifierTable {
     @Override
     public String toString() {
         return String.valueOf(this_id) + (parent != null ? parent.toString() : "");
+    }
+    
+    public boolean isLocalDeclared(String name){
+        return isLocalFunctionDeclared(name) || isLocalVariableDeclared(name);
+    }
+    
+    public boolean isLocalFunctionDeclared(String name){
+        return declaredFunctions.containsKey(name);
+    }
+    
+    public boolean isLocalVariableDeclared(String name){
+        return declaredVariables.containsKey(name);
+    }
+    
+    public FunctionWrapper localFunction(String name){
+        return declaredFunctions.get(name);
+    }
+    
+    public VariableType localVariable(String name){
+        return declaredVariables.get(name);
     }
 }
