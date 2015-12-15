@@ -1,6 +1,9 @@
 package hr.fer.zemris.ppj.semantic.rule.declarations;
 
+import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
+import hr.fer.zemris.ppj.Utils;
+import hr.fer.zemris.ppj.VariableType;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
 
 /**
@@ -34,8 +37,25 @@ public class ParameterDeclarationChecker implements Checker {
      */
     @Override
     public boolean check(Node node) {
-        // TODO Auto-generated method stub
-        return false;
+
+        Node typeNode = node.getChild(0);
+        Node idnNode = node.getChild(1);
+        
+        if (!typeNode.check() || !idnNode.check()){
+            return Utils.badNode(node);
+        }
+        
+        VariableType type = (VariableType) typeNode.getAttribute(Attribute.TYPE);
+        String name = (String) idnNode.getAttribute(Attribute.VALUE);
+        
+        if (node.childrenCount() > 2){
+            type = VariableType.toArrayType(type);
+        }
+
+        node.addAttribute(Attribute.TYPE, type);
+        node.addAttribute(Attribute.VALUE, name);
+        
+        return true;
     }
 
 }

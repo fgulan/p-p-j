@@ -48,12 +48,30 @@ public enum Attribute {
      */
     RETURN_VALUE, // VariableType
     
-    ITYPE, // inherited type
+    /**
+     * inherited type
+     */
+    ITYPE, // VariableType
 
     /**
      * Unutar petlje
      */
     INSIDE_LOOP,// boolean
+
+    /**
+     * number of chars in char string
+     */
+    CELEM_COUNT, // int
+    
+    /**
+     * parameter names
+     */
+    VALUES, // List<String>
+    
+    /**
+     * function name
+     */
+    FUNCTION_NAME, // String
     
     // IDK ovo treba popuniti po potrebi
 

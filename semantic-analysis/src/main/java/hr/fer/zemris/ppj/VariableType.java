@@ -232,5 +232,20 @@ public enum VariableType {
                 return null;
         }
     }
+    
+    public static boolean isArrayType(VariableType type){
+        switch (type){
+            case INT_ARRAY:
+                return true;
+            case CONST_INT_ARRAY:
+                return true;
+            case CHAR_ARRAY:
+                return true;
+            case CONST_CHAR_ARRAY:
+                return true;
+            default:
+                return false;
+        }
+    }
 
 }

@@ -1,6 +1,7 @@
 package hr.fer.zemris.ppj.semantic.rule.declarations;
 
 import hr.fer.zemris.ppj.Node;
+import hr.fer.zemris.ppj.Utils;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
 
 /**
@@ -34,8 +35,12 @@ public class OuterDeclarationChecker implements Checker {
      */
     @Override
     public boolean check(Node node) {
-        // TODO Auto-generated method stub
-        return false;
+        
+        if (!node.getChild(0).check()){
+            Utils.badNode(node);
+        }
+        
+        return true;
     }
 
 }

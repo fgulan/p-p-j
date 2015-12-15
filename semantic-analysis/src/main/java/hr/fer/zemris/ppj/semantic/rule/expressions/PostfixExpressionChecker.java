@@ -57,6 +57,7 @@ public class PostfixExpressionChecker implements Checker {
             }
 
             node.addAttribute(Attribute.TYPE, firstChild.getAttribute(Attribute.TYPE));
+            node.addAttribute(Attribute.CELEM_COUNT, firstChild.getAttribute(Attribute.CELEM_COUNT));
             node.addAttribute(Attribute.L_EXPRESSION, firstChild.getAttribute(Attribute.L_EXPRESSION));
             return true;
         }

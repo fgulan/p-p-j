@@ -48,7 +48,7 @@ public class AssignExpressionChecker implements Checker {
                 SemanticErrorReporter.report(node);
                 return false;
             }
-
+            
             node.addAttribute(Attribute.TYPE, firstChild.getAttribute(Attribute.TYPE));
             node.addAttribute(Attribute.L_EXPRESSION, firstChild.getAttribute(Attribute.L_EXPRESSION));
             return true;
@@ -84,8 +84,9 @@ public class AssignExpressionChecker implements Checker {
             }
 
             node.addAttribute(Attribute.TYPE, firstChild.getAttribute(Attribute.TYPE));
+            node.addAttribute(Attribute.CELEM_COUNT, firstChild.getAttribute(Attribute.CELEM_COUNT));
             node.addAttribute(Attribute.L_EXPRESSION, false);
-            return false;
+            return true; // was false before
         }
 
         System.err.println("Shold never happen");

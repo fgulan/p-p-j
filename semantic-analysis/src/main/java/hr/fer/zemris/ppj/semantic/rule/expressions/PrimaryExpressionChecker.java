@@ -94,6 +94,7 @@ public class PrimaryExpressionChecker implements Checker {
                 return false;
             }
 
+            node.addAttribute(Attribute.CELEM_COUNT, firstChild.getAttribute(Attribute.CELEM_COUNT));
             node.addAttribute(Attribute.TYPE, VariableType.CONST_CHAR_ARRAY);
             node.addAttribute(Attribute.L_EXPRESSION, false);
             return true;
