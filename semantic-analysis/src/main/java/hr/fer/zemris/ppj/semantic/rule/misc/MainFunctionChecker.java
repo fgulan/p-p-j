@@ -2,9 +2,10 @@ package hr.fer.zemris.ppj.semantic.rule.misc;
 
 import java.util.ArrayList;
 
-import hr.fer.zemris.ppj.Node;
-import hr.fer.zemris.ppj.IdentifierTable;
 import hr.fer.zemris.ppj.FunctionWrapper;
+import hr.fer.zemris.ppj.IdentifierTable;
+import hr.fer.zemris.ppj.Node;
+import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.VariableType;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
 
@@ -38,14 +39,15 @@ public class MainFunctionChecker implements Checker {
      */
     @Override
     public boolean check(Node node) {
-    	if (IdentifierTable.GLOBAL_SCOPE.function("main").equals(new FunctionWrapper(VariableType.INT, new ArrayList<>()))) {
-    		return true;
-    	}
-    	else {
-    		System.out.println("main");
-    		return false;
-    	}
-   
+        if (new FunctionWrapper(VariableType.INT, new ArrayList<>())
+                .equals(IdentifierTable.GLOBAL_SCOPE.function("main"))) {
+            return true;
+        }
+        else {
+            SemanticErrorReporter.report("main");
+            return false;
+        }
+
     }
 
 }

@@ -195,11 +195,9 @@ public class Node {
     @Override
     public String toString() {
         if (name.startsWith("<")) {
-            return name + " " + identifierTable;
+            return name;
         }
 
-        // return name + "(" + attributes.get(Attribute.LINE_NUMBER) + ", " + attributes.get(Attribute.VALUE) + ")";
-        return name + " " + attributes.get(Attribute.LINE_NUMBER) + " " + attributes.get(Attribute.VALUE) + " "
-                + identifierTable;
+        return name + "(" + attributes.get(Attribute.LINE_NUMBER) + ", " + attributes.get(Attribute.VALUE) + ")";
     }
 }

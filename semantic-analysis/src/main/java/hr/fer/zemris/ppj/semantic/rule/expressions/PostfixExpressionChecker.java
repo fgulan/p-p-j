@@ -127,7 +127,7 @@ public class PostfixExpressionChecker implements Checker {
                 return false;
             }
 
-            node.addAttribute(Attribute.TYPE, null);
+            node.addAttribute(Attribute.TYPE, function.returnType());
             node.addAttribute(Attribute.L_EXPRESSION, false);
         }
 
@@ -169,7 +169,7 @@ public class PostfixExpressionChecker implements Checker {
                 }
             }
 
-            node.addAttribute(Attribute.TYPE, null);
+            node.addAttribute(Attribute.TYPE, function.returnType());
             node.addAttribute(Attribute.L_EXPRESSION, false);
             return true;
         }

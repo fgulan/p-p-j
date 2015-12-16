@@ -248,9 +248,9 @@ public enum VariableType {
                 return null;
         }
     }
-    
-    public static boolean isArrayType(VariableType type){
-        switch (type){
+
+    public static boolean isArrayType(VariableType type) {
+        switch (type) {
             case INT_ARRAY:
                 return true;
             case CONST_INT_ARRAY:
@@ -258,6 +258,16 @@ public enum VariableType {
             case CHAR_ARRAY:
                 return true;
             case CONST_CHAR_ARRAY:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public static boolean isLExpression(VariableType type) {
+        switch (type) {
+            case INT:
+            case CHAR:
                 return true;
             default:
                 return false;

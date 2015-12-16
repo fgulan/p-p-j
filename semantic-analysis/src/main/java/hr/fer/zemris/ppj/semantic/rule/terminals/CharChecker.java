@@ -37,7 +37,7 @@ public class CharChecker implements Checker {
         String value = (String) node.getAttribute(Attribute.VALUE);
 
         // KILL ME NOW
-        if (!value.matches("'(\\w|\\t|\\n|\\0|\\'|\\\"|\\\\)'")) {
+        if (!value.matches("'(\\w|\\\\t|\\\\n|\\\\0|\\\\'|\\\\\"|\\\\\\\\)'")) {
             return false;
         }
 

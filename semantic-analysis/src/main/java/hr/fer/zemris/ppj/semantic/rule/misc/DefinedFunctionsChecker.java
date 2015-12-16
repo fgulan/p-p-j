@@ -2,10 +2,10 @@ package hr.fer.zemris.ppj.semantic.rule.misc;
 
 import java.util.Set;
 
-import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.IdentifierTable;
+import hr.fer.zemris.ppj.Node;
+import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
-
 
 /**
  * <code>DefinedFunctionChecker</code> is a checker for defined functions.
@@ -38,13 +38,13 @@ public class DefinedFunctionsChecker implements Checker {
      */
     @Override
     public boolean check(Node node) {
-    	Set<String> declaredFunctions = IdentifierTable.GLOBAL_SCOPE.declaredFunctions();
-    	for (String s : declaredFunctions) {
-    		if (!IdentifierTable.GLOBAL_SCOPE.isFunctionDefined(s)) {
-    			System.out.println("funkcija");
-    			return false;
-    		}
-    	}
+        Set<String> declaredFunctions = IdentifierTable.GLOBAL_SCOPE.declaredFunctions();
+        for (String s : declaredFunctions) {
+            if (!IdentifierTable.GLOBAL_SCOPE.isFunctionDefined(s)) {
+                SemanticErrorReporter.report("funkcija");
+                return false;
+            }
+        }
         return true;
     }
 

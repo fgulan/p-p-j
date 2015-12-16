@@ -23,9 +23,11 @@ public class SemanticErrorReporter {
      * @since alpha
      */
     public static void report(final Node node) {
-        String report = generateReport(node);
-
         reportedNodes.add(node);
+        report(generateReport(node));
+    }
+
+    public static void report(final String report) {
         reports.add(report);
     }
 
@@ -35,7 +37,7 @@ public class SemanticErrorReporter {
      * @since alpha
      */
     public static void finalReport() {
-        if (!reportedNodes.isEmpty()) {
+        if (!reports.isEmpty()) {
             System.out.println(reports.get(0));
         }
     }

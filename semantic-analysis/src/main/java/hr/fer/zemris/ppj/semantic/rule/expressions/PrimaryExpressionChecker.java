@@ -48,12 +48,23 @@ public class PrimaryExpressionChecker implements Checker {
 
             // 1. IDN.ime je deklarirano
             if (!firstChild.check()) {
-                System.out.println(HR_NAME + " ::= " + firstChild.toString());
+                SemanticErrorReporter.report(node);
                 return false;
             }
 
-            node.addAttribute(Attribute.TYPE, firstChild.getAttribute(Attribute.TYPE));
-            node.addAttribute(Attribute.L_EXPRESSION, firstChild.getAttribute(Attribute.L_EXPRESSION));
+            String name = (String) firstChild.getAttribute(Attribute.VALUE);
+            if (!(node.identifierTable().isVariableDeclared(name) || node.identifierTable().isFunctionDeclared(name))) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+
+            VariableType type = node.identifierTable().variable(name);
+            if (type == null) {
+                type = node.identifierTable().function(name).returnType();
+            }
+
+            node.addAttribute(Attribute.TYPE, type);
+            node.addAttribute(Attribute.L_EXPRESSION, VariableType.isLExpression(type));
             return true;
         }
 
