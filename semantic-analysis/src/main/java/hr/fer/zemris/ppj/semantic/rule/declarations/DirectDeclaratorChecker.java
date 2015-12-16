@@ -78,7 +78,7 @@ public class DirectDeclaratorChecker implements Checker {
 
             if (child.name().equals("BROJ")) {
                 VariableType arrayType = VariableType.toArrayType(type);
-                if (!node.identifierTable().declareVariable(name, type)) {
+                if (!node.identifierTable().declareVariable(name, arrayType)) {
                     return Utils.badNode(node);
                 }
 

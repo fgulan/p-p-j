@@ -65,7 +65,7 @@ public class PostfixExpressionChecker implements Checker {
         Node secondChild = node.getChild(1);
         String secondSymbol = secondChild.name();
         // <postfiks_izraz> ::= <postfiks_izraz> OP_INC
-        if ("<postfiks_izraz".equals(firstSymbol) && "OP_INC".equals(secondSymbol)) {
+        if ("<postfiks_izraz>".equals(firstSymbol) && "OP_INC".equals(secondSymbol)) {
             // IDENTICNO KAO I FUNKCIJA ISPOD, U SLUCAJU BUGA ISPRAVITI OBJE
 
             // 1. provjeri(<postfiks_izraz>)
@@ -87,7 +87,7 @@ public class PostfixExpressionChecker implements Checker {
         }
 
         // <postfiks_izraz> ::= <postfiks_izraz> OP_DEC
-        if ("<postfiks_izraz".equals(firstSymbol) && "OP_DEC".equals(secondSymbol)) {
+        if ("<postfiks_izraz>".equals(firstSymbol) && "OP_DEC".equals(secondSymbol)) {
 
             // 1. provjeri(<postfiks_izraz>)
             if (!firstChild.check()) {
@@ -189,7 +189,10 @@ public class PostfixExpressionChecker implements Checker {
             }
 
             // 2. <postfiks_izraz>.tip = niz(X)
-            node.addAttribute(Attribute.TYPE, VariableType.toArrayType(type));
+            if (!(firstChild.getAttribute(Attribute.TYPE).equals(VariableType.toArrayType(type)))) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
 
             // 3. provjeri(<izraz>)
             if (!thirdChild.check()) {

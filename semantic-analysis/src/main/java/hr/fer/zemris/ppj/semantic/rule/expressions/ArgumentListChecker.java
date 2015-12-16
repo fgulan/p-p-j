@@ -42,7 +42,7 @@ public class ArgumentListChecker implements Checker {
     @Override
     public boolean check(Node node) {
         Node firstChild = node.getChild(0);
-        String firstSymbol = node.name();
+        String firstSymbol = firstChild.name();
 
         // <lista_argumenata> ::= <izraz_pridruzivanja>
         if ("<izraz_pridruzivanja>".equals(firstSymbol)) {
@@ -57,7 +57,7 @@ public class ArgumentListChecker implements Checker {
             return true;
         }
 
-        Node thirdChild = node.getChild(0);
+        Node thirdChild = node.getChild(2);
         String thirdSymbol = thirdChild.name();
         // <lista_argumenata> ::= <lista_argumenata> ZAREZ <izraz_pridruzivanja>
         if ("<lista_argumenata>".equals(firstSymbol)) {

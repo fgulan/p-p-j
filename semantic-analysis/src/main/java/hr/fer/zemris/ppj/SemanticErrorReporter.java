@@ -39,6 +39,10 @@ public class SemanticErrorReporter {
     public static void finalReport() {
         if (!reports.isEmpty()) {
             System.out.println(reports.get(0));
+
+            if (!reportedNodes.isEmpty()) {
+                System.out.println(reportedNodes.get(0).print(0));
+            }
         }
     }
 
