@@ -99,6 +99,11 @@ public class FunctionDefinitionChecker implements Checker {
 
         node.addAttributeRecursive(Attribute.FUNCTION_NAME, name);
 
+        if (!node.getChild(5).check()) {
+            SemanticErrorReporter.report(node);
+            return false;
+        }
+
         return true;
     }
 

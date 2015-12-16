@@ -198,7 +198,6 @@ public class Node {
             return name;
         }
 
-        // return name + "(" + attributes.get(Attribute.LINE_NUMBER) + ", " + attributes.get(Attribute.VALUE) + ")";
-        return name + " " + attributes.get(Attribute.LINE_NUMBER) + " " + attributes.get(Attribute.VALUE);
+        return name + "(" + attributes.get(Attribute.LINE_NUMBER) + "," + attributes.get(Attribute.VALUE) + ")";
     }
 }
