@@ -127,9 +127,8 @@ public class PostfixExpressionChecker implements Checker {
                 return false;
             }
 
-            node.addAttribute(Attribute.TYPE, function.returnType());
+            node.addAttribute(Attribute.TYPE, null);
             node.addAttribute(Attribute.L_EXPRESSION, false);
-            return true;
         }
 
         // <postfiks_izraz> ::= <postfiks_izraz> L_ZAGRADA <lista_argumenata> D_ZAGRADA
@@ -170,7 +169,7 @@ public class PostfixExpressionChecker implements Checker {
                 }
             }
 
-            node.addAttribute(Attribute.TYPE, function.returnType());
+            node.addAttribute(Attribute.TYPE, null);
             node.addAttribute(Attribute.L_EXPRESSION, false);
             return true;
         }

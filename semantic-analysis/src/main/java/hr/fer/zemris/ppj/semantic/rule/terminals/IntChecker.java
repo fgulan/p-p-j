@@ -23,7 +23,7 @@ public class IntChecker implements Checker {
     /**
      * Name of the node in Croatian.
      */
-    public static final String HR_NAME = "BROJ";
+    public static final String HR_NAME = "INT";
 
     /**
      * {@inheritDoc} <br>
@@ -36,7 +36,7 @@ public class IntChecker implements Checker {
     public boolean check(Node node) {
         String value = (String) node.getAttribute((Attribute.VALUE));
 
-        if (!value.matches("(-|\\+)?\\d+")) {
+        if (!value.matches("(-|\\+)?\\d+)")) {
             return false;
         }
 

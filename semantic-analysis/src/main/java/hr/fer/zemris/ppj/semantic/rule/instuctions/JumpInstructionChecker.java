@@ -67,15 +67,8 @@ public class JumpInstructionChecker implements Checker {
         if ("KR_RETURN".equals(node.getChild(0).name()) && "<izraz>".equals(node.getChild(1).name())) {
             String functionName = (String) node.getAttribute(Attribute.FUNCTION_NAME);
             FunctionWrapper function = node.identifierTable().function(functionName);
-
-            // 1. provjeri(<izraz>)
-            if (!node.getChild(1).check()) {
-                SemanticErrorReporter.report(node);
-                return false;
-            }
-
             VariableType type = (VariableType) node.getChild(1).getAttribute(Attribute.TYPE);
-
+            
             boolean ableToConvert = VariableType.implicitConversion(type, function.returnType());
 
             if (!ableToConvert) {

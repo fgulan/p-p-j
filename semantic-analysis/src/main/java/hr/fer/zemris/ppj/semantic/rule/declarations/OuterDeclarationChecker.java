@@ -1,7 +1,7 @@
 package hr.fer.zemris.ppj.semantic.rule.declarations;
 
 import hr.fer.zemris.ppj.Node;
-import hr.fer.zemris.ppj.SemanticErrorReporter;
+import hr.fer.zemris.ppj.Utils;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
 
 /**
@@ -35,34 +35,12 @@ public class OuterDeclarationChecker implements Checker {
      */
     @Override
     public boolean check(Node node) {
-        Node firstChild = node.getChild(0);
-        String firstSymbol = firstChild.name();
-
-        // <vanjska_deklaracija> ::= <definicija_funkcije>
-        if ("<definicija_funkcije>".equals(firstSymbol)) {
-
-            if (!firstChild.check()) {
-                SemanticErrorReporter.report(node);
-                return false;
-            }
-
-            return true;
+        
+        if (!node.getChild(0).check()){
+            Utils.badNode(node);
         }
-
-        // <vanjska_deklaracija> ::= <deklaracija>
-        if ("<deklaracija>".equals(firstSymbol)) {
-
-            if (!firstChild.check()) {
-                SemanticErrorReporter.report(node);
-                return false;
-            }
-
-            return true;
-        }
-
-        System.err.println("Shold never happen");
-        SemanticErrorReporter.report(node);
-        return false;
+        
+        return true;
     }
 
 }
