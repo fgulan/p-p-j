@@ -1,13 +1,11 @@
 package hr.fer.zemris.ppj.semantic.rule.declarations;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
-import hr.fer.zemris.ppj.Utils;
+import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.VariableType;
-import hr.fer.zemris.ppj.semantic.exceptions.MysteriousBugException;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
 
 /**
@@ -42,69 +40,83 @@ public class InitializationDeclaratorChecker implements Checker {
     @SuppressWarnings("unchecked")
     @Override
     public boolean check(Node node) {
-        
-        int size = node.childrenCount();
-        Node child = node.getChild(0);
-        child.addAttribute(Attribute.ITYPE, node.getAttribute(Attribute.ITYPE));
-        child.check();
-        
-        VariableType type = (VariableType) child.getAttribute(Attribute.TYPE);
-        Integer elemCount = (Integer) node.getAttribute(Attribute.ELEMENT_COUNT);
-        if (elemCount == null){
-            elemCount = 1;
-        }
-        
-        if (size == 1){
-            if (VariableType.isConst(type)){
-                return Utils.badNode(node);
-            }
-            
-            return true;
-        }
-        
-        for (int i = 1; i < size; i++){
-            Node current = node.getChild(i);
-            
-            if (!current.check()){
-                return Utils.badNode(node);
-            }
-            
-            if (current.name().equals(InitializatorChecker.HR_NAME)){
-                List<VariableType> initTypes;
-                if (VariableType.isArrayType(type)){
-                    initTypes = (List<VariableType>) current.getAttribute(Attribute.TYPES);
-                } else {
-                    initTypes = new ArrayList<>();
-                    initTypes.add((VariableType) current.getAttribute(Attribute.TYPE));
-                }
-                
-                if(handleInits(elemCount, type, initTypes)){
-                    return true;
-                } else {
-                    return Utils.badNode(node);
-                }
-            }
-        }
-        
-        throw new MysteriousBugException("If this line ever executes, Parser has failed or an if statement"
-                + " is missing a return statement. "
-                + "Expected: " + InitializatorChecker.HR_NAME + ".");
-//        Uncomment before deployment
-//        return true;
-    }
+        Node firstChild = node.getChild(0);
 
-    private static boolean handleInits(Integer elemCount, VariableType myType, List<VariableType> initTypes) {
-        if (elemCount > initTypes.size()){
-            return false;
-        }
-        
-        for (VariableType type: initTypes){
-            if (!VariableType.implicitConversion(type, myType)){
+        int size = node.childrenCount();
+
+        // <init_deklarator> ::= <izravni_deklarator>
+        if (size == 1) {
+
+            // 1. provjeri(<izravni_deklarator>) uz nasljedno svojstvo <izravni_deklarator>.ntip <-
+            // <init_deklarator>.ntip
+            firstChild.addAttributeRecursive(Attribute.ITYPE, node.getAttribute(Attribute.ITYPE));
+            if (!firstChild.check()) {
+                SemanticErrorReporter.report(node);
                 return false;
             }
-        }
-        
-        return true;
-    }
 
+            // 2. <itravni_deklarator>.tip != { const(T), niz(const(T)) }
+            VariableType type = (VariableType) firstChild.getAttribute(Attribute.TYPE);
+            if (VariableType.isConst(type)) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+
+            return true;
+        }
+
+        Node thirdChild = node.getChild(2);
+        // <init_deklarator> ::= <izravni_deklarator> OP_PRIDRUZI <inicijalizator>
+        if (size == 3) {
+
+            // 1. provjeri(<izravni_deklarator>) uz nasljedno svojstvo <izravni_deklarator>.ntip <-
+            // <init_deklarator>.ntip
+            firstChild.addAttributeRecursive(Attribute.ITYPE, node.getAttribute(Attribute.ITYPE));
+            if (!firstChild.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+
+            // 2. provjeri(<inicijalizator>)
+            if (!thirdChild.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+
+            // 3. ako je bla bla
+            VariableType type = (VariableType) firstChild.getAttribute(Attribute.TYPE);
+            if (VariableType.isArrayType(type)) {
+                VariableType underType = VariableType.fromArrayType(type);
+
+                Integer initElemCount = (Integer) thirdChild.getAttribute(Attribute.ELEMENT_COUNT);
+                Integer declElemCount = (Integer) firstChild.getAttribute(Attribute.ELEMENT_COUNT);
+
+                if (!(Integer.compare(initElemCount, declElemCount) <= 0)) {
+                    SemanticErrorReporter.report(node);
+                    return false;
+                }
+
+                for (VariableType initType : (List<VariableType>) thirdChild.getAttribute(Attribute.TYPES)) {
+                    if (!VariableType.implicitConversion(initType, underType)) {
+                        SemanticErrorReporter.report(node);
+                        return false;
+                    }
+                }
+            }
+            else if (!VariableType.implicitConversion((VariableType) thirdChild.getAttribute(Attribute.TYPE), type)) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+            else {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+
+            return true;
+        }
+
+        System.err.println("Shold never happen");
+        SemanticErrorReporter.report(node);
+        return false;
+    }
 }

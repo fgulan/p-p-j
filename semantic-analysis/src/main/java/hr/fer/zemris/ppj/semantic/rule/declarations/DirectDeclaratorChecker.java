@@ -5,11 +5,10 @@ import java.util.List;
 
 import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
+import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.Utils;
 import hr.fer.zemris.ppj.VariableType;
-import hr.fer.zemris.ppj.semantic.exceptions.MysteriousBugException;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
-import hr.fer.zemris.ppj.semantic.rule.definitions.ParameterListChecker;
 
 /**
  * <code>DirectDeclaratorChecker</code> is a checker for direct declarator.
@@ -22,7 +21,7 @@ public class DirectDeclaratorChecker implements Checker {
 
     private static final int MIN_ARRAY_SIZE = 1;
     private static final int MAX_ARRAY_SIZE = 1024;
-    
+
     // <izravni_deklarator> ::= IDN
     // <izravni_deklarator> ::= IDN L_UGL_ZAGRADA BROJ D_UGL_ZAGRADA
     // <izravni_deklarator> ::= IDN L_ZAGRADA KR_VOID D_ZAGRADA
@@ -47,86 +46,118 @@ public class DirectDeclaratorChecker implements Checker {
      */
     @Override
     public boolean check(Node node) {
-
-        Node idn = node.getChild(0);
-        if (!idn.check()){
-            return Utils.badNode(node);
-        }
-        
-        VariableType type = (VariableType) node.getAttribute(Attribute.ITYPE);
-        if (type.equals(VariableType.VOID)){
-            return Utils.badNode(node);
-        }
-        
-        String name = (String) idn.getAttribute(Attribute.VALUE);
-        
+        Node firstChild = node.getChild(0);
         int size = node.childrenCount();
-        if (size == 1){
-            if(!node.identifierTable().declareVariable(name, type)){
-                return Utils.badNode(node);
+
+        if (!firstChild.check()) {
+            SemanticErrorReporter.report(node);
+            return false;
+        }
+
+        // <izravni_deklarator> ::= IDN
+        if (size == 1) {
+
+            // 1. ntip != void
+            if (node.getAttribute(Attribute.ITYPE).equals(VariableType.VOID)) {
+                SemanticErrorReporter.report(node);
+                return false;
             }
-            node.addAttribute(Attribute.TYPE, type);
+
+            // 2. IDN.ime nije deklarirano u lokalnom djelokrugu
+            String name = (String) firstChild.getAttribute(Attribute.VALUE);
+            if (node.identifierTable().isLocalDeclared(name)) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+
+            // 3. zabiljezi deklaraciju IDN.ime s odgovarajucim tipom
+            node.identifierTable().declareVariable(name, (VariableType) node.getAttribute(Attribute.ITYPE));
+
+            node.addAttribute(Attribute.TYPE, node.getAttribute(Attribute.ITYPE));
             return true;
         }
-        
-        for (int i = 1; i < size; i++){
-            Node child = node.getChild(i);
-            
-            if(!child.check()){
-                return Utils.badNode(node);
+
+        Node thirdChild = node.getChild(2);
+        String thirdSymbol = thirdChild.name();
+        // <izravni_deklarator> ::= IDN L_UGL_ZAGRADA BROJ D_UGL_ZAGRADA
+        if ("BROJ".equals(thirdSymbol)) {
+
+            // 1. ntip != void
+            if (node.getAttribute(Attribute.ITYPE).equals(VariableType.VOID)) {
+                SemanticErrorReporter.report(node);
+                return false;
             }
-            
-            if (child.name().equals("BROJ")){
-                VariableType arrayType = VariableType.toArrayType(type);
-                if(!node.identifierTable().declareVariable(name, type)){
-                    return Utils.badNode(node);
-                }
-                
-                int value = (int) child.getAttribute(Attribute.VALUE);
-                if (value < MIN_ARRAY_SIZE || value > MAX_ARRAY_SIZE){
-                    return Utils.badNode(node);
-                }
-                
-                node.addAttribute(Attribute.ELEMENT_COUNT, value);
-                node.addAttribute(Attribute.TYPE, arrayType);
-                
-                return true;
+
+            // 2. IDN.ime nije deklarirano u lokalnom djelokrugu
+            String name = (String) firstChild.getAttribute(Attribute.VALUE);
+            if (node.identifierTable().isLocalDeclared(name)) {
+                SemanticErrorReporter.report(node);
+                return false;
             }
-            
-            if (child.name().equals("KR_VOID")){
-               
-                List<VariableType> args = new ArrayList<>();
-                if (!Utils.handleFunction(node.identifierTable(), name, args, type)){
-                    return Utils.badNode(node);
-                }
-                
-                node.addAttribute(Attribute.TYPES, args);
-                node.addAttribute(Attribute.RETURN_VALUE, type);
-                
-                return true;
+
+            // 3. BROJ.vrijednost je pozitivan broj (>0) ne veci od 1024
+            if (!thirdChild.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
             }
-            
-            if (child.name().equals(ParameterListChecker.HR_NAME)){
-                @SuppressWarnings("unchecked")
-                List<VariableType> args = (List<VariableType>) child.getAttribute(Attribute.TYPES);
-                
-                if (!Utils.handleFunction(node.identifierTable(), name, args, type)){
-                    return Utils.badNode(node);
-                }
-                
-                node.addAttribute(Attribute.TYPES, args);
-                node.addAttribute(Attribute.RETURN_VALUE, type);
-                
-                return true;
+            int value = ((Integer) thirdChild.getAttribute(Attribute.VALUE)).intValue();
+            if ((value < MIN_ARRAY_SIZE) || (value > MAX_ARRAY_SIZE)) {
+                SemanticErrorReporter.report(node);
+                return false;
             }
-            
+
+            // 4. zabiljezi deklaraciju IDN.ime s odgovarajucim tipom
+            node.identifierTable().declareVariable(name, (VariableType) node.getAttribute(Attribute.ITYPE));
+
+            node.addAttribute(Attribute.TYPE, node.getAttribute(Attribute.ITYPE));
+            node.addAttribute(Attribute.ELEMENT_COUNT, value);
+            return true;
         }
-        
-        throw new MysteriousBugException("If this line ever executes, Parser has failed or an if statement"
-                + " is missing a return statement. "
-                + "Expected: 'BROJ', 'KR_VOID' or " + ParameterListChecker.HR_NAME + ".");
-//      Uncomment before deployment
-//      return true;
+
+        // <izravni_deklarator> ::= IDN L_ZAGRADA KR_VOID D_ZAGRADA
+        if ("KR_VOID".equals(thirdSymbol)) {
+            String name = (String) firstChild.getAttribute(Attribute.VALUE);
+            VariableType type = (VariableType) node.getAttribute(Attribute.ITYPE);
+
+            List<VariableType> args = new ArrayList<>();
+            if (!Utils.handleFunction(node.identifierTable(), name, args, type)) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+
+            node.addAttribute(Attribute.TYPES, args);
+            node.addAttribute(Attribute.RETURN_VALUE, type);
+
+            return true;
+        }
+
+        // <izravni_deklarator> ::= IDN L_ZAGRADA <lista_parametara> D_ZAGRADA
+        if ("<lista_parametara>".equals(thirdSymbol)) {
+
+            // 1. provjeri(<lista_parametara>)
+            if (!thirdChild.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+
+            String name = (String) firstChild.getAttribute(Attribute.VALUE);
+            VariableType type = (VariableType) node.getAttribute(Attribute.ITYPE);
+            List<VariableType> args = (List<VariableType>) thirdChild.getAttribute(Attribute.TYPES);
+
+            if (!Utils.handleFunction(node.identifierTable(), name, args, type)) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+
+            node.addAttribute(Attribute.TYPES, args);
+            node.addAttribute(Attribute.RETURN_VALUE, type);
+
+            return true;
+        }
+
+        System.err.println("Shold never happen");
+        SemanticErrorReporter.report(node);
+        return false;
     }
 
 }

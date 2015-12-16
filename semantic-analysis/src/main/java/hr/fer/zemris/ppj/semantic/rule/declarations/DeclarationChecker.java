@@ -1,10 +1,8 @@
 package hr.fer.zemris.ppj.semantic.rule.declarations;
 
-import java.util.List;
-
 import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
-import hr.fer.zemris.ppj.Utils;
+import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
 
 /**
@@ -37,21 +35,31 @@ public class DeclarationChecker implements Checker {
      */
     @Override
     public boolean check(Node node) {
-        List<Node> children = node.getChildren();
-        
-        Node typeNode = children.get(0);
-        Node initDeclListNode = children.get(1);
-        
-        if (!typeNode.check()){
-            return Utils.badNode(typeNode);
-        }
-        
-        initDeclListNode.addAttribute(Attribute.ITYPE, typeNode.getAttribute(Attribute.TYPE));
-        if (!children.get(1).check()){
-            return Utils.badNode(initDeclListNode);
-        }
-        
-        return true;
-    }
+        Node typeNode = node.getChild(0);
 
+        if ("<ime_tipa>".equals(typeNode.name())) {
+
+            // 1.provjeri(<ime_tipa>)
+            if (!typeNode.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+
+            Node initDeclListNode = node.getChild(1);
+
+            // 2. provjeri(<lista_init_deklaratora>) uz nasljedno svojstvo <lista_init_deklaratora>.ntip <-
+            // <ime_tipa>.tip
+            initDeclListNode.addAttributeRecursive(Attribute.ITYPE, typeNode.getAttribute(Attribute.TYPE));
+            if (!initDeclListNode.check()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+
+            return true;
+        }
+
+        System.err.println("Shold never happen");
+        SemanticErrorReporter.report(node);
+        return false;
+    }
 }
