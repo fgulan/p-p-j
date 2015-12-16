@@ -6,7 +6,6 @@ import java.util.List;
 import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
-import hr.fer.zemris.ppj.Utils;
 import hr.fer.zemris.ppj.VariableType;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
 
@@ -48,7 +47,8 @@ public class ParameterListChecker implements Checker {
         List<String> names = new ArrayList<>();
 
         if (!node.getChild(0).check() || ((size > 1) && !node.getChild(2).check())) {
-            return Utils.badNode(node);
+            SemanticErrorReporter.report(node);
+            return false;
         }
 
         Node decl;
