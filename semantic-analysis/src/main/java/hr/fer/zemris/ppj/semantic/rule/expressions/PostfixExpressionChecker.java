@@ -180,6 +180,11 @@ public class PostfixExpressionChecker implements Checker {
                 && "<izraz>".equals(thirdSymbol)) {
 
             String name = (String) firstChild.getChild(0).getChild(0).getAttribute(Attribute.VALUE);
+            if (name == null) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+
             VariableType type = VariableType.fromArrayType(node.identifierTable().variable(name));
 
             // 1. provjeri(<postfiks_izraz>)

@@ -52,7 +52,12 @@ public enum VariableType {
     /**
      * "meow"
      */
-    CONST_CHAR_ARRAY;
+    CONST_CHAR_ARRAY,
+
+    /**
+     * Danger.
+     */
+    FUNCTION;
 
     /**
      * @param arrayType

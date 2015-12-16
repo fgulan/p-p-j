@@ -169,7 +169,6 @@ public class Node {
             return true;
         }
 
-        System.out.println(this);
         return checker.check(this);
     }
 

@@ -60,7 +60,7 @@ public class PrimaryExpressionChecker implements Checker {
 
             VariableType type = node.identifierTable().variable(name);
             if (type == null) {
-                type = node.identifierTable().function(name).returnType();
+                type = VariableType.FUNCTION;
             }
 
             node.addAttribute(Attribute.TYPE, type);

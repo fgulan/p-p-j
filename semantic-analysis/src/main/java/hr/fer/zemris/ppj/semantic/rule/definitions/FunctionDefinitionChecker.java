@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hr.fer.zemris.ppj.Attribute;
+import hr.fer.zemris.ppj.FunctionWrapper;
 import hr.fer.zemris.ppj.IdentifierTable;
 import hr.fer.zemris.ppj.Node;
-import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.Utils;
 import hr.fer.zemris.ppj.VariableType;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
@@ -82,9 +82,17 @@ public class FunctionDefinitionChecker implements Checker {
             node.addAttribute(Attribute.VALUES, names);
         }
 
-        if (!Utils.handleFunction(IdentifierTable.GLOBAL_SCOPE, name, types, type)) {
+        // if (!Utils.handleFunction(IdentifierTable.GLOBAL_SCOPE, name, types, type)) {
+        // return Utils.badNode(node);
+        // }
+
+        // funkcije su uvijek definirane u global scopeu netreba nista filozofirati jer gramatickim produkcijama nije
+        // moguce definirati funkciju izvan global scopea
+        if (IdentifierTable.GLOBAL_SCOPE.isFunctionDefined(name)) {
             return Utils.badNode(node);
         }
+
+        IdentifierTable.GLOBAL_SCOPE.defineFunction(name, new FunctionWrapper(type, types));
 
         int paramCount = names.size();
         for (int i = 0; i < paramCount; i++) {
