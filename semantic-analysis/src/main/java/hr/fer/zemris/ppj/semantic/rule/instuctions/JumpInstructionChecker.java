@@ -1,8 +1,10 @@
 package hr.fer.zemris.ppj.semantic.rule.instuctions;
 
 import hr.fer.zemris.ppj.Attribute;
+import hr.fer.zemris.ppj.FunctionWrapper;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
+import hr.fer.zemris.ppj.VariableType;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
 
 /**
@@ -37,7 +39,6 @@ public class JumpInstructionChecker implements Checker {
      * @since alpha
      */
     @Override
-    @Deprecated
     public boolean check(Node node) {
         // <naredba_skoka> ::= KR_CONTINUE TOCKAZAREZ
         // <naredba_skoka> ::= KR_BREAK TOCKAZAREZ
@@ -51,9 +52,31 @@ public class JumpInstructionChecker implements Checker {
         }
 
         // <naredba_skoka> ::= KR_RETURN TOCKAZAREZ
-        // TODO for now
+        if ("KR_RETURN".equals(node.getChild(0).name()) && "TOCKAZAREZ".equals(node.getChild(1).name())) {
+            String functionName = (String) node.getAttribute(Attribute.FUNCTION_NAME);
+            FunctionWrapper function = node.identifierTable().function(functionName);
+
+            if (!function.returnType().equals(VariableType.VOID)) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+            return true;
+        }
+
         // <naredba_skoka> ::= KR_RETURN <izraz> TOCKAZAREZ
-        // TODO for now
+        if ("KR_RETURN".equals(node.getChild(0).name()) && "<izraz>".equals(node.getChild(1).name())) {
+            String functionName = (String) node.getAttribute(Attribute.FUNCTION_NAME);
+            FunctionWrapper function = node.identifierTable().function(functionName);
+            VariableType type = (VariableType) node.getChild(1).getAttribute(Attribute.TYPE);
+            
+            boolean ableToConvert = VariableType.implicitConversion(type, function.returnType());
+
+            if (!ableToConvert) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+            return true;
+        }
         System.err.println("Shold never happen");
         SemanticErrorReporter.report(node);
         return false;
