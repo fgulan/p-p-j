@@ -107,10 +107,6 @@ public class InitializationDeclaratorChecker implements Checker {
                 SemanticErrorReporter.report(node);
                 return false;
             }
-            else {
-                SemanticErrorReporter.report(node);
-                return false;
-            }
 
             return true;
         }

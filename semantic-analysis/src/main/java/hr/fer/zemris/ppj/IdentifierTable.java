@@ -35,6 +35,8 @@ public class IdentifierTable {
 
     private Map<String, FunctionWrapper> definedFunctions;
 
+    private Map<String, FunctionWrapper> allDeclaredFunctions = new HashMap<>();
+
     /**
      * Class constructor, creates a empty identifer table. (Used for the global scope)
      *
@@ -107,11 +109,12 @@ public class IdentifierTable {
      * @since alpha
      */
     public boolean declareFunction(String name, FunctionWrapper function) {
-        if (isLocalVariableDeclared(name)){
+        if (isLocalVariableDeclared(name)) {
             return false;
         }
 
         declaredFunctions.put(name, function);
+        allDeclaredFunctions.put(name, function);
         return true;
     }
 
@@ -129,7 +132,7 @@ public class IdentifierTable {
         }
 
         definedFunctions.put(name, function);
-        //GLOBAL_SCOPE.definedFunctions.put(name, function);
+        // GLOBAL_SCOPE.definedFunctions.put(name, function);
         return true;
     }
 
@@ -191,14 +194,15 @@ public class IdentifierTable {
      * @since alpha
      */
     public Set<String> declaredFunctions() {
-        if (parent == null){
-            return new HashSet<>(declaredFunctions.keySet());
-        }
-        
-        Set<String> functions = new HashSet<>(declaredFunctions.keySet());
-        functions.addAll(parent.declaredFunctions());
-        
-        return functions;
+        // if (parent == null) {
+        // return new HashSet<>(declaredFunctions.keySet());
+        // }
+        //
+        // Set<String> functions = new HashSet<>(declaredFunctions.keySet());
+        // functions.addAll(parent.declaredFunctions());
+        //
+        // return functions;
+        return allDeclaredFunctions.keySet();
     }
 
     /**
@@ -230,7 +234,7 @@ public class IdentifierTable {
             return declaredFunctions.get(name);
         }
 
-        if (declaredVariables.containsKey(name)) {
+        if (declaredFunctions.containsKey(name)) {
             return declaredFunctions.get(name);
         }
 
@@ -252,24 +256,24 @@ public class IdentifierTable {
     public String toString() {
         return String.valueOf(this_id) + (parent != null ? parent.toString() : "");
     }
-    
-    public boolean isLocalDeclared(String name){
+
+    public boolean isLocalDeclared(String name) {
         return isLocalFunctionDeclared(name) || isLocalVariableDeclared(name);
     }
-    
-    public boolean isLocalFunctionDeclared(String name){
+
+    public boolean isLocalFunctionDeclared(String name) {
         return declaredFunctions.containsKey(name);
     }
-    
-    public boolean isLocalVariableDeclared(String name){
+
+    public boolean isLocalVariableDeclared(String name) {
         return declaredVariables.containsKey(name);
     }
-    
-    public FunctionWrapper localFunction(String name){
+
+    public FunctionWrapper localFunction(String name) {
         return declaredFunctions.get(name);
     }
-    
-    public VariableType localVariable(String name){
+
+    public VariableType localVariable(String name) {
         return declaredVariables.get(name);
     }
 }

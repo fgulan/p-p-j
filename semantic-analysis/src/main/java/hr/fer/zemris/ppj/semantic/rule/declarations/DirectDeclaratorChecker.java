@@ -127,6 +127,7 @@ public class DirectDeclaratorChecker implements Checker {
 
             node.addAttribute(Attribute.TYPES, args);
             node.addAttribute(Attribute.RETURN_VALUE, type);
+            node.addAttribute(Attribute.TYPE, type);
 
             return true;
         }
@@ -150,7 +151,7 @@ public class DirectDeclaratorChecker implements Checker {
             }
 
             node.addAttribute(Attribute.TYPES, args);
-            node.addAttribute(Attribute.RETURN_VALUE, type);
+            node.addAttribute(Attribute.TYPE, type);
 
             return true;
         }

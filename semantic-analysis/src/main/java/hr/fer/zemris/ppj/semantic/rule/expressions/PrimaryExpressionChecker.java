@@ -53,12 +53,15 @@ public class PrimaryExpressionChecker implements Checker {
             }
 
             String name = (String) firstChild.getAttribute(Attribute.VALUE);
-            if (!node.identifierTable().isVariableDeclared((String) firstChild.getAttribute(Attribute.VALUE))) {
+            if (!(node.identifierTable().isVariableDeclared(name) || node.identifierTable().isFunctionDeclared(name))) {
                 SemanticErrorReporter.report(node);
                 return false;
             }
 
             VariableType type = node.identifierTable().variable(name);
+            if (type == null) {
+                type = node.identifierTable().function(name).returnType();
+            }
 
             node.addAttribute(Attribute.TYPE, type);
             node.addAttribute(Attribute.L_EXPRESSION, VariableType.isLExpression(type));
