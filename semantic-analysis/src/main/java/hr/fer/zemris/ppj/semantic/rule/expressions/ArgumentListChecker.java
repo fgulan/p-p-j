@@ -45,7 +45,7 @@ public class ArgumentListChecker implements Checker {
         String firstSymbol = node.name();
 
         // <lista_argumenata> ::= <izraz_pridruzivanja>
-        if ("<lista_argumenata>".equals(firstSymbol)) {
+        if ("<izraz_pridruzivanja>".equals(firstSymbol)) {
 
             // 1. provjeri(<izraz_pridruzivanja)
             if (!firstChild.check()) {
@@ -53,7 +53,7 @@ public class ArgumentListChecker implements Checker {
                 return false;
             }
 
-            node.addAttribute(Attribute.TYPES, Arrays.asList(firstChild.getAttribute(Attribute.TYPE)));
+            node.addAttribute(Attribute.TYPES, new ArrayList<>(Arrays.asList(firstChild.getAttribute(Attribute.TYPE))));
             return true;
         }
 
