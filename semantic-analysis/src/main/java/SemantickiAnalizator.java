@@ -5,6 +5,8 @@ import java.util.Scanner;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.TreeParser;
+import hr.fer.zemris.ppj.semantic.rule.misc.DefinedFunctionsChecker;
+import hr.fer.zemris.ppj.semantic.rule.misc.MainFunctionChecker;
 
 /**
  * <code>SemantickiAnalizator</code> class is required by the evaluator, to contain a entry point for the semantic
@@ -28,6 +30,8 @@ public class SemantickiAnalizator {
             Node node = TreeParser.parse(new Scanner(new FileInputStream("test.in")));
             // System.out.print(node.print(0));
             node.check();
+            new MainFunctionChecker().check(node);
+            new DefinedFunctionsChecker().check(node);
             SemanticErrorReporter.finalReport();
         }
         catch (FileNotFoundException e) {
