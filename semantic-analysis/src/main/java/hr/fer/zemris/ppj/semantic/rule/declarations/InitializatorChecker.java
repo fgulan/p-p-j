@@ -6,11 +6,12 @@ import java.util.List;
 import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Utils;
-import hr.fer.zemris.ppj.VariableType;
 import hr.fer.zemris.ppj.semantic.exceptions.MysteriousBugException;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
 import hr.fer.zemris.ppj.semantic.rule.expressions.AssignExpressionChecker;
 import hr.fer.zemris.ppj.semantic.rule.expressions.AssignExpressionListChecker;
+import hr.fer.zemris.ppj.types.CharType;
+import hr.fer.zemris.ppj.types.Type;
 
 /**
  * <code>InitializatorChecker</code> is a checker for initializator.
@@ -47,8 +48,8 @@ public class InitializatorChecker implements Checker {
         Node child = node.getChild(0);
 
         int elemCount;
-        List<VariableType> types = new ArrayList<>();
-        VariableType type;
+        List<Type> types = new ArrayList<>();
+        Type type;
 
         if (child.name().equals(AssignExpressionChecker.HR_NAME)) {
             Node assignExpr = child;
@@ -56,24 +57,25 @@ public class InitializatorChecker implements Checker {
                 return Utils.badNode(node);
             }
 
-            if (assignExpr.getAttribute(Attribute.TYPE) == VariableType.CONST_CHAR_ARRAY) {
-                Node current = assignExpr;
-                while (current.childrenCount() != 0) {
-                    current = current.getChild(0);
-                }
-                // if CELEM_COUNT shenanigans don't work, use the following code:
-                // elemCount = ((String)(assignExpr.getChild(0).getChild(0).getChild(0)
-                // .getAttribute(Attribute.VALUE))).length() - 1;
+            Node current = assignExpr;
+            while (current.childrenCount() != 0) {
+                current = current.getChild(0);
+            }
+
+            if ("NIZ_ZNAKOVA".equals(current.name())) {
                 elemCount = ((String) current.getAttribute(Attribute.VALUE)).length() - 1;
+
                 for (int i = 0; i < elemCount; i++) {
-                    types.add(VariableType.CHAR);
+                    types.add(new CharType());
                 }
 
                 node.addAttribute(Attribute.ELEMENT_COUNT, elemCount);
                 node.addAttribute(Attribute.TYPES, types);
+                return true;
             }
+
             else {
-                type = (VariableType) assignExpr.getAttribute(Attribute.TYPE);
+                type = (Type) assignExpr.getAttribute(Attribute.TYPE);
                 node.addAttribute(Attribute.TYPE, type);
             }
 
@@ -89,7 +91,7 @@ public class InitializatorChecker implements Checker {
             }
 
             if (current.name().equals(AssignExpressionListChecker.HR_NAME)) {
-                types = (List<VariableType>) current.getAttribute(Attribute.TYPES);
+                types = (List<Type>) current.getAttribute(Attribute.TYPES);
                 elemCount = types.size();
 
                 node.addAttribute(Attribute.ELEMENT_COUNT, elemCount);

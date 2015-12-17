@@ -3,11 +3,12 @@ package hr.fer.zemris.ppj.semantic.rule.expressions;
 import java.util.List;
 
 import hr.fer.zemris.ppj.Attribute;
-import hr.fer.zemris.ppj.FunctionWrapper;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
-import hr.fer.zemris.ppj.VariableType;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
+import hr.fer.zemris.ppj.types.IntType;
+import hr.fer.zemris.ppj.types.Type;
+import hr.fer.zemris.ppj.types.functions.FunctionType;
 
 /**
  * <code>PostfixExpressionChecker</code> is a checker for postfix expression.
@@ -57,7 +58,6 @@ public class PostfixExpressionChecker implements Checker {
             }
 
             node.addAttribute(Attribute.TYPE, firstChild.getAttribute(Attribute.TYPE));
-            node.addAttribute(Attribute.CELEM_COUNT, firstChild.getAttribute(Attribute.CELEM_COUNT));
             node.addAttribute(Attribute.L_EXPRESSION, firstChild.getAttribute(Attribute.L_EXPRESSION));
             return true;
         }
@@ -75,13 +75,14 @@ public class PostfixExpressionChecker implements Checker {
             }
 
             // 2. <postfiks_izraz>.l-izraz = 1 && <postfiks_izraz>.tip ~ int
-            if (!(firstChild.getAttribute(Attribute.L_EXPRESSION).equals(true) && VariableType
-                    .implicitConversion((VariableType) firstChild.getAttribute(Attribute.TYPE), VariableType.INT))) {
+            Type type1 = (Type) firstChild.getAttribute(Attribute.TYPE);
+            if (!(firstChild.getAttribute(Attribute.L_EXPRESSION).equals(true)
+                    && type1.implicitConversion(new IntType()))) {
                 SemanticErrorReporter.report(node);
                 return false;
             }
 
-            node.addAttribute(Attribute.TYPE, VariableType.INT);
+            node.addAttribute(Attribute.TYPE, new IntType());
             node.addAttribute(Attribute.L_EXPRESSION, false);
             return true;
         }
@@ -96,13 +97,14 @@ public class PostfixExpressionChecker implements Checker {
             }
 
             // 2. <postfiks_izraz>.l-izraz = 1 && <postfiks_izraz>.tip ~ int
-            if (!(firstChild.getAttribute(Attribute.L_EXPRESSION).equals(true) && VariableType
-                    .implicitConversion((VariableType) firstChild.getAttribute(Attribute.TYPE), VariableType.INT))) {
+            Type type1 = (Type) firstChild.getAttribute(Attribute.TYPE);
+            if (!(firstChild.getAttribute(Attribute.L_EXPRESSION).equals(true)
+                    && type1.implicitConversion(new IntType()))) {
                 SemanticErrorReporter.report(node);
                 return false;
             }
 
-            node.addAttribute(Attribute.TYPE, VariableType.INT);
+            node.addAttribute(Attribute.TYPE, new IntType());
             node.addAttribute(Attribute.L_EXPRESSION, false);
             return true;
         }
@@ -120,8 +122,7 @@ public class PostfixExpressionChecker implements Checker {
             }
 
             // 2. <postfiks_izraz>.tip = funkcija(void -> pov)
-            String identificator = (String) firstChild.getChild(0).getChild(0).getAttribute(Attribute.VALUE);
-            FunctionWrapper function = node.identifierTable().function(identificator);
+            FunctionType function = (FunctionType) firstChild.getAttribute(Attribute.TYPE);
             if (!function.argumentList().isEmpty()) {
                 SemanticErrorReporter.report(node);
                 return false;
@@ -149,22 +150,23 @@ public class PostfixExpressionChecker implements Checker {
             }
 
             // 3. <postfiks_izraz>.tip = funkcija(params -> pov)
-            String identificator = (String) firstChild.getChild(0).getChild(0).getAttribute(Attribute.VALUE);
-            FunctionWrapper function = node.identifierTable().function(identificator);
+            FunctionType function = (FunctionType) firstChild.getAttribute(Attribute.TYPE);
             if (function.argumentList().isEmpty()) {
                 SemanticErrorReporter.report(node);
                 return false;
             }
 
             // 3. provjera implicitnih konverzija parametara
-            List<VariableType> declarationTypes = function.argumentList();
-            List<VariableType> callingArguments = (List<VariableType>) thirdChild.getAttribute(Attribute.TYPES);
+            List<Type> declarationTypes = function.argumentList();
+            List<Type> callingArguments = (List<Type>) thirdChild.getAttribute(Attribute.TYPES);
             if (declarationTypes.size() != callingArguments.size()) {
                 SemanticErrorReporter.report(node);
                 return false;
             }
             for (int i = 0; i < declarationTypes.size(); i++) {
-                if (!VariableType.implicitConversion(callingArguments.get(i), declarationTypes.get(i))) {
+                Type from = callingArguments.get(i);
+                Type to = declarationTypes.get(i);
+                if (!from.implicitConversion(to)) {
                     SemanticErrorReporter.report(node);
                     return false;
                 }
@@ -179,22 +181,16 @@ public class PostfixExpressionChecker implements Checker {
         if ("<postfiks_izraz>".equals(firstSymbol) && "L_UGL_ZAGRADA".equals(secondSymbol)
                 && "<izraz>".equals(thirdSymbol)) {
 
-            String name = (String) firstChild.getChild(0).getChild(0).getAttribute(Attribute.VALUE);
-            if (name == null) {
-                SemanticErrorReporter.report(node);
-                return false;
-            }
-
-            VariableType type = VariableType.fromArrayType(node.identifierTable().variable(name));
-
             // 1. provjeri(<postfiks_izraz>)
             if (!firstChild.check()) {
                 SemanticErrorReporter.report(node);
                 return false;
             }
 
+            Type type = (Type) firstChild.getAttribute(Attribute.TYPE);
+
             // 2. <postfiks_izraz>.tip = niz(X)
-            if (!(firstChild.getAttribute(Attribute.TYPE).equals(VariableType.toArrayType(type)))) {
+            if (!type.isArray()) {
                 SemanticErrorReporter.report(node);
                 return false;
             }
@@ -206,14 +202,15 @@ public class PostfixExpressionChecker implements Checker {
             }
 
             // 4. <izraz>.tip ~ int
-            if (!VariableType.implicitConversion((VariableType) thirdChild.getAttribute(Attribute.TYPE),
-                    VariableType.INT)) {
+            Type ex = (Type) thirdChild.getAttribute(Attribute.TYPE);
+            if (!ex.implicitConversion(new IntType())) {
                 SemanticErrorReporter.report(node);
                 return false;
             }
 
-            node.addAttribute(Attribute.TYPE, type);
-            node.addAttribute(Attribute.L_EXPRESSION, !VariableType.isConst(type));
+            Type under = type.fromArray();
+            node.addAttribute(Attribute.TYPE, under);
+            node.addAttribute(Attribute.L_EXPRESSION, !under.isConst());
             return true;
         }
 

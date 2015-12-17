@@ -3,8 +3,9 @@ package hr.fer.zemris.ppj.semantic.rule.expressions;
 import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
-import hr.fer.zemris.ppj.VariableType;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
+import hr.fer.zemris.ppj.types.IntType;
+import hr.fer.zemris.ppj.types.Type;
 
 /**
  * <code>UnaryExpressionChecker</code> is a checker for unary expression.
@@ -75,13 +76,13 @@ public class UnaryExpressionChecker implements Checker {
             }
 
             // 2. <unarni_izraz.tip ~ int
-            if (!VariableType.implicitConversion((VariableType) secondChild.getAttribute(Attribute.TYPE),
-                    VariableType.INT)) {
+            Type type = (Type) secondChild.getAttribute(Attribute.TYPE);
+            if (!type.implicitConversion(new IntType())) {
                 SemanticErrorReporter.report(node);
                 return false;
             }
 
-            node.addAttribute(Attribute.TYPE, VariableType.INT);
+            node.addAttribute(Attribute.TYPE, new IntType());
             node.addAttribute(Attribute.L_EXPRESSION, false);
             return true;
         }
@@ -101,13 +102,13 @@ public class UnaryExpressionChecker implements Checker {
             }
 
             // 2. <unarni_izraz.tip ~ int
-            if (!VariableType.implicitConversion((VariableType) secondChild.getAttribute(Attribute.TYPE),
-                    VariableType.INT)) {
+            Type type = (Type) secondChild.getAttribute(Attribute.TYPE);
+            if (!type.implicitConversion(new IntType())) {
                 SemanticErrorReporter.report(node);
                 return false;
             }
 
-            node.addAttribute(Attribute.TYPE, VariableType.INT);
+            node.addAttribute(Attribute.TYPE, new IntType());
             node.addAttribute(Attribute.L_EXPRESSION, false);
             return true;
         }
@@ -122,13 +123,13 @@ public class UnaryExpressionChecker implements Checker {
             }
 
             // 2. <cast_izraz>.tip ~ int
-            if (!VariableType.implicitConversion((VariableType) secondChild.getAttribute(Attribute.TYPE),
-                    VariableType.INT)) {
+            Type type = (Type) secondChild.getAttribute(Attribute.TYPE);
+            if (!type.implicitConversion(new IntType())) {
                 SemanticErrorReporter.report(node);
                 return false;
             }
 
-            node.addAttribute(Attribute.TYPE, VariableType.INT);
+            node.addAttribute(Attribute.TYPE, new IntType());
             node.addAttribute(Attribute.L_EXPRESSION, false);
             return true;
         }

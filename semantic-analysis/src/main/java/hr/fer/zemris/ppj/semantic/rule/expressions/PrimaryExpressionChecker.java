@@ -3,8 +3,11 @@ package hr.fer.zemris.ppj.semantic.rule.expressions;
 import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
-import hr.fer.zemris.ppj.VariableType;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
+import hr.fer.zemris.ppj.types.CharType;
+import hr.fer.zemris.ppj.types.IntType;
+import hr.fer.zemris.ppj.types.Type;
+import hr.fer.zemris.ppj.types.arrays.ConstCharArrayType;
 
 /**
  * <code>PrimaryExpressionChecker</code> is a checker for primary expression.
@@ -53,18 +56,15 @@ public class PrimaryExpressionChecker implements Checker {
             }
 
             String name = (String) firstChild.getAttribute(Attribute.VALUE);
-            if (!(node.identifierTable().isVariableDeclared(name) || node.identifierTable().isFunctionDeclared(name))) {
+            if (!node.identifierTable().isDeclared(name)) {
                 SemanticErrorReporter.report(node);
                 return false;
             }
 
-            VariableType type = node.identifierTable().variable(name);
-            if (type == null) {
-                type = VariableType.FUNCTION;
-            }
+            Type type = node.identifierTable().identifierType(name);
 
             node.addAttribute(Attribute.TYPE, type);
-            node.addAttribute(Attribute.L_EXPRESSION, VariableType.isLExpression(type));
+            node.addAttribute(Attribute.L_EXPRESSION, type.isLExpression());
             return true;
         }
 
@@ -77,7 +77,7 @@ public class PrimaryExpressionChecker implements Checker {
                 return false;
             }
 
-            node.addAttribute(Attribute.TYPE, VariableType.INT);
+            node.addAttribute(Attribute.TYPE, new IntType());
             node.addAttribute(Attribute.L_EXPRESSION, false);
             return true;
         }
@@ -91,7 +91,7 @@ public class PrimaryExpressionChecker implements Checker {
                 return false;
             }
 
-            node.addAttribute(Attribute.TYPE, VariableType.CHAR);
+            node.addAttribute(Attribute.TYPE, new CharType());
             node.addAttribute(Attribute.L_EXPRESSION, false);
             return true;
         }
@@ -105,8 +105,7 @@ public class PrimaryExpressionChecker implements Checker {
                 return false;
             }
 
-            node.addAttribute(Attribute.CELEM_COUNT, firstChild.getAttribute(Attribute.CELEM_COUNT));
-            node.addAttribute(Attribute.TYPE, VariableType.CONST_CHAR_ARRAY);
+            node.addAttribute(Attribute.TYPE, new ConstCharArrayType());
             node.addAttribute(Attribute.L_EXPRESSION, false);
             return true;
         }

@@ -3,8 +3,9 @@ package hr.fer.zemris.ppj.semantic.rule.expressions;
 import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
-import hr.fer.zemris.ppj.VariableType;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
+import hr.fer.zemris.ppj.types.IntType;
+import hr.fer.zemris.ppj.types.Type;
 
 /**
  * <code>MultiplicativeExpressionChecker</code> is a checker for multiplicative expression.
@@ -68,8 +69,8 @@ public class MultiplicativeExpressionChecker implements Checker {
             }
 
             // 2. <multiplikativni_izraz>.tip ~ int
-            if (!VariableType.implicitConversion((VariableType) firstChild.getAttribute(Attribute.TYPE),
-                    VariableType.INT)) {
+            Type type1 = (Type) firstChild.getAttribute(Attribute.TYPE);
+            if (!type1.implicitConversion(new IntType())) {
                 SemanticErrorReporter.report(node);
                 return false;
             }
@@ -81,13 +82,13 @@ public class MultiplicativeExpressionChecker implements Checker {
             }
 
             // 4. <cast_izraz>.tip ~ int
-            if (!VariableType.implicitConversion((VariableType) thirdChild.getAttribute(Attribute.TYPE),
-                    VariableType.INT)) {
+            Type type2 = (Type) thirdChild.getAttribute(Attribute.TYPE);
+            if (!type2.implicitConversion(new IntType())) {
                 SemanticErrorReporter.report(node);
                 return false;
             }
 
-            node.addAttribute(Attribute.TYPE, VariableType.INT);
+            node.addAttribute(Attribute.TYPE, new IntType());
             node.addAttribute(Attribute.L_EXPRESSION, false);
             return true;
         }
@@ -102,8 +103,8 @@ public class MultiplicativeExpressionChecker implements Checker {
             }
 
             // 2. <multiplikativni_izraz>.tip ~ int
-            if (!VariableType.implicitConversion((VariableType) firstChild.getAttribute(Attribute.TYPE),
-                    VariableType.INT)) {
+            Type type1 = (Type) firstChild.getAttribute(Attribute.TYPE);
+            if (!type1.implicitConversion(new IntType())) {
                 SemanticErrorReporter.report(node);
                 return false;
             }
@@ -115,13 +116,13 @@ public class MultiplicativeExpressionChecker implements Checker {
             }
 
             // 4. <cast_izraz>.tip ~ int
-            if (!VariableType.implicitConversion((VariableType) thirdChild.getAttribute(Attribute.TYPE),
-                    VariableType.INT)) {
+            Type type2 = (Type) thirdChild.getAttribute(Attribute.TYPE);
+            if (!type2.implicitConversion(new IntType())) {
                 SemanticErrorReporter.report(node);
                 return false;
             }
 
-            node.addAttribute(Attribute.TYPE, VariableType.INT);
+            node.addAttribute(Attribute.TYPE, new IntType());
             node.addAttribute(Attribute.L_EXPRESSION, false);
             return true;
         }
@@ -136,8 +137,8 @@ public class MultiplicativeExpressionChecker implements Checker {
             }
 
             // 2. <multiplikativni_izraz>.tip ~ int
-            if (!VariableType.implicitConversion((VariableType) firstChild.getAttribute(Attribute.TYPE),
-                    VariableType.INT)) {
+            Type type1 = (Type) firstChild.getAttribute(Attribute.TYPE);
+            if (!type1.implicitConversion(new IntType())) {
                 SemanticErrorReporter.report(node);
                 return false;
             }
@@ -149,13 +150,13 @@ public class MultiplicativeExpressionChecker implements Checker {
             }
 
             // 4. <cast_izraz>.tip ~ int
-            if (!VariableType.implicitConversion((VariableType) thirdChild.getAttribute(Attribute.TYPE),
-                    VariableType.INT)) {
+            Type type2 = (Type) thirdChild.getAttribute(Attribute.TYPE);
+            if (!type2.implicitConversion(new IntType())) {
                 SemanticErrorReporter.report(node);
                 return false;
             }
 
-            node.addAttribute(Attribute.TYPE, VariableType.INT);
+            node.addAttribute(Attribute.TYPE, new IntType());
             node.addAttribute(Attribute.L_EXPRESSION, false);
             return true;
         }

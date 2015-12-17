@@ -3,8 +3,9 @@ package hr.fer.zemris.ppj.semantic.rule.instuctions;
 import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
-import hr.fer.zemris.ppj.VariableType;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
+import hr.fer.zemris.ppj.types.IntType;
+import hr.fer.zemris.ppj.types.Type;
 
 /**
  * <code>LoopInstructionChecker</code> is a checker for loop instruction.
@@ -49,8 +50,8 @@ public class LoopInstructionChecker implements Checker {
                 return false;
             }
 
-            VariableType type = (VariableType) expression.getAttribute(Attribute.TYPE);
-            boolean ableToConvert = VariableType.implicitConversion(type, VariableType.INT);
+            Type type = (Type) expression.getAttribute(Attribute.TYPE);
+            boolean ableToConvert = type.implicitConversion(new IntType());
 
             if (!ableToConvert) {
                 SemanticErrorReporter.report(node);
@@ -83,8 +84,8 @@ public class LoopInstructionChecker implements Checker {
                 return false;
             }
 
-            VariableType type = (VariableType) secondExpInstruction.getAttribute(Attribute.TYPE);
-            boolean ableToConvert = VariableType.implicitConversion(type, VariableType.INT);
+            Type type = (Type) secondExpInstruction.getAttribute(Attribute.TYPE);
+            boolean ableToConvert = type.implicitConversion(new IntType());
 
             if (!ableToConvert) {
                 SemanticErrorReporter.report(node);
@@ -117,19 +118,19 @@ public class LoopInstructionChecker implements Checker {
                 return false;
             }
 
-            VariableType type = (VariableType) secondExpInstruction.getAttribute(Attribute.TYPE);
-            boolean ableToConvert = VariableType.implicitConversion(type, VariableType.INT);
+            Type type = (Type) secondExpInstruction.getAttribute(Attribute.TYPE);
+            boolean ableToConvert = type.implicitConversion(new IntType());
 
             if (!ableToConvert) {
                 SemanticErrorReporter.report(node);
                 return false;
             }
-            
+
             if (!expression.check()) {
                 SemanticErrorReporter.report(node);
                 return false;
             }
-            
+
             if (!instruction.check()) {
                 SemanticErrorReporter.report(node);
                 return false;

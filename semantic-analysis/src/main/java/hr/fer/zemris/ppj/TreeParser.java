@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Stack;
 
+import hr.fer.zemris.ppj.identifier.table.IdentifierTable;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
 import hr.fer.zemris.ppj.semantic.rule.declarations.DeclarationChecker;
 import hr.fer.zemris.ppj.semantic.rule.declarations.DeclarationListChecker;

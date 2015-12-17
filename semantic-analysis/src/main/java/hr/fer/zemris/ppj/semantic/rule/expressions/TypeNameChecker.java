@@ -3,8 +3,9 @@ package hr.fer.zemris.ppj.semantic.rule.expressions;
 import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
-import hr.fer.zemris.ppj.VariableType;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
+import hr.fer.zemris.ppj.types.Type;
+import hr.fer.zemris.ppj.types.VoidType;
 
 /**
  * <code>TypeNameChecker</code> is a checker for type name.
@@ -63,13 +64,13 @@ public class TypeNameChecker implements Checker {
             }
 
             // 2. <specifikator_tipa>.tip != void
-            if (VariableType.VOID.equals(secondChild.getAttribute(Attribute.TYPE))) {
+            Type type = (Type) secondChild.getAttribute(Attribute.TYPE);
+            if (type.equals(new VoidType())) {
                 SemanticErrorReporter.report(node);
                 return false;
             }
 
-            node.addAttribute(Attribute.TYPE,
-                    VariableType.toConst((VariableType) secondChild.getAttribute(Attribute.TYPE)));
+            node.addAttribute(Attribute.TYPE, type.toConst());
             return true;
         }
         System.err.println("Shold never happen");

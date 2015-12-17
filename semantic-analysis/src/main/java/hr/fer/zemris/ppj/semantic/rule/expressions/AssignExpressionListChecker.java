@@ -7,8 +7,8 @@ import java.util.List;
 import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
-import hr.fer.zemris.ppj.VariableType;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
+import hr.fer.zemris.ppj.types.Type;
 
 /**
  * <code>AssignExpressionListChecker</code> is a checker for assign expression list.
@@ -53,8 +53,7 @@ public class AssignExpressionListChecker implements Checker {
                 return false;
             }
 
-            List<VariableType> types =
-                    new ArrayList<>(Arrays.asList((VariableType) firstChild.getAttribute(Attribute.TYPE)));
+            List<Type> types = new ArrayList<>(Arrays.asList((Type) firstChild.getAttribute(Attribute.TYPE)));
             node.addAttribute(Attribute.TYPES, types);
             node.addAttribute(Attribute.ELEMENT_COUNT, 1);
             return true;
@@ -76,8 +75,8 @@ public class AssignExpressionListChecker implements Checker {
                 return false;
             }
 
-            List<VariableType> types = new ArrayList<>((List<VariableType>) firstChild.getAttribute(Attribute.TYPES));
-            types.add((VariableType) thirdChild.getAttribute(Attribute.TYPE));
+            List<Type> types = new ArrayList<>((List<Type>) firstChild.getAttribute(Attribute.TYPES));
+            types.add((Type) thirdChild.getAttribute(Attribute.TYPE));
             int elementCount = (Integer) firstChild.getAttribute(Attribute.ELEMENT_COUNT) + 1;
             node.addAttribute(Attribute.TYPES, types);
             node.addAttribute(Attribute.ELEMENT_COUNT, elementCount);

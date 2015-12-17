@@ -1,15 +1,18 @@
 package hr.fer.zemris.ppj.semantic.rule.declarations;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Utils;
-import hr.fer.zemris.ppj.VariableType;
 import hr.fer.zemris.ppj.semantic.exceptions.MysteriousBugException;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
 import hr.fer.zemris.ppj.semantic.rule.definitions.ParameterListChecker;
+import hr.fer.zemris.ppj.types.Type;
+import hr.fer.zemris.ppj.types.VoidType;
+import hr.fer.zemris.ppj.types.functions.FunctionType;
 
 /**
  * <code>DirectDeclaratorChecker</code> is a checker for direct declarator.
@@ -53,8 +56,8 @@ public class DirectDeclaratorChecker implements Checker {
             return Utils.badNode(node);
         }
 
-        VariableType type = (VariableType) node.getAttribute(Attribute.ITYPE);
-        if (type.equals(VariableType.VOID)) {
+        Type type = (Type) node.getAttribute(Attribute.ITYPE);
+        if (type.equals(new VoidType())) {
             return Utils.badNode(node);
         }
 
@@ -62,9 +65,10 @@ public class DirectDeclaratorChecker implements Checker {
 
         int size = node.childrenCount();
         if (size == 1) {
-            if (!node.identifierTable().declareVariable(name, type)) {
+            if (!node.identifierTable().declare(name, type)) {
                 return Utils.badNode(node);
             }
+
             node.addAttribute(Attribute.TYPE, type);
             return true;
         }
@@ -77,7 +81,7 @@ public class DirectDeclaratorChecker implements Checker {
             }
 
             if (child.name().equals("BROJ")) {
-                VariableType arrayType = VariableType.toArrayType(type);
+                Type arrayType = type.toArray();
                 if (!node.identifierTable().declareVariable(name, arrayType)) {
                     return Utils.badNode(node);
                 }
@@ -95,29 +99,26 @@ public class DirectDeclaratorChecker implements Checker {
 
             if (child.name().equals("KR_VOID")) {
 
-                List<VariableType> args = new ArrayList<>();
+                List<Type> args = new ArrayList<>();
                 if (!Utils.handleFunction(node.identifierTable(), name, args, type)) {
                     return Utils.badNode(node);
                 }
 
-                node.addAttribute(Attribute.TYPES, args);
-                node.addAttribute(Attribute.RETURN_VALUE, type);
-                node.addAttribute(Attribute.TYPE, VariableType.FUNCTION);
+                node.addAttribute(Attribute.TYPE, new FunctionType(type, Arrays.asList((Type) new VoidType())));
 
                 return true;
             }
 
             if (child.name().equals(ParameterListChecker.HR_NAME)) {
                 @SuppressWarnings("unchecked")
-                List<VariableType> args = (List<VariableType>) child.getAttribute(Attribute.TYPES);
+                List<Type> args = (List<Type>) child.getAttribute(Attribute.TYPES);
 
                 if (!Utils.handleFunction(node.identifierTable(), name, args, type)) {
                     return Utils.badNode(node);
                 }
 
-                node.addAttribute(Attribute.TYPES, args);
-                node.addAttribute(Attribute.RETURN_VALUE, type);
-                node.addAttribute(Attribute.TYPE, VariableType.FUNCTION);
+                node.addAttribute(Attribute.TYPE,
+                        new FunctionType(type, (List<Type>) child.getAttribute(Attribute.TYPES)));
 
                 return true;
             }

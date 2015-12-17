@@ -3,8 +3,8 @@ package hr.fer.zemris.ppj.semantic.rule.expressions;
 import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
-import hr.fer.zemris.ppj.VariableType;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
+import hr.fer.zemris.ppj.types.Type;
 
 /**
  * <code>CastExpressionChecker</code> is a checker for cast expression.
@@ -71,8 +71,9 @@ public class CastExpressionChecker implements Checker {
             }
 
             // <cast_izraz>.tip se moze pretvoriti u <ime_tipa>.tip
-            if (!VariableType.explicitConversion((VariableType) fourthChild.getAttribute(Attribute.TYPE),
-                    (VariableType) secondChild.getAttribute(Attribute.TYPE))) {
+            Type from = (Type) fourthChild.getAttribute(Attribute.TYPE);
+            Type to = (Type) secondChild.getAttribute(Attribute.TYPE);
+            if (!from.explicitConversion(to)) {
                 SemanticErrorReporter.report(node);
                 return false;
             }

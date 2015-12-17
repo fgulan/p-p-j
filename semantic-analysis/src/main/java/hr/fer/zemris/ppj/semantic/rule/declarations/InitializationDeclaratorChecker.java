@@ -6,9 +6,10 @@ import java.util.List;
 import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Utils;
-import hr.fer.zemris.ppj.VariableType;
 import hr.fer.zemris.ppj.semantic.exceptions.MysteriousBugException;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
+import hr.fer.zemris.ppj.types.Type;
+import hr.fer.zemris.ppj.types.arrays.ArrayType;
 
 /**
  * <code>InitializationDeclaratorChecker</code> is a checker for initialization declarator.
@@ -50,14 +51,17 @@ public class InitializationDeclaratorChecker implements Checker {
             return Utils.badNode(node);
         }
 
-        VariableType type = (VariableType) child.getAttribute(Attribute.TYPE);
+        Type type = (Type) child.getAttribute(Attribute.TYPE);
         Integer elemCount = (Integer) node.getAttribute(Attribute.ELEMENT_COUNT);
         if (elemCount == null) {
             elemCount = 1;
         }
 
         if (size == 1) {
-            if (VariableType.isConst(type)) {
+            // 2. <izravni_deklarator> != {const(T), niz(const(T))}
+            boolean first = type.isConst();
+            boolean second = type.isArray() ? ((ArrayType) type).fromArray().isConst() : false;
+            if (first || second) {
                 return Utils.badNode(node);
             }
 
@@ -72,13 +76,13 @@ public class InitializationDeclaratorChecker implements Checker {
             }
 
             if (current.name().equals(InitializatorChecker.HR_NAME)) {
-                List<VariableType> initTypes;
-                if (VariableType.isArrayType(type)) {
-                    initTypes = (List<VariableType>) current.getAttribute(Attribute.TYPES);
+                List<Type> initTypes;
+                if (type.isArray()) {
+                    initTypes = (List<Type>) current.getAttribute(Attribute.TYPES);
                 }
                 else {
                     initTypes = new ArrayList<>();
-                    initTypes.add((VariableType) current.getAttribute(Attribute.TYPE));
+                    initTypes.add((Type) current.getAttribute(Attribute.TYPE));
                 }
 
                 if (handleInits(elemCount, type, initTypes)) {
@@ -96,18 +100,13 @@ public class InitializationDeclaratorChecker implements Checker {
         // return true;
     }
 
-    private static boolean handleInits(Integer elemCount, VariableType myType, List<VariableType> initTypes) {
+    private static boolean handleInits(Integer elemCount, Type myType, List<Type> initTypes) {
         if (elemCount > initTypes.size()) {
             return false;
         }
 
-        // u slucaju da je varijabla inicijalizirana s { 'a', 'b', 'c' }
-        if (myType.equals(VariableType.CHAR_ARRAY)) {
-            myType = VariableType.CHAR;
-        }
-
-        for (VariableType type : initTypes) {
-            if (!VariableType.implicitConversion(type, myType)) {
+        for (Type type : initTypes) {
+            if (!type.implicitConversion(myType)) {
                 return false;
             }
         }

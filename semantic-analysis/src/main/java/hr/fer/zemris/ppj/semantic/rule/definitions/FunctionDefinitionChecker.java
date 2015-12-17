@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hr.fer.zemris.ppj.Attribute;
-import hr.fer.zemris.ppj.FunctionWrapper;
-import hr.fer.zemris.ppj.IdentifierTable;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Utils;
-import hr.fer.zemris.ppj.VariableType;
+import hr.fer.zemris.ppj.identifier.table.IdentifierTable;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
+import hr.fer.zemris.ppj.types.Type;
 
 /**
  * <code>FunctionDefinitionChecker</code> is a checker for function definition.
@@ -43,17 +42,17 @@ public class FunctionDefinitionChecker implements Checker {
     @SuppressWarnings("unchecked")
     @Override
     public boolean check(Node node) {
-        VariableType type;
+        Type type;
         String name;
-        List<VariableType> types;
+        List<Type> types;
         List<String> names = new ArrayList<>();
 
         if (!node.getChild(0).check()) {
             return Utils.badNode(node);
         }
 
-        type = (VariableType) node.getChild(0).getAttribute(Attribute.TYPE);
-        if (VariableType.isConst(type)) {
+        type = (Type) node.getChild(0).getAttribute(Attribute.TYPE);
+        if (type.isConst()) {
             return Utils.badNode(node);
         }
 
@@ -75,24 +74,14 @@ public class FunctionDefinitionChecker implements Checker {
             types = new ArrayList<>();
         }
         else {
-            types = (List<VariableType>) node.getChild(3).getAttribute(Attribute.TYPES);
+            types = (List<Type>) node.getChild(3).getAttribute(Attribute.TYPES);
             names = (List<String>) node.getChild(3).getAttribute(Attribute.VALUES);
 
             node.addAttribute(Attribute.TYPES, types);
             node.addAttribute(Attribute.VALUES, names);
         }
 
-        // if (!Utils.handleFunction(IdentifierTable.GLOBAL_SCOPE, name, types, type)) {
-        // return Utils.badNode(node);
-        // }
-
-        // funkcije su uvijek definirane u global scopeu netreba nista filozofirati jer gramatickim produkcijama nije
-        // moguce definirati funkciju izvan global scopea
-        if (IdentifierTable.GLOBAL_SCOPE.isFunctionDefined(name)) {
-            return Utils.badNode(node);
-        }
-
-        IdentifierTable.GLOBAL_SCOPE.defineFunction(name, new FunctionWrapper(type, types));
+        IdentifierTable.GLOBAL_SCOPE.defineFunction(name, type, types);
 
         int paramCount = names.size();
         for (int i = 0; i < paramCount; i++) {

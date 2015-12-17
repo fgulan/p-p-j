@@ -7,8 +7,8 @@ import java.util.List;
 import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
-import hr.fer.zemris.ppj.VariableType;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
+import hr.fer.zemris.ppj.types.Type;
 
 /**
  * <code>ArgumentListChecker</code> is a checker for argument list.
@@ -74,8 +74,8 @@ public class ArgumentListChecker implements Checker {
                 return false;
             }
 
-            List<VariableType> types = new ArrayList<>((List<VariableType>) firstChild.getAttribute(Attribute.TYPES));
-            types.add((VariableType) thirdChild.getAttribute(Attribute.TYPE));
+            List<Type> types = new ArrayList<Type>((List<Type>) firstChild.getAttribute(Attribute.TYPES));
+            types.add((Type) thirdChild.getAttribute(Attribute.TYPE));
             node.addAttribute(Attribute.TYPES, types);
             return true;
         }

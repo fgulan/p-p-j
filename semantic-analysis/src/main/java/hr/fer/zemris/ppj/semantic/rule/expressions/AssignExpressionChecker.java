@@ -3,8 +3,8 @@ package hr.fer.zemris.ppj.semantic.rule.expressions;
 import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
-import hr.fer.zemris.ppj.VariableType;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
+import hr.fer.zemris.ppj.types.Type;
 
 /**
  * <code>AssignExpressionChecker</code> is a checker for assign expression.
@@ -48,7 +48,7 @@ public class AssignExpressionChecker implements Checker {
                 SemanticErrorReporter.report(node);
                 return false;
             }
-            
+
             node.addAttribute(Attribute.TYPE, firstChild.getAttribute(Attribute.TYPE));
             node.addAttribute(Attribute.L_EXPRESSION, firstChild.getAttribute(Attribute.L_EXPRESSION));
             return true;
@@ -77,16 +77,16 @@ public class AssignExpressionChecker implements Checker {
             }
 
             // 4. <izraz_pridruzivanja>.tip ~ <postfiks_izraz>.tip
-            if (!VariableType.implicitConversion((VariableType) thirdChild.getAttribute(Attribute.TYPE),
-                    (VariableType) firstChild.getAttribute(Attribute.TYPE))) {
+            Type from = (Type) thirdChild.getAttribute(Attribute.TYPE);
+            Type to = (Type) firstChild.getAttribute(Attribute.TYPE);
+            if (!from.implicitConversion(to)) {
                 SemanticErrorReporter.report(node);
                 return false;
             }
 
             node.addAttribute(Attribute.TYPE, firstChild.getAttribute(Attribute.TYPE));
-            node.addAttribute(Attribute.CELEM_COUNT, firstChild.getAttribute(Attribute.CELEM_COUNT));
             node.addAttribute(Attribute.L_EXPRESSION, false);
-            return true; // was false before
+            return true;
         }
 
         System.err.println("Shold never happen");

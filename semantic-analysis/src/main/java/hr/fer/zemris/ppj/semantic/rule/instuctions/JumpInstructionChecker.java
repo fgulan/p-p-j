@@ -1,11 +1,12 @@
 package hr.fer.zemris.ppj.semantic.rule.instuctions;
 
 import hr.fer.zemris.ppj.Attribute;
-import hr.fer.zemris.ppj.FunctionWrapper;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
-import hr.fer.zemris.ppj.VariableType;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
+import hr.fer.zemris.ppj.types.Type;
+import hr.fer.zemris.ppj.types.VoidType;
+import hr.fer.zemris.ppj.types.functions.FunctionType;
 
 /**
  * <code>JumpInstructionChecker</code> is a checker for jump instruction.
@@ -54,9 +55,9 @@ public class JumpInstructionChecker implements Checker {
         // <naredba_skoka> ::= KR_RETURN TOCKAZAREZ
         if ("KR_RETURN".equals(node.getChild(0).name()) && "TOCKAZAREZ".equals(node.getChild(1).name())) {
             String functionName = (String) node.getAttribute(Attribute.FUNCTION_NAME);
-            FunctionWrapper function = node.identifierTable().function(functionName);
+            FunctionType function = node.identifierTable().function(functionName);
 
-            if (!function.returnType().equals(VariableType.VOID)) {
+            if (!function.returnType().equals(new VoidType())) {
                 SemanticErrorReporter.report(node);
                 return false;
             }
@@ -66,7 +67,7 @@ public class JumpInstructionChecker implements Checker {
         // <naredba_skoka> ::= KR_RETURN <izraz> TOCKAZAREZ
         if ("KR_RETURN".equals(node.getChild(0).name()) && "<izraz>".equals(node.getChild(1).name())) {
             String functionName = (String) node.getAttribute(Attribute.FUNCTION_NAME);
-            FunctionWrapper function = node.identifierTable().function(functionName);
+            FunctionType function = node.identifierTable().function(functionName);
 
             // 1. provjeri(<izraz>)
             if (!node.getChild(1).check()) {
@@ -74,9 +75,9 @@ public class JumpInstructionChecker implements Checker {
                 return false;
             }
 
-            VariableType type = (VariableType) node.getChild(1).getAttribute(Attribute.TYPE);
+            Type type = (Type) node.getChild(1).getAttribute(Attribute.TYPE);
 
-            boolean ableToConvert = VariableType.implicitConversion(type, function.returnType());
+            boolean ableToConvert = type.implicitConversion(function.returnType());
 
             if (!ableToConvert) {
                 SemanticErrorReporter.report(node);
