@@ -71,8 +71,7 @@ public class FunctionType extends Type {
         if (obj instanceof FunctionType) {
             FunctionType other = (FunctionType) obj;
 
-            other.returnType.equals(returnType);
-            other.argumentList.equals(argumentList);
+            return other.returnType.equals(returnType) && other.argumentList.equals(argumentList);
         }
 
         return false;
