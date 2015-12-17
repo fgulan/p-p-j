@@ -60,6 +60,11 @@ public class IntType extends Type {
     }
 
     @Override
+    public int hashCode() {
+        return toString().hashCode();
+    }
+
+    @Override
     public String toString() {
         return "int";
     }

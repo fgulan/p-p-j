@@ -45,4 +45,9 @@ public class IntArrayType extends ArrayType {
         return obj instanceof IntArrayType;
     }
 
+    @Override
+    public int hashCode() {
+        return toString().hashCode();
+    }
+
 }

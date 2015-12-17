@@ -45,4 +45,9 @@ public class ConstCharArrayType extends ArrayType {
         return obj instanceof ConstCharArrayType;
     }
 
+    @Override
+    public int hashCode() {
+        return toString().hashCode();
+    }
+
 }

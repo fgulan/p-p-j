@@ -164,10 +164,22 @@ public class IdentifierTable {
      * @since alpha
      */
     public boolean isFunctionDefined(String name) {
+        if (GLOBAL_SCOPE.localIdentifiers.containsKey(name)) {
+            Type type = GLOBAL_SCOPE.identifierType(name);
 
-        // this will count in variables too but thats ok since you can't declare a function with the same name as the
-        // variable
-        return GLOBAL_SCOPE.localIdentifiers.containsKey(name);
+            if (!type.isFunction()) {
+                return true;
+            }
+
+            for (IdentifierTypeWrapper wrapper : GLOBAL_SCOPE.definedFunctions) {
+                if (type.equals(wrapper.type())) {
+                    return true;
+                }
+            }
+
+        }
+
+        return false;
     }
 
     /**

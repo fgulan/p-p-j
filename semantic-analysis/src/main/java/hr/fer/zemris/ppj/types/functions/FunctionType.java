@@ -77,4 +77,9 @@ public class FunctionType extends Type {
         return false;
     }
 
+    @Override
+    public int hashCode() {
+        return toString().hashCode();
+    }
+
 }

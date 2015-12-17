@@ -45,4 +45,9 @@ public class CharArrayType extends ArrayType {
         return obj instanceof CharArrayType;
     }
 
+    @Override
+    public int hashCode() {
+        return toString().hashCode();
+    }
+
 }

@@ -45,4 +45,9 @@ public class ConstIntArrayType extends ArrayType {
         return "const int[]";
     }
 
+    @Override
+    public int hashCode() {
+        return toString().hashCode();
+    }
+
 }

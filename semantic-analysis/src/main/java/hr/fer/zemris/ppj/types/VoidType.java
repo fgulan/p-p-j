@@ -53,4 +53,9 @@ public class VoidType extends Type {
         return obj instanceof VoidType;
     }
 
+    @Override
+    public int hashCode() {
+        return toString().hashCode();
+    }
+
 }

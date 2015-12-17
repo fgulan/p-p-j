@@ -53,6 +53,11 @@ public class ConstCharType extends Type {
     }
 
     @Override
+    public int hashCode() {
+        return toString().hashCode();
+    }
+
+    @Override
     public boolean equals(Object obj) {
         return obj instanceof ConstCharType;
     }
