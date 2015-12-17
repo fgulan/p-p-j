@@ -42,68 +42,76 @@ public class InitializationDeclaratorChecker implements Checker {
     @SuppressWarnings("unchecked")
     @Override
     public boolean check(Node node) {
-        
+
         int size = node.childrenCount();
         Node child = node.getChild(0);
-        child.addAttribute(Attribute.ITYPE, node.getAttribute(Attribute.ITYPE));
-        child.check();
-        
+        child.addAttributeRecursive(Attribute.ITYPE, node.getAttribute(Attribute.ITYPE));
+        if (!child.check()) {
+            return Utils.badNode(node);
+        }
+
         VariableType type = (VariableType) child.getAttribute(Attribute.TYPE);
         Integer elemCount = (Integer) node.getAttribute(Attribute.ELEMENT_COUNT);
-        if (elemCount == null){
+        if (elemCount == null) {
             elemCount = 1;
         }
-        
-        if (size == 1){
-            if (VariableType.isConst(type)){
+
+        if (size == 1) {
+            if (VariableType.isConst(type)) {
                 return Utils.badNode(node);
             }
-            
+
             return true;
         }
-        
-        for (int i = 1; i < size; i++){
+
+        for (int i = 1; i < size; i++) {
             Node current = node.getChild(i);
-            
-            if (!current.check()){
+
+            if (!current.check()) {
                 return Utils.badNode(node);
             }
-            
-            if (current.name().equals(InitializatorChecker.HR_NAME)){
+
+            if (current.name().equals(InitializatorChecker.HR_NAME)) {
                 List<VariableType> initTypes;
-                if (VariableType.isArrayType(type)){
+                if (VariableType.isArrayType(type)) {
                     initTypes = (List<VariableType>) current.getAttribute(Attribute.TYPES);
-                } else {
+                }
+                else {
                     initTypes = new ArrayList<>();
                     initTypes.add((VariableType) current.getAttribute(Attribute.TYPE));
                 }
-                
-                if(handleInits(elemCount, type, initTypes)){
+
+                if (handleInits(elemCount, type, initTypes)) {
                     return true;
-                } else {
+                }
+                else {
                     return Utils.badNode(node);
                 }
             }
         }
-        
+
         throw new MysteriousBugException("If this line ever executes, Parser has failed or an if statement"
-                + " is missing a return statement. "
-                + "Expected: " + InitializatorChecker.HR_NAME + ".");
-//        Uncomment before deployment
-//        return true;
+                + " is missing a return statement. " + "Expected: " + InitializatorChecker.HR_NAME + ".");
+        // Uncomment before deployment
+        // return true;
     }
 
     private static boolean handleInits(Integer elemCount, VariableType myType, List<VariableType> initTypes) {
-        if (elemCount > initTypes.size()){
+        if (elemCount > initTypes.size()) {
             return false;
         }
-        
-        for (VariableType type: initTypes){
-            if (!VariableType.implicitConversion(type, myType)){
+
+        // u slucaju da je varijabla inicijalizirana s { 'a', 'b', 'c' }
+        if (myType.equals(VariableType.CHAR_ARRAY)) {
+            myType = VariableType.CHAR;
+        }
+
+        for (VariableType type : initTypes) {
+            if (!VariableType.implicitConversion(type, myType)) {
                 return false;
             }
         }
-        
+
         return true;
     }
 

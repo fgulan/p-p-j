@@ -38,7 +38,7 @@ public class DefinedFunctionsChecker implements Checker {
      */
     @Override
     public boolean check(Node node) {
-        Set<String> declaredFunctions = IdentifierTable.GLOBAL_SCOPE.declaredFunctions();
+        Set<String> declaredFunctions = IdentifierTable.GLOBAL_SCOPE.allDeclaredFunctions();
         for (String s : declaredFunctions) {
             if (!IdentifierTable.GLOBAL_SCOPE.isFunctionDefined(s)) {
                 SemanticErrorReporter.report("funkcija");

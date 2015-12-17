@@ -35,6 +35,8 @@ public class IdentifierTable {
 
     private Map<String, FunctionWrapper> definedFunctions;
 
+    private Map<String, FunctionWrapper> allDeclaredFunctions = new HashMap<>();
+
     /**
      * Class constructor, creates a empty identifer table. (Used for the global scope)
      *
@@ -111,6 +113,7 @@ public class IdentifierTable {
             return false;
         }
 
+        GLOBAL_SCOPE.allDeclaredFunctions.put(name, function);
         declaredFunctions.put(name, function);
         return true;
     }
@@ -199,6 +202,10 @@ public class IdentifierTable {
         functions.addAll(parent.declaredFunctions());
 
         return functions;
+    }
+
+    public Set<String> allDeclaredFunctions() {
+        return allDeclaredFunctions.keySet();
     }
 
     /**

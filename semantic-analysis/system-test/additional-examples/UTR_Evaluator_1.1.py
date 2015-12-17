@@ -42,8 +42,8 @@ def get_tests() :
     for item in list(filter(os.path.isdir, [os.path.join(test_directory, d) for d in os.listdir(test_directory)])):
 
         # Check if they contain both input and output file
-        if os.path.exists(os.path.join( item, "test.in")) and \
-                os.path.exists(os.path.join( item, "test.out")):
+        if os.path.exists(os.path.join( item, item + ".in")) and \
+                os.path.exists(os.path.join( item, item + ".out")):
 
             # If they do, add them to the list
             tests.append(item)
@@ -68,9 +68,9 @@ def execute(tests) :
     for test in tests :
 
         # Generate paths for current test
-        INPUT = os.path.join(test, "test.in")
-        OUTPUT = os.path.join(test, "test.out")
-        TMP = os.path.join(test, "test.u")
+        INPUT = os.path.join(test, test + ".in")
+        OUTPUT = os.path.join(test, test + ".out")
+        TMP = os.path.join(test, test + ".u")
 
         # Construct command line
         cmd = 'java SemantickiAnalizator + < ' + INPUT + " > " + TMP

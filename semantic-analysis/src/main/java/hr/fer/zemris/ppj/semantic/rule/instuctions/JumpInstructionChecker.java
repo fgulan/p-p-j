@@ -43,8 +43,8 @@ public class JumpInstructionChecker implements Checker {
         // <naredba_skoka> ::= KR_CONTINUE TOCKAZAREZ
         // <naredba_skoka> ::= KR_BREAK TOCKAZAREZ
         if ("KR_CONTINUE".equals(node.getChild(0).name()) || "KR_BREAK".equals(node.getChild(0).name())) {
-            boolean insideLoop = (Boolean) node.getAttribute(Attribute.INSIDE_LOOP);
-            if (!insideLoop) {
+            Boolean insideLoop = (Boolean) node.getAttribute(Attribute.INSIDE_LOOP);
+            if (insideLoop == null) {
                 SemanticErrorReporter.report(node);
                 return false;
             }
