@@ -126,11 +126,13 @@ public class IdentifierTable {
      * @since alpha
      */
     public boolean defineFunction(String name, Type returnType, List<Type> argumentList) {
+        IdentifierTypeWrapper function = IdentifierTypeWrapper.forFunction(name, returnType, argumentList);
         if (!declareFunction(name, returnType, argumentList)) {
-            return false;
+            if (!identifierType(name).equals(function)) {
+                return false;
+            }
         }
 
-        IdentifierTypeWrapper function = IdentifierTypeWrapper.forFunction(name, returnType, argumentList);
         GLOBAL_SCOPE.definedFunctions.add(function);
         return true;
     }
@@ -162,15 +164,10 @@ public class IdentifierTable {
      * @since alpha
      */
     public boolean isFunctionDefined(String name) {
-        if (!GLOBAL_SCOPE.localIdentifiers.containsKey(name)) {
-            return false;
-        }
 
-        if (!GLOBAL_SCOPE.localIdentifiers.get(name).isFunction()) {
-            return false;
-        }
-
-        return true;
+        // this will count in variables too but thats ok since you can't declare a function with the same name as the
+        // variable
+        return GLOBAL_SCOPE.localIdentifiers.containsKey(name);
     }
 
     /**

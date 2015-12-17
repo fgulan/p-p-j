@@ -37,8 +37,26 @@ public class ConstCharArrayChecker implements Checker {
         String value = (String) node.getAttribute(Attribute.VALUE);
 
         // KILL ME NOW
-        if (!value.matches("\"(\\w|\\\\t|\\\\n|\\\\0|\\\\'|\\\\\"|\\\\\\\\)+\"")) {
+        if (!value.matches("\"\\p{ASCII}*\"")) {
             return false;
+        }
+
+        for (int i = 0; i < value.length(); i++) {
+            if (value.charAt(i) == '\\') {
+                char nextChar = value.charAt(i + 1);
+                switch (nextChar) {
+                    case 't':
+                    case 'n':
+                    case '0':
+                    case '\'':
+                    case '"':
+                    case '\\':
+                        i++;
+                        break;
+                    default:
+                        return false;
+                }
+            }
         }
 
         return true;

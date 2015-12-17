@@ -174,7 +174,7 @@ public class TreeParser {
             }
             else {
                 // terminal node
-                String[] split = line.split(" ");
+                String[] split = line.split(" ", 3);
                 String name = split[0];
                 int lineNumber = Integer.valueOf(split[1]);
                 String value = split[2];

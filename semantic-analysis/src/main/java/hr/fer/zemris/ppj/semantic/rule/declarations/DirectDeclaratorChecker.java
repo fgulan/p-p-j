@@ -57,14 +57,16 @@ public class DirectDeclaratorChecker implements Checker {
         }
 
         Type type = (Type) node.getAttribute(Attribute.ITYPE);
-        if (type.equals(new VoidType())) {
-            return Utils.badNode(node);
-        }
 
         String name = (String) idn.getAttribute(Attribute.VALUE);
 
         int size = node.childrenCount();
         if (size == 1) {
+
+            if (type.equals(new VoidType())) {
+                return Utils.badNode(node);
+            }
+
             if (!node.identifierTable().declare(name, type)) {
                 return Utils.badNode(node);
             }
@@ -81,6 +83,11 @@ public class DirectDeclaratorChecker implements Checker {
             }
 
             if (child.name().equals("BROJ")) {
+
+                if (type.equals(new VoidType())) {
+                    return Utils.badNode(node);
+                }
+
                 Type arrayType = type.toArray();
                 if (!node.identifierTable().declareVariable(name, arrayType)) {
                     return Utils.badNode(node);

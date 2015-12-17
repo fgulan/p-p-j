@@ -52,7 +52,7 @@ public class InitializationDeclaratorChecker implements Checker {
         }
 
         Type type = (Type) child.getAttribute(Attribute.TYPE);
-        Integer elemCount = (Integer) node.getAttribute(Attribute.ELEMENT_COUNT);
+        Integer elemCount = (Integer) child.getAttribute(Attribute.ELEMENT_COUNT);
         if (elemCount == null) {
             elemCount = 1;
         }
@@ -101,7 +101,7 @@ public class InitializationDeclaratorChecker implements Checker {
     }
 
     private static boolean handleInits(Integer elemCount, Type myType, List<Type> initTypes) {
-        if (elemCount > initTypes.size()) {
+        if (elemCount < initTypes.size()) {
             return false;
         }
 

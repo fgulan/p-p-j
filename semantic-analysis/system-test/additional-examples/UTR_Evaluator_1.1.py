@@ -59,7 +59,7 @@ def execute(tests) :
         return
 
     execution, correct = 0, 0
-    template_status = "[ {:6s} ] - {:.3f}ms | {}"
+    template_status = "[ {:6s} ] | {}"
 
     print("\nTotal of {} tests will be run!".format(len(tests)), end="\n\n")
 
@@ -93,7 +93,7 @@ def execute(tests) :
 
 
         if ok : correct += 1
-        print(template_status.format(test, end - start, ('pass' if ok else 'fail - x')))
+        print(template_status.format(test, ('pass' if ok else 'fail - x')))
 
     print('\nStats : {}/{} | {:.0f}%'.format(correct, len(tests), (correct / len(tests) * 100)))
 
