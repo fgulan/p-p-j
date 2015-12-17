@@ -40,9 +40,9 @@ public class SemanticErrorReporter {
         if (!reports.isEmpty()) {
             System.out.println(reports.get(0));
 
-            if (!reportedNodes.isEmpty()) {
-                System.out.println(reportedNodes.get(0).print(0));
-            }
+            // if (!reportedNodes.isEmpty()) {
+            // System.out.println(reportedNodes.get(0).print(0));
+            // }
         }
     }
 
