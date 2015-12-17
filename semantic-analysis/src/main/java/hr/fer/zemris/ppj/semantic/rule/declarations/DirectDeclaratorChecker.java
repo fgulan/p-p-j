@@ -1,7 +1,6 @@
 package hr.fer.zemris.ppj.semantic.rule.declarations;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import hr.fer.zemris.ppj.Attribute;
@@ -111,7 +110,7 @@ public class DirectDeclaratorChecker implements Checker {
                     return Utils.badNode(node);
                 }
 
-                node.addAttribute(Attribute.TYPE, new FunctionType(type, Arrays.asList((Type) new VoidType())));
+                node.addAttribute(Attribute.TYPE, new FunctionType(type, new ArrayList<>()));
 
                 return true;
             }

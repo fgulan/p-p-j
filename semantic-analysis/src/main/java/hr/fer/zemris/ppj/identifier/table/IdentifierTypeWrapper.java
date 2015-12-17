@@ -62,7 +62,7 @@ public class IdentifierTypeWrapper {
         if (obj instanceof IdentifierTypeWrapper) {
             IdentifierTypeWrapper other = (IdentifierTypeWrapper) obj;
 
-            return other.type.equals(type);
+            return other.name.equals(name) && other.type.equals(type);
         }
 
         return false;

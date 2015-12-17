@@ -37,8 +37,8 @@ public class IdentifierTable {
 
     // Should be used only for checking if all declared functions are defined.
     // This is null in all identifier tables except GLOBAL_SCOPE
-    public static final Set<IdentifierTypeWrapper> declaredFunctions = new HashSet<>();
-    public static final Set<IdentifierTypeWrapper> definedFunctions = new HashSet<>();
+    public static final ArrayList<IdentifierTypeWrapper> declaredFunctions = new ArrayList<>();
+    public static final ArrayList<IdentifierTypeWrapper> definedFunctions = new ArrayList<>();
 
     /**
      * Class constructor, creates a empty identifer table. (Used for the global scope)

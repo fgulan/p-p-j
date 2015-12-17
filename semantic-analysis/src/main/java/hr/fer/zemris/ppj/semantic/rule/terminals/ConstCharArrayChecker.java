@@ -36,11 +36,6 @@ public class ConstCharArrayChecker implements Checker {
     public boolean check(Node node) {
         String value = (String) node.getAttribute(Attribute.VALUE);
 
-        // known bug in lexical analysis
-        if ("\"\\\"".equals(value)) {
-            return true;
-        }
-
         if (value.equals("\"\\\"")) {
             return false;
         }

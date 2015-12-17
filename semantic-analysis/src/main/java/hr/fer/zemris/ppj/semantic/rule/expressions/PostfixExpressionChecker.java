@@ -150,7 +150,12 @@ public class PostfixExpressionChecker implements Checker {
             }
 
             // 3. <postfiks_izraz>.tip = funkcija(params -> pov)
-            FunctionType function = (FunctionType) firstChild.getAttribute(Attribute.TYPE);
+            Type type = (Type) firstChild.getAttribute(Attribute.TYPE);
+            if (!type.isFunction()) {
+                SemanticErrorReporter.report(node);
+                return false;
+            }
+            FunctionType function = (FunctionType) type;
             if (function.argumentList().isEmpty()) {
                 SemanticErrorReporter.report(node);
                 return false;

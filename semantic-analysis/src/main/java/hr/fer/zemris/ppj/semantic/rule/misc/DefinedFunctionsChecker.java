@@ -1,5 +1,6 @@
 package hr.fer.zemris.ppj.semantic.rule.misc;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import hr.fer.zemris.ppj.Node;
@@ -39,8 +40,8 @@ public class DefinedFunctionsChecker implements Checker {
      */
     @Override
     public boolean check(Node node) {
-        Set<IdentifierTypeWrapper> declared = IdentifierTable.GLOBAL_SCOPE.declaredFunctions;
-        Set<IdentifierTypeWrapper> defined = IdentifierTable.GLOBAL_SCOPE.definedFunctions;
+        Set<IdentifierTypeWrapper> declared = new HashSet<>(IdentifierTable.GLOBAL_SCOPE.declaredFunctions);
+        Set<IdentifierTypeWrapper> defined = new HashSet<>(IdentifierTable.GLOBAL_SCOPE.definedFunctions);
 
         if (!defined.containsAll(declared)) {
             SemanticErrorReporter.report("funkcija");
