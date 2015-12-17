@@ -36,13 +36,22 @@ public class ConstCharArrayChecker implements Checker {
     public boolean check(Node node) {
         String value = (String) node.getAttribute(Attribute.VALUE);
 
-        // KILL ME NOW
-        if (!value.matches("\"\\p{ASCII}*\"")) {
+        // known bug in lexical analysis
+        if ("\"\\\"".equals(value)) {
+            return true;
+        }
+
+        if (value.equals("\"\\\"")) {
             return false;
         }
 
-        for (int i = 0; i < value.length(); i++) {
-            if (value.charAt(i) == '\\') {
+        for (int i = 1; i < (value.length() - 1); i++) {
+            char currentChar = value.charAt(i);
+            if ((currentChar == '\'') || (currentChar == '\"')) {
+                return false;
+            }
+
+            if ((value.charAt(i) == '\\') && ((i + 1) < (value.length() - 1))) {
                 char nextChar = value.charAt(i + 1);
                 switch (nextChar) {
                     case 't':

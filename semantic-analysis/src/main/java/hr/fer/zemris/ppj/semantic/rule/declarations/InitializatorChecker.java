@@ -12,6 +12,7 @@ import hr.fer.zemris.ppj.semantic.rule.expressions.AssignExpressionChecker;
 import hr.fer.zemris.ppj.semantic.rule.expressions.AssignExpressionListChecker;
 import hr.fer.zemris.ppj.types.CharType;
 import hr.fer.zemris.ppj.types.Type;
+import hr.fer.zemris.ppj.types.arrays.ConstCharArrayType;
 
 /**
  * <code>InitializatorChecker</code> is a checker for initializator.
@@ -63,7 +64,7 @@ public class InitializatorChecker implements Checker {
             }
 
             if ("NIZ_ZNAKOVA".equals(current.name())) {
-                elemCount = ((String) current.getAttribute(Attribute.VALUE)).length() - 1;
+                elemCount = ConstCharArrayType.length((String) current.getAttribute(Attribute.VALUE));
 
                 for (int i = 0; i < elemCount; i++) {
                     types.add(new CharType());

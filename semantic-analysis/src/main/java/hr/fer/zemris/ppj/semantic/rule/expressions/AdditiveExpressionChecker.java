@@ -84,7 +84,7 @@ public class AdditiveExpressionChecker implements Checker {
 
             Type type2 = (Type) thirdChild.getAttribute(Attribute.TYPE);
             // 4. <multiplikativni_izraz>.tip ~ int
-            if (!type1.implicitConversion(new IntType())) {
+            if (!type2.implicitConversion(new IntType())) {
                 SemanticErrorReporter.report(node);
                 return false;
             }
