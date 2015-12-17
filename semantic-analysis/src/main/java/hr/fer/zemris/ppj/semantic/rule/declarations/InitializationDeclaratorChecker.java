@@ -105,6 +105,10 @@ public class InitializationDeclaratorChecker implements Checker {
             return false;
         }
 
+        if (myType.isArray()) {
+            myType = myType.fromArray();
+        }
+
         for (Type type : initTypes) {
             if (!type.implicitConversion(myType)) {
                 return false;
