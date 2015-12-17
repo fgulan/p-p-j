@@ -101,7 +101,7 @@ public class InitializationDeclaratorChecker implements Checker {
     }
 
     private static boolean handleInits(Integer elemCount, Type myType, List<Type> initTypes) {
-        if (elemCount < initTypes.size()) {
+        if ((initTypes == null) || (elemCount < initTypes.size())) {
             return false;
         }
 

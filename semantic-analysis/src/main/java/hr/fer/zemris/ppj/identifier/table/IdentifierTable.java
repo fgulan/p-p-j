@@ -298,7 +298,7 @@ public class IdentifierTable {
             return true;
         }
 
-        return parent.isLocalDeclared(name);
+        return parent.isDeclared(name);
     }
 
     public boolean isLocalDeclared(String name) {
