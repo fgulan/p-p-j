@@ -10,7 +10,7 @@ import hr.fer.zemris.ppj.semantic.rule.Checker;
  *
  * @author Jan Kelemen
  *
- * @version alpha
+ * @version 1.0
  */
 public class ExpressionChecker implements Checker {
 
@@ -32,7 +32,7 @@ public class ExpressionChecker implements Checker {
      *
      * Referring pages: 61, 62.
      *
-     * @since alpha
+     * @since 1.0
      */
     @Override
     public boolean check(final Node node) {

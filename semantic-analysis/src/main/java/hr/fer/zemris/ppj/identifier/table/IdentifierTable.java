@@ -16,7 +16,7 @@ import hr.fer.zemris.ppj.types.functions.FunctionType;
  *
  * @author Jan Kelemen, Domagoj Polancec
  *
- * @version alpha.
+ * @version 1.0
  */
 public class IdentifierTable {
 
@@ -36,14 +36,19 @@ public class IdentifierTable {
     private final Map<String, IdentifierTypeWrapper> localIdentifiers = new HashMap<>();
 
     // Should be used only for checking if all declared functions are defined.
-    // This is null in all identifier tables except GLOBAL_SCOPE
+    /**
+     * All declared functions, used only in final check.
+     */
     public static final ArrayList<IdentifierTypeWrapper> declaredFunctions = new ArrayList<>();
+    /**
+     * All defined functions, used only in final check.
+     */
     public static final ArrayList<IdentifierTypeWrapper> definedFunctions = new ArrayList<>();
 
     /**
      * Class constructor, creates a empty identifer table. (Used for the global scope)
      *
-     * @since alpha
+     * @since 1.0
      */
     public IdentifierTable() {
         this(null);
@@ -54,7 +59,7 @@ public class IdentifierTable {
      *
      * @param parent
      *            the parent table.
-     * @since alpha
+     * @since 1.0
      */
     public IdentifierTable(final IdentifierTable parent) {
         this.parent = parent;
@@ -66,6 +71,16 @@ public class IdentifierTable {
         this_id = id++;
     }
 
+    /**
+     * Declares a identifier in the local scope.
+     *
+     * @param name
+     *            name of the identifier.
+     * @param type
+     *            type of the identifier.
+     * @return <code>true</code> if the identifier is successfuly declared.
+     * @since 1.0
+     */
     public boolean declare(final String name, final Type type) {
         if (type.isFunction()) {
             final FunctionType function = (FunctionType) type;
@@ -81,7 +96,7 @@ public class IdentifierTable {
      * @param type
      *            type of the variable to be declared.
      * @return <code>true</code> if the variable is succesfully declared, <code>false</code> otherwise.
-     * @since alpha
+     * @since 1.0
      */
     public boolean declareVariable(final String name, final Type type) {
         if (isLocalDeclared(name)) {
@@ -100,7 +115,7 @@ public class IdentifierTable {
      * @param argumentList
      *            argument list of the function.
      * @return <code>true</code> if the function is succesfully declared, <code>false</code> otherwise.
-     * @since alpha
+     * @since 1.0
      */
     public boolean declareFunction(final String name, final Type returnType, final List<Type> argumentList) {
         // moguce je vise uzastopnih deklaracija iste funkcije, provjeriti iskljucivo varijable
@@ -123,7 +138,7 @@ public class IdentifierTable {
      * @param argumentList
      *            argument list of the function.
      * @return <code>true</code> if the function is succesfully defined, <code>false</code> otherwise.
-     * @since alpha
+     * @since 1.0
      */
     public boolean defineFunction(final String name, final Type returnType, final List<Type> argumentList) {
         final IdentifierTypeWrapper function = IdentifierTypeWrapper.forFunction(name, returnType, argumentList);
@@ -141,7 +156,7 @@ public class IdentifierTable {
      * @param name
      *            variable identifer.
      * @return <code>true</code> if the variable is declared, <code>false</code> otherwise.
-     * @since alpha
+     * @since 1.0
      */
     public boolean isVariableDeclared(final String name) {
         return variable(name) != null;
@@ -151,7 +166,7 @@ public class IdentifierTable {
      * @param name
      *            function identifer.
      * @return <code>true</code> if the function is declared, <code>false</code> otherwise.
-     * @since alpha
+     * @since 1.0
      */
     public boolean isFunctionDeclared(final String name) {
         return function(name) != null;
@@ -161,7 +176,7 @@ public class IdentifierTable {
      * @param name
      *            function identifer.
      * @return <code>true</code> if the function is defined, <code>false</code> otherwise.
-     * @since alpha
+     * @since 1.0
      */
     public boolean isFunctionDefined(final String name) {
         if (IdentifierTable.GLOBAL_SCOPE.localIdentifiers.containsKey(name)) {
@@ -184,7 +199,7 @@ public class IdentifierTable {
 
     /**
      * @return identifiers of declared variables.
-     * @since alpha
+     * @since 1.0
      */
     public Set<String> declaredVariables() {
         final Set<String> declared = new HashSet<>();
@@ -209,7 +224,7 @@ public class IdentifierTable {
 
     /**
      * @return identifiers of defined functions.
-     * @since alpha
+     * @since 1.0
      */
     public Set<String> definedFunctions() {
         final Set<String> defined = new HashSet<>();
@@ -221,7 +236,7 @@ public class IdentifierTable {
 
     /**
      * @return identifiers of declared functions.
-     * @since alpha
+     * @since 1.0
      */
     public Set<String> declaredFunctions() {
         final Set<String> declared = new HashSet<>();
@@ -235,7 +250,7 @@ public class IdentifierTable {
      * @param name
      *            identifier of the variable.
      * @return type of the variable.
-     * @since alpha
+     * @since 1.0
      */
     public Type variable(final String name) {
         if (parent == null) {
@@ -256,7 +271,7 @@ public class IdentifierTable {
      * @param name
      *            identifier of the function.
      * @return info for the function
-     * @since alpha
+     * @since 1.0
      */
     public FunctionType function(final String name) {
         if (parent == null) {
@@ -278,7 +293,7 @@ public class IdentifierTable {
      *
      * @param child
      *            the child to be added.
-     * @since alpha
+     * @since 1.0
      */
     public void addChild(final IdentifierTable child) {
         children.add(child);
@@ -289,6 +304,14 @@ public class IdentifierTable {
         return String.valueOf(this_id) + (parent != null ? parent.toString() : "");
     }
 
+    /**
+     * Checks if a identifier with the specified name is declared.
+     *
+     * @param name
+     *            the name.
+     * @return <code>true</code> if the identifier is declared, <code>false</code> otherwise.
+     * @since 1.0
+     */
     public boolean isDeclared(final String name) {
         if (parent == null) {
             return isLocalDeclared(name);
@@ -301,18 +324,48 @@ public class IdentifierTable {
         return parent.isDeclared(name);
     }
 
+    /**
+     * Checks if a identifier is declared in a local scope.
+     *
+     * @param name
+     *            name of the identifier.
+     * @return <code>true</code> if the idenfitifer is declared, <code>false</code> otherwise.
+     * @since 1.0
+     */
     public boolean isLocalDeclared(final String name) {
         return localIdentifiers.containsKey(name);
     }
 
+    /**
+     * Checks if a function is declared in a local scope.
+     *
+     * @param name
+     *            name of the function.
+     * @return <code>true</code> if the function is declared, <code>false</code> otherwise.
+     * @since 1.0
+     */
     public boolean isLocalFunctionDeclared(final String name) {
         return localIdentifiers.containsKey(name) && localIdentifiers.get(name).isFunction();
     }
 
+    /**
+     * Checks if a variable is declared in a local scope.
+     *
+     * @param name
+     *            name of the variable.
+     * @return <code>true</code> if the variable is declared, <code>false</code> otherwise.
+     * @since 1.0
+     */
     public boolean isLocalVariableDeclared(final String name) {
         return localIdentifiers.containsKey(name) && localIdentifiers.get(name).isVariable();
     }
 
+    /**
+     * @param name
+     *            name of the identifier.
+     * @return type of the identifier with the specified name, <code>null</code> if the identifier doesn't exist.
+     * @since 1.0
+     */
     public Type identifierType(final String name) {
         if (parent == null) {
             return isLocalDeclared(name) ? localIdentifiers.get(name).type() : null;
@@ -325,6 +378,12 @@ public class IdentifierTable {
         return parent.identifierType(name);
     }
 
+    /**
+     * @param name
+     *            name of the function.
+     * @return function type of the function with the specified name, <code>null</code> if the function doesn't exist.
+     * @since 1.0
+     */
     public FunctionType localFunction(final String name) {
         if (localIdentifiers.containsKey(name) && localIdentifiers.get(name).isFunction()) {
             return (FunctionType) localIdentifiers.get(name).type();
@@ -332,6 +391,12 @@ public class IdentifierTable {
         return null;
     }
 
+    /**
+     * @param name
+     *            name of the variable.
+     * @return type of the variable with the specified name, <code>null</code> if the variable doesn't exist.
+     * @since 1.0
+     */
     public Type localVariable(final String name) {
         if (localIdentifiers.containsKey(name) && localIdentifiers.get(name).isVariable()) {
             return localIdentifiers.get(name).type();

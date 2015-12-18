@@ -14,7 +14,7 @@ import hr.fer.zemris.ppj.types.Type;
  *
  * @author Domagoj Polancec
  *
- * @version alpha
+ * @version 1.0
  */
 public class ParameterListChecker implements Checker {
 
@@ -36,7 +36,7 @@ public class ParameterListChecker implements Checker {
      *
      * Referring pages: 67.
      *
-     * @since alpha
+     * @since 1.0
      */
     @SuppressWarnings("unchecked")
     @Override

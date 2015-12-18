@@ -7,10 +7,17 @@ import hr.fer.zemris.ppj.types.Type;
  *
  * @author Jan Kelemen
  *
- * @version alpha
+ * @version 1.0
  */
 public abstract class ArrayType extends Type {
 
+    /**
+     * Class constructor, specifies if the array type consists of const elements.
+     *
+     * @param isConst
+     *            const flag.
+     * @since 1.0
+     */
     public ArrayType(final boolean isConst) {
         super(isConst, false, true);
     }

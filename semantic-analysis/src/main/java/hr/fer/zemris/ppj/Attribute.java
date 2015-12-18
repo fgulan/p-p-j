@@ -5,7 +5,7 @@ package hr.fer.zemris.ppj;
  *
  * @author Jan Kelemen
  *
- * @version alpha
+ * @version 1.0
  */
 public enum Attribute {
     /**

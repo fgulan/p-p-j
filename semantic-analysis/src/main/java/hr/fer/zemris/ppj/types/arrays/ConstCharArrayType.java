@@ -8,10 +8,15 @@ import hr.fer.zemris.ppj.types.Type;
  *
  * @author Jan Kelemen
  *
- * @version alpha
+ * @version 1.0
  */
 public class ConstCharArrayType extends ArrayType {
 
+    /**
+     * Class constructor, creates a const char array type.
+     *
+     * @since 1.0
+     */
     public ConstCharArrayType() {
         super(true);
     }

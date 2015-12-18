@@ -126,6 +126,15 @@ public class Node {
         attributes.put(type, value);
     }
 
+    /**
+     * Adds a attribute to the whole subtree of the node.
+     * 
+     * @param type
+     *            type of the attribute thats added.
+     * @param value
+     *            value of the attribute thats added.
+     * @since 1.1
+     */
     public void addAttributeRecursive(final Attribute type, final Object value) {
         attributes.put(type, value);
 

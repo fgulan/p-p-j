@@ -11,7 +11,7 @@ import hr.fer.zemris.ppj.types.Type;
  *
  * @author Jan Kelemen
  *
- * @version alpha
+ * @version 1.0
  */
 public class CastExpressionChecker implements Checker {
 
@@ -33,7 +33,7 @@ public class CastExpressionChecker implements Checker {
      *
      * Referring pages: 55, 56.
      *
-     * @since alpha
+     * @since 1.0
      */
     @Override
     public boolean check(final Node node) {

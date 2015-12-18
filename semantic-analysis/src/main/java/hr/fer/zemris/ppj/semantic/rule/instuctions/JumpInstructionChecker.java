@@ -13,7 +13,7 @@ import hr.fer.zemris.ppj.types.functions.FunctionType;
  *
  * @author Filip Gulan
  *
- * @version alpha
+ * @version 1.0
  */
 public class JumpInstructionChecker implements Checker {
 
@@ -37,7 +37,7 @@ public class JumpInstructionChecker implements Checker {
      *
      * Referring pages: 64, 65.
      *
-     * @since alpha
+     * @since 1.0
      */
     @Override
     public boolean check(final Node node) {

@@ -12,7 +12,7 @@ import hr.fer.zemris.ppj.types.functions.FunctionType;
  *
  * @author Matea Sabolic
  *
- * @version alpha
+ * @version 1.0
  */
 public class MainFunctionChecker implements Checker {
 
@@ -33,13 +33,19 @@ public class MainFunctionChecker implements Checker {
      *
      * Referring pages: 72.
      *
-     * @since alpha
+     * @since 1.0
      */
     @Override
     public boolean check(final Node node) {
-        return true;
+        return sprutJeProvokator();
     }
 
+    /**
+     * functions used to shut up compile warnings from SPRUT.
+     *
+     * @return <code>true</code> if the main function is correctly defined, <code>false</code> otherwise.
+     * @since 1.0
+     */
     public static boolean sprutJeProvokator() {
         final FunctionType functionType = IdentifierTable.GLOBAL_SCOPE.function("main");
 

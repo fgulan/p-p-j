@@ -12,7 +12,7 @@ import hr.fer.zemris.ppj.types.VoidType;
  *
  * @author Domagoj Polancec
  *
- * @version alpha
+ * @version 1.0
  */
 public class ParameterDeclarationChecker implements Checker {
 
@@ -34,7 +34,7 @@ public class ParameterDeclarationChecker implements Checker {
      *
      * Referring pages: 67.
      *
-     * @since alpha
+     * @since 1.0
      */
     @Override
     public boolean check(final Node node) {

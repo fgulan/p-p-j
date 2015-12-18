@@ -9,13 +9,22 @@ import hr.fer.zemris.ppj.types.Type;
  *
  * @author Jan Kelemen
  *
- * @version alpha
+ * @version 1.0
  */
 public class FunctionType extends Type {
 
     private final Type returnType;
     private final List<Type> argumentList;
 
+    /**
+     * Class constructor, specifies the function type.
+     *
+     * @param returnType
+     *            the return type of the function.
+     * @param argumentList
+     *            the argument list of the function.
+     * @since 1.0
+     */
     public FunctionType(final Type returnType, final List<Type> argumentList) {
         super(false, true, false);
 
@@ -23,10 +32,18 @@ public class FunctionType extends Type {
         this.argumentList = argumentList;
     }
 
+    /**
+     * @return return type of the function.
+     * @since 1.0
+     */
     public Type returnType() {
         return returnType;
     }
 
+    /**
+     * @return argument list of the function.
+     * @since 1.0
+     */
     public List<Type> argumentList() {
         return argumentList;
     }

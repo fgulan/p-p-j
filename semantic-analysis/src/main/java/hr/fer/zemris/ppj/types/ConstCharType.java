@@ -13,6 +13,11 @@ public class ConstCharType extends Type {
 
     private final CharType under = new CharType();
 
+    /**
+     * Class constructor, creates a const char type.
+     *
+     * @since 1.0
+     */
     public ConstCharType() {
         super(true, false, false);
     }

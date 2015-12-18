@@ -5,10 +5,15 @@ package hr.fer.zemris.ppj.types;
  *
  * @author Jan Kelemen
  *
- * @version alpha
+ * @version 1.0
  */
 public class VoidType extends Type {
 
+    /**
+     * Class constructor, specifies a void type.
+     *
+     * @since 1.0
+     */
     public VoidType() {
         super(false, false, false);
     }

@@ -12,7 +12,7 @@ import hr.fer.zemris.ppj.semantic.rule.misc.MainFunctionChecker;
  *
  * @author Jan Kelemen
  *
- * @version alpha
+ * @version 1.0
  */
 public class SemantickiAnalizator {
 
@@ -21,7 +21,7 @@ public class SemantickiAnalizator {
      *
      * @param args
      *            command line arguments aren't used.
-     * @since alpha
+     * @since 1.0
      */
     public static void main(String[] args) {
         final Node node = TreeParser.parse(new Scanner(System.in));

@@ -12,7 +12,7 @@ import hr.fer.zemris.ppj.types.Type;
  *
  * @author Jan Kelemen
  *
- * @version alpha
+ * @version 1.0
  */
 public class LogicalOrExpressionChecker implements Checker {
 
@@ -34,7 +34,7 @@ public class LogicalOrExpressionChecker implements Checker {
      *
      * Referring pages: 60, 61.
      *
-     * @since alpha
+     * @since 1.0
      */
     @Override
     public boolean check(final Node node) {

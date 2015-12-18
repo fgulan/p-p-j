@@ -5,8 +5,8 @@ import java.util.List;
 
 import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
+import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.Utils;
-import hr.fer.zemris.ppj.semantic.exceptions.MysteriousBugException;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
 import hr.fer.zemris.ppj.types.Type;
 import hr.fer.zemris.ppj.types.arrays.ArrayType;
@@ -16,7 +16,7 @@ import hr.fer.zemris.ppj.types.arrays.ArrayType;
  *
  * @author Domagoj Polancec
  *
- * @version alpha
+ * @version 1.0
  */
 public class InitializationDeclaratorChecker implements Checker {
 
@@ -38,7 +38,7 @@ public class InitializationDeclaratorChecker implements Checker {
      *
      * Referring pages: 69.
      *
-     * @since alpha
+     * @since 1.0
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -98,10 +98,9 @@ public class InitializationDeclaratorChecker implements Checker {
             }
         }
 
-        throw new MysteriousBugException("If this line ever executes, Parser has failed or an if statement"
-                + " is missing a return statement. " + "Expected: " + InitializatorChecker.HR_NAME + ".");
-        // Uncomment before deployment
-        // return true;
+        System.err.println("Shold never happen");
+        SemanticErrorReporter.report(node);
+        return false;
     }
 
     private static boolean handleInits(final Integer elemCount, Type myType, final List<Type> initTypes) {

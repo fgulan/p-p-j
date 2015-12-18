@@ -14,7 +14,7 @@ import hr.fer.zemris.ppj.semantic.rule.Checker;
  *
  * @author Matea Sabolic
  *
- * @version alpha
+ * @version 1.0
  */
 public class DefinedFunctionsChecker implements Checker {
 
@@ -36,13 +36,17 @@ public class DefinedFunctionsChecker implements Checker {
      *
      * Referring pages: 72.
      *
-     * @since alpha
+     * @since 1.0
      */
     @Override
     public boolean check(final Node node) {
         return true;
     }
 
+    /**
+     * @return <code>true</code> if all functions are defined, <code>false</code> otherwise.
+     * @since 1.0
+     */
     public static boolean sprutJeProvokator() {
         final Set<IdentifierTypeWrapper> declared = new HashSet<>(IdentifierTable.declaredFunctions);
         final Set<IdentifierTypeWrapper> defined = new HashSet<>(IdentifierTable.definedFunctions);

@@ -14,7 +14,7 @@ import hr.fer.zemris.ppj.types.arrays.ConstCharArrayType;
  *
  * @author Jan Kelemen
  *
- * @version alpha
+ * @version 1.0
  */
 public class PrimaryExpressionChecker implements Checker {
 
@@ -39,7 +39,7 @@ public class PrimaryExpressionChecker implements Checker {
      *
      * Referring pages: 51, 52.
      *
-     * @since alpha
+     * @since 1.0
      */
     @Override
     public boolean check(final Node node) {

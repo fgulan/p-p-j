@@ -9,7 +9,7 @@ import hr.fer.zemris.ppj.semantic.rule.Checker;
  *
  * @author Filip Gulan
  *
- * @version alpha
+ * @version 1.0
  */
 public class CompoundInstructionChecker implements Checker {
 
@@ -31,7 +31,7 @@ public class CompoundInstructionChecker implements Checker {
      *
      * Referring pages: 62.
      *
-     * @since alpha
+     * @since 1.0
      */
     @Override
     public boolean check(final Node node) {

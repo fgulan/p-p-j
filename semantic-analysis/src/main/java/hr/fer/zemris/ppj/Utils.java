@@ -11,7 +11,7 @@ import hr.fer.zemris.ppj.types.functions.FunctionType;
  *
  * @author Domagoj Polancec
  *
- * @since alpha
+ * @since 1.0
  *
  */
 public class Utils {

@@ -7,10 +7,15 @@ import hr.fer.zemris.ppj.types.arrays.CharArrayType;
  *
  * @author Jan Kelemen
  *
- * @version alpha
+ * @version 1.0
  */
 public class CharType extends Type {
 
+    /**
+     * Class constructor, creates a char type.
+     *
+     * @since 1.0
+     */
     public CharType() {
         super(false, false, false);
     }

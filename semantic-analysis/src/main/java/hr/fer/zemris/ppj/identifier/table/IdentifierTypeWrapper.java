@@ -10,7 +10,7 @@ import hr.fer.zemris.ppj.types.functions.FunctionType;
  *
  * @author Jan Kelemen
  *
- * @version alpha
+ * @version 1.0
  */
 public class IdentifierTypeWrapper {
 
@@ -18,32 +18,70 @@ public class IdentifierTypeWrapper {
 
     private final Type type;
 
+    /**
+     * Creates a wrapper for the variable with the specified name and type.
+     *
+     * @param name
+     *            the name.
+     * @param type
+     *            the type.
+     * @return created wrapper.
+     * @since 1.0
+     */
     public static IdentifierTypeWrapper forVariable(final String name, final Type type) {
         return new IdentifierTypeWrapper(name, type);
     }
 
+    /**
+     * Creates a wrapper for the function with the specified name, retur type and argument list.
+     *
+     * @param name
+     *            the name.
+     * @param returnType
+     *            the return type.
+     * @param argumentList
+     *            the argument list.
+     * @return created wrapper.
+     * @since 1.0
+     */
     public static IdentifierTypeWrapper forFunction(final String name, final Type returnType,
             final List<Type> argumentList) {
         return new IdentifierTypeWrapper(name, new FunctionType(returnType, argumentList));
     }
 
-    IdentifierTypeWrapper(final String name, final Type type) {
+    private IdentifierTypeWrapper(final String name, final Type type) {
         this.name = name;
         this.type = type;
     }
 
+    /**
+     * @return <code>true</code> if the wrapper encapsulates a function, <code>false</code> otherwise.
+     * @since 1.0
+     */
     public boolean isFunction() {
         return type.isFunction();
     }
 
+    /**
+     * @return <code>true</code> if the wrapper encapsulates a variable, <code>false</code> otherwise.
+     * @since 1.0
+     */
     public boolean isVariable() {
         return !type.isFunction();
     }
 
+    /**
+     * @return name of the encapsulated identifier.
+     * @since 1.0
+     */
     public String name() {
         return name;
     }
 
+    /**
+     * @return type of the encapsulated identifier.
+     * @since 1.0
+     */
     public Type type() {
         return type;
     }

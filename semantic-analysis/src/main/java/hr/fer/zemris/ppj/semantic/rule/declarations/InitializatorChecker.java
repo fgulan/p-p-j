@@ -5,8 +5,8 @@ import java.util.List;
 
 import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
+import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.Utils;
-import hr.fer.zemris.ppj.semantic.exceptions.MysteriousBugException;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
 import hr.fer.zemris.ppj.semantic.rule.expressions.AssignExpressionChecker;
 import hr.fer.zemris.ppj.semantic.rule.expressions.AssignExpressionListChecker;
@@ -18,7 +18,7 @@ import hr.fer.zemris.ppj.types.Type;
  *
  * @author Domagoj Polancec
  *
- * @version alpha
+ * @version 1.0
  */
 public class InitializatorChecker implements Checker {
 
@@ -40,7 +40,7 @@ public class InitializatorChecker implements Checker {
      *
      * Referring pages: 71, 72.
      *
-     * @since alpha
+     * @since 1.0
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -102,11 +102,9 @@ public class InitializatorChecker implements Checker {
 
         }
 
-        throw new MysteriousBugException("If this line ever executes, Parser has failed or an if statement"
-                + " is missing a return statement. " + "Expected: " + AssignExpressionChecker.HR_NAME + " or "
-                + AssignExpressionListChecker.HR_NAME + ".");
-        // Uncomment before deployment
-        // return true;
+        System.err.println("Shold never happen");
+        SemanticErrorReporter.report(node);
+        return false;
     }
 
 }

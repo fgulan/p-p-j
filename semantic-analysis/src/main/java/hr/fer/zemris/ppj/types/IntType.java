@@ -7,10 +7,15 @@ import hr.fer.zemris.ppj.types.arrays.IntArrayType;
  *
  * @author Jan Kelemen
  *
- * @version alpha
+ * @version 1.0
  */
 public class IntType extends Type {
 
+    /**
+     * Class constructor, creates a int type.
+     *
+     * @since 1.0
+     */
     public IntType() {
         super(false, false, false);
     }

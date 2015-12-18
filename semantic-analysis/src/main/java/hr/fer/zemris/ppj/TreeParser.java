@@ -58,7 +58,7 @@ import hr.fer.zemris.ppj.semantic.rule.terminals.IntChecker;
  *
  * @author Matea Sabolic
  *
- * @version alpha
+ * @version 1.0
  */
 public class TreeParser {
 
@@ -128,7 +128,7 @@ public class TreeParser {
      * @param scanner
      *            scanner.
      * @return parsed tree.
-     * @since alpha
+     * @since 1.0
      */
     public static Node parse(final Scanner scanner) {
         final Stack<Node> stack = new Stack<>();

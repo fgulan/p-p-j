@@ -9,7 +9,7 @@ import hr.fer.zemris.ppj.semantic.rule.Checker;
  *
  * @author Matea Sabolic
  *
- * @version alpha
+ * @version 1.0
  */
 public class TranslationUnitChecker implements Checker {
 
@@ -31,7 +31,7 @@ public class TranslationUnitChecker implements Checker {
      *
      * Referring pages: 65.
      *
-     * @since alpha
+     * @since 1.0
      */
     @Override
     public boolean check(final Node node) {

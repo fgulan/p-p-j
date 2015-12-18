@@ -12,7 +12,7 @@ import hr.fer.zemris.ppj.types.VoidType;
  *
  * @author Jan Kelemen
  *
- * @version alpha
+ * @version 1.0
  */
 public class TypeNameChecker implements Checker {
 
@@ -34,7 +34,7 @@ public class TypeNameChecker implements Checker {
      *
      * Referring pages: 56.
      *
-     * @since alpha
+     * @since 1.0
      */
     @Override
     public boolean check(final Node node) {

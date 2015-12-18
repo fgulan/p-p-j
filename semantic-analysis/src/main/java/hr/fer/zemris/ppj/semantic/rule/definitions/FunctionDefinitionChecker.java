@@ -16,7 +16,7 @@ import hr.fer.zemris.ppj.types.functions.FunctionType;
  *
  * @author Domagoj Polancec
  *
- * @version alpha
+ * @version 1.0
  */
 public class FunctionDefinitionChecker implements Checker {
 
@@ -38,7 +38,7 @@ public class FunctionDefinitionChecker implements Checker {
      *
      * Referring pages: 66.
      *
-     * @since alpha
+     * @since 1.0
      */
     @SuppressWarnings("unchecked")
     @Override

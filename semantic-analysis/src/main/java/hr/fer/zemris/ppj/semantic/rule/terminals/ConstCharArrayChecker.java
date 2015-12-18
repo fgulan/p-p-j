@@ -30,7 +30,7 @@ public class ConstCharArrayChecker implements Checker {
      *
      * Referring pages: 42.
      *
-     * @since alpha
+     * @since 1.0
      */
     @Override
     public boolean check(final Node node) {

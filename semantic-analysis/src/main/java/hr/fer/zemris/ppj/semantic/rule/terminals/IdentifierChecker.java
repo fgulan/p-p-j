@@ -9,7 +9,7 @@ import hr.fer.zemris.ppj.semantic.rule.Checker;
  *
  * @author Jan Kelemen
  *
- * @version alpha
+ * @version 1.0
  */
 public class IdentifierChecker implements Checker {
 
@@ -28,7 +28,7 @@ public class IdentifierChecker implements Checker {
      *
      * Referring pages: ?.
      *
-     * @since alpha
+     * @since 1.0
      */
     @Override
     public boolean check(final Node node) {

@@ -8,7 +8,7 @@ import java.util.List;
  *
  * @author Jan Kelemen
  *
- * @version alpha
+ * @version 1.0
  */
 public class SemanticErrorReporter {
 
@@ -16,17 +16,23 @@ public class SemanticErrorReporter {
     private static final List<String> reports = new ArrayList<>();
 
     /**
-     * Reports a error on production.
+     * Used to report a single semantic error during parsing.
      *
      * @param node
-     *            left side of the production.
-     * @since alpha
+     *            node with the error.
+     * @since 1.0
      */
     public static void report(final Node node) {
         reportedNodes.add(node);
         report(generateReport(node));
     }
 
+    /**
+     * Used to report a single semantic error during parsing.
+     * 
+     * @param report
+     * @since 1.0
+     */
     public static void report(final String report) {
         reports.add(report);
     }
@@ -34,15 +40,11 @@ public class SemanticErrorReporter {
     /**
      * Generates a final report (only the first semantic error).
      *
-     * @since alpha
+     * @since 1.0
      */
     public static void finalReport() {
         if (!reports.isEmpty()) {
             System.out.println(reports.get(0));
-
-            // if (!reportedNodes.isEmpty()) {
-            // System.out.println(reportedNodes.get(0).print(0));
-            // }
         }
     }
 

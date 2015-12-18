@@ -11,7 +11,7 @@ import hr.fer.zemris.ppj.types.Type;
  *
  * @author Jan Kelemen
  *
- * @version alpha
+ * @version 1.0
  */
 public class AssignExpressionChecker implements Checker {
 
@@ -33,7 +33,7 @@ public class AssignExpressionChecker implements Checker {
      *
      * Referring pages: 61.
      *
-     * @since alpha
+     * @since 1.0
      */
     @Override
     public boolean check(final Node node) {

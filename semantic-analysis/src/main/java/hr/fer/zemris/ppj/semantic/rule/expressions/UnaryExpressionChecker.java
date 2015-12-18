@@ -12,7 +12,7 @@ import hr.fer.zemris.ppj.types.Type;
  *
  * @author Jan Kelemen
  *
- * @version alpha
+ * @version 1.0
  */
 public class UnaryExpressionChecker implements Checker {
 
@@ -36,7 +36,7 @@ public class UnaryExpressionChecker implements Checker {
      *
      * Referring pages: 54, 55.
      *
-     * @since alpha
+     * @since 1.0
      */
     @Override
     public boolean check(final Node node) {

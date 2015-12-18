@@ -7,12 +7,17 @@ import hr.fer.zemris.ppj.types.arrays.ConstIntArrayType;
  *
  * @author Jan Kelemen
  *
- * @version alpha
+ * @version 1.0
  */
 public class ConstIntType extends Type {
 
     private final IntType under = new IntType();
 
+    /**
+     * Class constructor, creates a const int type.
+     *
+     * @since 1.0
+     */
     public ConstIntType() {
         super(true, false, false);
     }

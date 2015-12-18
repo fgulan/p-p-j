@@ -8,7 +8,7 @@ import hr.fer.zemris.ppj.semantic.rule.Checker;
  *
  * @author Jan Kelemen
  *
- * @version alpha
+ * @version 1.0
  */
 public class UnaryOperatorChecker implements Checker {
 
@@ -32,7 +32,7 @@ public class UnaryOperatorChecker implements Checker {
      *
      * Referring pages: 55.
      *
-     * @since alpha
+     * @since 1.0
      */
     @Override
     public boolean check(final Node node) {

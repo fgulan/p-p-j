@@ -5,8 +5,8 @@ import java.util.List;
 
 import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
+import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.Utils;
-import hr.fer.zemris.ppj.semantic.exceptions.MysteriousBugException;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
 import hr.fer.zemris.ppj.semantic.rule.definitions.ParameterListChecker;
 import hr.fer.zemris.ppj.types.Type;
@@ -18,7 +18,7 @@ import hr.fer.zemris.ppj.types.functions.FunctionType;
  *
  * @author Domagoj Polancec
  *
- * @version alpha
+ * @version 1.0
  */
 public class DirectDeclaratorChecker implements Checker {
 
@@ -45,7 +45,7 @@ public class DirectDeclaratorChecker implements Checker {
      *
      * Referring pages: 69, 70.
      *
-     * @since alpha
+     * @since 1.0
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -132,11 +132,9 @@ public class DirectDeclaratorChecker implements Checker {
 
         }
 
-        throw new MysteriousBugException(
-                "If this line ever executes, Parser has failed or an if statement" + " is missing a return statement. "
-                        + "Expected: 'BROJ', 'KR_VOID' or " + ParameterListChecker.HR_NAME + ".");
-        // Uncomment before deployment
-        // return true;
+        System.err.println("Shold never happen");
+        SemanticErrorReporter.report(node);
+        return false;
     }
 
 }
