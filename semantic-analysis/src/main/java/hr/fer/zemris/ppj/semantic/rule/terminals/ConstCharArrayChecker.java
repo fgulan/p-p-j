@@ -35,34 +35,62 @@ public class ConstCharArrayChecker implements Checker {
     @Override
     public boolean check(Node node) {
         String value = (String) node.getAttribute(Attribute.VALUE);
-
-        if (value.equals("\"\\\"")) {
+        if ((value.charAt(0) == '"') && ((value.charAt(value.length() - 1)) == '"')) {
+            value = value.substring(1, value.length() - 1); // Trim quotes.
+        }
+        else {
             return false;
         }
 
-        for (int i = 1; i < (value.length() - 1); i++) {
+        String rawValue = "";
+
+        for (int i = 0; i < value.length(); i++) {
             char currentChar = value.charAt(i);
-            if ((currentChar == '\'') || (currentChar == '\"')) {
+            if (currentChar == '\\') {
+                if ((i + 1) < value.length()) {
+                    char nextChar = value.charAt(i + 1);
+                    switch (nextChar) {
+                        case 't':
+                            rawValue += '\t';
+                            i++;
+                            break;
+                        case 'n':
+                            rawValue += '\n';
+                            i++;
+                            break;
+                        case '0':
+                            rawValue += '\0';
+                            i++;
+                            break;
+                        case '\'':
+                            rawValue += '\'';
+                            i++;
+                            break;
+                        case '\"':
+                            rawValue += '"';
+                            i++;
+                            break;
+                        case '\\':
+                            rawValue += '\\';
+                            i++;
+                            break;
+                        default:
+                            return false;
+                    }
+                }
+                else {
+                    return false;
+                }
+            }
+            else if (currentChar == '"') {
                 return false;
             }
-
-            if ((value.charAt(i) == '\\') && ((i + 1) < (value.length() - 1))) {
-                char nextChar = value.charAt(i + 1);
-                switch (nextChar) {
-                    case 't':
-                    case 'n':
-                    case '0':
-                    case '\'':
-                    case '"':
-                    case '\\':
-                        i++;
-                        break;
-                    default:
-                        return false;
-                }
+            else {
+                rawValue += currentChar;
             }
         }
 
+        node.addAttribute(Attribute.VALUE, rawValue);
         return true;
     }
 }

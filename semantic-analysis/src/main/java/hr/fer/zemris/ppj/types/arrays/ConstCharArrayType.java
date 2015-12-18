@@ -12,17 +12,6 @@ import hr.fer.zemris.ppj.types.Type;
  */
 public class ConstCharArrayType extends ArrayType {
 
-    public static int length(String value) {
-        int length = 0;
-        for (int i = 1; i < (value.length() - 1); i++) {
-            if (value.charAt(i) == '\\') {
-                i++;
-            }
-            length++;
-        }
-        return length + 1;
-    }
-
     public ConstCharArrayType() {
         super(true);
     }

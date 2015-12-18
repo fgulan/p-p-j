@@ -36,17 +36,39 @@ public class IntChecker implements Checker {
     public boolean check(Node node) {
         String value = (String) node.getAttribute((Attribute.VALUE));
 
-        if (!value.matches("(-|\\+)?\\d+")) {
-            return false;
-        }
-
+        int intVal = 0;
         try {
-            node.addAttribute(Attribute.VALUE, Integer.parseInt((String) node.getAttribute(Attribute.VALUE)));
+            if (value.length() == 1) {
+                intVal = Integer.parseInt(value);
+            }
+            else {
+                boolean negative = value.startsWith("-");
+                if (negative) {
+                    value = value.substring(1);
+                }
+
+                if (value.startsWith("0x") || value.startsWith("0X")) {
+                    value = value.substring(2);
+                    intVal = Integer.parseInt(value, 16);
+                }
+                else if (value.startsWith("0")) {
+                    value = value.substring(1);
+                    intVal = Integer.parseInt(value, 8);
+                }
+                else {
+                    intVal = Integer.parseInt(value);
+                }
+
+                if (negative) {
+                    intVal *= -1;
+                }
+            }
         }
         catch (NumberFormatException e) {
             return false;
         }
 
+        node.addAttribute(Attribute.VALUE, intVal);
         return true;
     }
 
