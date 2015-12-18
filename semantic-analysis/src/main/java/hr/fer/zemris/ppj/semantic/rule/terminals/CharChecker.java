@@ -33,7 +33,7 @@ public class CharChecker implements Checker {
      * @since alpha
      */
     @Override
-    public boolean check(Node node) {
+    public boolean check(final Node node) {
         String value = (String) node.getAttribute(Attribute.VALUE);
         value = value.substring(1, value.length() - 1);
 

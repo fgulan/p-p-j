@@ -49,18 +49,18 @@ public class DirectDeclaratorChecker implements Checker {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public boolean check(Node node) {
+    public boolean check(final Node node) {
 
-        Node idn = node.getChild(0);
+        final Node idn = node.getChild(0);
         if (!idn.check()) {
             return Utils.badNode(node);
         }
 
-        Type type = (Type) node.getAttribute(Attribute.ITYPE);
+        final Type type = (Type) node.getAttribute(Attribute.ITYPE);
 
-        String name = (String) idn.getAttribute(Attribute.VALUE);
+        final String name = (String) idn.getAttribute(Attribute.VALUE);
 
-        int size = node.childrenCount();
+        final int size = node.childrenCount();
         if (size == 1) {
 
             if (type.equals(new VoidType())) {
@@ -76,7 +76,7 @@ public class DirectDeclaratorChecker implements Checker {
         }
 
         for (int i = 1; i < size; i++) {
-            Node child = node.getChild(i);
+            final Node child = node.getChild(i);
 
             if (!child.check()) {
                 return Utils.badNode(node);
@@ -88,12 +88,12 @@ public class DirectDeclaratorChecker implements Checker {
                     return Utils.badNode(node);
                 }
 
-                Type arrayType = type.toArray();
+                final Type arrayType = type.toArray();
                 if (!node.identifierTable().declareVariable(name, arrayType)) {
                     return Utils.badNode(node);
                 }
 
-                int value = (int) child.getAttribute(Attribute.VALUE);
+                final int value = (int) child.getAttribute(Attribute.VALUE);
                 if ((value < MIN_ARRAY_SIZE) || (value > MAX_ARRAY_SIZE)) {
                     return Utils.badNode(node);
                 }
@@ -106,7 +106,7 @@ public class DirectDeclaratorChecker implements Checker {
 
             if (child.name().equals("KR_VOID")) {
 
-                List<Type> args = new ArrayList<>();
+                final List<Type> args = new ArrayList<>();
                 if (!Utils.handleFunction(node.identifierTable(), name, args, type)) {
                     return Utils.badNode(node);
                 }
@@ -118,7 +118,7 @@ public class DirectDeclaratorChecker implements Checker {
 
             if (child.name().equals(ParameterListChecker.HR_NAME)) {
 
-                List<Type> args = (List<Type>) child.getAttribute(Attribute.TYPES);
+                final List<Type> args = (List<Type>) child.getAttribute(Attribute.TYPES);
 
                 if (!Utils.handleFunction(node.identifierTable(), name, args, type)) {
                     return Utils.badNode(node);

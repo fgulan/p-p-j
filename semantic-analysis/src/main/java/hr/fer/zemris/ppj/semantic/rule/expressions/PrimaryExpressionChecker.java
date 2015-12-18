@@ -42,9 +42,9 @@ public class PrimaryExpressionChecker implements Checker {
      * @since alpha
      */
     @Override
-    public boolean check(Node node) {
-        Node firstChild = node.getChild(0);
-        String firstSymbol = firstChild.name();
+    public boolean check(final Node node) {
+        final Node firstChild = node.getChild(0);
+        final String firstSymbol = firstChild.name();
 
         // <primarni_izraz> ::= IDN
         if ("IDN".equals(firstSymbol)) {
@@ -55,13 +55,13 @@ public class PrimaryExpressionChecker implements Checker {
                 return false;
             }
 
-            String name = (String) firstChild.getAttribute(Attribute.VALUE);
+            final String name = (String) firstChild.getAttribute(Attribute.VALUE);
             if (!node.identifierTable().isDeclared(name)) {
                 SemanticErrorReporter.report(node);
                 return false;
             }
 
-            Type type = node.identifierTable().identifierType(name);
+            final Type type = node.identifierTable().identifierType(name);
 
             node.addAttribute(Attribute.TYPE, type);
             node.addAttribute(Attribute.L_EXPRESSION, type.isLExpression());
@@ -112,7 +112,7 @@ public class PrimaryExpressionChecker implements Checker {
 
         // <primarni_izraz> ::= L_ZAGRADA <izraz> D_ZAGRADA
         if ("L_ZAGRADA".equals(firstSymbol)) {
-            Node expression = node.getChild(1);
+            final Node expression = node.getChild(1);
 
             // 1. provjeri(<izraz>)
             if (!expression.check()) {

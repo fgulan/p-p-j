@@ -34,12 +34,12 @@ public class OuterDeclarationChecker implements Checker {
      * @since alpha
      */
     @Override
-    public boolean check(Node node) {
-        
-        if (!node.getChild(0).check()){
+    public boolean check(final Node node) {
+
+        if (!node.getChild(0).check()) {
             Utils.badNode(node);
         }
-        
+
         return true;
     }
 

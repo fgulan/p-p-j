@@ -36,21 +36,21 @@ public class DeclarationChecker implements Checker {
      * @since alpha
      */
     @Override
-    public boolean check(Node node) {
-        List<Node> children = node.getChildren();
-        
-        Node typeNode = children.get(0);
-        Node initDeclListNode = children.get(1);
-        
-        if (!typeNode.check()){
+    public boolean check(final Node node) {
+        final List<Node> children = node.getChildren();
+
+        final Node typeNode = children.get(0);
+        final Node initDeclListNode = children.get(1);
+
+        if (!typeNode.check()) {
             return Utils.badNode(typeNode);
         }
-        
+
         initDeclListNode.addAttribute(Attribute.ITYPE, typeNode.getAttribute(Attribute.TYPE));
-        if (!children.get(1).check()){
+        if (!children.get(1).check()) {
             return Utils.badNode(initDeclListNode);
         }
-        
+
         return true;
     }
 

@@ -36,12 +36,12 @@ public class MainFunctionChecker implements Checker {
      * @since alpha
      */
     @Override
-    public boolean check(Node node) {
+    public boolean check(final Node node) {
         return true;
     }
 
     public static boolean sprutJeProvokator() {
-        FunctionType functionType = IdentifierTable.GLOBAL_SCOPE.function("main");
+        final FunctionType functionType = IdentifierTable.GLOBAL_SCOPE.function("main");
 
         if (functionType == null) {
             SemanticErrorReporter.report("main");

@@ -34,14 +34,14 @@ public class DeclarationListChecker implements Checker {
      * @since alpha
      */
     @Override
-    public boolean check(Node node) {
-        
-        for (Node current: node.getChildren()){
-            if (!current.check()){
+    public boolean check(final Node node) {
+
+        for (final Node current : node.getChildren()) {
+            if (!current.check()) {
                 return Utils.badNode(node);
             }
         }
-        
+
         return true;
     }
 

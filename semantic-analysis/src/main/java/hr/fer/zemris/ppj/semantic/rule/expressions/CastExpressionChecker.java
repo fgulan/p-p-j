@@ -36,9 +36,9 @@ public class CastExpressionChecker implements Checker {
      * @since alpha
      */
     @Override
-    public boolean check(Node node) {
-        Node firstChild = node.getChild(0);
-        String firstSymbol = firstChild.name();
+    public boolean check(final Node node) {
+        final Node firstChild = node.getChild(0);
+        final String firstSymbol = firstChild.name();
 
         // <cast_izraz> ::= <unarni_izraz>
         if ("<unarni_izraz>".equals(firstSymbol)) {
@@ -56,14 +56,14 @@ public class CastExpressionChecker implements Checker {
 
         // <cast_izraz> ::= L_ZAGRADA <ime_tipa> D_ZAGRADA <cast_izraz>
         if ("L_ZAGRADA".equals(firstSymbol)) {
-            Node secondChild = node.getChild(1);
+            final Node secondChild = node.getChild(1);
             // 1. provjeri(<ime_tipa>)
             if (!secondChild.check()) {
                 SemanticErrorReporter.report(node);
                 return false;
             }
 
-            Node fourthChild = node.getChild(3);
+            final Node fourthChild = node.getChild(3);
             // 2. provjeri(<cast_izraz>
             if (!fourthChild.check()) {
                 SemanticErrorReporter.report(node);
@@ -71,8 +71,8 @@ public class CastExpressionChecker implements Checker {
             }
 
             // <cast_izraz>.tip se moze pretvoriti u <ime_tipa>.tip
-            Type from = (Type) fourthChild.getAttribute(Attribute.TYPE);
-            Type to = (Type) secondChild.getAttribute(Attribute.TYPE);
+            final Type from = (Type) fourthChild.getAttribute(Attribute.TYPE);
+            final Type to = (Type) secondChild.getAttribute(Attribute.TYPE);
             if (!from.explicitConversion(to)) {
                 SemanticErrorReporter.report(node);
                 return false;

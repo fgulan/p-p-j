@@ -35,8 +35,8 @@ public class ExpressionInstructionChecker implements Checker {
      * @since alpha
      */
     @Override
-    public boolean check(Node node) {
-        Node expression = node.getChild(0);
+    public boolean check(final Node node) {
+        final Node expression = node.getChild(0);
 
         // <izraz_naredba> ::= <izraz> TOCKAZAREZ
         if ("<izraz>".equals(expression.name())) {
@@ -48,13 +48,13 @@ public class ExpressionInstructionChecker implements Checker {
             node.addAttribute(Attribute.TYPE, expression.getAttribute(Attribute.TYPE));
             return true;
         }
-        
+
         // <izraz_naredba> ::= TOCKAZAREZ
         if ("TOCKAZAREZ".equals(expression.name())) {
             node.addAttribute(Attribute.TYPE, expression.getAttribute(Attribute.TYPE));
             return true;
         }
-        
+
         System.err.println("Shold never happen");
         SemanticErrorReporter.report(node);
         return false;

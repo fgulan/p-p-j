@@ -34,9 +34,9 @@ public class TranslationUnitChecker implements Checker {
      * @since alpha
      */
     @Override
-    public boolean check(Node node) {
-        Node firstChild = node.getChild(0);
-        String firstSymbol = firstChild.name();
+    public boolean check(final Node node) {
+        final Node firstChild = node.getChild(0);
+        final String firstSymbol = firstChild.name();
         // <prijevodna_jedinica> ::= <vanjska_deklaracija>
         if ("<vanjska_deklaracija>".equals(firstSymbol)) {
 
@@ -49,7 +49,7 @@ public class TranslationUnitChecker implements Checker {
             return true;
         }
 
-        Node secondChild = node.getChild(1);
+        final Node secondChild = node.getChild(1);
         // <prijevodna_jedinica> ::= <prijevodna_jedinica> <vanjska_deklaracija>
         if ("<prijevodna_jedinica>".equals(firstSymbol)) {
 

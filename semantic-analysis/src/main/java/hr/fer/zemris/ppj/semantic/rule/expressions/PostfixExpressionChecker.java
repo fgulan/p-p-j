@@ -44,9 +44,9 @@ public class PostfixExpressionChecker implements Checker {
      * @since alpha
      */
     @Override
-    public boolean check(Node node) {
-        Node firstChild = node.getChild(0);
-        String firstSymbol = firstChild.name();
+    public boolean check(final Node node) {
+        final Node firstChild = node.getChild(0);
+        final String firstSymbol = firstChild.name();
 
         // <postfiks_izraz> ::= <primarni_izraz>
         if ("<primarni_izraz>".equals(firstSymbol)) {
@@ -62,8 +62,8 @@ public class PostfixExpressionChecker implements Checker {
             return true;
         }
 
-        Node secondChild = node.getChild(1);
-        String secondSymbol = secondChild.name();
+        final Node secondChild = node.getChild(1);
+        final String secondSymbol = secondChild.name();
         // <postfiks_izraz> ::= <postfiks_izraz> OP_INC
         if ("<postfiks_izraz>".equals(firstSymbol) && "OP_INC".equals(secondSymbol)) {
             // IDENTICNO KAO I FUNKCIJA ISPOD, U SLUCAJU BUGA ISPRAVITI OBJE
@@ -75,7 +75,7 @@ public class PostfixExpressionChecker implements Checker {
             }
 
             // 2. <postfiks_izraz>.l-izraz = 1 && <postfiks_izraz>.tip ~ int
-            Type type1 = (Type) firstChild.getAttribute(Attribute.TYPE);
+            final Type type1 = (Type) firstChild.getAttribute(Attribute.TYPE);
             if (!(firstChild.getAttribute(Attribute.L_EXPRESSION).equals(true)
                     && type1.implicitConversion(new IntType()))) {
                 SemanticErrorReporter.report(node);
@@ -97,7 +97,7 @@ public class PostfixExpressionChecker implements Checker {
             }
 
             // 2. <postfiks_izraz>.l-izraz = 1 && <postfiks_izraz>.tip ~ int
-            Type type1 = (Type) firstChild.getAttribute(Attribute.TYPE);
+            final Type type1 = (Type) firstChild.getAttribute(Attribute.TYPE);
             if (!(firstChild.getAttribute(Attribute.L_EXPRESSION).equals(true)
                     && type1.implicitConversion(new IntType()))) {
                 SemanticErrorReporter.report(node);
@@ -109,8 +109,8 @@ public class PostfixExpressionChecker implements Checker {
             return true;
         }
 
-        Node thirdChild = node.getChild(2);
-        String thirdSymbol = thirdChild.name();
+        final Node thirdChild = node.getChild(2);
+        final String thirdSymbol = thirdChild.name();
         // <postfiks_izraz> ::= <postfiks_izraz> L_ZAGRADA D_ZAGRADA
         if ("<postfiks_izraz>".equals(firstSymbol) && "L_ZAGRADA".equals(secondSymbol)
                 && "D_ZAGRADA".equals(thirdSymbol)) {
@@ -122,7 +122,7 @@ public class PostfixExpressionChecker implements Checker {
             }
 
             // 2. <postfiks_izraz>.tip = funkcija(void -> pov)
-            FunctionType function = (FunctionType) firstChild.getAttribute(Attribute.TYPE);
+            final FunctionType function = (FunctionType) firstChild.getAttribute(Attribute.TYPE);
             if (!function.argumentList().isEmpty()) {
                 SemanticErrorReporter.report(node);
                 return false;
@@ -150,28 +150,28 @@ public class PostfixExpressionChecker implements Checker {
             }
 
             // 3. <postfiks_izraz>.tip = funkcija(params -> pov)
-            Type type = (Type) firstChild.getAttribute(Attribute.TYPE);
+            final Type type = (Type) firstChild.getAttribute(Attribute.TYPE);
             if (!type.isFunction()) {
                 SemanticErrorReporter.report(node);
                 return false;
             }
-            FunctionType function = (FunctionType) type;
+            final FunctionType function = (FunctionType) type;
             if (function.argumentList().isEmpty()) {
                 SemanticErrorReporter.report(node);
                 return false;
             }
 
             // 3. provjera implicitnih konverzija parametara
-            List<Type> declarationTypes = function.argumentList();
+            final List<Type> declarationTypes = function.argumentList();
             @SuppressWarnings("unchecked")
-            List<Type> callingArguments = (List<Type>) thirdChild.getAttribute(Attribute.TYPES);
+            final List<Type> callingArguments = (List<Type>) thirdChild.getAttribute(Attribute.TYPES);
             if (declarationTypes.size() != callingArguments.size()) {
                 SemanticErrorReporter.report(node);
                 return false;
             }
             for (int i = 0; i < declarationTypes.size(); i++) {
-                Type from = callingArguments.get(i);
-                Type to = declarationTypes.get(i);
+                final Type from = callingArguments.get(i);
+                final Type to = declarationTypes.get(i);
                 if (!from.implicitConversion(to)) {
                     SemanticErrorReporter.report(node);
                     return false;
@@ -193,7 +193,7 @@ public class PostfixExpressionChecker implements Checker {
                 return false;
             }
 
-            Type type = (Type) firstChild.getAttribute(Attribute.TYPE);
+            final Type type = (Type) firstChild.getAttribute(Attribute.TYPE);
 
             // 2. <postfiks_izraz>.tip = niz(X)
             if (!type.isArray()) {
@@ -208,13 +208,13 @@ public class PostfixExpressionChecker implements Checker {
             }
 
             // 4. <izraz>.tip ~ int
-            Type ex = (Type) thirdChild.getAttribute(Attribute.TYPE);
+            final Type ex = (Type) thirdChild.getAttribute(Attribute.TYPE);
             if (!ex.implicitConversion(new IntType())) {
                 SemanticErrorReporter.report(node);
                 return false;
             }
 
-            Type under = type.fromArray();
+            final Type under = type.fromArray();
             node.addAttribute(Attribute.TYPE, under);
             node.addAttribute(Attribute.L_EXPRESSION, !under.isConst());
             return true;

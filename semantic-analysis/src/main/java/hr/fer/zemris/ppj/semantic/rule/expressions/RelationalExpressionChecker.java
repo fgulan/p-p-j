@@ -40,9 +40,9 @@ public class RelationalExpressionChecker implements Checker {
      * @since alpha
      */
     @Override
-    public boolean check(Node node) {
-        Node firstChild = node.getChild(0);
-        String firstSymbol = firstChild.name();
+    public boolean check(final Node node) {
+        final Node firstChild = node.getChild(0);
+        final String firstSymbol = firstChild.name();
 
         // <odnosni_izraz> ::= <aditivni_izraz>
         if ("<aditivni_izraz>".equals(firstSymbol)) {
@@ -57,9 +57,9 @@ public class RelationalExpressionChecker implements Checker {
             node.addAttribute(Attribute.L_EXPRESSION, firstChild.getAttribute(Attribute.L_EXPRESSION));
             return true;
         }
-        Node secondChild = node.getChild(1);
-        String secondSymbol = secondChild.name();
-        Node thirdChild = node.getChild(2);
+        final Node secondChild = node.getChild(1);
+        final String secondSymbol = secondChild.name();
+        final Node thirdChild = node.getChild(2);
 
         // <odnosni_izraz> ::= <odnosni_izraz> OP_LT <aditivni_izraz>
         if ("OP_LT".equals(secondSymbol)) {
@@ -71,7 +71,7 @@ public class RelationalExpressionChecker implements Checker {
             }
 
             // 2. <odnosni_izraz>.tip ~ int
-            Type type1 = (Type) firstChild.getAttribute(Attribute.TYPE);
+            final Type type1 = (Type) firstChild.getAttribute(Attribute.TYPE);
             if (!type1.implicitConversion(new IntType())) {
                 SemanticErrorReporter.report(node);
                 return false;
@@ -84,7 +84,7 @@ public class RelationalExpressionChecker implements Checker {
             }
 
             // 4. <aditivni_izraz>.tip ~ int
-            Type type2 = (Type) thirdChild.getAttribute(Attribute.TYPE);
+            final Type type2 = (Type) thirdChild.getAttribute(Attribute.TYPE);
             if (!type2.implicitConversion(new IntType())) {
                 SemanticErrorReporter.report(node);
                 return false;
@@ -105,7 +105,7 @@ public class RelationalExpressionChecker implements Checker {
             }
 
             // 2. <odnosni_izraz>.tip ~ int
-            Type type1 = (Type) firstChild.getAttribute(Attribute.TYPE);
+            final Type type1 = (Type) firstChild.getAttribute(Attribute.TYPE);
             if (!type1.implicitConversion(new IntType())) {
                 SemanticErrorReporter.report(node);
                 return false;
@@ -118,7 +118,7 @@ public class RelationalExpressionChecker implements Checker {
             }
 
             // 4. <aditivni_izraz>.tip ~ int
-            Type type2 = (Type) thirdChild.getAttribute(Attribute.TYPE);
+            final Type type2 = (Type) thirdChild.getAttribute(Attribute.TYPE);
             if (!type2.implicitConversion(new IntType())) {
                 SemanticErrorReporter.report(node);
                 return false;
@@ -139,7 +139,7 @@ public class RelationalExpressionChecker implements Checker {
             }
 
             // 2. <odnosni_izraz>.tip ~ int
-            Type type1 = (Type) firstChild.getAttribute(Attribute.TYPE);
+            final Type type1 = (Type) firstChild.getAttribute(Attribute.TYPE);
             if (!type1.implicitConversion(new IntType())) {
                 SemanticErrorReporter.report(node);
                 return false;
@@ -152,7 +152,7 @@ public class RelationalExpressionChecker implements Checker {
             }
 
             // 4. <aditivni_izraz>.tip ~ int
-            Type type2 = (Type) thirdChild.getAttribute(Attribute.TYPE);
+            final Type type2 = (Type) thirdChild.getAttribute(Attribute.TYPE);
             if (!type2.implicitConversion(new IntType())) {
                 SemanticErrorReporter.report(node);
                 return false;
@@ -173,7 +173,7 @@ public class RelationalExpressionChecker implements Checker {
             }
 
             // 2. <odnosni_izraz>.tip ~ int
-            Type type1 = (Type) firstChild.getAttribute(Attribute.TYPE);
+            final Type type1 = (Type) firstChild.getAttribute(Attribute.TYPE);
             if (!type1.implicitConversion(new IntType())) {
                 SemanticErrorReporter.report(node);
                 return false;
@@ -186,7 +186,7 @@ public class RelationalExpressionChecker implements Checker {
             }
 
             // 4. <aditivni_izraz>.tip ~ int
-            Type type2 = (Type) thirdChild.getAttribute(Attribute.TYPE);
+            final Type type2 = (Type) thirdChild.getAttribute(Attribute.TYPE);
             if (!type2.implicitConversion(new IntType())) {
                 SemanticErrorReporter.report(node);
                 return false;

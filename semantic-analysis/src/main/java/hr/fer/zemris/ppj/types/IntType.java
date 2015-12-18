@@ -16,7 +16,7 @@ public class IntType extends Type {
     }
 
     @Override
-    public boolean implicitConversion(Type to) {
+    public boolean implicitConversion(final Type to) {
         if ((to instanceof IntType) || (to instanceof ConstIntType)) {
             return true;
         }
@@ -25,7 +25,7 @@ public class IntType extends Type {
     }
 
     @Override
-    public boolean explicitConversion(Type to) {
+    public boolean explicitConversion(final Type to) {
         if ((to instanceof IntType) || (to instanceof ConstIntType) || (to instanceof CharType)
                 || (to instanceof ConstCharType)) {
             return true;
@@ -55,7 +55,7 @@ public class IntType extends Type {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         return obj instanceof IntType;
     }
 

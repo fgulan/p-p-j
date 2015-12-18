@@ -24,7 +24,7 @@ public class SemantickiAnalizator {
      * @since alpha
      */
     public static void main(String[] args) {
-        Node node = TreeParser.parse(new Scanner(System.in));
+        final Node node = TreeParser.parse(new Scanner(System.in));
         node.check();
         MainFunctionChecker.sprutJeProvokator();
         DefinedFunctionsChecker.sprutJeProvokator();

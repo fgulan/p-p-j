@@ -39,13 +39,13 @@ public class DefinedFunctionsChecker implements Checker {
      * @since alpha
      */
     @Override
-    public boolean check(Node node) {
+    public boolean check(final Node node) {
         return true;
     }
 
     public static boolean sprutJeProvokator() {
-        Set<IdentifierTypeWrapper> declared = new HashSet<>(IdentifierTable.declaredFunctions);
-        Set<IdentifierTypeWrapper> defined = new HashSet<>(IdentifierTable.definedFunctions);
+        final Set<IdentifierTypeWrapper> declared = new HashSet<>(IdentifierTable.declaredFunctions);
+        final Set<IdentifierTypeWrapper> defined = new HashSet<>(IdentifierTable.definedFunctions);
 
         if (!defined.containsAll(declared)) {
             SemanticErrorReporter.report("funkcija");

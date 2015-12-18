@@ -47,7 +47,7 @@ public enum Attribute {
      * pov
      */
     RETURN_VALUE, // VariableType
-    
+
     /**
      * inherited type
      */
@@ -56,23 +56,23 @@ public enum Attribute {
     /**
      * Unutar petlje
      */
-    INSIDE_LOOP,// boolean
+    INSIDE_LOOP, // boolean
 
     /**
      * number of chars in char string
      */
     CELEM_COUNT, // int
-    
+
     /**
      * parameter names
      */
     VALUES, // List<String>
-    
+
     /**
      * function name
      */
     FUNCTION_NAME, // String
-    
+
     // IDK ovo treba popuniti po potrebi
 
 }

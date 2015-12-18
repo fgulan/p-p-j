@@ -35,7 +35,7 @@ public class UnaryOperatorChecker implements Checker {
      * @since alpha
      */
     @Override
-    public boolean check(Node node) {
+    public boolean check(final Node node) {
         return true;
     }
 

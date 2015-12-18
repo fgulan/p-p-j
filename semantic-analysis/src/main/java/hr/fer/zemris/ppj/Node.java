@@ -130,7 +130,7 @@ public class Node {
         attributes.put(type, value);
 
         if (children != null) {
-            for (Node child : children) {
+            for (final Node child : children) {
                 child.addAttributeRecursive(type, value);
             }
         }

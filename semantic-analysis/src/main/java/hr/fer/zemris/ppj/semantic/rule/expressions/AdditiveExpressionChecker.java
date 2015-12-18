@@ -38,9 +38,9 @@ public class AdditiveExpressionChecker implements Checker {
      * @since alpha
      */
     @Override
-    public boolean check(Node node) {
-        Node firstChild = node.getChild(0);
-        String firstSymbol = firstChild.name();
+    public boolean check(final Node node) {
+        final Node firstChild = node.getChild(0);
+        final String firstSymbol = firstChild.name();
 
         // <aditivni_izraz> ::= <multiplikativni_izraz>
         if ("<multiplikativni_izraz>".equals(firstSymbol)) {
@@ -56,9 +56,9 @@ public class AdditiveExpressionChecker implements Checker {
             return true;
         }
 
-        Node secondChild = node.getChild(1);
-        String secondSymbol = secondChild.name();
-        Node thirdChild = node.getChild(2);
+        final Node secondChild = node.getChild(1);
+        final String secondSymbol = secondChild.name();
+        final Node thirdChild = node.getChild(2);
 
         // <aditivni_izraz> ::= <aditivni_izraz> PLUS <multiplikativni_izraz>
         if ("PLUS".equals(secondSymbol)) {
@@ -69,7 +69,7 @@ public class AdditiveExpressionChecker implements Checker {
                 return false;
             }
 
-            Type type1 = (Type) firstChild.getAttribute(Attribute.TYPE);
+            final Type type1 = (Type) firstChild.getAttribute(Attribute.TYPE);
             // 2. <aditivni_izraz>.tip ~ int
             if (!type1.implicitConversion(new IntType())) {
                 SemanticErrorReporter.report(node);
@@ -82,7 +82,7 @@ public class AdditiveExpressionChecker implements Checker {
                 return false;
             }
 
-            Type type2 = (Type) thirdChild.getAttribute(Attribute.TYPE);
+            final Type type2 = (Type) thirdChild.getAttribute(Attribute.TYPE);
             // 4. <multiplikativni_izraz>.tip ~ int
             if (!type2.implicitConversion(new IntType())) {
                 SemanticErrorReporter.report(node);
@@ -104,7 +104,7 @@ public class AdditiveExpressionChecker implements Checker {
             }
 
             // 2. <aditivni_izraz>.tip ~ int
-            Type type1 = (Type) firstChild.getAttribute(Attribute.TYPE);
+            final Type type1 = (Type) firstChild.getAttribute(Attribute.TYPE);
             if (!type1.implicitConversion(new IntType())) {
                 SemanticErrorReporter.report(node);
                 return false;
@@ -117,7 +117,7 @@ public class AdditiveExpressionChecker implements Checker {
             }
 
             // 4. <multiplikativni_izraz>.tip ~ int
-            Type type2 = (Type) thirdChild.getAttribute(Attribute.TYPE);
+            final Type type2 = (Type) thirdChild.getAttribute(Attribute.TYPE);
             if (!type2.implicitConversion(new IntType())) {
                 SemanticErrorReporter.report(node);
                 return false;

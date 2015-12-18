@@ -42,7 +42,7 @@ public class FunctionDefinitionChecker implements Checker {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public boolean check(Node node) {
+    public boolean check(final Node node) {
         Type type;
         String name;
         List<Type> types;
@@ -82,15 +82,15 @@ public class FunctionDefinitionChecker implements Checker {
             node.addAttribute(Attribute.VALUES, names);
         }
 
-        FunctionType function = new FunctionType(type, types);
-        Type declared = IdentifierTable.GLOBAL_SCOPE.identifierType(name);
+        final FunctionType function = new FunctionType(type, types);
+        final Type declared = IdentifierTable.GLOBAL_SCOPE.identifierType(name);
         if ((declared != null) && !declared.equals(function)) {
             return Utils.badNode(node);
         }
 
         IdentifierTable.GLOBAL_SCOPE.defineFunction(name, type, types);
 
-        int paramCount = names.size();
+        final int paramCount = names.size();
         for (int i = 0; i < paramCount; i++) {
             node.identifierTable().declareVariable(names.get(i), types.get(i));
         }

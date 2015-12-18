@@ -38,9 +38,9 @@ public class EqualityExpressionChecker implements Checker {
      * @since alpha
      */
     @Override
-    public boolean check(Node node) {
-        Node firstChild = node.getChild(0);
-        String firstSymbol = firstChild.name();
+    public boolean check(final Node node) {
+        final Node firstChild = node.getChild(0);
+        final String firstSymbol = firstChild.name();
 
         // <jedankosni_izraz> ::= <odnosni_izraz>
         if ("<odnosni_izraz>".equals(firstSymbol)) {
@@ -56,9 +56,9 @@ public class EqualityExpressionChecker implements Checker {
             return true;
         }
 
-        Node secondChild = node.getChild(1);
-        String secondSymbol = secondChild.name();
-        Node thirdChild = node.getChild(2);
+        final Node secondChild = node.getChild(1);
+        final String secondSymbol = secondChild.name();
+        final Node thirdChild = node.getChild(2);
 
         // <jednakosni_izraz> ::= <jednakosni_izraz> OP_EQ <odnosni_izraz>
         if ("OP_EQ".equals(secondSymbol)) {
@@ -70,7 +70,7 @@ public class EqualityExpressionChecker implements Checker {
             }
 
             // 2. <jednakosni_izraz>.tip ~ int
-            Type type1 = (Type) firstChild.getAttribute(Attribute.TYPE);
+            final Type type1 = (Type) firstChild.getAttribute(Attribute.TYPE);
             if (!type1.implicitConversion(new IntType())) {
                 SemanticErrorReporter.report(node);
                 return false;
@@ -83,7 +83,7 @@ public class EqualityExpressionChecker implements Checker {
             }
 
             // 4. <jednakosni_izraz>.tip ~ int
-            Type type2 = (Type) thirdChild.getAttribute(Attribute.TYPE);
+            final Type type2 = (Type) thirdChild.getAttribute(Attribute.TYPE);
             if (!type2.implicitConversion(new IntType())) {
                 SemanticErrorReporter.report(node);
                 return false;
@@ -104,7 +104,7 @@ public class EqualityExpressionChecker implements Checker {
             }
 
             // 2. <jednakosni_izraz>.tip ~ int
-            Type type1 = (Type) firstChild.getAttribute(Attribute.TYPE);
+            final Type type1 = (Type) firstChild.getAttribute(Attribute.TYPE);
             if (!type1.implicitConversion(new IntType())) {
                 SemanticErrorReporter.report(node);
                 return false;
@@ -117,7 +117,7 @@ public class EqualityExpressionChecker implements Checker {
             }
 
             // 4. <jednakosni_izraz>.tip ~ int
-            Type type2 = (Type) thirdChild.getAttribute(Attribute.TYPE);
+            final Type type2 = (Type) thirdChild.getAttribute(Attribute.TYPE);
             if (!type2.implicitConversion(new IntType())) {
                 SemanticErrorReporter.report(node);
                 return false;

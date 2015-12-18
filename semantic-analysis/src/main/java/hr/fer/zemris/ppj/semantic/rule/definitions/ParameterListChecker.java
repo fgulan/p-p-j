@@ -40,9 +40,9 @@ public class ParameterListChecker implements Checker {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public boolean check(Node node) {
+    public boolean check(final Node node) {
 
-        int size = node.childrenCount();
+        final int size = node.childrenCount();
         List<Type> types = new ArrayList<>();
         List<String> names = new ArrayList<>();
 
@@ -58,11 +58,11 @@ public class ParameterListChecker implements Checker {
             decl = node.getChild(2);
         }
 
-        String name = (String) decl.getAttribute(Attribute.VALUE);
-        Type type = (Type) decl.getAttribute(Attribute.TYPE);
+        final String name = (String) decl.getAttribute(Attribute.VALUE);
+        final Type type = (Type) decl.getAttribute(Attribute.TYPE);
 
         if (node.getChild(0).name().equals(ParameterListChecker.HR_NAME)) {
-            List<String> oldNames = (List<String>) node.getChild(0).getAttribute(Attribute.VALUES);
+            final List<String> oldNames = (List<String>) node.getChild(0).getAttribute(Attribute.VALUES);
             if (oldNames.contains(name)) {
                 return Utils.badNode(node);
             }

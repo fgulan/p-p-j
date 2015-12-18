@@ -40,9 +40,9 @@ public class AssignExpressionListChecker implements Checker {
      * @since alpha
      */
     @Override
-    public boolean check(Node node) {
-        Node firstChild = node.getChild(0);
-        String firstSymbol = firstChild.name();
+    public boolean check(final Node node) {
+        final Node firstChild = node.getChild(0);
+        final String firstSymbol = firstChild.name();
 
         // <lista_izraza_pridruzivanja> ::= <izraz_pridruzivanja>
         if ("<izraz_pridruzivanja>".equals(firstSymbol)) {
@@ -53,13 +53,13 @@ public class AssignExpressionListChecker implements Checker {
                 return false;
             }
 
-            List<Type> types = new ArrayList<>(Arrays.asList((Type) firstChild.getAttribute(Attribute.TYPE)));
+            final List<Type> types = new ArrayList<>(Arrays.asList((Type) firstChild.getAttribute(Attribute.TYPE)));
             node.addAttribute(Attribute.TYPES, types);
             node.addAttribute(Attribute.ELEMENT_COUNT, 1);
             return true;
         }
 
-        Node thirdChild = node.getChild(2);
+        final Node thirdChild = node.getChild(2);
         // <lista_izraza_pridruzivanja> ::= <lista_izraza_pridruzivanja> ZAREZ <izraz_pridruzivanja>
         if ("<lista_izraza_pridruzivanja>".equals(firstSymbol)) {
 
@@ -76,9 +76,9 @@ public class AssignExpressionListChecker implements Checker {
             }
 
             @SuppressWarnings("unchecked")
-            List<Type> types = new ArrayList<>((List<Type>) firstChild.getAttribute(Attribute.TYPES));
+            final List<Type> types = new ArrayList<>((List<Type>) firstChild.getAttribute(Attribute.TYPES));
             types.add((Type) thirdChild.getAttribute(Attribute.TYPE));
-            int elementCount = (Integer) firstChild.getAttribute(Attribute.ELEMENT_COUNT) + 1;
+            final int elementCount = (Integer) firstChild.getAttribute(Attribute.ELEMENT_COUNT) + 1;
             node.addAttribute(Attribute.TYPES, types);
             node.addAttribute(Attribute.ELEMENT_COUNT, elementCount);
             return true;

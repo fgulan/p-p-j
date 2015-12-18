@@ -42,16 +42,16 @@ public class InitializationDeclaratorChecker implements Checker {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public boolean check(Node node) {
+    public boolean check(final Node node) {
 
-        int size = node.childrenCount();
-        Node child = node.getChild(0);
+        final int size = node.childrenCount();
+        final Node child = node.getChild(0);
         child.addAttributeRecursive(Attribute.ITYPE, node.getAttribute(Attribute.ITYPE));
         if (!child.check()) {
             return Utils.badNode(node);
         }
 
-        Type type = (Type) child.getAttribute(Attribute.TYPE);
+        final Type type = (Type) child.getAttribute(Attribute.TYPE);
         Integer elemCount = (Integer) child.getAttribute(Attribute.ELEMENT_COUNT);
         if (elemCount == null) {
             elemCount = 1;
@@ -59,8 +59,8 @@ public class InitializationDeclaratorChecker implements Checker {
 
         if (size == 1) {
             // 2. <izravni_deklarator> != {const(T), niz(const(T))}
-            boolean first = type.isConst();
-            boolean second = type.isArray() ? ((ArrayType) type).fromArray().isConst() : false;
+            final boolean first = type.isConst();
+            final boolean second = type.isArray() ? ((ArrayType) type).fromArray().isConst() : false;
             if (first || second) {
                 return Utils.badNode(node);
             }
@@ -69,7 +69,7 @@ public class InitializationDeclaratorChecker implements Checker {
         }
 
         for (int i = 1; i < size; i++) {
-            Node current = node.getChild(i);
+            final Node current = node.getChild(i);
 
             if (!current.check()) {
                 return Utils.badNode(node);
@@ -82,7 +82,7 @@ public class InitializationDeclaratorChecker implements Checker {
                 }
                 else {
                     initTypes = new ArrayList<>();
-                    Type initType = (Type) current.getAttribute(Attribute.TYPE);
+                    final Type initType = (Type) current.getAttribute(Attribute.TYPE);
                     if (initType == null) {
                         return Utils.badNode(node);
                     }
@@ -104,7 +104,7 @@ public class InitializationDeclaratorChecker implements Checker {
         // return true;
     }
 
-    private static boolean handleInits(Integer elemCount, Type myType, List<Type> initTypes) {
+    private static boolean handleInits(final Integer elemCount, Type myType, final List<Type> initTypes) {
         if ((initTypes == null) || (myType == null) || (elemCount < initTypes.size())) {
             return false;
         }
@@ -113,7 +113,7 @@ public class InitializationDeclaratorChecker implements Checker {
             myType = myType.fromArray();
         }
 
-        for (Type type : initTypes) {
+        for (final Type type : initTypes) {
             if (!type.implicitConversion(myType)) {
                 return false;
             }

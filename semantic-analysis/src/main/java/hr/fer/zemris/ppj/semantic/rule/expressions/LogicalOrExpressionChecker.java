@@ -37,9 +37,9 @@ public class LogicalOrExpressionChecker implements Checker {
      * @since alpha
      */
     @Override
-    public boolean check(Node node) {
-        Node firstChild = node.getChild(0);
-        String firstSymbol = firstChild.name();
+    public boolean check(final Node node) {
+        final Node firstChild = node.getChild(0);
+        final String firstSymbol = firstChild.name();
 
         // <log_ili_izraz> ::= <log_i_izraz>
         if ("<log_i_izraz>".equals(firstSymbol)) {
@@ -55,7 +55,7 @@ public class LogicalOrExpressionChecker implements Checker {
             return true;
         }
 
-        Node thirdChild = node.getChild(2);
+        final Node thirdChild = node.getChild(2);
         // <log_ili_izraz> ::= <log_ili_izraz> OP_ILI <log_i_izraz>
         if ("<log_ili_izraz>".equals(firstSymbol)) {
 
@@ -66,7 +66,7 @@ public class LogicalOrExpressionChecker implements Checker {
             }
 
             // 2. <log_ili_izraz>.tip ~ int
-            Type type1 = (Type) firstChild.getAttribute(Attribute.TYPE);
+            final Type type1 = (Type) firstChild.getAttribute(Attribute.TYPE);
             if (!type1.implicitConversion(new IntType())) {
                 SemanticErrorReporter.report(node);
                 return false;
@@ -79,7 +79,7 @@ public class LogicalOrExpressionChecker implements Checker {
             }
 
             // 4. <log_i_izraz>.tip ~ int
-            Type type2 = (Type) thirdChild.getAttribute(Attribute.TYPE);
+            final Type type2 = (Type) thirdChild.getAttribute(Attribute.TYPE);
             if (!type2.implicitConversion(new IntType())) {
                 SemanticErrorReporter.report(node);
                 return false;

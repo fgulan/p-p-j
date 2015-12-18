@@ -18,15 +18,16 @@ public class IdentifierTypeWrapper {
 
     private final Type type;
 
-    public static IdentifierTypeWrapper forVariable(String name, Type type) {
+    public static IdentifierTypeWrapper forVariable(final String name, final Type type) {
         return new IdentifierTypeWrapper(name, type);
     }
 
-    public static IdentifierTypeWrapper forFunction(String name, Type returnType, List<Type> argumentList) {
+    public static IdentifierTypeWrapper forFunction(final String name, final Type returnType,
+            final List<Type> argumentList) {
         return new IdentifierTypeWrapper(name, new FunctionType(returnType, argumentList));
     }
 
-    IdentifierTypeWrapper(String name, Type type) {
+    IdentifierTypeWrapper(final String name, final Type type) {
         this.name = name;
         this.type = type;
     }
@@ -58,9 +59,9 @@ public class IdentifierTypeWrapper {
     };
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (obj instanceof IdentifierTypeWrapper) {
-            IdentifierTypeWrapper other = (IdentifierTypeWrapper) obj;
+            final IdentifierTypeWrapper other = (IdentifierTypeWrapper) obj;
 
             return other.name.equals(name) && other.type.equals(type);
         }

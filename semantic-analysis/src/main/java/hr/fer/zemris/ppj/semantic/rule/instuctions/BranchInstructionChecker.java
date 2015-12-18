@@ -37,14 +37,14 @@ public class BranchInstructionChecker implements Checker {
      * @since alpha
      */
     @Override
-    public boolean check(Node node) {
-        int count = node.getChildren().size();
+    public boolean check(final Node node) {
+        final int count = node.getChildren().size();
 
         // <naredba_grananja> ::= KR_IF L_ZAGRADA <izraz> D_ZAGRADA <naredba> KR_ELSE <naredba>
         if (count == 7) {
-            Node expression = node.getChild(2);
-            Node firstInstruction = node.getChild(4);
-            Node secondInstruction = node.getChild(6);
+            final Node expression = node.getChild(2);
+            final Node firstInstruction = node.getChild(4);
+            final Node secondInstruction = node.getChild(6);
 
             if ("<naredba>".equals(firstInstruction.name()) && "<naredba>".equals(secondInstruction.name())
                     && "<izraz>".equals(expression.name())) {
@@ -53,8 +53,8 @@ public class BranchInstructionChecker implements Checker {
                     return false;
                 }
 
-                Type type = (Type) expression.getAttribute(Attribute.TYPE);
-                boolean ableToConvert = type.implicitConversion(new IntType());
+                final Type type = (Type) expression.getAttribute(Attribute.TYPE);
+                final boolean ableToConvert = type.implicitConversion(new IntType());
 
                 if (!ableToConvert) {
                     SemanticErrorReporter.report(node);
@@ -76,8 +76,8 @@ public class BranchInstructionChecker implements Checker {
 
         // <naredba_grananja> ::= KR_IF L_ZAGRADA <izraz> D_ZAGRADA <naredba>
         if (count == 5) {
-            Node expression = node.getChild(2);
-            Node firstInstruction = node.getChild(4);
+            final Node expression = node.getChild(2);
+            final Node firstInstruction = node.getChild(4);
 
             if ("<naredba>".equals(firstInstruction.name()) && "<izraz>".equals(expression.name())) {
                 if (!expression.check()) {
@@ -85,8 +85,8 @@ public class BranchInstructionChecker implements Checker {
                     return false;
                 }
 
-                Type type = (Type) expression.getAttribute(Attribute.TYPE);
-                boolean ableToConvert = type.implicitConversion(new IntType());
+                final Type type = (Type) expression.getAttribute(Attribute.TYPE);
+                final boolean ableToConvert = type.implicitConversion(new IntType());
 
                 if (!ableToConvert) {
                     SemanticErrorReporter.report(node);

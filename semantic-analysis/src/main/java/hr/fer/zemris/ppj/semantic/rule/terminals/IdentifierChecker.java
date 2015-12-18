@@ -31,8 +31,8 @@ public class IdentifierChecker implements Checker {
      * @since alpha
      */
     @Override
-    public boolean check(Node node) {
-        String value = (String) node.getAttribute(Attribute.VALUE);
+    public boolean check(final Node node) {
+        final String value = (String) node.getAttribute(Attribute.VALUE);
 
         // KILL ME NOW
         return value.matches("\\w(\\w|\\d)*");

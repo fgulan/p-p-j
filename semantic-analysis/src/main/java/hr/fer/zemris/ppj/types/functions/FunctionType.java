@@ -16,7 +16,7 @@ public class FunctionType extends Type {
     private final Type returnType;
     private final List<Type> argumentList;
 
-    public FunctionType(Type returnType, List<Type> argumentList) {
+    public FunctionType(final Type returnType, final List<Type> argumentList) {
         super(false, true, false);
 
         this.returnType = returnType;
@@ -32,12 +32,12 @@ public class FunctionType extends Type {
     }
 
     @Override
-    public boolean implicitConversion(Type to) {
+    public boolean implicitConversion(final Type to) {
         return false;
     }
 
     @Override
-    public boolean explicitConversion(Type to) {
+    public boolean explicitConversion(final Type to) {
         return false;
     }
 
@@ -67,9 +67,9 @@ public class FunctionType extends Type {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (obj instanceof FunctionType) {
-            FunctionType other = (FunctionType) obj;
+            final FunctionType other = (FunctionType) obj;
 
             return other.returnType.equals(returnType) && other.argumentList.equals(argumentList);
         }

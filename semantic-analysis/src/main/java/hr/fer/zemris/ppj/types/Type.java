@@ -13,7 +13,7 @@ public abstract class Type {
     private final boolean isFunction;
     private final boolean isArray;
 
-    public Type(boolean isConst, boolean isFunction, boolean isArray) {
+    public Type(final boolean isConst, final boolean isFunction, final boolean isArray) {
         this.isConst = isConst;
         this.isArray = isArray;
         this.isFunction = isFunction;

@@ -37,9 +37,9 @@ public class TypeNameChecker implements Checker {
      * @since alpha
      */
     @Override
-    public boolean check(Node node) {
-        Node firstChild = node.getChild(0);
-        String firstSymbol = firstChild.name();
+    public boolean check(final Node node) {
+        final Node firstChild = node.getChild(0);
+        final String firstSymbol = firstChild.name();
         // <ime_tipa> ::= <specifikator_tipa>
         if ("<specifikator_tipa>".equals(firstSymbol)) {
 
@@ -53,7 +53,7 @@ public class TypeNameChecker implements Checker {
             return true;
         }
 
-        Node secondChild = node.getChild(1);
+        final Node secondChild = node.getChild(1);
         // <ime_tipa> ::= KR_CONST <specifikator_tipa>
         if ("KR_CONST".equals(firstSymbol)) {
 
@@ -64,7 +64,7 @@ public class TypeNameChecker implements Checker {
             }
 
             // 2. <specifikator_tipa>.tip != void
-            Type type = (Type) secondChild.getAttribute(Attribute.TYPE);
+            final Type type = (Type) secondChild.getAttribute(Attribute.TYPE);
             if (type.equals(new VoidType())) {
                 SemanticErrorReporter.report(node);
                 return false;

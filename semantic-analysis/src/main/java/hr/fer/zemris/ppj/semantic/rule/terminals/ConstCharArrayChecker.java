@@ -33,7 +33,7 @@ public class ConstCharArrayChecker implements Checker {
      * @since alpha
      */
     @Override
-    public boolean check(Node node) {
+    public boolean check(final Node node) {
         String value = (String) node.getAttribute(Attribute.VALUE);
         if ((value.charAt(0) == '"') && ((value.charAt(value.length() - 1)) == '"')) {
             value = value.substring(1, value.length() - 1); // Trim quotes.
@@ -45,10 +45,10 @@ public class ConstCharArrayChecker implements Checker {
         String rawValue = "";
 
         for (int i = 0; i < value.length(); i++) {
-            char currentChar = value.charAt(i);
+            final char currentChar = value.charAt(i);
             if (currentChar == '\\') {
                 if ((i + 1) < value.length()) {
-                    char nextChar = value.charAt(i + 1);
+                    final char nextChar = value.charAt(i + 1);
                     switch (nextChar) {
                         case 't':
                             rawValue += '\t';

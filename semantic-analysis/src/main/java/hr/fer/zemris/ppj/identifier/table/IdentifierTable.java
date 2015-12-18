@@ -27,13 +27,13 @@ public class IdentifierTable {
      */
     public static final IdentifierTable GLOBAL_SCOPE = new IdentifierTable();
 
-    private int this_id;
+    private final int this_id;
 
-    private IdentifierTable parent;
+    private final IdentifierTable parent;
 
-    private List<IdentifierTable> children = new ArrayList<>();
+    private final List<IdentifierTable> children = new ArrayList<>();
 
-    private Map<String, IdentifierTypeWrapper> localIdentifiers = new HashMap<>();
+    private final Map<String, IdentifierTypeWrapper> localIdentifiers = new HashMap<>();
 
     // Should be used only for checking if all declared functions are defined.
     // This is null in all identifier tables except GLOBAL_SCOPE
@@ -56,7 +56,7 @@ public class IdentifierTable {
      *            the parent table.
      * @since alpha
      */
-    public IdentifierTable(IdentifierTable parent) {
+    public IdentifierTable(final IdentifierTable parent) {
         this.parent = parent;
 
         if (parent != null) {
@@ -66,9 +66,9 @@ public class IdentifierTable {
         this_id = id++;
     }
 
-    public boolean declare(String name, Type type) {
+    public boolean declare(final String name, final Type type) {
         if (type.isFunction()) {
-            FunctionType function = (FunctionType) type;
+            final FunctionType function = (FunctionType) type;
             return declareFunction(name, function.returnType(), function.argumentList());
         }
 
@@ -83,7 +83,7 @@ public class IdentifierTable {
      * @return <code>true</code> if the variable is succesfully declared, <code>false</code> otherwise.
      * @since alpha
      */
-    public boolean declareVariable(String name, Type type) {
+    public boolean declareVariable(final String name, final Type type) {
         if (isLocalDeclared(name)) {
             return false;
         }
@@ -102,13 +102,13 @@ public class IdentifierTable {
      * @return <code>true</code> if the function is succesfully declared, <code>false</code> otherwise.
      * @since alpha
      */
-    public boolean declareFunction(String name, Type returnType, List<Type> argumentList) {
+    public boolean declareFunction(final String name, final Type returnType, final List<Type> argumentList) {
         // moguce je vise uzastopnih deklaracija iste funkcije, provjeriti iskljucivo varijable
         if (isLocalVariableDeclared(name)) {
             return false;
         }
 
-        IdentifierTypeWrapper function = IdentifierTypeWrapper.forFunction(name, returnType, argumentList);
+        final IdentifierTypeWrapper function = IdentifierTypeWrapper.forFunction(name, returnType, argumentList);
         IdentifierTable.declaredFunctions.add(function);
 
         localIdentifiers.put(name, function);
@@ -125,8 +125,8 @@ public class IdentifierTable {
      * @return <code>true</code> if the function is succesfully defined, <code>false</code> otherwise.
      * @since alpha
      */
-    public boolean defineFunction(String name, Type returnType, List<Type> argumentList) {
-        IdentifierTypeWrapper function = IdentifierTypeWrapper.forFunction(name, returnType, argumentList);
+    public boolean defineFunction(final String name, final Type returnType, final List<Type> argumentList) {
+        final IdentifierTypeWrapper function = IdentifierTypeWrapper.forFunction(name, returnType, argumentList);
         if (!declareFunction(name, returnType, argumentList)) {
             if (!identifierType(name).equals(function)) {
                 return false;
@@ -143,7 +143,7 @@ public class IdentifierTable {
      * @return <code>true</code> if the variable is declared, <code>false</code> otherwise.
      * @since alpha
      */
-    public boolean isVariableDeclared(String name) {
+    public boolean isVariableDeclared(final String name) {
         return variable(name) != null;
     }
 
@@ -153,7 +153,7 @@ public class IdentifierTable {
      * @return <code>true</code> if the function is declared, <code>false</code> otherwise.
      * @since alpha
      */
-    public boolean isFunctionDeclared(String name) {
+    public boolean isFunctionDeclared(final String name) {
         return function(name) != null;
     }
 
@@ -163,15 +163,15 @@ public class IdentifierTable {
      * @return <code>true</code> if the function is defined, <code>false</code> otherwise.
      * @since alpha
      */
-    public boolean isFunctionDefined(String name) {
+    public boolean isFunctionDefined(final String name) {
         if (IdentifierTable.GLOBAL_SCOPE.localIdentifiers.containsKey(name)) {
-            Type type = IdentifierTable.GLOBAL_SCOPE.identifierType(name);
+            final Type type = IdentifierTable.GLOBAL_SCOPE.identifierType(name);
 
             if (!type.isFunction()) {
                 return true;
             }
 
-            for (IdentifierTypeWrapper wrapper : IdentifierTable.definedFunctions) {
+            for (final IdentifierTypeWrapper wrapper : IdentifierTable.definedFunctions) {
                 if (type.equals(wrapper.type()) && wrapper.name().equals(name)) {
                     return true;
                 }
@@ -187,16 +187,16 @@ public class IdentifierTable {
      * @since alpha
      */
     public Set<String> declaredVariables() {
-        Set<String> declared = new HashSet<>();
+        final Set<String> declared = new HashSet<>();
         if (parent == null) {
-            for (Entry<String, IdentifierTypeWrapper> entry : localIdentifiers.entrySet()) {
+            for (final Entry<String, IdentifierTypeWrapper> entry : localIdentifiers.entrySet()) {
                 if (entry.getValue().isVariable()) {
                     declared.add(entry.getKey());
                 }
             }
         }
 
-        for (Entry<String, IdentifierTypeWrapper> entry : localIdentifiers.entrySet()) {
+        for (final Entry<String, IdentifierTypeWrapper> entry : localIdentifiers.entrySet()) {
             if (entry.getValue().isVariable()) {
                 declared.add(entry.getKey());
             }
@@ -212,8 +212,8 @@ public class IdentifierTable {
      * @since alpha
      */
     public Set<String> definedFunctions() {
-        Set<String> defined = new HashSet<>();
-        for (IdentifierTypeWrapper function : IdentifierTable.definedFunctions) {
+        final Set<String> defined = new HashSet<>();
+        for (final IdentifierTypeWrapper function : IdentifierTable.definedFunctions) {
             defined.add(function.name());
         }
         return defined;
@@ -224,8 +224,8 @@ public class IdentifierTable {
      * @since alpha
      */
     public Set<String> declaredFunctions() {
-        Set<String> declared = new HashSet<>();
-        for (IdentifierTypeWrapper function : IdentifierTable.declaredFunctions) {
+        final Set<String> declared = new HashSet<>();
+        for (final IdentifierTypeWrapper function : IdentifierTable.declaredFunctions) {
             declared.add(function.name());
         }
         return declared;
@@ -237,7 +237,7 @@ public class IdentifierTable {
      * @return type of the variable.
      * @since alpha
      */
-    public Type variable(String name) {
+    public Type variable(final String name) {
         if (parent == null) {
             if (localIdentifiers.containsKey(name) && localIdentifiers.get(name).isVariable()) {
                 return localIdentifiers.get(name).type();
@@ -258,7 +258,7 @@ public class IdentifierTable {
      * @return info for the function
      * @since alpha
      */
-    public FunctionType function(String name) {
+    public FunctionType function(final String name) {
         if (parent == null) {
             if (localIdentifiers.containsKey(name) && localIdentifiers.get(name).isFunction()) {
                 return (FunctionType) localIdentifiers.get(name).type();
@@ -280,7 +280,7 @@ public class IdentifierTable {
      *            the child to be added.
      * @since alpha
      */
-    public void addChild(IdentifierTable child) {
+    public void addChild(final IdentifierTable child) {
         children.add(child);
     }
 
@@ -289,7 +289,7 @@ public class IdentifierTable {
         return String.valueOf(this_id) + (parent != null ? parent.toString() : "");
     }
 
-    public boolean isDeclared(String name) {
+    public boolean isDeclared(final String name) {
         if (parent == null) {
             return isLocalDeclared(name);
         }
@@ -301,19 +301,19 @@ public class IdentifierTable {
         return parent.isDeclared(name);
     }
 
-    public boolean isLocalDeclared(String name) {
+    public boolean isLocalDeclared(final String name) {
         return localIdentifiers.containsKey(name);
     }
 
-    public boolean isLocalFunctionDeclared(String name) {
+    public boolean isLocalFunctionDeclared(final String name) {
         return localIdentifiers.containsKey(name) && localIdentifiers.get(name).isFunction();
     }
 
-    public boolean isLocalVariableDeclared(String name) {
+    public boolean isLocalVariableDeclared(final String name) {
         return localIdentifiers.containsKey(name) && localIdentifiers.get(name).isVariable();
     }
 
-    public Type identifierType(String name) {
+    public Type identifierType(final String name) {
         if (parent == null) {
             return isLocalDeclared(name) ? localIdentifiers.get(name).type() : null;
         }
@@ -325,14 +325,14 @@ public class IdentifierTable {
         return parent.identifierType(name);
     }
 
-    public FunctionType localFunction(String name) {
+    public FunctionType localFunction(final String name) {
         if (localIdentifiers.containsKey(name) && localIdentifiers.get(name).isFunction()) {
             return (FunctionType) localIdentifiers.get(name).type();
         }
         return null;
     }
 
-    public Type localVariable(String name) {
+    public Type localVariable(final String name) {
         if (localIdentifiers.containsKey(name) && localIdentifiers.get(name).isVariable()) {
             return localIdentifiers.get(name).type();
         }

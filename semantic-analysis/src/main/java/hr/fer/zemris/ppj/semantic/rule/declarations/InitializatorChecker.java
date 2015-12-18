@@ -44,15 +44,15 @@ public class InitializatorChecker implements Checker {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public boolean check(Node node) {
-        Node child = node.getChild(0);
+    public boolean check(final Node node) {
+        final Node child = node.getChild(0);
 
         int elemCount;
         List<Type> types = new ArrayList<>();
         Type type;
 
         if (child.name().equals(AssignExpressionChecker.HR_NAME)) {
-            Node assignExpr = child;
+            final Node assignExpr = child;
             if (!assignExpr.check()) {
                 return Utils.badNode(node);
             }
@@ -82,9 +82,9 @@ public class InitializatorChecker implements Checker {
             return true;
         }
 
-        int size = node.childrenCount();
+        final int size = node.childrenCount();
         for (int i = 0; i < size; i++) {
-            Node current = node.getChild(i);
+            final Node current = node.getChild(i);
 
             if (!current.check()) {
                 return Utils.badNode(node);

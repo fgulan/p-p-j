@@ -37,9 +37,9 @@ public class InstructionChecker implements Checker {
      * @since alpha
      */
     @Override
-    public boolean check(Node node) {
-        Node instruction = node.getChild(0);
-        
+    public boolean check(final Node node) {
+        final Node instruction = node.getChild(0);
+
         // <naredba> ::= <slozena_naredba>
         if ("<slozena_naredba>".equals(instruction.name())) {
             if (!instruction.check()) {
@@ -48,7 +48,7 @@ public class InstructionChecker implements Checker {
             }
             return true;
         }
-        
+
         // <naredba> ::= <izraz_naredba>
         if ("<izraz_naredba>".equals(instruction.name())) {
             if (!instruction.check()) {
@@ -57,7 +57,7 @@ public class InstructionChecker implements Checker {
             }
             return true;
         }
-        
+
         // <naredba> ::= <naredba_grananja>
         if ("<naredba_grananja>".equals(instruction.name())) {
             if (!instruction.check()) {
@@ -66,7 +66,7 @@ public class InstructionChecker implements Checker {
             }
             return true;
         }
-        
+
         // <naredba> ::= <naredba_petlje>
         if ("<naredba_petlje>".equals(instruction.name())) {
             if (!instruction.check()) {
@@ -75,7 +75,7 @@ public class InstructionChecker implements Checker {
             }
             return true;
         }
-        
+
         // <naredba> ::= <naredba_skoka>
         if ("<naredba_skoka>".equals(instruction.name())) {
             if (!instruction.check()) {
@@ -84,7 +84,7 @@ public class InstructionChecker implements Checker {
             }
             return true;
         }
-        
+
         System.err.println("Shold never happen");
         SemanticErrorReporter.report(node);
         return false;

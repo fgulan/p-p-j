@@ -11,7 +11,7 @@ import hr.fer.zemris.ppj.types.Type;
  */
 public abstract class ArrayType extends Type {
 
-    public ArrayType(boolean isConst) {
+    public ArrayType(final boolean isConst) {
         super(isConst, false, true);
     }
 
@@ -19,7 +19,7 @@ public abstract class ArrayType extends Type {
     public abstract boolean implicitConversion(Type to);
 
     @Override
-    public boolean explicitConversion(Type to) {
+    public boolean explicitConversion(final Type to) {
         return false;
     }
 

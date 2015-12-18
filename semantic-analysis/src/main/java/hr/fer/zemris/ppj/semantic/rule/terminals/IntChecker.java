@@ -33,7 +33,7 @@ public class IntChecker implements Checker {
      * @since alpha
      */
     @Override
-    public boolean check(Node node) {
+    public boolean check(final Node node) {
         String value = (String) node.getAttribute((Attribute.VALUE));
 
         int intVal = 0;
@@ -42,7 +42,7 @@ public class IntChecker implements Checker {
                 intVal = Integer.parseInt(value);
             }
             else {
-                boolean negative = value.startsWith("-");
+                final boolean negative = value.startsWith("-");
                 if (negative) {
                     value = value.substring(1);
                 }
@@ -64,7 +64,7 @@ public class IntChecker implements Checker {
                 }
             }
         }
-        catch (NumberFormatException e) {
+        catch (final NumberFormatException e) {
             return false;
         }
 

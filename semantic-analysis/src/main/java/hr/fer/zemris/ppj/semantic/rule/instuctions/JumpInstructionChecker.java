@@ -40,11 +40,11 @@ public class JumpInstructionChecker implements Checker {
      * @since alpha
      */
     @Override
-    public boolean check(Node node) {
+    public boolean check(final Node node) {
         // <naredba_skoka> ::= KR_CONTINUE TOCKAZAREZ
         // <naredba_skoka> ::= KR_BREAK TOCKAZAREZ
         if ("KR_CONTINUE".equals(node.getChild(0).name()) || "KR_BREAK".equals(node.getChild(0).name())) {
-            Boolean insideLoop = (Boolean) node.getAttribute(Attribute.INSIDE_LOOP);
+            final Boolean insideLoop = (Boolean) node.getAttribute(Attribute.INSIDE_LOOP);
             if (insideLoop == null) {
                 SemanticErrorReporter.report(node);
                 return false;
@@ -54,8 +54,8 @@ public class JumpInstructionChecker implements Checker {
 
         // <naredba_skoka> ::= KR_RETURN TOCKAZAREZ
         if ("KR_RETURN".equals(node.getChild(0).name()) && "TOCKAZAREZ".equals(node.getChild(1).name())) {
-            String functionName = (String) node.getAttribute(Attribute.FUNCTION_NAME);
-            FunctionType function = node.identifierTable().function(functionName);
+            final String functionName = (String) node.getAttribute(Attribute.FUNCTION_NAME);
+            final FunctionType function = node.identifierTable().function(functionName);
 
             if (!function.returnType().equals(new VoidType())) {
                 SemanticErrorReporter.report(node);
@@ -66,8 +66,8 @@ public class JumpInstructionChecker implements Checker {
 
         // <naredba_skoka> ::= KR_RETURN <izraz> TOCKAZAREZ
         if ("KR_RETURN".equals(node.getChild(0).name()) && "<izraz>".equals(node.getChild(1).name())) {
-            String functionName = (String) node.getAttribute(Attribute.FUNCTION_NAME);
-            FunctionType function = node.identifierTable().function(functionName);
+            final String functionName = (String) node.getAttribute(Attribute.FUNCTION_NAME);
+            final FunctionType function = node.identifierTable().function(functionName);
 
             // 1. provjeri(<izraz>)
             if (!node.getChild(1).check()) {
@@ -75,9 +75,9 @@ public class JumpInstructionChecker implements Checker {
                 return false;
             }
 
-            Type type = (Type) node.getChild(1).getAttribute(Attribute.TYPE);
+            final Type type = (Type) node.getChild(1).getAttribute(Attribute.TYPE);
 
-            boolean ableToConvert = type.implicitConversion(function.returnType());
+            final boolean ableToConvert = type.implicitConversion(function.returnType());
 
             if (!ableToConvert) {
                 SemanticErrorReporter.report(node);

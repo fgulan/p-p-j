@@ -37,10 +37,10 @@ public class ParameterDeclarationChecker implements Checker {
      * @since alpha
      */
     @Override
-    public boolean check(Node node) {
+    public boolean check(final Node node) {
 
-        Node typeNode = node.getChild(0);
-        Node idnNode = node.getChild(1);
+        final Node typeNode = node.getChild(0);
+        final Node idnNode = node.getChild(1);
 
         if (!typeNode.check() || !idnNode.check()) {
             return Utils.badNode(node);
@@ -50,7 +50,7 @@ public class ParameterDeclarationChecker implements Checker {
         if (type.equals(new VoidType())) {
             return Utils.badNode(node);
         }
-        String name = (String) idnNode.getAttribute(Attribute.VALUE);
+        final String name = (String) idnNode.getAttribute(Attribute.VALUE);
 
         if (node.childrenCount() > 2) {
             type = type.toArray();

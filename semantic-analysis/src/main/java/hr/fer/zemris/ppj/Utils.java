@@ -26,7 +26,7 @@ public class Utils {
      *            node that was naughty
      * @return always false, never true
      */
-    public static boolean badNode(Node node) {
+    public static boolean badNode(final Node node) {
         SemanticErrorReporter.report(node);
         return false;
     }
@@ -44,8 +44,9 @@ public class Utils {
      *            it does what it says on the tin, really
      * @return true if function was added to the scope table or if you like redundancy, false otherwise
      */
-    public static boolean handleFunction(IdentifierTable table, String name, List<Type> arguments, Type returnType) {
-        FunctionType function = table.localFunction(name);
+    public static boolean handleFunction(final IdentifierTable table, final String name, final List<Type> arguments,
+            final Type returnType) {
+        final FunctionType function = table.localFunction(name);
         if (function != null) {
             if (!function.argumentList().equals(arguments) || !function.returnType().equals(returnType)) {
                 return false;

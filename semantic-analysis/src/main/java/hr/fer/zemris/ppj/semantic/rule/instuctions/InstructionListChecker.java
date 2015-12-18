@@ -34,7 +34,7 @@ public class InstructionListChecker implements Checker {
      * @since alpha
      */
     @Override
-    public boolean check(Node node) {
+    public boolean check(final Node node) {
         // <lista_naredbi> ::= <naredba>
         Node instruction = node.getChild(0);
         if ("<naredba>".equals(instruction.name())) {
@@ -46,7 +46,7 @@ public class InstructionListChecker implements Checker {
         }
 
         // <lista_naredbi> ::= <lista_naredbi> <naredba>
-        Node instructionList = node.getChild(0);
+        final Node instructionList = node.getChild(0);
         instruction = node.getChild(1);
         if ("<lista_naredbi>".equals(instructionList.name()) && "<naredba>".equals(instruction.name())) {
             if (!instructionList.check()) {

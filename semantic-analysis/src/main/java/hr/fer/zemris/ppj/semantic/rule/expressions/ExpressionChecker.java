@@ -35,9 +35,9 @@ public class ExpressionChecker implements Checker {
      * @since alpha
      */
     @Override
-    public boolean check(Node node) {
-        Node firstChild = node.getChild(0);
-        String firstSymbol = firstChild.name();
+    public boolean check(final Node node) {
+        final Node firstChild = node.getChild(0);
+        final String firstSymbol = firstChild.name();
 
         // <izraz> ::= <izraz_pridruzivanja>
         if ("<izraz_pridruzivanja>".equals(firstSymbol)) {
@@ -53,7 +53,7 @@ public class ExpressionChecker implements Checker {
             return true;
         }
 
-        Node thirdChild = node.getChild(2);
+        final Node thirdChild = node.getChild(2);
         // <izraz> ::= <izraz> ZAREZ <izraz_pridruzivanja>
         if ("<izraz>".equals(firstSymbol)) {
 

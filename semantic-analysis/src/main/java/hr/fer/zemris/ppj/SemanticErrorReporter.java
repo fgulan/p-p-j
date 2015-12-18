@@ -48,7 +48,7 @@ public class SemanticErrorReporter {
 
     private static String generateReport(final Node node) {
         String result = node.name() + " ::=";
-        for (Node child : node.getChildren()) {
+        for (final Node child : node.getChildren()) {
             result += " " + child.toString();
         }
         return result;

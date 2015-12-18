@@ -38,7 +38,7 @@ public class LoopInstructionChecker implements Checker {
      * @since alpha
      */
     @Override
-    public boolean check(Node node) {
+    public boolean check(final Node node) {
         // <naredba_petlje> ::= KR_WHILE L_ZAGRADA <izraz> D_ZAGRADA <naredba>
         Node expression = node.getChild(2);
         Node instruction = node.getChild(4);
@@ -50,8 +50,8 @@ public class LoopInstructionChecker implements Checker {
                 return false;
             }
 
-            Type type = (Type) expression.getAttribute(Attribute.TYPE);
-            boolean ableToConvert = type.implicitConversion(new IntType());
+            final Type type = (Type) expression.getAttribute(Attribute.TYPE);
+            final boolean ableToConvert = type.implicitConversion(new IntType());
 
             if (!ableToConvert) {
                 SemanticErrorReporter.report(node);
@@ -84,8 +84,8 @@ public class LoopInstructionChecker implements Checker {
                 return false;
             }
 
-            Type type = (Type) secondExpInstruction.getAttribute(Attribute.TYPE);
-            boolean ableToConvert = type == null ? true : type.implicitConversion(new IntType());
+            final Type type = (Type) secondExpInstruction.getAttribute(Attribute.TYPE);
+            final boolean ableToConvert = type == null ? true : type.implicitConversion(new IntType());
 
             if (!ableToConvert) {
                 SemanticErrorReporter.report(node);
@@ -118,8 +118,8 @@ public class LoopInstructionChecker implements Checker {
                 return false;
             }
 
-            Type type = (Type) secondExpInstruction.getAttribute(Attribute.TYPE);
-            boolean ableToConvert = type.implicitConversion(new IntType());
+            final Type type = (Type) secondExpInstruction.getAttribute(Attribute.TYPE);
+            final boolean ableToConvert = type.implicitConversion(new IntType());
 
             if (!ableToConvert) {
                 SemanticErrorReporter.report(node);

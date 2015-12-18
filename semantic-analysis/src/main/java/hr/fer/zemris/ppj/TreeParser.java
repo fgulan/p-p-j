@@ -131,8 +131,8 @@ public class TreeParser {
      * @since alpha
      */
     public static Node parse(final Scanner scanner) {
-        Stack<Node> stack = new Stack<>();
-        Stack<IdentifierTable> identifierTableStack = new Stack<>();
+        final Stack<Node> stack = new Stack<>();
+        final Stack<IdentifierTable> identifierTableStack = new Stack<>();
         identifierTableStack.push(IdentifierTable.GLOBAL_SCOPE);
 
         String line = null;
@@ -143,14 +143,14 @@ public class TreeParser {
                 break;
             }
 
-            int lineDepth = countDepth(line);
+            final int lineDepth = countDepth(line);
             if (depth > lineDepth) {
                 for (int i = 0; i < (depth - lineDepth); i++) {
                     stack.pop();
                 }
             }
             depth = lineDepth;
-            Node parent = stack.isEmpty() ? null : stack.peek();
+            final Node parent = stack.isEmpty() ? null : stack.peek();
 
             Node child = null;
 
@@ -164,22 +164,22 @@ public class TreeParser {
                     identifierTableStack.push(new IdentifierTable(identifierTableStack.peek()));
                 }
             }
-            IdentifierTable identifierTable = identifierTableStack.peek();
+            final IdentifierTable identifierTable = identifierTableStack.peek();
 
             if (line.startsWith("<")) {
                 // nonterminal node
-                Checker checker = checkers.get(line);
+                final Checker checker = checkers.get(line);
                 child = new Node(line, new ArrayList<Node>(), parent, new HashMap<Attribute, Object>(), identifierTable,
                         checker);
                 stack.push(child);
             }
             else {
                 // terminal node
-                String[] split = line.split(" ", 3);
-                String name = split[0];
-                int lineNumber = Integer.valueOf(split[1]);
-                String value = split[2];
-                Checker checker = checkers.get(name);
+                final String[] split = line.split(" ", 3);
+                final String name = split[0];
+                final int lineNumber = Integer.valueOf(split[1]);
+                final String value = split[2];
+                final Checker checker = checkers.get(name);
                 child = new Node(name, new ArrayList<Node>(), parent, new HashMap<Attribute, Object>(), identifierTable,
                         checker);
                 child.addAttribute(Attribute.LINE_NUMBER, lineNumber);

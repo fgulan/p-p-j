@@ -17,7 +17,7 @@ public class ConstCharArrayType extends ArrayType {
     }
 
     @Override
-    public boolean implicitConversion(Type to) {
+    public boolean implicitConversion(final Type to) {
         if (to instanceof ConstCharArrayType) {
             return true;
         }
@@ -41,7 +41,7 @@ public class ConstCharArrayType extends ArrayType {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         return obj instanceof ConstCharArrayType;
     }
 

@@ -39,9 +39,9 @@ public class UnaryExpressionChecker implements Checker {
      * @since alpha
      */
     @Override
-    public boolean check(Node node) {
-        Node firstChild = node.getChild(0);
-        String firstSymbol = firstChild.name();
+    public boolean check(final Node node) {
+        final Node firstChild = node.getChild(0);
+        final String firstSymbol = firstChild.name();
 
         // <unarni_izraz> ::= <postfiks_izraz>
         if ("<postfiks_izraz>".equals(firstSymbol)) {
@@ -57,7 +57,7 @@ public class UnaryExpressionChecker implements Checker {
             return true;
         }
 
-        Node secondChild = node.getChild(1);
+        final Node secondChild = node.getChild(1);
 
         // <unarni_izraz> ::= OP_INC <unarni_izraz>
         if ("OP_INC".equals(firstSymbol)) {
@@ -75,7 +75,7 @@ public class UnaryExpressionChecker implements Checker {
             }
 
             // 2. <unarni_izraz.tip ~ int
-            Type type = (Type) secondChild.getAttribute(Attribute.TYPE);
+            final Type type = (Type) secondChild.getAttribute(Attribute.TYPE);
             if (!type.implicitConversion(new IntType())) {
                 SemanticErrorReporter.report(node);
                 return false;
@@ -101,7 +101,7 @@ public class UnaryExpressionChecker implements Checker {
             }
 
             // 2. <unarni_izraz.tip ~ int
-            Type type = (Type) secondChild.getAttribute(Attribute.TYPE);
+            final Type type = (Type) secondChild.getAttribute(Attribute.TYPE);
             if (!type.implicitConversion(new IntType())) {
                 SemanticErrorReporter.report(node);
                 return false;
@@ -122,7 +122,7 @@ public class UnaryExpressionChecker implements Checker {
             }
 
             // 2. <cast_izraz>.tip ~ int
-            Type type = (Type) secondChild.getAttribute(Attribute.TYPE);
+            final Type type = (Type) secondChild.getAttribute(Attribute.TYPE);
             if (!type.implicitConversion(new IntType())) {
                 SemanticErrorReporter.report(node);
                 return false;

@@ -36,9 +36,9 @@ public class AssignExpressionChecker implements Checker {
      * @since alpha
      */
     @Override
-    public boolean check(Node node) {
-        Node firstChild = node.getChild(0);
-        String firstSymbol = firstChild.name();
+    public boolean check(final Node node) {
+        final Node firstChild = node.getChild(0);
+        final String firstSymbol = firstChild.name();
 
         // <izraz_pridruzivanja> ::= <log_ili_izraz>
         if ("<log_ili_izraz>".equals(firstSymbol)) {
@@ -54,7 +54,7 @@ public class AssignExpressionChecker implements Checker {
             return true;
         }
 
-        Node thirdChild = node.getChild(2);
+        final Node thirdChild = node.getChild(2);
         // <izraz_pridruzivanja> ::= <postfiks_izraz> OP_PRIDRUZI <izraz_pridruzivanja>
         if ("<postfiks_izraz>".equals(firstSymbol)) {
 
@@ -77,8 +77,8 @@ public class AssignExpressionChecker implements Checker {
             }
 
             // 4. <izraz_pridruzivanja>.tip ~ <postfiks_izraz>.tip
-            Type from = (Type) thirdChild.getAttribute(Attribute.TYPE);
-            Type to = (Type) firstChild.getAttribute(Attribute.TYPE);
+            final Type from = (Type) thirdChild.getAttribute(Attribute.TYPE);
+            final Type to = (Type) firstChild.getAttribute(Attribute.TYPE);
             if (!from.implicitConversion(to)) {
                 SemanticErrorReporter.report(node);
                 return false;

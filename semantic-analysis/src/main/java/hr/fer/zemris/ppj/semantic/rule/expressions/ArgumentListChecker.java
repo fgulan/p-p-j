@@ -40,9 +40,9 @@ public class ArgumentListChecker implements Checker {
      * @since alpha
      */
     @Override
-    public boolean check(Node node) {
-        Node firstChild = node.getChild(0);
-        String firstSymbol = firstChild.name();
+    public boolean check(final Node node) {
+        final Node firstChild = node.getChild(0);
+        final String firstSymbol = firstChild.name();
 
         // <lista_argumenata> ::= <izraz_pridruzivanja>
         if ("<izraz_pridruzivanja>".equals(firstSymbol)) {
@@ -57,7 +57,7 @@ public class ArgumentListChecker implements Checker {
             return true;
         }
 
-        Node thirdChild = node.getChild(2);
+        final Node thirdChild = node.getChild(2);
         // <lista_argumenata> ::= <lista_argumenata> ZAREZ <izraz_pridruzivanja>
         if ("<lista_argumenata>".equals(firstSymbol)) {
 
@@ -74,7 +74,7 @@ public class ArgumentListChecker implements Checker {
             }
 
             @SuppressWarnings("unchecked")
-            List<Type> types = new ArrayList<Type>((List<Type>) firstChild.getAttribute(Attribute.TYPES));
+            final List<Type> types = new ArrayList<Type>((List<Type>) firstChild.getAttribute(Attribute.TYPES));
             types.add((Type) thirdChild.getAttribute(Attribute.TYPE));
             node.addAttribute(Attribute.TYPES, types);
             return true;

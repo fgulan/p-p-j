@@ -35,15 +35,15 @@ public class DeclaratorInitializationListChecker implements Checker {
      * @since alpha
      */
     @Override
-    public boolean check(Node node) {
-        
-        for (Node child: node.getChildren()){
+    public boolean check(final Node node) {
+
+        for (final Node child : node.getChildren()) {
             child.addAttribute(Attribute.ITYPE, node.getAttribute(Attribute.ITYPE));
-            if (!child.check()){
+            if (!child.check()) {
                 return Utils.badNode(child);
             }
         }
-        
+
         return true;
     }
 

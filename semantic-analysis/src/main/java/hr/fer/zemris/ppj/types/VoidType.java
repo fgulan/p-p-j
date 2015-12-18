@@ -14,7 +14,7 @@ public class VoidType extends Type {
     }
 
     @Override
-    public boolean implicitConversion(Type to) {
+    public boolean implicitConversion(final Type to) {
         return false;
     }
 
@@ -24,7 +24,7 @@ public class VoidType extends Type {
     }
 
     @Override
-    public boolean explicitConversion(Type to) {
+    public boolean explicitConversion(final Type to) {
         return false;
     }
 
@@ -49,7 +49,7 @@ public class VoidType extends Type {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         return obj instanceof VoidType;
     }
 

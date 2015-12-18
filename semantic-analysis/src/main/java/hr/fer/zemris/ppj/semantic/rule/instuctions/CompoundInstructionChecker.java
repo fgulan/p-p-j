@@ -34,7 +34,7 @@ public class CompoundInstructionChecker implements Checker {
      * @since alpha
      */
     @Override
-    public boolean check(Node node) {
+    public boolean check(final Node node) {
         // <slozena_naredba> ::= L_VIT_ZAGRADA <lista_naredbi> D_VIT_ZAGRADA
         Node instructionList = node.getChild(1);
         if ("<lista_naredbi>".equals(instructionList.name())) {
@@ -44,9 +44,9 @@ public class CompoundInstructionChecker implements Checker {
             }
             return true;
         }
-        
+
         // <slozena_naredba> ::= L_VIT_ZAGRADA <lista_deklaracija> <lista_naredbi> D_VIT_ZAGRADA
-        Node declarationList = node.getChild(1);
+        final Node declarationList = node.getChild(1);
         instructionList = node.getChild(2);
         if ("<lista_deklaracija>".equals(declarationList.name()) && "<lista_naredbi>".equals(instructionList.name())) {
             if (!declarationList.check()) {

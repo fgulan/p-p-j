@@ -38,10 +38,10 @@ public class TypeSpecifierChecker implements Checker {
      * @since alpha
      */
     @Override
-    public boolean check(Node node) {
+    public boolean check(final Node node) {
 
-        Node firstChild = node.getChild(0);
-        String firstSymbol = firstChild.name();
+        final Node firstChild = node.getChild(0);
+        final String firstSymbol = firstChild.name();
 
         if ("KR_VOID".equals(firstSymbol)) {
             node.addAttribute(Attribute.TYPE, new VoidType());
