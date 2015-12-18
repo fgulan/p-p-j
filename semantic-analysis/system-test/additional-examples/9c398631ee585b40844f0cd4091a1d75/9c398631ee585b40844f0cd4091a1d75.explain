@@ -1,2 +1,0 @@
-semantic: invalid escaped string 'ab\zc' on byte offset 3
-note: '"ab\zc"' on line 18

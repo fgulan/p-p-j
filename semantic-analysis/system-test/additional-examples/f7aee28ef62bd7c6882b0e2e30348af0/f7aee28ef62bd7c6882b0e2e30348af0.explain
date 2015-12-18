@@ -1,2 +1,0 @@
-semantic: invalid implicit conversion from `int` to numeric in initialization
-note: 'z = 12' on line 18

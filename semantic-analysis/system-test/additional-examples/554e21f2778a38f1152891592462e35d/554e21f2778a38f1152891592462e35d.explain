@@ -1,2 +1,0 @@
-semantic: can't initialize array with scalar value
-note: 'a [ 8 ] = x' on line 8

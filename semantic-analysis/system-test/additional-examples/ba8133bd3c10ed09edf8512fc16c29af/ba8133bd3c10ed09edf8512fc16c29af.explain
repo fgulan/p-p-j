@@ -1,2 +1,0 @@
-semantic: invalid implicit conversion from `int` to numeric in initialization
-note: 'c = 1' on line 21

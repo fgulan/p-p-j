@@ -1,2 +1,0 @@
-semantic: expression inside [] must be int
-note: 'b [ a ]' on line 25

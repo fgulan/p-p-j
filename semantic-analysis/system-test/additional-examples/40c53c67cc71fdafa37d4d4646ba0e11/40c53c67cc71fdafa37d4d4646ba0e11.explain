@@ -1,2 +1,0 @@
-semantic: invalid escaped string 'bbb\x55' on byte offset 4
-note: '"bbb\x55"' on line 18

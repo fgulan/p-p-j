@@ -1,2 +1,0 @@
-semantic: invalid implicit conversion from `int` to `char`
-note: 'a [ 0 ] = b' on line 4

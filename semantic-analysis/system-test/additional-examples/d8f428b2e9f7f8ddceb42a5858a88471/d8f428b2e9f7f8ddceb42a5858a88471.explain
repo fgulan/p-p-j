@@ -1,2 +1,0 @@
-semantic: invalid implicit conversion from `niz(const char)` to `int`
-note: 'a = "sdlkjfhksjdf"' on line 4

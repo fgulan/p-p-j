@@ -1,2 +1,0 @@
-semantic: invalid implicit conversion from `int` to `char` in return
-note: 'return 'c' / 9 ;' on line 4

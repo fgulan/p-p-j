@@ -1,2 +1,0 @@
-semantic: invalid implicit conversion from `int` to `char`
-note: 'c = ( char ) c + 1' on line 3

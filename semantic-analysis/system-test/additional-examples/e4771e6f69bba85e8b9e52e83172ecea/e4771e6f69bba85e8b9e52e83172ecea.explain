@@ -1,2 +1,0 @@
-semantic: invalid implicit conversion from `int` to `void` in return
-note: 'return 0 ;' on line 17

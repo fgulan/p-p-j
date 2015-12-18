@@ -1,2 +1,0 @@
-semantic: invalid implicit conversion from `int` to `char` in return
-note: 'return x ;' on line 5

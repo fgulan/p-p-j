@@ -1,2 +1,0 @@
-semantic: conflicting declarations of function a
-note: 'a ( int g , char f )' on line 13

@@ -1,2 +1,0 @@
-semantic: invalid implicit conversion from `niz(const char)` to `int` in return
-note: 'return "ddd" ;' on line 16

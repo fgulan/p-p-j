@@ -1,2 +1,0 @@
-semantic: invalid implicit conversion from `niz(const char)` to `const char` in intializator
-note: 'b [ 10 ] = { 'a' , 'b' , 'c' , "\'" }' on line 3

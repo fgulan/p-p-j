@@ -1,2 +1,0 @@
-semantic: type mismatch in call of function printf on param 1. no implicit conversion from `char` to `niz(const char)`
-note: 'printf ( '\n' )' on line 21
