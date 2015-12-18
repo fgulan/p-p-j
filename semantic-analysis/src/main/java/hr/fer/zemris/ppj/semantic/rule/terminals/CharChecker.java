@@ -35,13 +35,42 @@ public class CharChecker implements Checker {
     @Override
     public boolean check(Node node) {
         String value = (String) node.getAttribute(Attribute.VALUE);
+        value = value.substring(1, value.length() - 1);
 
-        // KILL ME NOW
-        if (!value.matches("'(\\w|\\\\t|\\\\n|\\\\0|\\\\'|\\\\\"|\\\\\\\\)'")) {
+        char charValue;
+        if (value.length() > 2) {
             return false;
         }
+        else if (value.length() == 2) {
+            switch (value) {
+                case "\\t":
+                    charValue = '\t';
+                    break;
+                case "\\n":
+                    charValue = '\n';
+                    break;
+                case "\\0":
+                    charValue = '\0';
+                    break;
+                case "\\\'":
+                    charValue = '\'';
+                    break;
+                case "\\\"":
+                case "\"":
+                    charValue = '"';
+                    break;
+                case "\\\\":
+                    charValue = '\\';
+                    break;
+                default:
+                    return false;
+            }
+        }
+        else {
+            charValue = value.charAt(0);
+        }
 
-        node.addAttribute(Attribute.VALUE, Character.valueOf(value.charAt(1)));
+        node.addAttribute(Attribute.VALUE, charValue);
         return true;
     }
 }

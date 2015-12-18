@@ -7,7 +7,6 @@ import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Utils;
 import hr.fer.zemris.ppj.identifier.table.IdentifierTable;
-import hr.fer.zemris.ppj.identifier.table.IdentifierTypeWrapper;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
 import hr.fer.zemris.ppj.types.Type;
 import hr.fer.zemris.ppj.types.functions.FunctionType;
@@ -84,15 +83,9 @@ public class FunctionDefinitionChecker implements Checker {
         }
 
         FunctionType function = new FunctionType(type, types);
-        for (IdentifierTypeWrapper wrapper : IdentifierTable.GLOBAL_SCOPE.declaredFunctions) {
-            if (wrapper.name().equals(name)) {
-                if (wrapper.type().equals(function)) {
-                    break;
-                }
-                else {
-                    return Utils.badNode(node);
-                }
-            }
+        Type declared = IdentifierTable.GLOBAL_SCOPE.identifierType(name);
+        if ((declared != null) && !declared.equals(function)) {
+            return Utils.badNode(node);
         }
 
         IdentifierTable.GLOBAL_SCOPE.defineFunction(name, type, types);

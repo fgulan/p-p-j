@@ -172,7 +172,7 @@ public class IdentifierTable {
             }
 
             for (IdentifierTypeWrapper wrapper : GLOBAL_SCOPE.definedFunctions) {
-                if (type.equals(wrapper.type())) {
+                if (type.equals(wrapper.type()) && wrapper.name().equals(name)) {
                     return true;
                 }
             }

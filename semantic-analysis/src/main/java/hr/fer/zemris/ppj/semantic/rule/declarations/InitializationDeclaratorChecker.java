@@ -82,6 +82,10 @@ public class InitializationDeclaratorChecker implements Checker {
                 }
                 else {
                     initTypes = new ArrayList<>();
+                    Type initType = (Type) current.getAttribute(Attribute.TYPE);
+                    if (initType == null) {
+                        return Utils.badNode(node);
+                    }
                     initTypes.add((Type) current.getAttribute(Attribute.TYPE));
                 }
 
@@ -101,7 +105,7 @@ public class InitializationDeclaratorChecker implements Checker {
     }
 
     private static boolean handleInits(Integer elemCount, Type myType, List<Type> initTypes) {
-        if ((initTypes == null) || (elemCount < initTypes.size())) {
+        if ((initTypes == null) || (myType == null) || (elemCount < initTypes.size())) {
             return false;
         }
 
