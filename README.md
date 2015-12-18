@@ -4,9 +4,12 @@ Laboratory exercise for Programming Language Translation course.
 ###Task description
 Check *ppj-labos-upute*.
 
+####Implemenation language
+- Java
+
 ###Results of automatic evaluation
 1. Lexical analysis: 30/30
-2. Syntax analysis: x/y
+2. Syntax analysis: 25/25
 3. Semantic analysis: x/y
 4. Code generation: x/y
 
