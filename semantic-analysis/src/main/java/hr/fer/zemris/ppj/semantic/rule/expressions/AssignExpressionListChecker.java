@@ -75,6 +75,7 @@ public class AssignExpressionListChecker implements Checker {
                 return false;
             }
 
+            @SuppressWarnings("unchecked")
             List<Type> types = new ArrayList<>((List<Type>) firstChild.getAttribute(Attribute.TYPES));
             types.add((Type) thirdChild.getAttribute(Attribute.TYPE));
             int elementCount = (Integer) firstChild.getAttribute(Attribute.ELEMENT_COUNT) + 1;

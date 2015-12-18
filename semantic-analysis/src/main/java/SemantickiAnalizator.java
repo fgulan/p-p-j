@@ -29,8 +29,8 @@ public class SemantickiAnalizator {
             // Node node = TreeParser.parse(new Scanner(new FileInputStream("test.in")));
             Node node = TreeParser.parse(new Scanner(System.in));
             node.check();
-            new MainFunctionChecker().check(node);
-            new DefinedFunctionsChecker().check(node);
+            MainFunctionChecker.sprutJeProvokator();
+            DefinedFunctionsChecker.sprutJeProvokator();
             SemanticErrorReporter.finalReport();
             throw new FileNotFoundException(); // Just to shut up the compiler
         }

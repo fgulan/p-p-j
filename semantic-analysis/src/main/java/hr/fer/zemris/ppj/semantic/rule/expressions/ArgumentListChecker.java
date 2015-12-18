@@ -58,7 +58,6 @@ public class ArgumentListChecker implements Checker {
         }
 
         Node thirdChild = node.getChild(2);
-        String thirdSymbol = thirdChild.name();
         // <lista_argumenata> ::= <lista_argumenata> ZAREZ <izraz_pridruzivanja>
         if ("<lista_argumenata>".equals(firstSymbol)) {
 
@@ -74,6 +73,7 @@ public class ArgumentListChecker implements Checker {
                 return false;
             }
 
+            @SuppressWarnings("unchecked")
             List<Type> types = new ArrayList<Type>((List<Type>) firstChild.getAttribute(Attribute.TYPES));
             types.add((Type) thirdChild.getAttribute(Attribute.TYPE));
             node.addAttribute(Attribute.TYPES, types);

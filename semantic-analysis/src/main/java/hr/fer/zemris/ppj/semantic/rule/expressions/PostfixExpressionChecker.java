@@ -163,6 +163,7 @@ public class PostfixExpressionChecker implements Checker {
 
             // 3. provjera implicitnih konverzija parametara
             List<Type> declarationTypes = function.argumentList();
+            @SuppressWarnings("unchecked")
             List<Type> callingArguments = (List<Type>) thirdChild.getAttribute(Attribute.TYPES);
             if (declarationTypes.size() != callingArguments.size()) {
                 SemanticErrorReporter.report(node);

@@ -169,7 +169,8 @@ public class TreeParser {
             if (line.startsWith("<")) {
                 // nonterminal node
                 Checker checker = checkers.get(line);
-                child = new Node(line, new ArrayList<>(), parent, new HashMap<>(), identifierTable, checker);
+                child = new Node(line, new ArrayList<Node>(), parent, new HashMap<Attribute, Object>(), identifierTable,
+                        checker);
                 stack.push(child);
             }
             else {
@@ -179,7 +180,8 @@ public class TreeParser {
                 int lineNumber = Integer.valueOf(split[1]);
                 String value = split[2];
                 Checker checker = checkers.get(name);
-                child = new Node(name, new ArrayList<>(), parent, new HashMap<>(), identifierTable, checker);
+                child = new Node(name, new ArrayList<Node>(), parent, new HashMap<Attribute, Object>(), identifierTable,
+                        checker);
                 child.addAttribute(Attribute.LINE_NUMBER, lineNumber);
                 child.addAttribute(Attribute.VALUE, value);
             }

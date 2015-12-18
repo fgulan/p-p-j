@@ -47,6 +47,7 @@ public class DirectDeclaratorChecker implements Checker {
      *
      * @since alpha
      */
+    @SuppressWarnings("unchecked")
     @Override
     public boolean check(Node node) {
 
@@ -110,13 +111,13 @@ public class DirectDeclaratorChecker implements Checker {
                     return Utils.badNode(node);
                 }
 
-                node.addAttribute(Attribute.TYPE, new FunctionType(type, new ArrayList<>()));
+                node.addAttribute(Attribute.TYPE, new FunctionType(type, new ArrayList<Type>()));
 
                 return true;
             }
 
             if (child.name().equals(ParameterListChecker.HR_NAME)) {
-                @SuppressWarnings("unchecked")
+
                 List<Type> args = (List<Type>) child.getAttribute(Attribute.TYPES);
 
                 if (!Utils.handleFunction(node.identifierTable(), name, args, type)) {

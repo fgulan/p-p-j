@@ -63,7 +63,7 @@ public class IdentifierTable {
             parent.addChild(this);
         }
 
-        id = this_id++;
+        this_id = id++;
     }
 
     public boolean declare(String name, Type type) {
@@ -109,7 +109,7 @@ public class IdentifierTable {
         }
 
         IdentifierTypeWrapper function = IdentifierTypeWrapper.forFunction(name, returnType, argumentList);
-        GLOBAL_SCOPE.declaredFunctions.add(function);
+        IdentifierTable.declaredFunctions.add(function);
 
         localIdentifiers.put(name, function);
         return true;
@@ -133,7 +133,7 @@ public class IdentifierTable {
             }
         }
 
-        GLOBAL_SCOPE.definedFunctions.add(function);
+        IdentifierTable.definedFunctions.add(function);
         return true;
     }
 
@@ -164,14 +164,14 @@ public class IdentifierTable {
      * @since alpha
      */
     public boolean isFunctionDefined(String name) {
-        if (GLOBAL_SCOPE.localIdentifiers.containsKey(name)) {
-            Type type = GLOBAL_SCOPE.identifierType(name);
+        if (IdentifierTable.GLOBAL_SCOPE.localIdentifiers.containsKey(name)) {
+            Type type = IdentifierTable.GLOBAL_SCOPE.identifierType(name);
 
             if (!type.isFunction()) {
                 return true;
             }
 
-            for (IdentifierTypeWrapper wrapper : GLOBAL_SCOPE.definedFunctions) {
+            for (IdentifierTypeWrapper wrapper : IdentifierTable.definedFunctions) {
                 if (type.equals(wrapper.type()) && wrapper.name().equals(name)) {
                     return true;
                 }
@@ -213,7 +213,7 @@ public class IdentifierTable {
      */
     public Set<String> definedFunctions() {
         Set<String> defined = new HashSet<>();
-        for (IdentifierTypeWrapper function : GLOBAL_SCOPE.definedFunctions) {
+        for (IdentifierTypeWrapper function : IdentifierTable.definedFunctions) {
             defined.add(function.name());
         }
         return defined;
@@ -225,7 +225,7 @@ public class IdentifierTable {
      */
     public Set<String> declaredFunctions() {
         Set<String> declared = new HashSet<>();
-        for (IdentifierTypeWrapper function : GLOBAL_SCOPE.declaredFunctions) {
+        for (IdentifierTypeWrapper function : IdentifierTable.declaredFunctions) {
             declared.add(function.name());
         }
         return declared;

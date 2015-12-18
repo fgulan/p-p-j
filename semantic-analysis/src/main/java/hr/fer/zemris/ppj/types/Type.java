@@ -9,15 +9,11 @@ package hr.fer.zemris.ppj.types;
  */
 public abstract class Type {
 
-    private final Type under;
-
     private final boolean isConst;
     private final boolean isFunction;
     private final boolean isArray;
 
     public Type(boolean isConst, boolean isFunction, boolean isArray) {
-        under = null;
-
         this.isConst = isConst;
         this.isArray = isArray;
         this.isFunction = isFunction;

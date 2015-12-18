@@ -58,7 +58,6 @@ public class UnaryExpressionChecker implements Checker {
         }
 
         Node secondChild = node.getChild(1);
-        String secondSymbol = secondChild.name();
 
         // <unarni_izraz> ::= OP_INC <unarni_izraz>
         if ("OP_INC".equals(firstSymbol)) {

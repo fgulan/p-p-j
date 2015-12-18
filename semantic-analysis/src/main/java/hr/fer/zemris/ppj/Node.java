@@ -33,10 +33,12 @@ public class Node {
      *
      * @param name
      *            the name.
+     * @param parent
+     *            the parent.
      * @since 1.0
      */
     public Node(final String name, final Node parent) {
-        this(name, new ArrayList<Node>(), parent, new HashMap<>(), new IdentifierTable(), null);
+        this(name, new ArrayList<Node>(), parent, new HashMap<Attribute, Object>(), new IdentifierTable(), null);
     }
 
     /**
@@ -50,6 +52,8 @@ public class Node {
      *            parent of the node.
      * @param attributes
      *            attributes of the node.
+     * @param identifierTable
+     *            identifier table of the node.
      * @param checker
      *            the semantic checker for the node
      * @since 1.0

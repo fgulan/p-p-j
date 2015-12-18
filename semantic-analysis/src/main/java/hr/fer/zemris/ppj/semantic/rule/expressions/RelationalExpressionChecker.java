@@ -83,7 +83,7 @@ public class RelationalExpressionChecker implements Checker {
                 return false;
             }
 
-            // 4. <aditivni_izraz>.tip ~ intđ
+            // 4. <aditivni_izraz>.tip ~ int
             Type type2 = (Type) thirdChild.getAttribute(Attribute.TYPE);
             if (!type2.implicitConversion(new IntType())) {
                 SemanticErrorReporter.report(node);

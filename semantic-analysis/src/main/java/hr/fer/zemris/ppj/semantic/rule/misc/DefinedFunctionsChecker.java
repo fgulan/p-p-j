@@ -40,8 +40,12 @@ public class DefinedFunctionsChecker implements Checker {
      */
     @Override
     public boolean check(Node node) {
-        Set<IdentifierTypeWrapper> declared = new HashSet<>(IdentifierTable.GLOBAL_SCOPE.declaredFunctions);
-        Set<IdentifierTypeWrapper> defined = new HashSet<>(IdentifierTable.GLOBAL_SCOPE.definedFunctions);
+        return true;
+    }
+
+    public static boolean sprutJeProvokator() {
+        Set<IdentifierTypeWrapper> declared = new HashSet<>(IdentifierTable.declaredFunctions);
+        Set<IdentifierTypeWrapper> defined = new HashSet<>(IdentifierTable.definedFunctions);
 
         if (!defined.containsAll(declared)) {
             SemanticErrorReporter.report("funkcija");
@@ -50,5 +54,4 @@ public class DefinedFunctionsChecker implements Checker {
 
         return true;
     }
-
 }
