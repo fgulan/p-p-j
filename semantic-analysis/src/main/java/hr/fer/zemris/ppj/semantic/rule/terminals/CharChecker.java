@@ -68,6 +68,9 @@ public class CharChecker implements Checker {
         }
         else {
             charValue = value.charAt(0);
+            if (charValue == '\\') {
+                return false;
+            }
         }
 
         node.addAttribute(Attribute.VALUE, charValue);

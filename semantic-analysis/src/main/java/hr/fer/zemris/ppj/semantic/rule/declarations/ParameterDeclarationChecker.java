@@ -5,6 +5,7 @@ import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Utils;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
 import hr.fer.zemris.ppj.types.Type;
+import hr.fer.zemris.ppj.types.VoidType;
 
 /**
  * <code>ParameterDeclarationChecker</code> is a checker for parameter declaration.
@@ -46,6 +47,9 @@ public class ParameterDeclarationChecker implements Checker {
         }
 
         Type type = (Type) typeNode.getAttribute(Attribute.TYPE);
+        if (type.equals(new VoidType())) {
+            return Utils.badNode(node);
+        }
         String name = (String) idnNode.getAttribute(Attribute.VALUE);
 
         if (node.childrenCount() > 2) {

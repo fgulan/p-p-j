@@ -85,7 +85,7 @@ public class LoopInstructionChecker implements Checker {
             }
 
             Type type = (Type) secondExpInstruction.getAttribute(Attribute.TYPE);
-            boolean ableToConvert = type.implicitConversion(new IntType());
+            boolean ableToConvert = type == null ? true : type.implicitConversion(new IntType());
 
             if (!ableToConvert) {
                 SemanticErrorReporter.report(node);
