@@ -76,6 +76,5 @@ public class Int implements Checker, Generator {
     @Override
     public void generate(Node node) {
         // TODO Auto-generated method stub
-        
     }
 }
