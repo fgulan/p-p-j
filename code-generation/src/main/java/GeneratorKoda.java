@@ -2,8 +2,8 @@ import java.util.Scanner;
 
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.TreeParser;
-import hr.fer.zemris.ppj.semantic.rule.misc.DefinedFunctionsChecker;
-import hr.fer.zemris.ppj.semantic.rule.misc.MainFunctionChecker;
+import hr.fer.zemris.ppj.semantic.rule.misc.DefinedFunctions;
+import hr.fer.zemris.ppj.semantic.rule.misc.MainFunction;
 
 /**
  * <code>GeneratorKoda</code> class is required by the evaluator, to contain a entry point for the code generator.
@@ -29,8 +29,8 @@ public class GeneratorKoda {
 
     private static void runSemanticAnalysis(Node node) {
         node.check();
-        MainFunctionChecker.sprutJeProvokator();
-        DefinedFunctionsChecker.sprutJeProvokator();
+        MainFunction.sprutJeProvokator();
+        DefinedFunctions.sprutJeProvokator();
     }
 
     private static void runCodeGeneration(Node node) {
