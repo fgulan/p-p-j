@@ -8,7 +8,7 @@ import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Utils;
 import hr.fer.zemris.ppj.identifier.table.IdentifierTable;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
-import hr.fer.zemris.ppj.semantic.rule.Generator;
+
 import hr.fer.zemris.ppj.types.Type;
 import hr.fer.zemris.ppj.types.functions.FunctionType;
 
@@ -19,7 +19,7 @@ import hr.fer.zemris.ppj.types.functions.FunctionType;
  *
  * @version 1.0
  */
-public class FunctionDefinition implements Checker, Generator {
+public class FunctionDefinition implements Checker {
 
     // <definicija_funkcije> ::= <ime_tipa> IDN L_ZAGRADA KR_VOID D_ZAGRADA <slozena_naredba>
     // <definicija_funkcije> ::= <ime_tipa> IDN L_ZAGRADA <lista_parametara> D_ZAGRADA> <slozena_naredba>

@@ -8,7 +8,7 @@ import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.Utils;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
-import hr.fer.zemris.ppj.semantic.rule.Generator;
+
 import hr.fer.zemris.ppj.types.Type;
 import hr.fer.zemris.ppj.types.arrays.ArrayType;
 
@@ -19,7 +19,7 @@ import hr.fer.zemris.ppj.types.arrays.ArrayType;
  *
  * @version 1.0
  */
-public class InitializationDeclarator implements Checker, Generator {
+public class InitializationDeclarator implements Checker {
 
     // <init_deklarator> ::= <izravni_deklarator>
     // <init_deklarator> ::= <izravni_deklarator> OP_PRIDRUZI <inicijalizator>

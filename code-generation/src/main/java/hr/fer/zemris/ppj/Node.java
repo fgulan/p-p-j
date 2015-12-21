@@ -185,7 +185,11 @@ public class Node {
 
         return checker.check(this);
     }
-
+    
+    public void generate() {
+        checker.generate(this);
+    }
+    
     /**
      * Prints the tree.
      *

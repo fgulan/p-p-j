@@ -4,7 +4,7 @@ import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
-import hr.fer.zemris.ppj.semantic.rule.Generator;
+
 import hr.fer.zemris.ppj.types.Type;
 
 /**
@@ -14,7 +14,7 @@ import hr.fer.zemris.ppj.types.Type;
  *
  * @version 1.0
  */
-public class CastExpression implements Checker, Generator {
+public class CastExpression implements Checker {
 
     // <cast_izraz> ::= <unarni_izraz>
     // <cast_izraz> ::= L_ZAGRADA <ime_tipa> D_ZAGRADA <cast_izraz>

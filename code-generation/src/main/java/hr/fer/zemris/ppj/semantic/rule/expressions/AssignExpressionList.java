@@ -8,7 +8,7 @@ import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
-import hr.fer.zemris.ppj.semantic.rule.Generator;
+
 import hr.fer.zemris.ppj.types.Type;
 
 /**
@@ -18,7 +18,7 @@ import hr.fer.zemris.ppj.types.Type;
  *
  * @version 1.0
  */
-public class AssignExpressionList implements Checker, Generator {
+public class AssignExpressionList implements Checker {
 
     // <lista_izraza_pridruzivanja> ::= <izraz_pridruzivanja>
     // <lista_izraza_pridruzivanja> ::= <lista_izraza_pridruzivanja> ZAREZ <izraz_pridruzivanja>

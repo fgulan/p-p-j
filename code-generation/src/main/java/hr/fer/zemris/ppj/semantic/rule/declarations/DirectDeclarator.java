@@ -8,7 +8,7 @@ import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.Utils;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
-import hr.fer.zemris.ppj.semantic.rule.Generator;
+
 import hr.fer.zemris.ppj.semantic.rule.definitions.ParameterList;
 import hr.fer.zemris.ppj.types.Type;
 import hr.fer.zemris.ppj.types.VoidType;
@@ -21,7 +21,7 @@ import hr.fer.zemris.ppj.types.functions.FunctionType;
  *
  * @version 1.0
  */
-public class DirectDeclarator implements Checker, Generator {
+public class DirectDeclarator implements Checker {
 
     private static final int MIN_ARRAY_SIZE = 1;
     private static final int MAX_ARRAY_SIZE = 1024;

@@ -8,7 +8,7 @@ import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.identifier.table.IdentifierTable;
 import hr.fer.zemris.ppj.identifier.table.IdentifierTypeWrapper;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
-import hr.fer.zemris.ppj.semantic.rule.Generator;
+
 
 /**
  * <code>DefinedFunctionChecker</code> is a checker for defined functions.
@@ -17,7 +17,7 @@ import hr.fer.zemris.ppj.semantic.rule.Generator;
  *
  * @version 1.0
  */
-public class DefinedFunctions implements Checker, Generator {
+public class DefinedFunctions implements Checker {
 
     // <prijevodna_jedinica> ::= <vanjska_deklaracija>
     // <prijevodna_jedinica> ::= <prijevodna_jedinica> <vanjska_deklaracija>

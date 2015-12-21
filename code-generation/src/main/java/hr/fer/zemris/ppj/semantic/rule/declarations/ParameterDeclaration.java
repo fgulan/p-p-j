@@ -4,7 +4,7 @@ import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Utils;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
-import hr.fer.zemris.ppj.semantic.rule.Generator;
+
 import hr.fer.zemris.ppj.types.Type;
 import hr.fer.zemris.ppj.types.VoidType;
 
@@ -15,7 +15,7 @@ import hr.fer.zemris.ppj.types.VoidType;
  *
  * @version 1.0
  */
-public class ParameterDeclaration implements Checker, Generator {
+public class ParameterDeclaration implements Checker {
 
     // <deklaracija_parametra> ::= <ime_tipa> IDN
     // <deklaracija_parametre> ::= <ime_tipa> IDN L_UGL_ZAGRADA D_UGL_ZAGRADA

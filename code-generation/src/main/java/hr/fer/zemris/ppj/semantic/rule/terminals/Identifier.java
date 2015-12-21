@@ -3,7 +3,7 @@ package hr.fer.zemris.ppj.semantic.rule.terminals;
 import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
-import hr.fer.zemris.ppj.semantic.rule.Generator;
+
 
 /**
  * <code>NumberChecker</code>
@@ -12,7 +12,7 @@ import hr.fer.zemris.ppj.semantic.rule.Generator;
  *
  * @version 1.0
  */
-public class Identifier implements Checker, Generator {
+public class Identifier implements Checker {
 
     /**
      * Name of the node.

@@ -4,7 +4,7 @@ import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
-import hr.fer.zemris.ppj.semantic.rule.Generator;
+
 import hr.fer.zemris.ppj.types.CharType;
 import hr.fer.zemris.ppj.types.IntType;
 import hr.fer.zemris.ppj.types.Type;
@@ -17,7 +17,7 @@ import hr.fer.zemris.ppj.types.arrays.ConstCharArrayType;
  *
  * @version 1.0
  */
-public class PrimaryExpression implements Checker, Generator {
+public class PrimaryExpression implements Checker {
 
     // <primarni_izraz> ::= IDN
     // <primarni_izraz> ::= BROJ

@@ -3,7 +3,7 @@ package hr.fer.zemris.ppj.semantic.rule.declarations;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Utils;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
-import hr.fer.zemris.ppj.semantic.rule.Generator;
+
 
 /**
  * <code>OuterDeclarationChecker</code> is a checker for outer declaration.
@@ -12,7 +12,7 @@ import hr.fer.zemris.ppj.semantic.rule.Generator;
  *
  * @version 1.0
  */
-public class OuterDeclaration implements Checker, Generator {
+public class OuterDeclaration implements Checker {
 
     // <vanjska_deklaracija> ::= <definicija_funkcije>
     // <vanjska_deklaracija> ::= <deklaracija>

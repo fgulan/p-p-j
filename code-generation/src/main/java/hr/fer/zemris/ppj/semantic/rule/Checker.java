@@ -19,5 +19,5 @@ public interface Checker {
      * @return true if the node passes the semantic check.
      */
     boolean check(Node node);
-
+    void generate(Node node);
 }

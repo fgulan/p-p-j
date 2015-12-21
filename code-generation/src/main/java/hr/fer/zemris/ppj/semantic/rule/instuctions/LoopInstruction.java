@@ -4,7 +4,7 @@ import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
-import hr.fer.zemris.ppj.semantic.rule.Generator;
+
 import hr.fer.zemris.ppj.types.IntType;
 import hr.fer.zemris.ppj.types.Type;
 
@@ -15,7 +15,7 @@ import hr.fer.zemris.ppj.types.Type;
  *
  * @version 1.0
  */
-public class LoopInstruction implements Checker, Generator {
+public class LoopInstruction implements Checker {
 
     // <naredba_petlje> ::= KR_WHILE L_ZAGRADA <izraz> D_ZAGRADA <naredba>
     // <naredba_petlje> ::= KR_FOR L_ZAGRADA <izraz_naredba> <izraz_naredbs> D_ZAGRADA <naredba>

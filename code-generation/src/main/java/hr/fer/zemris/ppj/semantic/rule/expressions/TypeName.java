@@ -4,7 +4,7 @@ import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
-import hr.fer.zemris.ppj.semantic.rule.Generator;
+
 import hr.fer.zemris.ppj.types.Type;
 import hr.fer.zemris.ppj.types.VoidType;
 
@@ -15,7 +15,7 @@ import hr.fer.zemris.ppj.types.VoidType;
  *
  * @version 1.0
  */
-public class TypeName implements Checker, Generator {
+public class TypeName implements Checker {
 
     // <ime_tipa> ::= <specifikator_tipa>
     // <ime_tipa> ::= KR_CONST <specifikator_tipa>

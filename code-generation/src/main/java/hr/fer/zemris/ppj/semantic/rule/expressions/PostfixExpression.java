@@ -6,7 +6,7 @@ import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
-import hr.fer.zemris.ppj.semantic.rule.Generator;
+
 import hr.fer.zemris.ppj.types.IntType;
 import hr.fer.zemris.ppj.types.Type;
 import hr.fer.zemris.ppj.types.functions.FunctionType;
@@ -18,7 +18,7 @@ import hr.fer.zemris.ppj.types.functions.FunctionType;
  *
  * @version 1.0
  */
-public class PostfixExpression implements Checker, Generator {
+public class PostfixExpression implements Checker {
 
     // <postfiks_izraz> ::= <primarni_izraz>
     // <postfiks_izraz> ::= <postfiks_izraz> OP_INC

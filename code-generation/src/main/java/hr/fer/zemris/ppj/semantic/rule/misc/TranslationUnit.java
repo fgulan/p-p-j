@@ -3,7 +3,7 @@ package hr.fer.zemris.ppj.semantic.rule.misc;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
-import hr.fer.zemris.ppj.semantic.rule.Generator;
+
 
 /**
  * <code>TranslationUnitChecker</code> is a checker for translation unit.
@@ -12,7 +12,7 @@ import hr.fer.zemris.ppj.semantic.rule.Generator;
  *
  * @version 1.0
  */
-public class TranslationUnit implements Checker, Generator {
+public class TranslationUnit implements Checker {
 
     // <prijevodna_jedinica> ::= <vanjska_deklaracija>
     // <prijevodna_jedinica> ::= <prijevodna_jedinica> <vanjska_deklaracija>

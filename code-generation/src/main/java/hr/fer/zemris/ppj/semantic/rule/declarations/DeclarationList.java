@@ -3,7 +3,7 @@ package hr.fer.zemris.ppj.semantic.rule.declarations;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Utils;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
-import hr.fer.zemris.ppj.semantic.rule.Generator;
+
 
 /**
  * <code>DeclarationListChecker</code> is a checker for declaration list.
@@ -12,7 +12,7 @@ import hr.fer.zemris.ppj.semantic.rule.Generator;
  *
  * @version 1.0
  */
-public class DeclarationList implements Checker, Generator {
+public class DeclarationList implements Checker {
 
     // <lista_deklaracija> ::= <deklaracija>
     // <lista_deklaracija> ::= <lista_deklaracija> <deklaracija>

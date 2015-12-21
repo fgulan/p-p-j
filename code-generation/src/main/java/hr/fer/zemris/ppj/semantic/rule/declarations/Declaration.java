@@ -6,7 +6,7 @@ import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Utils;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
-import hr.fer.zemris.ppj.semantic.rule.Generator;
+
 
 /**
  * <code>DeclarationChecker</code> is a checker for declaration.
@@ -15,7 +15,7 @@ import hr.fer.zemris.ppj.semantic.rule.Generator;
  *
  * @version 1.0
  */
-public class Declaration implements Checker, Generator {
+public class Declaration implements Checker {
 
     // <deklaracija> ::= <ime_tipa> <lista_init_deklaratora> TOCKAZAREZ
 

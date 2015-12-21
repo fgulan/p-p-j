@@ -3,7 +3,7 @@ package hr.fer.zemris.ppj.semantic.rule.terminals;
 import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
-import hr.fer.zemris.ppj.semantic.rule.Generator;
+
 
 /**
  * <code>ConstCharArrayChecker</code>
@@ -12,7 +12,7 @@ import hr.fer.zemris.ppj.semantic.rule.Generator;
  *
  * @version
  */
-public class ConstCharArray implements Checker, Generator {
+public class ConstCharArray implements Checker {
 
     // isto ko i za znakove, samo svaki znak posebno
 

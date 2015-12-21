@@ -34,7 +34,7 @@ public class GeneratorKoda {
     }
 
     private static void runCodeGeneration(Node node) {
-        // TODO: SMTH
+        node.generate();
     }
 
 }

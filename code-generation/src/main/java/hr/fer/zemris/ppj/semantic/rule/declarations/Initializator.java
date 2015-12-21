@@ -8,7 +8,7 @@ import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.Utils;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
-import hr.fer.zemris.ppj.semantic.rule.Generator;
+
 import hr.fer.zemris.ppj.semantic.rule.expressions.AssignExpression;
 import hr.fer.zemris.ppj.semantic.rule.expressions.AssignExpressionList;
 import hr.fer.zemris.ppj.types.CharType;
@@ -21,7 +21,7 @@ import hr.fer.zemris.ppj.types.Type;
  *
  * @version 1.0
  */
-public class Initializator implements Checker, Generator {
+public class Initializator implements Checker {
 
     // <inicijalizator> ::= <izraz_pridruzivanja>
     // <inicijalizator> ::= L_VIT_ZAGRADA <lista_izraza_pridruzivanja> D_VIT_ZAGRADA

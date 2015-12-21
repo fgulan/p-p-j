@@ -2,7 +2,7 @@ package hr.fer.zemris.ppj.semantic.rule.expressions;
 
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
-import hr.fer.zemris.ppj.semantic.rule.Generator;
+
 
 /**
  * <code>UnaryOperatorChecker</code> is a checker for unary operator.
@@ -11,7 +11,7 @@ import hr.fer.zemris.ppj.semantic.rule.Generator;
  *
  * @version 1.0
  */
-public class UnaryOperator implements Checker, Generator {
+public class UnaryOperator implements Checker {
 
     // <unarni_operator> ::= PLUS
     // <unarni_operator> ::= MINUS

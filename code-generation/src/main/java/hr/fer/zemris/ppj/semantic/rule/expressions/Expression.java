@@ -4,7 +4,7 @@ import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
-import hr.fer.zemris.ppj.semantic.rule.Generator;
+
 
 /**
  * <code>ExpressionChecker</code> is a checker for expression.
@@ -13,7 +13,7 @@ import hr.fer.zemris.ppj.semantic.rule.Generator;
  *
  * @version 1.0
  */
-public class Expression implements Checker, Generator {
+public class Expression implements Checker {
 
     // <izraz> ::= <izraz_pridruzivanja>
     // <izraz> ::= <izraz> ZAREZ <izraz_pridruzivanja>

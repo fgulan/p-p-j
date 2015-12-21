@@ -3,7 +3,7 @@ package hr.fer.zemris.ppj.semantic.rule.terminals;
 import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
-import hr.fer.zemris.ppj.semantic.rule.Generator;
+
 
 /**
  * <code>IntRangeChecker</code> is a checker for int range.
@@ -12,7 +12,7 @@ import hr.fer.zemris.ppj.semantic.rule.Generator;
  *
  * @version 1.0
  */
-public class Int implements Checker, Generator {
+public class Int implements Checker {
 
     // -2,147,483,648 to 2,147,483,647
 

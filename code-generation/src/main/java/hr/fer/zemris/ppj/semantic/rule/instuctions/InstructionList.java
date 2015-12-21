@@ -3,7 +3,7 @@ package hr.fer.zemris.ppj.semantic.rule.instuctions;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
-import hr.fer.zemris.ppj.semantic.rule.Generator;
+
 
 /**
  * <code>InstructionListChecker</code> is a checker for instruction list.
@@ -12,7 +12,7 @@ import hr.fer.zemris.ppj.semantic.rule.Generator;
  *
  * @version 1.0
  */
-public class InstructionList implements Checker, Generator {
+public class InstructionList implements Checker {
 
     // <lista_naredbi> ::= <naredba>
     // <lista_naredbi> ::= <lista_naredbi> <naredba>

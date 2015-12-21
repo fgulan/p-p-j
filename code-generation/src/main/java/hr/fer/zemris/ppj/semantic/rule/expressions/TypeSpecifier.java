@@ -3,7 +3,7 @@ package hr.fer.zemris.ppj.semantic.rule.expressions;
 import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
-import hr.fer.zemris.ppj.semantic.rule.Generator;
+
 import hr.fer.zemris.ppj.types.CharType;
 import hr.fer.zemris.ppj.types.IntType;
 import hr.fer.zemris.ppj.types.VoidType;
@@ -15,7 +15,7 @@ import hr.fer.zemris.ppj.types.VoidType;
  *
  * @version 1.0
  */
-public class TypeSpecifier implements Checker, Generator {
+public class TypeSpecifier implements Checker {
 
     // <specifikator_tipa> ::= KR_VOID
     // <specifikator_tipa> ::= KR_CHAR

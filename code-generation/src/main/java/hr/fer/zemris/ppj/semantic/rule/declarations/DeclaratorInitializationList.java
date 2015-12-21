@@ -4,7 +4,7 @@ import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Utils;
 import hr.fer.zemris.ppj.semantic.rule.Checker;
-import hr.fer.zemris.ppj.semantic.rule.Generator;
+
 
 /**
  * <code>DeclaratorInitializationListChecker</code> is a checker for declarator initialization list.
@@ -13,7 +13,7 @@ import hr.fer.zemris.ppj.semantic.rule.Generator;
  *
  * @version 1.0
  */
-public class DeclaratorInitializationList implements Checker, Generator {
+public class DeclaratorInitializationList implements Checker {
 
     // <lista_init_deklaratora> ::= <init_deklarator>
     // <lista_init_deklaratora> ZAREZT <init_deklarator>
