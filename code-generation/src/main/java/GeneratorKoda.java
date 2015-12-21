@@ -29,6 +29,7 @@ public class GeneratorKoda {
 
     private static void runSemanticAnalysis(Node node) {
         node.check();
+        
         MainFunction.sprutJeProvokator();
         DefinedFunctions.sprutJeProvokator();
     }
