@@ -5,18 +5,18 @@ package hr.fer.zemris.ppj;
  *
  * @author Jan Kelemen
  *
- * @version 1.0
+ * @version 1.1
  */
 public enum Attribute {
     /**
      * tip
      */
-    TYPE, // VariableType
+    TYPE, // Type
 
     /**
      * tipovi
      */
-    TYPES, // List<VariableType>
+    TYPES, // List<Type>
 
     /**
      * l-izraz
@@ -44,24 +44,14 @@ public enum Attribute {
     LINE_NUMBER, // Integer
 
     /**
-     * pov
-     */
-    RETURN_VALUE, // VariableType
-
-    /**
      * inherited type
      */
-    ITYPE, // VariableType
+    ITYPE, // Type
 
     /**
      * Unutar petlje
      */
-    INSIDE_LOOP, // boolean
-
-    /**
-     * number of chars in char string
-     */
-    CELEM_COUNT, // int
+    INSIDE_LOOP, // Boolean
 
     /**
      * parameter names
@@ -72,7 +62,5 @@ public enum Attribute {
      * function name
      */
     FUNCTION_NAME, // String
-
-    // IDK ovo treba popuniti po potrebi
 
 }
