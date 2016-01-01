@@ -11,7 +11,7 @@ import hr.fer.zemris.ppj.interfaces.Manipulator;
  *
  * @version 1.0
  */
-public class InstructionList implements Manipulator {
+public class InstructionListManipulator implements Manipulator {
 
     // <lista_naredbi> ::= <naredba>
     // <lista_naredbi> ::= <lista_naredbi> <naredba>

@@ -42,7 +42,7 @@ import hr.fer.zemris.ppj.manipulators.instuctions.BranchInstructionManipulator;
 import hr.fer.zemris.ppj.manipulators.instuctions.CompoundInstructionManipulator;
 import hr.fer.zemris.ppj.manipulators.instuctions.ExpressionInstructionManipulator;
 import hr.fer.zemris.ppj.manipulators.instuctions.InstructionManipulator;
-import hr.fer.zemris.ppj.manipulators.instuctions.InstructionList;
+import hr.fer.zemris.ppj.manipulators.instuctions.InstructionListManipulator;
 import hr.fer.zemris.ppj.manipulators.instuctions.JumpInstructionManipulator;
 import hr.fer.zemris.ppj.manipulators.instuctions.LoopInstructionManipulator;
 import hr.fer.zemris.ppj.manipulators.misc.DefinedFunctionsManipulator;
@@ -107,7 +107,7 @@ public class TreeParser {
         manipulators.put(CompoundInstructionManipulator.HR_NAME, new CompoundInstructionManipulator());
         manipulators.put(ExpressionInstructionManipulator.HR_NAME, new ExpressionInstructionManipulator());
         manipulators.put(InstructionManipulator.HR_NAME, new InstructionManipulator());
-        manipulators.put(InstructionList.HR_NAME, new InstructionList());
+        manipulators.put(InstructionListManipulator.HR_NAME, new InstructionListManipulator());
         manipulators.put(JumpInstructionManipulator.HR_NAME, new JumpInstructionManipulator());
         manipulators.put(LoopInstructionManipulator.HR_NAME, new LoopInstructionManipulator());
 
