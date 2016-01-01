@@ -18,9 +18,6 @@ import hr.fer.zemris.ppj.interfaces.Manipulator;
  */
 public class DefinedFunctionsManipulator implements Manipulator {
 
-    // <prijevodna_jedinica> ::= <vanjska_deklaracija>
-    // <prijevodna_jedinica> ::= <prijevodna_jedinica> <vanjska_deklaracija>
-
     /**
      * Name of the node.
      */
@@ -61,7 +58,6 @@ public class DefinedFunctionsManipulator implements Manipulator {
 
     @Override
     public void generate(Node node) {
-        // TODO Auto-generated method stub
-
+        return;
     }
 }

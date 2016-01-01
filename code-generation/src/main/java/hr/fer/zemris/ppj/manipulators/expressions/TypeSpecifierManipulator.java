@@ -2,6 +2,7 @@ package hr.fer.zemris.ppj.manipulators.expressions;
 
 import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
+import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 import hr.fer.zemris.ppj.types.CharType;
 import hr.fer.zemris.ppj.types.IntType;
@@ -58,7 +59,22 @@ public class TypeSpecifierManipulator implements Manipulator {
 
     @Override
     public void generate(Node node) {
-        // TODO Auto-generated method stub
+        switch (Production.fromNode(node)) {
+            case TYPE_SPECIFIER_1: {
+                break;
+            }
 
+            case TYPE_SPECIFIER_2: {
+                break;
+            }
+
+            case TYPE_SPECIFIER_3: {
+                break;
+            }
+
+            default:
+                System.err.println("Generation reached undefined production!");
+                break;
+        }
     }
 }

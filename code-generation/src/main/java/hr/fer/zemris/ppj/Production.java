@@ -105,7 +105,7 @@ public enum Production {
     DECLARATION_LIST_2("<lista_deklaracija> ::= <lista_deklaracija> <deklaracija>"),
     DECLARATION_1("<deklaracija> ::= <ime_tipa> <lista_init_deklaratora> TOCKAZAREZ"),
     DECLARATOR_INITIALIZATION_LIST_1("<lista_init_deklaratora> ::= <init_deklarator>"),
-    DECLARATOR_INITIALIZATION_LIST2("<lista_init_deklaratora> ::= <lista_init_deklaratora> ZAREZ <init_deklarator>"),
+    DECLARATOR_INITIALIZATION_LIST_2("<lista_init_deklaratora> ::= <lista_init_deklaratora> ZAREZ <init_deklarator>"),
     INITIALIZATION_DECLARATOR_1("<init_deklarator> ::= <izravni_deklarator>"),
     INITIALIZATION_DECLARATOR_2("<init_deklarator> ::= <izravni_deklarator> OP_PRIDRUZI <inicijalizator>"),
     DIRECT_DECLARATOR_1("<izravni_deklarator> ::= IDN"),

@@ -96,7 +96,6 @@ public class ConstCharArrayManipulator implements Manipulator {
 
     @Override
     public void generate(Node node) {
-        // TODO Auto-generated method stub
-
+        return;
     }
 }

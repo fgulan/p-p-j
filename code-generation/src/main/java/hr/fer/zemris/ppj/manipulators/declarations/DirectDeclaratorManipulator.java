@@ -5,6 +5,7 @@ import java.util.List;
 
 import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
+import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.Utils;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
@@ -139,7 +140,26 @@ public class DirectDeclaratorManipulator implements Manipulator {
 
     @Override
     public void generate(Node node) {
-        // TODO Auto-generated method stub
+        switch (Production.fromNode(node)) {
+            case DIRECT_DECLARATOR_1: {
+                break;
+            }
 
+            case DIRECT_DECLARATOR_2: {
+                break;
+            }
+
+            case DIRECT_DECLARATOR_3: {
+                break;
+            }
+
+            case DIRECT_DECLARATOR_4: {
+                break;
+            }
+
+            default:
+                System.err.println("Generation reached undefined production!");
+                break;
+        }
     }
 }

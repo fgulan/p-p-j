@@ -1,6 +1,7 @@
 package hr.fer.zemris.ppj.manipulators.expressions;
 
 import hr.fer.zemris.ppj.Node;
+import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 
 /**
@@ -41,7 +42,26 @@ public class UnaryOperatorManipulator implements Manipulator {
 
     @Override
     public void generate(Node node) {
-        // TODO Auto-generated method stub
+        switch (Production.fromNode(node)) {
+            case UNARY_OPERATOR_1: {
+                break;
+            }
 
+            case UNARY_OPERATOR_2: {
+                break;
+            }
+
+            case UNARY_OPERATOR_3: {
+                break;
+            }
+
+            case UNARY_OPERATOR_4: {
+                break;
+            }
+
+            default:
+                System.err.println("Generation reached undefined production!");
+                break;
+        }
     }
 }

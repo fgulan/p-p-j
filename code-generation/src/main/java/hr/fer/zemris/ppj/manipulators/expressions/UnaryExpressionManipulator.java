@@ -2,6 +2,7 @@ package hr.fer.zemris.ppj.manipulators.expressions;
 
 import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
+import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 import hr.fer.zemris.ppj.types.IntType;
@@ -140,7 +141,26 @@ public class UnaryExpressionManipulator implements Manipulator {
 
     @Override
     public void generate(Node node) {
-        // TODO Auto-generated method stub
+        switch (Production.fromNode(node)) {
+            case UNARY_EXPRESSION_1: {
+                break;
+            }
 
+            case UNARY_EXPRESSION_2: {
+                break;
+            }
+
+            case UNARY_EXPRESSION_3: {
+                break;
+            }
+
+            case UNARY_EXPRESSION_4: {
+                break;
+            }
+
+            default:
+                System.err.println("Generation reached undefined production!");
+                break;
+        }
     }
 }

@@ -1,6 +1,7 @@
 package hr.fer.zemris.ppj.manipulators.instuctions;
 
 import hr.fer.zemris.ppj.Node;
+import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 
@@ -66,7 +67,18 @@ public class CompoundInstructionManipulator implements Manipulator {
 
     @Override
     public void generate(Node node) {
-        // TODO Auto-generated method stub
+        switch (Production.fromNode(node)) {
+            case COMPOUND_INSTRUCTION_1: {
+                break;
+            }
 
+            case COMPOUND_INSTRUCTION_2: {
+                break;
+            }
+
+            default:
+                System.err.println("Generation reached undefined production!");
+                break;
+        }
     }
 }

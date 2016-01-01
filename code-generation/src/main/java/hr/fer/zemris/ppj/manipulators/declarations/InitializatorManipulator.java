@@ -5,11 +5,12 @@ import java.util.List;
 
 import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
+import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.Utils;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
-import hr.fer.zemris.ppj.manipulators.expressions.AssignExpressionManipulator;
 import hr.fer.zemris.ppj.manipulators.expressions.AssignExpressionListManipulator;
+import hr.fer.zemris.ppj.manipulators.expressions.AssignExpressionManipulator;
 import hr.fer.zemris.ppj.types.CharType;
 import hr.fer.zemris.ppj.types.Type;
 
@@ -109,7 +110,18 @@ public class InitializatorManipulator implements Manipulator {
 
     @Override
     public void generate(Node node) {
-        // TODO Auto-generated method stub
+        switch (Production.fromNode(node)) {
+            case INITIALIZATOR_1: {
+                break;
+            }
 
+            case INITIALIZATOR_2: {
+                break;
+            }
+
+            default:
+                System.err.println("Generation reached undefined production!");
+                break;
+        }
     }
 }

@@ -2,6 +2,7 @@ package hr.fer.zemris.ppj.manipulators.instuctions;
 
 import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
+import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 import hr.fer.zemris.ppj.types.Type;
@@ -92,7 +93,26 @@ public class JumpInstructionManipulator implements Manipulator {
 
     @Override
     public void generate(Node node) {
-        // TODO Auto-generated method stub
+        switch (Production.fromNode(node)) {
+            case JUMP_INSTRUCTION_1: {
+                break;
+            }
 
+            case JUMP_INSTRUCTION_2: {
+                break;
+            }
+
+            case JUMP_INSTRUCTION_3: {
+                break;
+            }
+
+            case JUMP_INSTRUCTION_4: {
+                break;
+            }
+
+            default:
+                System.err.println("Generation reached undefined production!");
+                break;
+        }
     }
 }
