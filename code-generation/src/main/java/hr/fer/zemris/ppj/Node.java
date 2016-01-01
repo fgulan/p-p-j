@@ -78,6 +78,21 @@ public class Node {
     }
 
     /**
+     * @return production of the node.
+     * @since 1.2
+     */
+    public String production() {
+        String result = name();
+        if (childrenCount() != 0) {
+            result += " ::=";
+            for (Node child : children) {
+                result += " " + child.name();
+            }
+        }
+        return result;
+    }
+
+    /**
      * @return number of children.
      * @since 1.1
      */
