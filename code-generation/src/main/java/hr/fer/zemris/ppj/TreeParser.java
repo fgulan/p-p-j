@@ -7,51 +7,51 @@ import java.util.Scanner;
 import java.util.Stack;
 
 import hr.fer.zemris.ppj.identifier.table.IdentifierTable;
-import hr.fer.zemris.ppj.semantic.rule.Checker;
-import hr.fer.zemris.ppj.semantic.rule.declarations.Declaration;
-import hr.fer.zemris.ppj.semantic.rule.declarations.DeclarationList;
-import hr.fer.zemris.ppj.semantic.rule.declarations.DeclaratorInitializationList;
-import hr.fer.zemris.ppj.semantic.rule.declarations.DirectDeclarator;
-import hr.fer.zemris.ppj.semantic.rule.declarations.InitializationDeclarator;
-import hr.fer.zemris.ppj.semantic.rule.declarations.Initializator;
-import hr.fer.zemris.ppj.semantic.rule.declarations.OuterDeclaration;
-import hr.fer.zemris.ppj.semantic.rule.declarations.ParameterDeclaration;
-import hr.fer.zemris.ppj.semantic.rule.definitions.FunctionDefinition;
-import hr.fer.zemris.ppj.semantic.rule.definitions.ParameterList;
-import hr.fer.zemris.ppj.semantic.rule.expressions.AdditiveExpression;
-import hr.fer.zemris.ppj.semantic.rule.expressions.ArgumentList;
-import hr.fer.zemris.ppj.semantic.rule.expressions.AssignExpression;
-import hr.fer.zemris.ppj.semantic.rule.expressions.AssignExpressionList;
-import hr.fer.zemris.ppj.semantic.rule.expressions.BinaryAndExpression;
-import hr.fer.zemris.ppj.semantic.rule.expressions.BinaryOrExpression;
-import hr.fer.zemris.ppj.semantic.rule.expressions.BinaryXorExpression;
-import hr.fer.zemris.ppj.semantic.rule.expressions.CastExpression;
-import hr.fer.zemris.ppj.semantic.rule.expressions.EqualityExpression;
-import hr.fer.zemris.ppj.semantic.rule.expressions.Expression;
-import hr.fer.zemris.ppj.semantic.rule.expressions.LogicalAndExpression;
-import hr.fer.zemris.ppj.semantic.rule.expressions.LogicalOrExpression;
-import hr.fer.zemris.ppj.semantic.rule.expressions.MultiplicativeExpression;
-import hr.fer.zemris.ppj.semantic.rule.expressions.PostfixExpression;
-import hr.fer.zemris.ppj.semantic.rule.expressions.PrimaryExpression;
-import hr.fer.zemris.ppj.semantic.rule.expressions.RelationalExpression;
-import hr.fer.zemris.ppj.semantic.rule.expressions.TypeName;
-import hr.fer.zemris.ppj.semantic.rule.expressions.TypeSpecifier;
-import hr.fer.zemris.ppj.semantic.rule.expressions.UnaryExpression;
-import hr.fer.zemris.ppj.semantic.rule.expressions.UnaryOperator;
-import hr.fer.zemris.ppj.semantic.rule.instuctions.BranchInstruction;
-import hr.fer.zemris.ppj.semantic.rule.instuctions.CompoundInstruction;
-import hr.fer.zemris.ppj.semantic.rule.instuctions.ExpressionInstruction;
-import hr.fer.zemris.ppj.semantic.rule.instuctions.Instruction;
-import hr.fer.zemris.ppj.semantic.rule.instuctions.InstructionList;
-import hr.fer.zemris.ppj.semantic.rule.instuctions.JumpInstruction;
-import hr.fer.zemris.ppj.semantic.rule.instuctions.LoopInstruction;
-import hr.fer.zemris.ppj.semantic.rule.misc.DefinedFunctions;
-import hr.fer.zemris.ppj.semantic.rule.misc.MainFunction;
-import hr.fer.zemris.ppj.semantic.rule.misc.TranslationUnit;
-import hr.fer.zemris.ppj.semantic.rule.terminals.Char;
-import hr.fer.zemris.ppj.semantic.rule.terminals.ConstCharArray;
-import hr.fer.zemris.ppj.semantic.rule.terminals.Identifier;
-import hr.fer.zemris.ppj.semantic.rule.terminals.Int;
+import hr.fer.zemris.ppj.interfaces.Manipulator;
+import hr.fer.zemris.ppj.manipulators.declarations.DeclarationListManipulator;
+import hr.fer.zemris.ppj.manipulators.declarations.DeclarationManipulator;
+import hr.fer.zemris.ppj.manipulators.declarations.DeclaratorInitializationListManipulator;
+import hr.fer.zemris.ppj.manipulators.declarations.DirectDeclaratorManipulator;
+import hr.fer.zemris.ppj.manipulators.declarations.InitializationDeclaratorManipulator;
+import hr.fer.zemris.ppj.manipulators.declarations.InitializatorManipulator;
+import hr.fer.zemris.ppj.manipulators.declarations.OuterDeclarationManipulator;
+import hr.fer.zemris.ppj.manipulators.declarations.ParameterDeclarationManipulator;
+import hr.fer.zemris.ppj.manipulators.definitions.FunctionDefinitionManipulator;
+import hr.fer.zemris.ppj.manipulators.definitions.ParameterListManipulator;
+import hr.fer.zemris.ppj.manipulators.expressions.AdditiveExpressionManipulator;
+import hr.fer.zemris.ppj.manipulators.expressions.ArgumentListManipulator;
+import hr.fer.zemris.ppj.manipulators.expressions.AssignExpressionListManipulator;
+import hr.fer.zemris.ppj.manipulators.expressions.AssignExpressionManipulator;
+import hr.fer.zemris.ppj.manipulators.expressions.BinaryAndExpressionManipulator;
+import hr.fer.zemris.ppj.manipulators.expressions.BinaryOrExpressionManipulator;
+import hr.fer.zemris.ppj.manipulators.expressions.BinaryXorExpressionManipulator;
+import hr.fer.zemris.ppj.manipulators.expressions.CastExpressionManipulator;
+import hr.fer.zemris.ppj.manipulators.expressions.EqualityExpressionManipulator;
+import hr.fer.zemris.ppj.manipulators.expressions.ExpressionManipulator;
+import hr.fer.zemris.ppj.manipulators.expressions.LogicalAndExpressionManipulator;
+import hr.fer.zemris.ppj.manipulators.expressions.LogicalOrExpressionManipulator;
+import hr.fer.zemris.ppj.manipulators.expressions.MultiplicativeExpressionManipulator;
+import hr.fer.zemris.ppj.manipulators.expressions.PostfixExpressionManipulator;
+import hr.fer.zemris.ppj.manipulators.expressions.PrimaryExpressionManipulator;
+import hr.fer.zemris.ppj.manipulators.expressions.RelationalExpressionManipulator;
+import hr.fer.zemris.ppj.manipulators.expressions.TypeNameManipulator;
+import hr.fer.zemris.ppj.manipulators.expressions.TypeSpecifierManipulator;
+import hr.fer.zemris.ppj.manipulators.expressions.UnaryExpressionManipulator;
+import hr.fer.zemris.ppj.manipulators.expressions.UnaryOperatorManipulator;
+import hr.fer.zemris.ppj.manipulators.instuctions.BranchInstructionManipulator;
+import hr.fer.zemris.ppj.manipulators.instuctions.CompoundInstructionManipulator;
+import hr.fer.zemris.ppj.manipulators.instuctions.ExpressionInstructionManipulator;
+import hr.fer.zemris.ppj.manipulators.instuctions.InstructionManipulator;
+import hr.fer.zemris.ppj.manipulators.instuctions.InstructionList;
+import hr.fer.zemris.ppj.manipulators.instuctions.JumpInstructionManipulator;
+import hr.fer.zemris.ppj.manipulators.instuctions.LoopInstructionManipulator;
+import hr.fer.zemris.ppj.manipulators.misc.DefinedFunctionsManipulator;
+import hr.fer.zemris.ppj.manipulators.misc.MainFunctionManipulator;
+import hr.fer.zemris.ppj.manipulators.misc.TranslationUnitManipulator;
+import hr.fer.zemris.ppj.manipulators.terminals.CharManipulator;
+import hr.fer.zemris.ppj.manipulators.terminals.ConstCharArrayManipulator;
+import hr.fer.zemris.ppj.manipulators.terminals.IdentifierManipulator;
+import hr.fer.zemris.ppj.manipulators.terminals.IntManipulator;
 
 /**
  * <code>TreeParser</code> is a parser for generative trees.
@@ -62,64 +62,65 @@ import hr.fer.zemris.ppj.semantic.rule.terminals.Int;
  */
 public class TreeParser {
 
-    private static final Map<String, Checker> checkers = new HashMap<>();
+    private static final Map<String, Manipulator> manipulators = new HashMap<>();
 
     static {
         // declarations
-        checkers.put(Declaration.HR_NAME, new Declaration());
-        checkers.put(DeclarationList.HR_NAME, new DeclarationList());
-        checkers.put(DeclaratorInitializationList.HR_NAME, new DeclaratorInitializationList());
-        checkers.put(DirectDeclarator.HR_NAME, new DirectDeclarator());
-        checkers.put(InitializationDeclarator.HR_NAME, new InitializationDeclarator());
-        checkers.put(Initializator.HR_NAME, new Initializator());
-        checkers.put(OuterDeclaration.HR_NAME, new OuterDeclaration());
-        checkers.put(ParameterDeclaration.HR_NAME, new ParameterDeclaration());
+        manipulators.put(DeclarationManipulator.HR_NAME, new DeclarationManipulator());
+        manipulators.put(DeclarationListManipulator.HR_NAME, new DeclarationListManipulator());
+        manipulators.put(DeclaratorInitializationListManipulator.HR_NAME,
+                new DeclaratorInitializationListManipulator());
+        manipulators.put(DirectDeclaratorManipulator.HR_NAME, new DirectDeclaratorManipulator());
+        manipulators.put(InitializationDeclaratorManipulator.HR_NAME, new InitializationDeclaratorManipulator());
+        manipulators.put(InitializatorManipulator.HR_NAME, new InitializatorManipulator());
+        manipulators.put(OuterDeclarationManipulator.HR_NAME, new OuterDeclarationManipulator());
+        manipulators.put(ParameterDeclarationManipulator.HR_NAME, new ParameterDeclarationManipulator());
 
         // definitions
-        checkers.put(FunctionDefinition.HR_NAME, new FunctionDefinition());
-        checkers.put(ParameterList.HR_NAME, new ParameterList());
+        manipulators.put(FunctionDefinitionManipulator.HR_NAME, new FunctionDefinitionManipulator());
+        manipulators.put(ParameterListManipulator.HR_NAME, new ParameterListManipulator());
 
         // expressions
-        checkers.put(AdditiveExpression.HR_NAME, new AdditiveExpression());
-        checkers.put(ArgumentList.HR_NAME, new ArgumentList());
-        checkers.put(AssignExpression.HR_NAME, new AssignExpression());
-        checkers.put(AssignExpressionList.HR_NAME, new AssignExpressionList());
-        checkers.put(BinaryAndExpression.HR_NAME, new BinaryAndExpression());
-        checkers.put(BinaryOrExpression.HR_NAME, new BinaryOrExpression());
-        checkers.put(BinaryXorExpression.HR_NAME, new BinaryXorExpression());
-        checkers.put(CastExpression.HR_NAME, new CastExpression());
-        checkers.put(EqualityExpression.HR_NAME, new EqualityExpression());
-        checkers.put(Expression.HR_NAME, new Expression());
-        checkers.put(LogicalAndExpression.HR_NAME, new LogicalAndExpression());
-        checkers.put(LogicalOrExpression.HR_NAME, new LogicalOrExpression());
-        checkers.put(MultiplicativeExpression.HR_NAME, new MultiplicativeExpression());
-        checkers.put(PostfixExpression.HR_NAME, new PostfixExpression());
-        checkers.put(PrimaryExpression.HR_NAME, new PrimaryExpression());
-        checkers.put(RelationalExpression.HR_NAME, new RelationalExpression());
-        checkers.put(TypeName.HR_NAME, new TypeName());
-        checkers.put(TypeSpecifier.HR_NAME, new TypeSpecifier());
-        checkers.put(UnaryExpression.HR_NAME, new UnaryExpression());
-        checkers.put(UnaryOperator.HR_NAME, new UnaryOperator());
+        manipulators.put(AdditiveExpressionManipulator.HR_NAME, new AdditiveExpressionManipulator());
+        manipulators.put(ArgumentListManipulator.HR_NAME, new ArgumentListManipulator());
+        manipulators.put(AssignExpressionManipulator.HR_NAME, new AssignExpressionManipulator());
+        manipulators.put(AssignExpressionListManipulator.HR_NAME, new AssignExpressionListManipulator());
+        manipulators.put(BinaryAndExpressionManipulator.HR_NAME, new BinaryAndExpressionManipulator());
+        manipulators.put(BinaryOrExpressionManipulator.HR_NAME, new BinaryOrExpressionManipulator());
+        manipulators.put(BinaryXorExpressionManipulator.HR_NAME, new BinaryXorExpressionManipulator());
+        manipulators.put(CastExpressionManipulator.HR_NAME, new CastExpressionManipulator());
+        manipulators.put(EqualityExpressionManipulator.HR_NAME, new EqualityExpressionManipulator());
+        manipulators.put(ExpressionManipulator.HR_NAME, new ExpressionManipulator());
+        manipulators.put(LogicalAndExpressionManipulator.HR_NAME, new LogicalAndExpressionManipulator());
+        manipulators.put(LogicalOrExpressionManipulator.HR_NAME, new LogicalOrExpressionManipulator());
+        manipulators.put(MultiplicativeExpressionManipulator.HR_NAME, new MultiplicativeExpressionManipulator());
+        manipulators.put(PostfixExpressionManipulator.HR_NAME, new PostfixExpressionManipulator());
+        manipulators.put(PrimaryExpressionManipulator.HR_NAME, new PrimaryExpressionManipulator());
+        manipulators.put(RelationalExpressionManipulator.HR_NAME, new RelationalExpressionManipulator());
+        manipulators.put(TypeNameManipulator.HR_NAME, new TypeNameManipulator());
+        manipulators.put(TypeSpecifierManipulator.HR_NAME, new TypeSpecifierManipulator());
+        manipulators.put(UnaryExpressionManipulator.HR_NAME, new UnaryExpressionManipulator());
+        manipulators.put(UnaryOperatorManipulator.HR_NAME, new UnaryOperatorManipulator());
 
         // instructions
-        checkers.put(BranchInstruction.HR_NAME, new BranchInstruction());
-        checkers.put(CompoundInstruction.HR_NAME, new CompoundInstruction());
-        checkers.put(ExpressionInstruction.HR_NAME, new ExpressionInstruction());
-        checkers.put(Instruction.HR_NAME, new Instruction());
-        checkers.put(InstructionList.HR_NAME, new InstructionList());
-        checkers.put(JumpInstruction.HR_NAME, new JumpInstruction());
-        checkers.put(LoopInstruction.HR_NAME, new LoopInstruction());
+        manipulators.put(BranchInstructionManipulator.HR_NAME, new BranchInstructionManipulator());
+        manipulators.put(CompoundInstructionManipulator.HR_NAME, new CompoundInstructionManipulator());
+        manipulators.put(ExpressionInstructionManipulator.HR_NAME, new ExpressionInstructionManipulator());
+        manipulators.put(InstructionManipulator.HR_NAME, new InstructionManipulator());
+        manipulators.put(InstructionList.HR_NAME, new InstructionList());
+        manipulators.put(JumpInstructionManipulator.HR_NAME, new JumpInstructionManipulator());
+        manipulators.put(LoopInstructionManipulator.HR_NAME, new LoopInstructionManipulator());
 
         // misc
-        checkers.put(DefinedFunctions.HR_NAME, new DefinedFunctions());
-        checkers.put(MainFunction.HR_NAME, new MainFunction());
-        checkers.put(TranslationUnit.HR_NAME, new TranslationUnit());
+        manipulators.put(DefinedFunctionsManipulator.HR_NAME, new DefinedFunctionsManipulator());
+        manipulators.put(MainFunctionManipulator.HR_NAME, new MainFunctionManipulator());
+        manipulators.put(TranslationUnitManipulator.HR_NAME, new TranslationUnitManipulator());
 
         // terminals
-        checkers.put(Char.HR_NAME, new Char());
-        checkers.put(ConstCharArray.HR_NAME, new ConstCharArray());
-        checkers.put(Identifier.HR_NAME, new Identifier());
-        checkers.put(Int.HR_NAME, new Int());
+        manipulators.put(CharManipulator.HR_NAME, new CharManipulator());
+        manipulators.put(ConstCharArrayManipulator.HR_NAME, new ConstCharArrayManipulator());
+        manipulators.put(IdentifierManipulator.HR_NAME, new IdentifierManipulator());
+        manipulators.put(IntManipulator.HR_NAME, new IntManipulator());
     }
 
     /**
@@ -168,9 +169,9 @@ public class TreeParser {
 
             if (line.startsWith("<")) {
                 // nonterminal node
-                final Checker checker = checkers.get(line);
+                final Manipulator manipulator = manipulators.get(line);
                 child = new Node(line, new ArrayList<Node>(), parent, new HashMap<Attribute, Object>(), identifierTable,
-                        checker);
+                        manipulator);
                 stack.push(child);
             }
             else {
@@ -179,9 +180,9 @@ public class TreeParser {
                 final String name = split[0];
                 final int lineNumber = Integer.valueOf(split[1]);
                 final String value = split[2];
-                final Checker checker = checkers.get(name);
+                final Manipulator manipulator = manipulators.get(name);
                 child = new Node(name, new ArrayList<Node>(), parent, new HashMap<Attribute, Object>(), identifierTable,
-                        checker);
+                        manipulator);
                 child.addAttribute(Attribute.LINE_NUMBER, lineNumber);
                 child.addAttribute(Attribute.VALUE, value);
             }

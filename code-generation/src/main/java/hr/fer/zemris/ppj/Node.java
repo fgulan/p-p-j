@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import hr.fer.zemris.ppj.identifier.table.IdentifierTable;
-import hr.fer.zemris.ppj.semantic.rule.Checker;
+import hr.fer.zemris.ppj.interfaces.Manipulator;
 
 /**
  * <code>Node</code> represents a generative tree node.
@@ -15,14 +15,14 @@ import hr.fer.zemris.ppj.semantic.rule.Checker;
  * @author Jan Kelemen
  * @author Matea Sabolic
  *
- * @version 1.1
+ * @version 1.2
  */
 public class Node {
 
     private final String name;
     private final Node parent;
     private final List<Node> children;
-    private final Checker checker;
+    private final Manipulator manipulator;
 
     private final Map<Attribute, Object> attributes = new HashMap<>();
 
@@ -54,18 +54,19 @@ public class Node {
      *            attributes of the node.
      * @param identifierTable
      *            identifier table of the node.
-     * @param checker
-     *            the semantic checker for the node
+     * @param manipulator
+     *            the semantic checker / code generator for the node.
      * @since 1.0
      */
     public Node(final String name, final List<Node> children, final Node parent,
-            final Map<Attribute, Object> attributes, final IdentifierTable identifierTable, final Checker checker) {
+            final Map<Attribute, Object> attributes, final IdentifierTable identifierTable,
+            final Manipulator manipulator) {
         this.name = name;
         this.parent = parent;
         this.children = children;
         this.attributes.putAll(attributes);
         this.identifierTable = identifierTable;
-        this.checker = checker;
+        this.manipulator = manipulator;
     }
 
     /**
@@ -128,7 +129,7 @@ public class Node {
 
     /**
      * Adds a attribute to the whole subtree of the node.
-     * 
+     *
      * @param type
      *            type of the attribute thats added.
      * @param value
@@ -179,17 +180,26 @@ public class Node {
      */
     public boolean check() {
         // if a checker isn't defined, the node is a terminal \ {ZNAK, BROJ, IDN, NIZ_ZNAKOVA}
-        if (checker == null) {
+        if (manipulator == null) {
             return true;
         }
 
-        return checker.check(this);
+        return manipulator.check(this);
     }
-    
+
+    /**
+     * Generates the code for the node.
+     *
+     * @since 1.2
+     */
     public void generate() {
-        checker.generate(this);
+        if (manipulator == null) {
+            return;
+        }
+
+        manipulator.generate(this);
     }
-    
+
     /**
      * Prints the tree.
      *
