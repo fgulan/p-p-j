@@ -9,11 +9,11 @@ import hr.fer.zemris.ppj.types.IntType;
 import hr.fer.zemris.ppj.types.Type;
 
 /**
- * <code>MultiplicativeExpressionChecker</code> is a checker for multiplicative expression.
+ * <code>MultiplicativeExpressionManipulator</code> is a manipulator for multiplicative expression.
  *
  * @author Jan Kelemen
  *
- * @version 1.0
+ * @version 1.1
  */
 public class MultiplicativeExpressionManipulator implements Manipulator {
 

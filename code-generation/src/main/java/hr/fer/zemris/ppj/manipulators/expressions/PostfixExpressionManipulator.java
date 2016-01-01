@@ -12,11 +12,11 @@ import hr.fer.zemris.ppj.types.Type;
 import hr.fer.zemris.ppj.types.functions.FunctionType;
 
 /**
- * <code>PostfixExpressionChecker</code> is a checker for postfix expression.
+ * <code>PostfixExpressionManipulator</code> is a manipulator for postfix expression.
  *
  * @author Jan Kelemen
  *
- * @version 1.0
+ * @version 1.1
  */
 public class PostfixExpressionManipulator implements Manipulator {
 

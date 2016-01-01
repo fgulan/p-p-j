@@ -8,11 +8,11 @@ import hr.fer.zemris.ppj.interfaces.Manipulator;
 import hr.fer.zemris.ppj.types.Type;
 
 /**
- * <code>AssignExpressionChecker</code> is a checker for assign expression.
+ * <code>AssignExpressionManipulator</code> is a manipulator for assign expression.
  *
  * @author Jan Kelemen
  *
- * @version 1.0
+ * @version 1.1
  */
 public class AssignExpressionManipulator implements Manipulator {
 

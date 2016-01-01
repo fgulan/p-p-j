@@ -15,11 +15,11 @@ import hr.fer.zemris.ppj.types.VoidType;
 import hr.fer.zemris.ppj.types.functions.FunctionType;
 
 /**
- * <code>DirectDeclaratorChecker</code> is a checker for direct declarator.
+ * <code>DirectDeclaratorManipulator</code> is a manipulator for direct declarator.
  *
  * @author Domagoj Polancec
  *
- * @version 1.0
+ * @version 1.1
  */
 public class DirectDeclaratorManipulator implements Manipulator {
 

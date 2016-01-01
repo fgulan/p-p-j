@@ -9,11 +9,11 @@ import hr.fer.zemris.ppj.types.IntType;
 import hr.fer.zemris.ppj.types.Type;
 
 /**
- * <code>EqualityExpressionChecker</code> is a checker for equality expression.
+ * <code>EqualityExpressionManipulator</code> is a manipulator for equality expression.
  *
  * @author Jan Kelemen
  *
- * @version 1.0
+ * @version 1.1
  */
 public class EqualityExpressionManipulator implements Manipulator {
 

@@ -9,11 +9,11 @@ import hr.fer.zemris.ppj.types.Type;
 import hr.fer.zemris.ppj.types.VoidType;
 
 /**
- * <code>TypeNameChecker</code> is a checker for type name.
+ * <code>TypeNameManipulator</code> is a manipulator for type name.
  *
  * @author Jan Kelemen
  *
- * @version 1.0
+ * @version 1.1
  */
 public class TypeNameManipulator implements Manipulator {
 

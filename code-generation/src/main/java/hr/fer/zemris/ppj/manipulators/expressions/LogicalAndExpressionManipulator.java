@@ -9,11 +9,11 @@ import hr.fer.zemris.ppj.types.IntType;
 import hr.fer.zemris.ppj.types.Type;
 
 /**
- * <code>LogicalAndExpressionChecker</code> is a checker for logical and expression.
+ * <code>LogicalAndExpressionManipulator</code> is a manipulator for logical and expression.
  *
  * @author Jan Kelemen
  *
- * @version 1.0
+ * @version 1.1
  */
 public class LogicalAndExpressionManipulator implements Manipulator {
 

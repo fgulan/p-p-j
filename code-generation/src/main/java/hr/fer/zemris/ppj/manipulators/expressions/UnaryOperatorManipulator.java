@@ -5,11 +5,11 @@ import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 
 /**
- * <code>UnaryOperatorChecker</code> is a checker for unary operator.
+ * <code>UnaryOperatorManipulator</code> is a manipulator for unary operator.
  *
  * @author Jan Kelemen
  *
- * @version 1.0
+ * @version 1.1
  */
 public class UnaryOperatorManipulator implements Manipulator {
 

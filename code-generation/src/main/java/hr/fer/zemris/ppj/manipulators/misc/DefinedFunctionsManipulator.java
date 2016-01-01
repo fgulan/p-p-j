@@ -10,11 +10,11 @@ import hr.fer.zemris.ppj.identifier.table.IdentifierTypeWrapper;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 
 /**
- * <code>DefinedFunctionChecker</code> is a checker for defined functions.
+ * <code>DefinedFunctionManipulator</code> is a manipulator for defined functions.
  *
  * @author Matea Sabolic
  *
- * @version 1.0
+ * @version 1.1
  */
 public class DefinedFunctionsManipulator implements Manipulator {
 

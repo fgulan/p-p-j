@@ -8,11 +8,11 @@ import hr.fer.zemris.ppj.interfaces.Manipulator;
 import hr.fer.zemris.ppj.types.Type;
 
 /**
- * <code>CastExpressionChecker</code> is a checker for cast expression.
+ * <code>CastExpressionManipulator</code> is a manipulator for cast expression.
  *
  * @author Jan Kelemen
  *
- * @version 1.0
+ * @version 1.1
  */
 public class CastExpressionManipulator implements Manipulator {
 

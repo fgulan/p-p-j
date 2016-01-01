@@ -12,11 +12,11 @@ import hr.fer.zemris.ppj.interfaces.Manipulator;
 import hr.fer.zemris.ppj.types.Type;
 
 /**
- * <code>AssignExpressionListChecker</code> is a checker for assign expression list.
+ * <code>AssignExpressionListManipulator</code> is a manipulator for assign expression list.
  *
  * @author Jan Kelemen
  *
- * @version 1.0
+ * @version 1.1
  */
 public class AssignExpressionListManipulator implements Manipulator {
 

@@ -9,11 +9,11 @@ import hr.fer.zemris.ppj.Utils;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 
 /**
- * <code>DeclarationChecker</code> is a checker for declaration.
+ * <code>DeclarationManipulator</code> is a manipulator for declaration.
  *
  * @author Domagoj Polancec
  *
- * @version 1.0
+ * @version 1.1
  */
 public class DeclarationManipulator implements Manipulator {
 

@@ -9,11 +9,11 @@ import hr.fer.zemris.ppj.types.IntType;
 import hr.fer.zemris.ppj.types.Type;
 
 /**
- * <code>BranchInstructionChecker</code> is a checker for branch instruction.
+ * <code>BranchInstructionManipulator</code> is a manipulator for branch instruction.
  *
  * @author Filip Gulan
  *
- * @version 1.0
+ * @version 1.1
  */
 public class BranchInstructionManipulator implements Manipulator {
 

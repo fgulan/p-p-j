@@ -9,11 +9,11 @@ import hr.fer.zemris.ppj.types.IntType;
 import hr.fer.zemris.ppj.types.Type;
 
 /**
- * <code>UnaryExpressionChecker</code> is a checker for unary expression.
+ * <code>UnaryExpressionManipulator</code> is a manipulator for unary expression.
  *
  * @author Jan Kelemen
  *
- * @version 1.0
+ * @version 1.1
  */
 public class UnaryExpressionManipulator implements Manipulator {
 

@@ -5,11 +5,11 @@ import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 
 /**
- * <code>IntRangeChecker</code> is a checker for int range.
+ * <code>IntManipulator</code> is a manipulator for integers.
  *
  * @author Jan Kelemen
  *
- * @version 1.0
+ * @version 1.1
  */
 public class IntManipulator implements Manipulator {
 

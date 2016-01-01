@@ -9,11 +9,11 @@ import hr.fer.zemris.ppj.types.Type;
 import hr.fer.zemris.ppj.types.VoidType;
 
 /**
- * <code>ParameterDeclarationChecker</code> is a checker for parameter declaration.
+ * <code>ParameterDeclarationManipulator</code> is a manipulator for parameter declaration.
  *
  * @author Domagoj Polancec
  *
- * @version 1.0
+ * @version 1.1
  */
 public class ParameterDeclarationManipulator implements Manipulator {
 

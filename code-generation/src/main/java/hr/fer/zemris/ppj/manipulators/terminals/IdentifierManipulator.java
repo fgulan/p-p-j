@@ -5,11 +5,11 @@ import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 
 /**
- * <code>NumberChecker</code>
+ * <code>IdentifierManipulator</code> is a manipulator for identifiers.
  *
  * @author Jan Kelemen
  *
- * @version 1.0
+ * @version 1.1
  */
 public class IdentifierManipulator implements Manipulator {
 

@@ -7,11 +7,11 @@ import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 
 /**
- * <code>ExpressionInstructionChecker</code> is a checker for expression instruction.
+ * <code>ExpressionInstructionManipulator</code> is a manipulator for expression instruction.
  *
  * @author Filip Gulan
  *
- * @version 1.0
+ * @version 1.1
  */
 public class ExpressionInstructionManipulator implements Manipulator {
 

@@ -13,11 +13,11 @@ import hr.fer.zemris.ppj.types.Type;
 import hr.fer.zemris.ppj.types.arrays.ArrayType;
 
 /**
- * <code>InitializationDeclaratorChecker</code> is a checker for initialization declarator.
+ * <code>InitializationDeclaratorManipulator</code> is a manipulator for initialization declarator.
  *
  * @author Domagoj Polancec
  *
- * @version 1.0
+ * @version 1.1
  */
 public class InitializationDeclaratorManipulator implements Manipulator {
 

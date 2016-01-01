@@ -5,11 +5,11 @@ import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 
 /**
- * <code>ConstCharArrayChecker</code>
+ * <code>ConstCharArrayManipulator</code> is a manipulator for strings.
  *
  * @author Jan Kelemen
  *
- * @version
+ * @version 1.1
  */
 public class ConstCharArrayManipulator implements Manipulator {
 

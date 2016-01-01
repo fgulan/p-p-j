@@ -6,11 +6,11 @@ import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 
 /**
- * <code>InstructionListChecker</code> is a checker for instruction list.
+ * <code>InstructionListManipulator</code> is a manipulator for instruction list.
  *
  * @author Filip Gulan
  *
- * @version 1.0
+ * @version 1.1
  */
 public class InstructionListManipulator implements Manipulator {
 

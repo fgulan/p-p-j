@@ -7,11 +7,11 @@ import hr.fer.zemris.ppj.Utils;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 
 /**
- * <code>DeclaratorInitializationListChecker</code> is a checker for declarator initialization list.
+ * <code>DeclaratorInitializationListManipulator</code> is a manipulator for declarator initialization list.
  *
  * @author Domagoj Polancec
  *
- * @version 1.0
+ * @version 1.1
  */
 public class DeclaratorInitializationListManipulator implements Manipulator {
 

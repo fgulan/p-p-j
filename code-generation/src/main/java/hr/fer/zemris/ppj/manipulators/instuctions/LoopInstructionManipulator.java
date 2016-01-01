@@ -9,11 +9,11 @@ import hr.fer.zemris.ppj.types.IntType;
 import hr.fer.zemris.ppj.types.Type;
 
 /**
- * <code>LoopInstructionChecker</code> is a checker for loop instruction.
+ * <code>LoopInstructionManipulator</code> is a manipulator for loop instruction.
  *
  * @author Filip Gulan
  *
- * @version 1.0
+ * @version 1.1
  */
 public class LoopInstructionManipulator implements Manipulator {
 

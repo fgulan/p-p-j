@@ -10,11 +10,11 @@ import hr.fer.zemris.ppj.types.VoidType;
 import hr.fer.zemris.ppj.types.functions.FunctionType;
 
 /**
- * <code>JumpInstructionChecker</code> is a checker for jump instruction.
+ * <code>JumpInstructionManipulator</code> is a manipulator for jump instruction.
  *
  * @author Filip Gulan
  *
- * @version 1.0
+ * @version 1.1
  */
 public class JumpInstructionManipulator implements Manipulator {
 

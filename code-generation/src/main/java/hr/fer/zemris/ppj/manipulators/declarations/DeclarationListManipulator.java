@@ -6,11 +6,11 @@ import hr.fer.zemris.ppj.Utils;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 
 /**
- * <code>DeclarationListChecker</code> is a checker for declaration list.
+ * <code>DeclarationListManipulator</code> is a manipulator for declaration list.
  *
  * @author Domagoj Polancec
  *
- * @version 1.0
+ * @version 1.1
  */
 public class DeclarationListManipulator implements Manipulator {
 

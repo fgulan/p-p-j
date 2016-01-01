@@ -8,11 +8,11 @@ import hr.fer.zemris.ppj.types.IntType;
 import hr.fer.zemris.ppj.types.functions.FunctionType;
 
 /**
- * <code>MainFunctionChecker</code> is a checker for main function.
+ * <code>MainFunctionManipulator</code> is a manipulator for main function.
  *
  * @author Matea Sabolic
  *
- * @version 1.0
+ * @version 1.1
  */
 public class MainFunctionManipulator implements Manipulator {
 

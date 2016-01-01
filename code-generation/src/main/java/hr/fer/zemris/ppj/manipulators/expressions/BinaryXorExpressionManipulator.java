@@ -9,11 +9,11 @@ import hr.fer.zemris.ppj.types.IntType;
 import hr.fer.zemris.ppj.types.Type;
 
 /**
- * <code>BinaryXorExpressionChecker</code> is a checker for binary xor expression.
+ * <code>BinaryXorExpressionManipulator</code> is a manipulator for binary xor expression.
  *
  * @author Jan Kelemen
  *
- * @version 1.0
+ * @version 1.1
  */
 public class BinaryXorExpressionManipulator implements Manipulator {
 

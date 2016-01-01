@@ -12,11 +12,11 @@ import hr.fer.zemris.ppj.interfaces.Manipulator;
 import hr.fer.zemris.ppj.types.Type;
 
 /**
- * <code>ArgumentListChecker</code> is a checker for argument list.
+ * <code>ArgumentListManipulator</code> is a manipulator for argument list.
  *
  * @author Jan Kelemen
  *
- * @version 1.0
+ * @version 1.1
  */
 public class ArgumentListManipulator implements Manipulator {
 

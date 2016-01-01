@@ -6,11 +6,11 @@ import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 
 /**
- * <code>CompoundInstructionChecker</code> is a checker for compound instruction.
+ * <code>CompoundInstructionManipulator</code> is a manipulator for compound instruction.
  *
  * @author Filip Gulan
  *
- * @version 1.0
+ * @version 1.1
  */
 public class CompoundInstructionManipulator implements Manipulator {
 

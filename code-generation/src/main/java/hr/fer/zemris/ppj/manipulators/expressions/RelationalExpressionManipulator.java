@@ -9,11 +9,11 @@ import hr.fer.zemris.ppj.types.IntType;
 import hr.fer.zemris.ppj.types.Type;
 
 /**
- * <code>RelationalExpressionChecker</code> is a checker for relational expression.
+ * <code>RelationalExpressionManipulator</code> is a manipulator for relational expression.
  *
  * @author Jan Kelemen
  *
- * @version 1.0
+ * @version 1.1
  */
 public class RelationalExpressionManipulator implements Manipulator {
 

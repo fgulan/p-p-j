@@ -13,11 +13,11 @@ import hr.fer.zemris.ppj.types.Type;
 import hr.fer.zemris.ppj.types.functions.FunctionType;
 
 /**
- * <code>FunctionDefinitionChecker</code> is a checker for function definition.
+ * <code>FunctionDefinitionManipulator</code> is a manipulator for function definition.
  *
  * @author Domagoj Polancec
  *
- * @version 1.0
+ * @version 1.1
  */
 public class FunctionDefinitionManipulator implements Manipulator {
 

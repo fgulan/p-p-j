@@ -9,11 +9,11 @@ import hr.fer.zemris.ppj.types.IntType;
 import hr.fer.zemris.ppj.types.VoidType;
 
 /**
- * <code>TypeSpecifierMtanipulator</code> is a checker for type specifier.
+ * <code>TypeSpecifierMtanipulator</code> is a manipulator for type specifier.
  *
  * @author Jan Kelemen
  *
- * @version 1.0
+ * @version 1.1
  */
 public class TypeSpecifierManipulator implements Manipulator {
 

@@ -6,11 +6,11 @@ import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 
 /**
- * <code>TranslationUnitChecker</code> is a checker for translation unit.
+ * <code>TranslationUnitManipulator</code> is a manipulator for translation unit.
  *
  * @author Matea Sabolic
  *
- * @version 1.0
+ * @version 1.1
  */
 public class TranslationUnitManipulator implements Manipulator {
 

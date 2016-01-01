@@ -15,11 +15,11 @@ import hr.fer.zemris.ppj.types.CharType;
 import hr.fer.zemris.ppj.types.Type;
 
 /**
- * <code>InitializatorChecker</code> is a checker for initializator.
+ * <code>InitializatorManipulator</code> is a manipulator for initializator.
  *
  * @author Domagoj Polancec
  *
- * @version 1.0
+ * @version 1.1
  */
 public class InitializatorManipulator implements Manipulator {
 

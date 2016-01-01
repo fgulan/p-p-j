@@ -5,11 +5,11 @@ import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 
 /**
- * <code>CharValueChecker</code>
+ * <code>CharManipulator</code> is a manipulator for characters.
  *
  * @author Jan Kelemen
  *
- * @version
+ * @version 1.1
  */
 public class CharManipulator implements Manipulator {
 

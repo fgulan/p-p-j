@@ -11,11 +11,11 @@ import hr.fer.zemris.ppj.types.Type;
 import hr.fer.zemris.ppj.types.arrays.ConstCharArrayType;
 
 /**
- * <code>PrimaryExpressionChecker</code> is a checker for primary expression.
+ * <code>PrimaryExpressionManipulator</code> is a manipulator for primary expression.
  *
  * @author Jan Kelemen
  *
- * @version 1.0
+ * @version 1.1
  */
 public class PrimaryExpressionManipulator implements Manipulator {
 

@@ -11,11 +11,11 @@ import hr.fer.zemris.ppj.interfaces.Manipulator;
 import hr.fer.zemris.ppj.types.Type;
 
 /**
- * <code>ParameterListChecker</code> is a checker for parameter list.
+ * <code>ParameterListManipulator</code> is a manipulator for parameter list.
  *
  * @author Domagoj Polancec
  *
- * @version 1.0
+ * @version 1.1
  */
 public class ParameterListManipulator implements Manipulator {
 

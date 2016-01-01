@@ -9,11 +9,11 @@ import hr.fer.zemris.ppj.types.IntType;
 import hr.fer.zemris.ppj.types.Type;
 
 /**
- * <code>AdditiveExpressionChecker</code> is a checker for aditive expression.
+ * <code>AdditiveExpressionManipulator</code> is a manipulator for aditive expression.
  *
  * @author Jan Kelemen
  *
- * @version 1.0
+ * @version 1.1
  */
 public class AdditiveExpressionManipulator implements Manipulator {
 
