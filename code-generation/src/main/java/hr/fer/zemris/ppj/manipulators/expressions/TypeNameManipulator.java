@@ -4,6 +4,7 @@ import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
+import hr.fer.zemris.ppj.code.command.CommandFactory;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 import hr.fer.zemris.ppj.types.Type;
 import hr.fer.zemris.ppj.types.VoidType;
@@ -17,8 +18,7 @@ import hr.fer.zemris.ppj.types.VoidType;
  */
 public class TypeNameManipulator implements Manipulator {
 
-    // <ime_tipa> ::= <specifikator_tipa>
-    // <ime_tipa> ::= KR_CONST <specifikator_tipa>
+    private static final CommandFactory ch = new CommandFactory();
 
     /**
      * Name of the node.

@@ -4,6 +4,7 @@ import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.Utils;
+import hr.fer.zemris.ppj.code.command.CommandFactory;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 
 /**
@@ -15,8 +16,7 @@ import hr.fer.zemris.ppj.interfaces.Manipulator;
  */
 public class DeclaratorInitializationListManipulator implements Manipulator {
 
-    // <lista_init_deklaratora> ::= <init_deklarator>
-    // <lista_init_deklaratora> ZAREZT <init_deklarator>
+    private static final CommandFactory ch = new CommandFactory();
 
     /**
      * Name of the node.

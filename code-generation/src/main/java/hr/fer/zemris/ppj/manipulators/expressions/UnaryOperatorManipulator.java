@@ -2,6 +2,7 @@ package hr.fer.zemris.ppj.manipulators.expressions;
 
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
+import hr.fer.zemris.ppj.code.command.CommandFactory;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 
 /**
@@ -13,10 +14,7 @@ import hr.fer.zemris.ppj.interfaces.Manipulator;
  */
 public class UnaryOperatorManipulator implements Manipulator {
 
-    // <unarni_operator> ::= PLUS
-    // <unarni_operator> ::= MINUS
-    // <unarni_operator> ::= OP_TILDA
-    // <unarni_operator> ::= OP_NEG
+    private static final CommandFactory ch = new CommandFactory();
 
     /**
      * Name of the node.

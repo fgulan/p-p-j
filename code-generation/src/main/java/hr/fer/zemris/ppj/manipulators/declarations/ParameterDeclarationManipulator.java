@@ -4,6 +4,7 @@ import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.Utils;
+import hr.fer.zemris.ppj.code.command.CommandFactory;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 import hr.fer.zemris.ppj.types.Type;
 import hr.fer.zemris.ppj.types.VoidType;
@@ -17,8 +18,7 @@ import hr.fer.zemris.ppj.types.VoidType;
  */
 public class ParameterDeclarationManipulator implements Manipulator {
 
-    // <deklaracija_parametra> ::= <ime_tipa> IDN
-    // <deklaracija_parametre> ::= <ime_tipa> IDN L_UGL_ZAGRADA D_UGL_ZAGRADA
+    private static final CommandFactory ch = new CommandFactory();
 
     /**
      * Name of the node.

@@ -4,6 +4,7 @@ import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
+import hr.fer.zemris.ppj.code.command.CommandFactory;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 
 /**
@@ -15,8 +16,7 @@ import hr.fer.zemris.ppj.interfaces.Manipulator;
  */
 public class ExpressionInstructionManipulator implements Manipulator {
 
-    // <izraz_naredba> ::= TOCKAZAREZ
-    // <izraz_naredba> ::= <izraz> TOCKAZAREZ
+    private static final CommandFactory ch = new CommandFactory();
 
     /**
      * Name of the node.

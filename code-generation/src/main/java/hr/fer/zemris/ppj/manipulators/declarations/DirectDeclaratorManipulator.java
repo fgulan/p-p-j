@@ -8,6 +8,7 @@ import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.Utils;
+import hr.fer.zemris.ppj.code.command.CommandFactory;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 import hr.fer.zemris.ppj.manipulators.definitions.ParameterListManipulator;
 import hr.fer.zemris.ppj.types.Type;
@@ -26,10 +27,7 @@ public class DirectDeclaratorManipulator implements Manipulator {
     private static final int MIN_ARRAY_SIZE = 1;
     private static final int MAX_ARRAY_SIZE = 1024;
 
-    // <izravni_deklarator> ::= IDN
-    // <izravni_deklarator> ::= IDN L_UGL_ZAGRADA BROJ D_UGL_ZAGRADA
-    // <izravni_deklarator> ::= IDN L_ZAGRADA KR_VOID D_ZAGRADA
-    // <izravni_deklarator> ::= IDN L_ZAGRADA <lista_parametara> D_ZAGRADA
+    private static final CommandFactory ch = new CommandFactory();
 
     /**
      * Name of the node.

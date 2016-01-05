@@ -8,6 +8,7 @@ import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.Utils;
+import hr.fer.zemris.ppj.code.command.CommandFactory;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 import hr.fer.zemris.ppj.manipulators.expressions.AssignExpressionListManipulator;
 import hr.fer.zemris.ppj.manipulators.expressions.AssignExpressionManipulator;
@@ -23,8 +24,7 @@ import hr.fer.zemris.ppj.types.Type;
  */
 public class InitializatorManipulator implements Manipulator {
 
-    // <inicijalizator> ::= <izraz_pridruzivanja>
-    // <inicijalizator> ::= L_VIT_ZAGRADA <lista_izraza_pridruzivanja> D_VIT_ZAGRADA
+    private static final CommandFactory ch = new CommandFactory();
 
     /**
      * Name of the node.

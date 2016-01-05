@@ -4,6 +4,7 @@ import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
+import hr.fer.zemris.ppj.code.command.CommandFactory;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 import hr.fer.zemris.ppj.types.CharType;
 import hr.fer.zemris.ppj.types.IntType;
@@ -19,11 +20,7 @@ import hr.fer.zemris.ppj.types.arrays.ConstCharArrayType;
  */
 public class PrimaryExpressionManipulator implements Manipulator {
 
-    // <primarni_izraz> ::= IDN
-    // <primarni_izraz> ::= BROJ
-    // <primarni_izraz> ::= ZNAK
-    // <primarni_izraz> ::= NIZ_ZNAKOVA
-    // <primarni_izraz> ::= L_ZAGRADA <izraz> D_ZAGRADA
+    private static final CommandFactory ch = new CommandFactory();
 
     /**
      * Name of the node.

@@ -8,6 +8,7 @@ import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
+import hr.fer.zemris.ppj.code.command.CommandFactory;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 import hr.fer.zemris.ppj.types.Type;
 
@@ -20,8 +21,7 @@ import hr.fer.zemris.ppj.types.Type;
  */
 public class ArgumentListManipulator implements Manipulator {
 
-    // <lista_argumenata> ::= <izraz_pridruzivanja>
-    // <lista_argumenata> ::= <lista_argumenata> ZAREZ <izraz_pridruzivanja>
+    private static final CommandFactory ch = new CommandFactory();
 
     /**
      * Name of the node.

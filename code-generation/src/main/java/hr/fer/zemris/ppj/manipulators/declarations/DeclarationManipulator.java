@@ -6,6 +6,7 @@ import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.Utils;
+import hr.fer.zemris.ppj.code.command.CommandFactory;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 
 /**
@@ -17,7 +18,7 @@ import hr.fer.zemris.ppj.interfaces.Manipulator;
  */
 public class DeclarationManipulator implements Manipulator {
 
-    // <deklaracija> ::= <ime_tipa> <lista_init_deklaratora> TOCKAZAREZ
+    private static final CommandFactory ch = new CommandFactory();
 
     /**
      * Name of the node.

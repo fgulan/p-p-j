@@ -3,6 +3,7 @@ package hr.fer.zemris.ppj.manipulators.declarations;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.Utils;
+import hr.fer.zemris.ppj.code.command.CommandFactory;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 
 /**
@@ -14,8 +15,7 @@ import hr.fer.zemris.ppj.interfaces.Manipulator;
  */
 public class OuterDeclarationManipulator implements Manipulator {
 
-    // <vanjska_deklaracija> ::= <definicija_funkcije>
-    // <vanjska_deklaracija> ::= <deklaracija>
+    private static final CommandFactory ch = new CommandFactory();
 
     /**
      * Name of the node.

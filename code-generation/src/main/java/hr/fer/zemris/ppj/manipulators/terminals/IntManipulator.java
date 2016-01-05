@@ -2,6 +2,7 @@ package hr.fer.zemris.ppj.manipulators.terminals;
 
 import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
+import hr.fer.zemris.ppj.code.command.CommandFactory;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 
 /**
@@ -14,6 +15,8 @@ import hr.fer.zemris.ppj.interfaces.Manipulator;
 public class IntManipulator implements Manipulator {
 
     // -2,147,483,648 to 2,147,483,647
+
+    private static final CommandFactory ch = new CommandFactory();
 
     /**
      * Name of the node.

@@ -3,6 +3,7 @@ package hr.fer.zemris.ppj.manipulators.instuctions;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
+import hr.fer.zemris.ppj.code.command.CommandFactory;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 
 /**
@@ -14,8 +15,7 @@ import hr.fer.zemris.ppj.interfaces.Manipulator;
  */
 public class InstructionListManipulator implements Manipulator {
 
-    // <lista_naredbi> ::= <naredba>
-    // <lista_naredbi> ::= <lista_naredbi> <naredba>
+    private static final CommandFactory ch = new CommandFactory();
 
     /**
      * Name of the node.

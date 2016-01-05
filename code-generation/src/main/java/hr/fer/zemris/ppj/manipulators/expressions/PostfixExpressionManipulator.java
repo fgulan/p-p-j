@@ -6,6 +6,7 @@ import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
+import hr.fer.zemris.ppj.code.command.CommandFactory;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 import hr.fer.zemris.ppj.types.IntType;
 import hr.fer.zemris.ppj.types.Type;
@@ -20,12 +21,7 @@ import hr.fer.zemris.ppj.types.functions.FunctionType;
  */
 public class PostfixExpressionManipulator implements Manipulator {
 
-    // <postfiks_izraz> ::= <primarni_izraz>
-    // <postfiks_izraz> ::= <postfiks_izraz> OP_INC
-    // <postfiks_izraz> ::= <postfiks_izraz> OP_DEC
-    // <postfiks_izraz> ::= <postfiks_izraz> L_ZAGRADA D_ZAGRADA
-    // <postfiks_izraz> ::= <postfiks_izraz> L_UGL_ZAGRADA <izraz> D_UGL_ZAGRADA
-    // <postfiks_izraz> ::= <postfiks_izraz> L_ZAGRADA <lista_argumenata> D_ZAGRADA
+    private static final CommandFactory ch = new CommandFactory();
 
     /**
      * Name of the node.

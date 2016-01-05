@@ -8,6 +8,7 @@ import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.Utils;
+import hr.fer.zemris.ppj.code.command.CommandFactory;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 import hr.fer.zemris.ppj.types.Type;
 import hr.fer.zemris.ppj.types.arrays.ArrayType;
@@ -21,8 +22,7 @@ import hr.fer.zemris.ppj.types.arrays.ArrayType;
  */
 public class InitializationDeclaratorManipulator implements Manipulator {
 
-    // <init_deklarator> ::= <izravni_deklarator>
-    // <init_deklarator> ::= <izravni_deklarator> OP_PRIDRUZI <inicijalizator>
+    private static final CommandFactory ch = new CommandFactory();
 
     /**
      * Name of the node.

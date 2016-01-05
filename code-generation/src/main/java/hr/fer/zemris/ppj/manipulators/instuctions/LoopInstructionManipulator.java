@@ -4,6 +4,7 @@ import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
+import hr.fer.zemris.ppj.code.command.CommandFactory;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 import hr.fer.zemris.ppj.types.IntType;
 import hr.fer.zemris.ppj.types.Type;
@@ -17,9 +18,7 @@ import hr.fer.zemris.ppj.types.Type;
  */
 public class LoopInstructionManipulator implements Manipulator {
 
-    // <naredba_petlje> ::= KR_WHILE L_ZAGRADA <izraz> D_ZAGRADA <naredba>
-    // <naredba_petlje> ::= KR_FOR L_ZAGRADA <izraz_naredba> <izraz_naredbs> D_ZAGRADA <naredba>
-    // <naredba_petlje> ::= KR_FOR L_ZAGRADA <izraz_naredba> <izraz_naredba> <izraz> D_ZAGRADA <naredba>
+    private static final CommandFactory ch = new CommandFactory();
 
     /**
      * Name of the node.

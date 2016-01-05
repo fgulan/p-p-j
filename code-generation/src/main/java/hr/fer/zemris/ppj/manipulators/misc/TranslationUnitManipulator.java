@@ -3,6 +3,7 @@ package hr.fer.zemris.ppj.manipulators.misc;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
+import hr.fer.zemris.ppj.code.command.CommandFactory;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 
 /**
@@ -14,8 +15,7 @@ import hr.fer.zemris.ppj.interfaces.Manipulator;
  */
 public class TranslationUnitManipulator implements Manipulator {
 
-    // <prijevodna_jedinica> ::= <vanjska_deklaracija>
-    // <prijevodna_jedinica> ::= <prijevodna_jedinica> <vanjska_deklaracija>
+    private static final CommandFactory ch = new CommandFactory();
 
     /**
      * Name of the node.

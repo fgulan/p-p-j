@@ -4,6 +4,7 @@ import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
+import hr.fer.zemris.ppj.code.command.CommandFactory;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 import hr.fer.zemris.ppj.types.Type;
 import hr.fer.zemris.ppj.types.VoidType;
@@ -18,10 +19,7 @@ import hr.fer.zemris.ppj.types.functions.FunctionType;
  */
 public class JumpInstructionManipulator implements Manipulator {
 
-    // <naredba_skoka> ::= KR_CONTINUE TOCKAZAREZ
-    // <naredba_skoka> ::= KR_BREAK TOCKAZAREZ
-    // <naredba_skoka> ::= KR_RETURN TOCKAZAREZ
-    // <naredba_skoka> ::= KR_RETURN <izraz> TOCKAZAREZ
+    private static final CommandFactory ch = new CommandFactory();
 
     /**
      * Name of the node.

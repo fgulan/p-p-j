@@ -4,6 +4,7 @@ import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
+import hr.fer.zemris.ppj.code.command.CommandFactory;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 import hr.fer.zemris.ppj.types.IntType;
 import hr.fer.zemris.ppj.types.Type;
@@ -17,9 +18,7 @@ import hr.fer.zemris.ppj.types.Type;
  */
 public class EqualityExpressionManipulator implements Manipulator {
 
-    // <jedankosni_izraz> ::= <odnosni_izraz>
-    // <jednakosni_izraz> ::= <jednakosni_izraz> OP_EQ <odnosni_izraz>
-    // <jednakosni_izraz> ::= <jednakosni_izraz> OP_NEQ <odnosni_izraz>
+    private static final CommandFactory ch = new CommandFactory();
 
     /**
      * Name of the node.

@@ -7,6 +7,7 @@ import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.Utils;
+import hr.fer.zemris.ppj.code.command.CommandFactory;
 import hr.fer.zemris.ppj.identifier.table.IdentifierTable;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 import hr.fer.zemris.ppj.types.Type;
@@ -21,8 +22,7 @@ import hr.fer.zemris.ppj.types.functions.FunctionType;
  */
 public class FunctionDefinitionManipulator implements Manipulator {
 
-    // <definicija_funkcije> ::= <ime_tipa> IDN L_ZAGRADA KR_VOID D_ZAGRADA <slozena_naredba>
-    // <definicija_funkcije> ::= <ime_tipa> IDN L_ZAGRADA <lista_parametara> D_ZAGRADA> <slozena_naredba>
+    private static final CommandFactory ch = new CommandFactory();
 
     /**
      * Name of the node.

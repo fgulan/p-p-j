@@ -3,6 +3,7 @@ package hr.fer.zemris.ppj.manipulators.expressions;
 import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
+import hr.fer.zemris.ppj.code.command.CommandFactory;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 import hr.fer.zemris.ppj.types.CharType;
 import hr.fer.zemris.ppj.types.IntType;
@@ -17,9 +18,7 @@ import hr.fer.zemris.ppj.types.VoidType;
  */
 public class TypeSpecifierManipulator implements Manipulator {
 
-    // <specifikator_tipa> ::= KR_VOID
-    // <specifikator_tipa> ::= KR_CHAR
-    // <specifikator_tipa> ::= KR_INT
+    private static final CommandFactory ch = new CommandFactory();
 
     /**
      * Name of the node.
