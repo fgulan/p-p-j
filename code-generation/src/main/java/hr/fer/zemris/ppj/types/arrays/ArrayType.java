@@ -18,8 +18,8 @@ public abstract class ArrayType extends Type {
      *            const flag.
      * @since 1.0
      */
-    public ArrayType(final boolean isConst) {
-        super(isConst, false, true);
+    public ArrayType(final boolean isConst, final int size) {
+        super(isConst, false, true, size);
     }
 
     @Override
@@ -45,5 +45,4 @@ public abstract class ArrayType extends Type {
     public boolean isLExpression() {
         return false;
     }
-
 }

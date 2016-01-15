@@ -15,7 +15,7 @@ public class VoidType extends Type {
      * @since 1.0
      */
     public VoidType() {
-        super(false, false, false);
+        super(false, false, false, 0);
     }
 
     @Override

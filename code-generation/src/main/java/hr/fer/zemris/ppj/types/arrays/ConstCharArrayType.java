@@ -18,7 +18,7 @@ public class ConstCharArrayType extends ArrayType {
      * @since 1.0
      */
     public ConstCharArrayType() {
-        super(true);
+        super(true, 1);
     }
 
     @Override

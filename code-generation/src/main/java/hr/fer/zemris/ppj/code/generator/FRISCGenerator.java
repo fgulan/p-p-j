@@ -1,11 +1,13 @@
 package hr.fer.zemris.ppj.code.generator;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 import hr.fer.zemris.ppj.code.Reg;
 import hr.fer.zemris.ppj.code.command.CommandFactory;
-import hr.fer.zemris.ppj.identifier.table.IdentifierTypeWrapper;
 
 public class FRISCGenerator {
 
@@ -32,19 +34,27 @@ public class FRISCGenerator {
 
     private static final List<Pair> program = new ArrayList<>();
 
-    public static String generateGlobalLabel(IdentifierTypeWrapper wrapper) {
-        return "G_" + wrapper.name().toUpperCase();
+    public static void generateTo(OutputStream outputStream) throws IOException {
+        OutputStreamWriter writer = new OutputStreamWriter(outputStream);
+
+        for (Pair pair : program) {
+            System.out.println(pair.label + pair.command);
+        }
     }
 
-    public static String generateFunctionLabel(IdentifierTypeWrapper wrapper) {
-        return "F_" + wrapper.name().toUpperCase();
+    public static String generateGlobalLabel(String name) {
+        return "G_" + name.toUpperCase();
+    }
+
+    public static String generateFunctionLabel(String name) {
+        return "F_" + name.toUpperCase();
     }
 
     public static void generateCommand(String command) {
-        generateCommandWithLabel("", command);
+        generateCommand("", command);
     }
 
-    public static void generateCommandWithLabel(String label, String command) {
+    public static void generateCommand(String label, String command) {
         program.add(new Pair(label, command));
     }
 

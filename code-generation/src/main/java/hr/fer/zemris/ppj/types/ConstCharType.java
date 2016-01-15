@@ -19,7 +19,7 @@ public class ConstCharType extends Type {
      * @since 1.0
      */
     public ConstCharType() {
-        super(true, false, false);
+        super(true, false, false, 1);
     }
 
     @Override

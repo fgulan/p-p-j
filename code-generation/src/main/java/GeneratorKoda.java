@@ -1,3 +1,8 @@
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Scanner;
 
 import hr.fer.zemris.ppj.Node;
@@ -22,10 +27,10 @@ public class GeneratorKoda {
      *            command line arguments aren't used.
      * @since 1.0
      */
-    public static void main(String[] args) {
-        final Node node = TreeParser.parse(new Scanner(System.in));
+    public static void main(String[] args) throws FileNotFoundException {
+        final Node node = TreeParser.parse(new Scanner(new FileInputStream(new File("test.in"))));
         runSemanticAnalysis(node);
-        runCodeGeneration(node);
+        runCodeGeneration(node, System.out);
     }
 
     private static void runSemanticAnalysis(Node node) {
@@ -35,10 +40,16 @@ public class GeneratorKoda {
         DefinedFunctionsManipulator.sprutJeProvokator();
     }
 
-    private static void runCodeGeneration(Node node) {
+    private static void runCodeGeneration(Node node, OutputStream outputStream) {
         FRISCGenerator.generatePreamble();
         node.generate();
         FRISCGenerator.generateEpilogue();
+        try {
+            FRISCGenerator.generateTo(outputStream);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -17,7 +17,7 @@ public class IntType extends Type {
      * @since 1.0
      */
     public IntType() {
-        super(false, false, false);
+        super(false, false, false, 4);
     }
 
     @Override

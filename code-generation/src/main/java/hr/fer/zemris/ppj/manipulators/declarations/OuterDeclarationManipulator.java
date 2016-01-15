@@ -48,10 +48,12 @@ public class OuterDeclarationManipulator implements Manipulator {
     public void generate(Node node) {
         switch (Production.fromNode(node)) {
             case OUTER_DECLARATION_1: {
+                node.getChild(0).generate();
                 break;
             }
 
             case OUTER_DECLARATION_2: {
+                node.getChild(0).generate();
                 break;
             }
 

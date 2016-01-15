@@ -18,7 +18,7 @@ public class CharArrayType extends ArrayType {
      * @since 1.0
      */
     public CharArrayType() {
-        super(false);
+        super(false, 1);
     }
 
     @Override

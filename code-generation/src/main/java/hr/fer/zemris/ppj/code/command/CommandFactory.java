@@ -173,7 +173,7 @@ public class CommandFactory {
     }
 
     public String move(int src1, Reg dest) {
-        return "\tMOVE %D" + src1 + ", " + dest;
+        return "\tMOVE %D " + src1 + ", " + dest;
     }
 
     public String load(Reg dest, int adr20) {

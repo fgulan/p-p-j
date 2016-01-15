@@ -19,7 +19,7 @@ public class ConstIntType extends Type {
      * @since 1.0
      */
     public ConstIntType() {
-        super(true, false, false);
+        super(true, false, false, 4);
     }
 
     @Override

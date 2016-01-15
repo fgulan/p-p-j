@@ -18,7 +18,7 @@ public class IntArrayType extends ArrayType {
      * @since 1.0
      */
     public IntArrayType() {
-        super(false);
+        super(false, 4);
     }
 
     @Override

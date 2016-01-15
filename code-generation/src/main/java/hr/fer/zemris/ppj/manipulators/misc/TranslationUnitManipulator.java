@@ -78,10 +78,12 @@ public class TranslationUnitManipulator implements Manipulator {
     public void generate(Node node) {
         switch (Production.fromNode(node)) {
             case TRANSLATION_UNIT_1: {
+                node.getChild(0).generate();
                 break;
             }
 
             case TRANSLATION_UNIT_2: {
+                node.getChild(0).generate();
                 break;
             }
 

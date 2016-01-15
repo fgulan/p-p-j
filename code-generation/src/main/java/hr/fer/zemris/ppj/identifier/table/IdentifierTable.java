@@ -35,6 +35,8 @@ public class IdentifierTable {
 
     private final Map<String, IdentifierTypeWrapper> localIdentifiers = new HashMap<>();
 
+    private final List<IdentifierTypeWrapper> chronoLocalIdentifiers = new ArrayList<>();
+
     // Should be used only for checking if all declared functions are defined.
     /**
      * All declared functions, used only in final check.
@@ -103,7 +105,9 @@ public class IdentifierTable {
             return false;
         }
 
-        localIdentifiers.put(name, IdentifierTypeWrapper.forVariable(name, type));
+        IdentifierTypeWrapper wrapper = IdentifierTypeWrapper.forVariable(name, type);
+        localIdentifiers.put(name, wrapper);
+        chronoLocalIdentifiers.add(wrapper);
         return true;
     }
 
@@ -127,6 +131,7 @@ public class IdentifierTable {
         IdentifierTable.declaredFunctions.add(function);
 
         localIdentifiers.put(name, function);
+        chronoLocalIdentifiers.add(function);
         return true;
     }
 

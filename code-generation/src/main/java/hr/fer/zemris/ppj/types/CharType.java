@@ -17,7 +17,7 @@ public class CharType extends Type {
      * @since 1.0
      */
     public CharType() {
-        super(false, false, false);
+        super(false, false, false, 1);
     }
 
     @Override

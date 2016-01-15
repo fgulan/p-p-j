@@ -8,6 +8,7 @@ import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.Utils;
 import hr.fer.zemris.ppj.code.command.CommandFactory;
+import hr.fer.zemris.ppj.code.generator.FRISCGenerator;
 import hr.fer.zemris.ppj.identifier.table.IdentifierTable;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 import hr.fer.zemris.ppj.types.Type;
@@ -108,10 +109,27 @@ public class FunctionDefinitionManipulator implements Manipulator {
     public void generate(Node node) {
         switch (Production.fromNode(node)) {
             case FUNCTION_DEFINITION_1: {
+                // <definicija_funkcije> ::= <ime_tipa> IDN L_ZAGRADA KR_VOID D_ZAGRADA <slozena_naredba>
+                String label =
+                        FRISCGenerator.generateFunctionLabel((String) node.getChild(1).getAttribute(Attribute.VALUE));
+                FRISCGenerator.generateCommand(label, "");
+                FRISCGenerator.contextSave();
+                node.getChild(5).generate();
+                FRISCGenerator.contextLoad();
+                FRISCGenerator.generateCommand(ch.ret());
                 break;
             }
 
             case FUNCTION_DEFINITION_2: {
+                // <definicija_funkcije> ::= <ime_tipa> IDN L_ZAGRADA <lista_parametara> D_ZAGRADA <slozena_naredba>
+                String label =
+                        FRISCGenerator.generateFunctionLabel((String) node.getChild(1).getAttribute(Attribute.VALUE));
+                FRISCGenerator.generateCommand(label, "");
+                FRISCGenerator.contextSave();
+                node.getChild(3).generate();
+                node.getChild(5).generate();
+                FRISCGenerator.contextLoad();
+                FRISCGenerator.generateCommand(ch.ret());
                 break;
             }
 

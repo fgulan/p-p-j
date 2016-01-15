@@ -13,6 +13,8 @@ public abstract class Type {
     private final boolean isFunction;
     private final boolean isArray;
 
+    private final int size;
+
     /**
      * Class constructor specifies the characteristics of the type.
      *
@@ -24,10 +26,11 @@ public abstract class Type {
      *            <code>true</code> if the type is a array type, <code>false</code> otherwise.
      * @since 1.0
      */
-    public Type(final boolean isConst, final boolean isFunction, final boolean isArray) {
+    public Type(final boolean isConst, final boolean isFunction, final boolean isArray, final int size) {
         this.isConst = isConst;
         this.isArray = isArray;
         this.isFunction = isFunction;
+        this.size = size;
     }
 
     /**
@@ -98,5 +101,9 @@ public abstract class Type {
      */
     public boolean isArray() {
         return isArray;
+    }
+
+    public int size() {
+        return size;
     }
 }

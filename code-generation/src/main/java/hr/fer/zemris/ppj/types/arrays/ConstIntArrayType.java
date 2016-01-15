@@ -18,7 +18,7 @@ public class ConstIntArrayType extends ArrayType {
      * @since 1.0
      */
     public ConstIntArrayType() {
-        super(true);
+        super(true, 4);
     }
 
     @Override
