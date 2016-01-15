@@ -2,12 +2,13 @@ import java.util.Scanner;
 
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.TreeParser;
+import hr.fer.zemris.ppj.code.generator.FRISCGenerator;
 import hr.fer.zemris.ppj.manipulators.misc.DefinedFunctionsManipulator;
 import hr.fer.zemris.ppj.manipulators.misc.MainFunctionManipulator;
 
 /**
  * <code>GeneratorKoda</code> class is required by the evaluator, to contain a entry point for the code generator.
- * 
+ *
  * @author Jan Kelemen
  *
  * @version alpha.
@@ -29,13 +30,15 @@ public class GeneratorKoda {
 
     private static void runSemanticAnalysis(Node node) {
         node.check();
-        
+
         MainFunctionManipulator.sprutJeProvokator();
         DefinedFunctionsManipulator.sprutJeProvokator();
     }
 
     private static void runCodeGeneration(Node node) {
+        FRISCGenerator.generatePreamble();
         node.generate();
+        FRISCGenerator.generateEpilogue();
     }
 
 }

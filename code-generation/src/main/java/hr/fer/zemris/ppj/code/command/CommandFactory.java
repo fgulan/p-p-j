@@ -304,6 +304,14 @@ public class CommandFactory {
         return "\tCALL_" + condition + " (" + adrreg + ")";
     }
 
+    public String call(String label) {
+        return "\tCALL " + label;
+    }
+
+    public String call(String label, Condition condition) {
+        return "\tCALL_" + condition + " " + label;
+    }
+
     public String ret() {
         return "\tRET";
     }
