@@ -6,6 +6,7 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import hr.fer.zemris.ppj.BinaryOperation;
 import hr.fer.zemris.ppj.code.Reg;
 import hr.fer.zemris.ppj.code.command.CommandFactory;
 
@@ -135,6 +136,20 @@ public class FRISCGenerator {
         generateCommand(COMMAND_FACTORY.pop(Reg.R0));
         generateCommand(COMMAND_FACTORY.move(0, Reg.R1));
         generateCommand(COMMAND_FACTORY.sub(Reg.R1, Reg.R0, Reg.R0));
+        generateCommand(COMMAND_FACTORY.push(Reg.R0));
+    }
+    
+    public static void generateBinaryOperation(BinaryOperation operation) {
+        generateCommand(COMMAND_FACTORY.pop(Reg.R1));
+        generateCommand(COMMAND_FACTORY.pop(Reg.R0));
+        switch (operation) {
+        case PLUS:
+            generateCommand(COMMAND_FACTORY.add(Reg.R0, Reg.R1, Reg.R0));
+            break;
+
+        default:
+            break;
+        }
         generateCommand(COMMAND_FACTORY.push(Reg.R0));
     }
     
