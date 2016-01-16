@@ -9,7 +9,8 @@ import java.util.List;
 import hr.fer.zemris.ppj.BinaryOperation;
 import hr.fer.zemris.ppj.code.Reg;
 import hr.fer.zemris.ppj.code.command.CommandFactory;
-import hr.fer.zemris.ppj.types.Type;
+import hr.fer.zemris.ppj.types.VoidType;
+import hr.fer.zemris.ppj.types.functions.FunctionType;
 
 public class FRISCGenerator {
 
@@ -111,8 +112,11 @@ public class FRISCGenerator {
         }
     }
 
-    public static void generateFunctionCall(String name) {
+    public static void generateFunctionCall(String name, FunctionType type) {
         generateCommand(COMMAND_FACTORY.call("F_" + name.toUpperCase()));
+        if (!(type.returnType() instanceof VoidType)) {
+            generateCommand(COMMAND_FACTORY.push(Reg.R6));
+        }
     }
 
     public static void contextSave() {

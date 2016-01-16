@@ -140,7 +140,7 @@ public class PrimaryExpressionManipulator implements Manipulator {
 
                 if (type.isFunction()) {
                     FunctionType functionType = (FunctionType) type;
-                    FRISCGenerator.generateFunctionCall(name);
+                    FRISCGenerator.generateFunctionCall(name, functionType);
                 }
                 else {
                     FRISCGenerator.generateIdentificator(name);
