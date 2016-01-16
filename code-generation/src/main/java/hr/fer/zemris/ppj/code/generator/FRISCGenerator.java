@@ -33,9 +33,9 @@ public class FRISCGenerator {
     private static final CommandFactory COMMAND_FACTORY = new CommandFactory();
 
     private static final List<Pair> program = new ArrayList<>();
-    
+
     private static String currentFunction = "";
-    
+
     public static void generateTo(OutputStream outputStream) throws IOException {
         OutputStreamWriter writer = new OutputStreamWriter(outputStream);
 
@@ -61,7 +61,8 @@ public class FRISCGenerator {
     }
 
     public static void generatePreamble() {
-        generateCommand(COMMAND_FACTORY.move(40000, Reg.SP));
+        generateCommand(COMMAND_FACTORY.baseD());
+        generateCommand(COMMAND_FACTORY.moveH(Integer.toString(4000), Reg.SP));
         generateCommand(COMMAND_FACTORY.call("F_MAIN"));
         generateCommand(COMMAND_FACTORY.halt());
     }
@@ -72,14 +73,27 @@ public class FRISCGenerator {
         // TODO: F_MOD
         // TODO: Globals
     }
-    
+
     public static void setCurrentFunction(String functionName) {
         currentFunction = functionName;
     }
-    
+
+    public static void generateIdentificator(String identificator) {
+        generateCommand(COMMAND_FACTORY.move("F_" + identificator.toUpperCase(), Reg.R0));
+        generateCommand(COMMAND_FACTORY.push(Reg.R0));
+    }
+
     public static void generateNumber(int value) {
         generateCommand(COMMAND_FACTORY.move(value, Reg.R0));
         generateCommand(COMMAND_FACTORY.push(Reg.R0));
+    }
+
+    public static void generateFunctionCall(boolean returnValue) {
+        generateCommand(COMMAND_FACTORY.pop(Reg.R0));
+        generateCommand(COMMAND_FACTORY.call(Reg.R0));
+        if (returnValue) {
+            generateCommand(COMMAND_FACTORY.push(Reg.R6));
+        }
     }
 
     public static void contextSave() {

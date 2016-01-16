@@ -110,7 +110,7 @@ public class FunctionDefinitionManipulator implements Manipulator {
         switch (Production.fromNode(node)) {
             case FUNCTION_DEFINITION_1: {
                 // <definicija_funkcije> ::= <ime_tipa> IDN L_ZAGRADA KR_VOID D_ZAGRADA <slozena_naredba>
-                // TODO ker why not generate child(0)?
+                node.getChild(0).generate();
                 String label =
                         FRISCGenerator.generateFunctionLabel((String) node.getChild(1).getAttribute(Attribute.VALUE));
                 FRISCGenerator.generateCommand(label, "");
@@ -123,7 +123,7 @@ public class FunctionDefinitionManipulator implements Manipulator {
 
             case FUNCTION_DEFINITION_2: {
                 // <definicija_funkcije> ::= <ime_tipa> IDN L_ZAGRADA <lista_parametara> D_ZAGRADA <slozena_naredba>
-                // TODO ker why not generate child(0)?
+                node.getChild(0).generate();
                 String label =
                         FRISCGenerator.generateFunctionLabel((String) node.getChild(1).getAttribute(Attribute.VALUE));
                 FRISCGenerator.generateCommand(label, "");

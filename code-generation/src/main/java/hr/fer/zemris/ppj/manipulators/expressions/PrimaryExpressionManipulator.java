@@ -134,6 +134,8 @@ public class PrimaryExpressionManipulator implements Manipulator {
         switch (Production.fromNode(node)) {
         case PRIMARY_EXPRESSION_1: {
             // PRIMARY_EXPRESSION_1("<primarni_izraz> ::= IDN"),
+            String name = (String) node.getChild(0).getAttribute(Attribute.VALUE);
+            FRISCGenerator.generateIdentificator(name);
             break;
         }
 

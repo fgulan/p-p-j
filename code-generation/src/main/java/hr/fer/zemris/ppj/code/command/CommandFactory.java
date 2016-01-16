@@ -168,12 +168,24 @@ public class CommandFactory {
         return "\tROTR " + src1 + ", " + label + ", " + dest;
     }
 
+    public String baseD() {
+        return "\t`BASE D ";
+    }
+
     public String move(Reg src1, Reg dest) {
         return "\tMOVE " + src1 + ", " + dest;
     }
 
     public String move(int src1, Reg dest) {
-        return "\tMOVE %D " + src1 + ", " + dest;
+        return "\tMOVE " + src1 + ", " + dest;
+    }
+    
+    public String moveH(String src1, Reg dest) {
+        return "\tMOVE %H " + src1 + ", " + dest;
+    }
+    
+    public String move(String label, Reg dest) {
+        return "\tMOVE " + label + ", " + dest;
     }
 
     public String load(Reg dest, int adr20) {
