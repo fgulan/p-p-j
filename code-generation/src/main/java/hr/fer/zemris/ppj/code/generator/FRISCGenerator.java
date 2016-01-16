@@ -9,6 +9,7 @@ import java.util.List;
 import hr.fer.zemris.ppj.BinaryOperation;
 import hr.fer.zemris.ppj.code.Reg;
 import hr.fer.zemris.ppj.code.command.CommandFactory;
+import hr.fer.zemris.ppj.types.Type;
 
 public class FRISCGenerator {
 
@@ -111,7 +112,7 @@ public class FRISCGenerator {
     }
 
     public static void generateFunctionCall(String name) {
-        generateCommand(COMMAND_FACTORY.call(Reg.R0));
+        generateCommand(COMMAND_FACTORY.call("F_" + name.toUpperCase()));
     }
 
     public static void contextSave() {
