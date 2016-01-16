@@ -27,12 +27,8 @@
                  <multiplikativni_izraz>
                   <cast_izraz>
                    <unarni_izraz>
-                    <unarni_operator>
-                     MINUS 2 -
-                    <cast_izraz>
-                     <unarni_izraz>
-                      <postfiks_izraz>
-                       <primarni_izraz>
-                        BROJ 2 84
+                    <postfiks_izraz>
+                     <primarni_izraz>
+                      BROJ 2 1234567890
        TOCKAZAREZ 2 ;
     D_VIT_ZAGRADA 3 }

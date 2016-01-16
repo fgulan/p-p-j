@@ -97,8 +97,16 @@ public class FRISCGenerator {
     }
 
     public static void generateNumber(int value) {
-        generateCommand(COMMAND_FACTORY.move(value, Reg.R0));
-        generateCommand(COMMAND_FACTORY.push(Reg.R0));
+        if (isBigInteger(value)) {
+            String label = "BIG_INT_" + globals.size();
+            globals.add(new Pair(label, COMMAND_FACTORY.dw(value)));
+
+            generateCommand(COMMAND_FACTORY.load(Reg.R0, label));
+            generateCommand(COMMAND_FACTORY.push(Reg.R0));
+        } else {
+            generateCommand(COMMAND_FACTORY.move(value, Reg.R0));
+            generateCommand(COMMAND_FACTORY.push(Reg.R0));
+        }
     }
 
     public static void generateFunctionCall(String name) {
@@ -128,5 +136,12 @@ public class FRISCGenerator {
         generateCommand(COMMAND_FACTORY.move(0, Reg.R1));
         generateCommand(COMMAND_FACTORY.sub(Reg.R1, Reg.R0, Reg.R0));
         generateCommand(COMMAND_FACTORY.push(Reg.R0));
+    }
+    
+    private static boolean isBigInteger(int value) {
+        int upper12 = (value & 0xfff00000);
+        boolean signumBit = (value & 0x00010000) != 0;
+        int bitCount = Integer.bitCount(upper12);
+        return !(bitCount == 12 && signumBit || bitCount == 0 && !signumBit);
     }
 }
