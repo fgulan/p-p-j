@@ -53,7 +53,7 @@
                   <unarni_izraz>
                    <postfiks_izraz>
                     <primarni_izraz>
-                     BROJ 2 16
+                     BROJ 2 12
     TOCKAZAREZ 2 ;
  <vanjska_deklaracija>
   <definicija_funkcije>
@@ -87,7 +87,7 @@
                      <postfiks_izraz>
                       <primarni_izraz>
                        IDN 4 x
-                 PLUS 4 +
+                 MINUS 4 -
                  <multiplikativni_izraz>
                   <cast_izraz>
                    <unarni_izraz>

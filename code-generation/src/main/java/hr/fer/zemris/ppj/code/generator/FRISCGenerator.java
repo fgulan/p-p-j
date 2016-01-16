@@ -146,7 +146,9 @@ public class FRISCGenerator {
         case PLUS:
             generateCommand(COMMAND_FACTORY.add(Reg.R0, Reg.R1, Reg.R0));
             break;
-
+        case MINUS:
+            generateCommand(COMMAND_FACTORY.sub(Reg.R0, Reg.R1, Reg.R0));
+            break;
         default:
             break;
         }

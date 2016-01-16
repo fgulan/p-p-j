@@ -156,6 +156,7 @@ public class AdditiveExpressionManipulator implements Manipulator {
             // ADDITIVE_EXPRESSION_3("<aditivni_izraz> ::= <aditivni_izraz> MINUS <multiplikativni_izraz>"),
             node.getChild(0).generate();
             node.getChild(2).generate();
+            FRISCGenerator.generateBinaryOperation(BinaryOperation.MINUS);
             break;
         }
 
