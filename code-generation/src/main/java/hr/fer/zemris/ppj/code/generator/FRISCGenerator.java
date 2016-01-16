@@ -34,10 +34,14 @@ public class FRISCGenerator {
 
     private static final List<Pair> program = new ArrayList<>();
 
+    private static final List<Pair> globals = new ArrayList<>();
+
     private static String currentFunction = "";
 
     public static void generateTo(OutputStream outputStream) throws IOException {
         OutputStreamWriter writer = new OutputStreamWriter(outputStream);
+
+        program.addAll(globals);
 
         for (Pair pair : program) {
             System.out.println(pair.label + pair.command);
@@ -62,7 +66,7 @@ public class FRISCGenerator {
 
     public static void generatePreamble() {
         generateCommand(COMMAND_FACTORY.baseD());
-        generateCommand(COMMAND_FACTORY.moveH(Integer.toString(4000), Reg.SP));
+        generateCommand(COMMAND_FACTORY.moveH(Integer.toString(40000), Reg.SP));
         generateCommand(COMMAND_FACTORY.call("F_MAIN"));
         generateCommand(COMMAND_FACTORY.halt());
     }
@@ -71,16 +75,25 @@ public class FRISCGenerator {
         // TODO: F_MUL
         // TODO: F_DIV
         // TODO: F_MOD
-        // TODO: Globals
+    }
+
+    public static void defineClobal(String name, String command) {
+        globals.add(new Pair(generateGlobalLabel(name), command));
     }
 
     public static void setCurrentFunction(String functionName) {
         currentFunction = functionName;
     }
 
-    public static void generateIdentificator(String identificator) {
-        generateCommand(COMMAND_FACTORY.move("F_" + identificator.toUpperCase(), Reg.R0));
-        generateCommand(COMMAND_FACTORY.push(Reg.R0));
+    public static void generateIdentificator(String identifier) {
+        if (CallStack.isLocal(identifier)) {
+            generateCommand(COMMAND_FACTORY.move("F_" + identifier.toUpperCase(), Reg.R0));
+            generateCommand(COMMAND_FACTORY.push(Reg.R0));
+        }
+        else {
+            generateCommand(COMMAND_FACTORY.load(Reg.R0, generateGlobalLabel(identifier)));
+            generateCommand(COMMAND_FACTORY.push(Reg.R0));
+        }
     }
 
     public static void generateNumber(int value) {
@@ -88,12 +101,8 @@ public class FRISCGenerator {
         generateCommand(COMMAND_FACTORY.push(Reg.R0));
     }
 
-    public static void generateFunctionCall(boolean returnValue) {
-        generateCommand(COMMAND_FACTORY.pop(Reg.R0));
+    public static void generateFunctionCall(String name) {
         generateCommand(COMMAND_FACTORY.call(Reg.R0));
-        if (returnValue) {
-            generateCommand(COMMAND_FACTORY.push(Reg.R6));
-        }
     }
 
     public static void contextSave() {

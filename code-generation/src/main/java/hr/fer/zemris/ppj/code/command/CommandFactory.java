@@ -168,10 +168,6 @@ public class CommandFactory {
         return "\tROTR " + src1 + ", " + label + ", " + dest;
     }
 
-    public String baseD() {
-        return "\t`BASE D ";
-    }
-
     public String move(Reg src1, Reg dest) {
         return "\tMOVE " + src1 + ", " + dest;
     }
@@ -179,11 +175,11 @@ public class CommandFactory {
     public String move(int src1, Reg dest) {
         return "\tMOVE " + src1 + ", " + dest;
     }
-    
+
     public String moveH(String src1, Reg dest) {
         return "\tMOVE %H " + src1 + ", " + dest;
     }
-    
+
     public String move(String label, Reg dest) {
         return "\tMOVE " + label + ", " + dest;
     }
@@ -339,4 +335,21 @@ public class CommandFactory {
     public String halt(Condition condition) {
         return "\tHALT_" + condition;
     }
+
+    public String baseD() {
+        return "\t`BASE D ";
+    }
+
+    public String ds(int size) {
+        return "\t`DS %D " + size;
+    }
+
+    public String db(int value) {
+        return "\tDB %D " + value;
+    }
+
+    public String dw(int value) {
+        return "\tDW %D " + value;
+    }
+
 }

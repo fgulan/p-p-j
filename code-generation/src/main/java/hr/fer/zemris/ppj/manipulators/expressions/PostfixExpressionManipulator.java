@@ -7,11 +7,9 @@ import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.code.command.CommandFactory;
-import hr.fer.zemris.ppj.code.generator.FRISCGenerator;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 import hr.fer.zemris.ppj.types.IntType;
 import hr.fer.zemris.ppj.types.Type;
-import hr.fer.zemris.ppj.types.VoidType;
 import hr.fer.zemris.ppj.types.functions.FunctionType;
 
 /**
@@ -227,51 +225,44 @@ public class PostfixExpressionManipulator implements Manipulator {
     @Override
     public void generate(Node node) {
         switch (Production.fromNode(node)) {
-        case POSTFIX_EXPRESSION_1: {
-            // POSTFIX_EXPRESSION_1("<postfiks_izraz> ::= <primarni_izraz>"),
-            node.getChild(0).generate();
-            break;
-        }
+            case POSTFIX_EXPRESSION_1: {
+                // POSTFIX_EXPRESSION_1("<postfiks_izraz> ::= <primarni_izraz>"),
+                node.getChild(0).generate();
+                break;
+            }
 
-        case POSTFIX_EXPRESSION_2: {
-            // POSTFIX_EXPRESSION_2("<postfiks_izraz> ::= <postfiks_izraz> L_UGL_ZAGRADA <izraz> D_UGL_ZAGRADA"),
-            node.getChild(0).generate();
-            node.getChild(2).generate();
-            break;
-        }
+            case POSTFIX_EXPRESSION_2: {
+                // POSTFIX_EXPRESSION_2("<postfiks_izraz> ::= <postfiks_izraz> L_UGL_ZAGRADA <izraz> D_UGL_ZAGRADA"),
+                node.getChild(0).generate();
+                node.getChild(2).generate();
+                break;
+            }
 
-        case POSTFIX_EXPRESSION_3: {
-            // POSTFIX_EXPRESSION_3("<postfiks_izraz> ::= <postfiks_izraz> L_ZAGRADA D_ZAGRADA"),
-            node.getChild(0).generate();
-            Type returnType = (Type) node.getChild(0).getAttribute(Attribute.TYPE);
-            FRISCGenerator.generateFunctionCall(!(returnType instanceof VoidType));
-            break;
-        }
+            case POSTFIX_EXPRESSION_3: {
+                // POSTFIX_EXPRESSION_3("<postfiks_izraz> ::= <postfiks_izraz> L_ZAGRADA D_ZAGRADA"),
+                break;
+            }
 
-        case POSTFIX_EXPRESSION_4: {
-            // POSTFIX_EXPRESSION_4("<postfiks_izraz> ::= <postfiks_izraz> L_ZAGRADA <lista_argumenata> D_ZAGRADA"),
-            node.getChild(0).generate();
-            node.getChild(2).generate();
-            Type returnType = (Type) node.getChild(0).getAttribute(Attribute.TYPE);
-            FRISCGenerator.generateFunctionCall(!(returnType instanceof VoidType));
-            break;
-        }
+            case POSTFIX_EXPRESSION_4: {
+                // POSTFIX_EXPRESSION_4("<postfiks_izraz> ::= <postfiks_izraz> L_ZAGRADA <lista_argumenata> D_ZAGRADA"),
+                break;
+            }
 
-        case POSTFIX_EXPRESSION_5: {
-            // POSTFIX_EXPRESSION_5("<postfiks_izraz> ::= <postfiks_izraz> OP_INC"),
-            node.getChild(0).generate();
-            break;
-        }
+            case POSTFIX_EXPRESSION_5: {
+                // POSTFIX_EXPRESSION_5("<postfiks_izraz> ::= <postfiks_izraz> OP_INC"),
+                node.getChild(0).generate();
+                break;
+            }
 
-        case POSTFIX_EXPRESSION_6: {
-            // POSTFIX_EXPRESSION_6("<postfiks_izraz> ::= <postfiks_izraz> OP_DEC"),
-            node.getChild(0).generate();
-            break;
-        }
+            case POSTFIX_EXPRESSION_6: {
+                // POSTFIX_EXPRESSION_6("<postfiks_izraz> ::= <postfiks_izraz> OP_DEC"),
+                node.getChild(0).generate();
+                break;
+            }
 
-        default:
-            System.err.println("Generation reached undefined production!");
-            break;
+            default:
+                System.err.println("Generation reached undefined production!");
+                break;
         }
     }
 }
