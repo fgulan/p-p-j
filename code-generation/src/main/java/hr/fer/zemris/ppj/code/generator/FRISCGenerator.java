@@ -143,11 +143,20 @@ public class FRISCGenerator {
         generateCommand(COMMAND_FACTORY.pop(Reg.R1));
         generateCommand(COMMAND_FACTORY.pop(Reg.R0));
         switch (operation) {
-        case PLUS:
+        case ADD:
             generateCommand(COMMAND_FACTORY.add(Reg.R0, Reg.R1, Reg.R0));
             break;
-        case MINUS:
+        case SUB:
             generateCommand(COMMAND_FACTORY.sub(Reg.R0, Reg.R1, Reg.R0));
+            break;
+        case OR:
+            generateCommand(COMMAND_FACTORY.or(Reg.R0, Reg.R1, Reg.R0));
+            break;
+        case AND:
+            generateCommand(COMMAND_FACTORY.and(Reg.R0, Reg.R1, Reg.R0));
+            break;
+        case XOR:
+            generateCommand(COMMAND_FACTORY.xor(Reg.R0, Reg.R1, Reg.R0));
             break;
         default:
             break;

@@ -26,7 +26,7 @@
                    <unarni_izraz>
                     <postfiks_izraz>
                      <primarni_izraz>
-                      BROJ 1 15
+                      BROJ 1 27
      TOCKAZAREZ 1 ;
   <vanjska_deklaracija>
    <deklaracija>
@@ -53,7 +53,7 @@
                   <unarni_izraz>
                    <postfiks_izraz>
                     <primarni_izraz>
-                     BROJ 2 12
+                     BROJ 2 65
     TOCKAZAREZ 2 ;
  <vanjska_deklaracija>
   <definicija_funkcije>
@@ -76,10 +76,10 @@
           <log_i_izraz>
            <bin_ili_izraz>
             <bin_xili_izraz>
-             <bin_i_izraz>
-              <jednakosni_izraz>
-               <odnosni_izraz>
-                <aditivni_izraz>
+             <bin_xili_izraz>
+              <bin_i_izraz>
+               <jednakosni_izraz>
+                <odnosni_izraz>
                  <aditivni_izraz>
                   <multiplikativni_izraz>
                    <cast_izraz>
@@ -87,7 +87,11 @@
                      <postfiks_izraz>
                       <primarni_izraz>
                        IDN 4 x
-                 MINUS 4 -
+             OP_BIN_XILI 4 ^
+             <bin_i_izraz>
+              <jednakosni_izraz>
+               <odnosni_izraz>
+                <aditivni_izraz>
                  <multiplikativni_izraz>
                   <cast_izraz>
                    <unarni_izraz>

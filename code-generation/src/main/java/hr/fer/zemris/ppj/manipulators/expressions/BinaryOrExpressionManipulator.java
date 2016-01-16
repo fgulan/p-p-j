@@ -1,10 +1,12 @@
 package hr.fer.zemris.ppj.manipulators.expressions;
 
 import hr.fer.zemris.ppj.Attribute;
+import hr.fer.zemris.ppj.BinaryOperation;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.code.command.CommandFactory;
+import hr.fer.zemris.ppj.code.generator.FRISCGenerator;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 import hr.fer.zemris.ppj.types.IntType;
 import hr.fer.zemris.ppj.types.Type;
@@ -109,6 +111,7 @@ public class BinaryOrExpressionManipulator implements Manipulator {
             // BINARY_OR_EXPRESSION_2("<bin_ili_izraz> ::= <bin_ili_izraz> OP_BIN_ILI <bin_xili_izraz>"),
             node.getChild(0).generate();
             node.getChild(2).generate();
+            FRISCGenerator.generateBinaryOperation(BinaryOperation.OR);
             break;
         }
 
