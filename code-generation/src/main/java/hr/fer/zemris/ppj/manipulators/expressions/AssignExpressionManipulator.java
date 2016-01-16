@@ -98,17 +98,22 @@ public class AssignExpressionManipulator implements Manipulator {
     @Override
     public void generate(Node node) {
         switch (Production.fromNode(node)) {
-            case ASSIGN_EXPRESSION_1: {
-                break;
-            }
+        case ASSIGN_EXPRESSION_1: {
+            // ASSIGN_EXPRESSION_1("<izraz_pridruzivanja> ::= <log_ili_izraz>"),
+            node.getChild(0).generate();
+            break;
+        }
 
-            case ASSIGN_EXPRESSION_2: {
-                break;
-            }
+        case ASSIGN_EXPRESSION_2: {
+            // ASSIGN_EXPRESSION_2("<izraz_pridruzivanja> ::= <postfiks_izraz> OP_PRIDRUZI <izraz_pridruzivanja>"),
+            node.getChild(0).generate();
+            node.getChild(2).generate();
+            break;
+        }
 
-            default:
-                System.err.println("Generation reached undefined production!");
-                break;
+        default:
+            System.err.println("Generation reached undefined production!");
+            break;
         }
     }
 }

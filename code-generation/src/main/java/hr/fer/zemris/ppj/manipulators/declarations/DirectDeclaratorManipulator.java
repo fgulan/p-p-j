@@ -139,25 +139,30 @@ public class DirectDeclaratorManipulator implements Manipulator {
     @Override
     public void generate(Node node) {
         switch (Production.fromNode(node)) {
-            case DIRECT_DECLARATOR_1: {
-                break;
-            }
+        case DIRECT_DECLARATOR_1: {
+            // DIRECT_DECLARATOR_1("<izravni_deklarator> ::= IDN"),
+            break;
+        }
 
-            case DIRECT_DECLARATOR_2: {
-                break;
-            }
+        case DIRECT_DECLARATOR_2: {
+            // DIRECT_DECLARATOR_2("<izravni_deklarator> ::= IDN L_UGL_ZAGRADA BROJ D_UGL_ZAGRADA"),
+            break;
+        }
 
-            case DIRECT_DECLARATOR_3: {
-                break;
-            }
+        case DIRECT_DECLARATOR_3: {
+            // DIRECT_DECLARATOR_3("<izravni_deklarator> ::= IDN L_ZAGRADA KR_VOID D_ZAGRADA"),
+            break;
+        }
 
-            case DIRECT_DECLARATOR_4: {
-                break;
-            }
+        case DIRECT_DECLARATOR_4: {
+            // DIRECT_DECLARATOR_4("<izravni_deklarator> ::= IDN L_ZAGRADA <lista_parametara> D_ZAGRADA"),
+            node.getChild(2).generate();
+            break;
+        }
 
-            default:
-                System.err.println("Generation reached undefined production!");
-                break;
+        default:
+            System.err.println("Generation reached undefined production!");
+            break;
         }
     }
 }

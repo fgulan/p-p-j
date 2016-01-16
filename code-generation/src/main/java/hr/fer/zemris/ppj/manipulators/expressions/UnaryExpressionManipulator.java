@@ -140,25 +140,34 @@ public class UnaryExpressionManipulator implements Manipulator {
     @Override
     public void generate(Node node) {
         switch (Production.fromNode(node)) {
-            case UNARY_EXPRESSION_1: {
-                break;
-            }
+        case UNARY_EXPRESSION_1: {
+            // UNARY_EXPRESSION_1("<unarni_izraz> ::= <postfiks_izraz>"),
+            node.getChild(0).generate();
+            break;
+        }
 
-            case UNARY_EXPRESSION_2: {
-                break;
-            }
+        case UNARY_EXPRESSION_2: {
+            // UNARY_EXPRESSION_2("<unarni_izraz> ::= OP_INC <unarni_izraz>"),
+            node.getChild(1).generate();
+            break;
+        }
 
-            case UNARY_EXPRESSION_3: {
-                break;
-            }
+        case UNARY_EXPRESSION_3: {
+            // UNARY_EXPRESSION_3("<unarni_izraz> ::= OP_DEC <unarni_izraz>"),
+            node.getChild(1).generate();
+            break;
+        }
 
-            case UNARY_EXPRESSION_4: {
-                break;
-            }
+        case UNARY_EXPRESSION_4: {
+            // UNARY_EXPRESSION_4("<unarni_izraz> ::= <unarni_operator> <cast_izraz>"),
+            node.getChild(0).generate();
+            node.getChild(1).generate();
+            break;
+        }
 
-            default:
-                System.err.println("Generation reached undefined production!");
-                break;
+        default:
+            System.err.println("Generation reached undefined production!");
+            break;
         }
     }
 }

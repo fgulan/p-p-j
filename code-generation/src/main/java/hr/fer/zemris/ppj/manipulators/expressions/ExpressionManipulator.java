@@ -83,17 +83,22 @@ public class ExpressionManipulator implements Manipulator {
     @Override
     public void generate(Node node) {
         switch (Production.fromNode(node)) {
-            case EXPRESSION_1: {
-                break;
-            }
+        case EXPRESSION_1: {
+            // EXPRESSION_1("<izraz> ::= <izraz_pridruzivanja>"),
+            node.getChild(0).generate();
+            break;
+        }
 
-            case EXPRESSION_2: {
-                break;
-            }
+        case EXPRESSION_2: {
+            // EXPRESSION_2("<izraz> ::= <izraz> ZAREZ <izraz_pridruzivanja>"),
+            node.getChild(0).generate();
+            node.getChild(2).generate();
+            break;
+        }
 
-            default:
-                System.err.println("Generation reached undefined production!");
-                break;
+        default:
+            System.err.println("Generation reached undefined production!");
+            break;
         }
     }
 }

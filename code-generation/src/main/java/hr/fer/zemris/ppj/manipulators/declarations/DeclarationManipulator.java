@@ -59,13 +59,16 @@ public class DeclarationManipulator implements Manipulator {
     @Override
     public void generate(Node node) {
         switch (Production.fromNode(node)) {
-            case DECLARATION_1: {
-                break;
-            }
+        case DECLARATION_1: {
+            // DECLARATION_1("<deklaracija> ::= <ime_tipa> <lista_init_deklaratora> TOCKAZAREZ"),
+            node.getChild(0).generate();
+            node.getChild(1).generate();
+            break;
+        }
 
-            default:
-                System.err.println("Generation reached undefined production!");
-                break;
+        default:
+            System.err.println("Generation reached undefined production!");
+            break;
         }
     }
 

@@ -168,25 +168,37 @@ public class MultiplicativeExpressionManipulator implements Manipulator {
     @Override
     public void generate(Node node) {
         switch (Production.fromNode(node)) {
-            case MULTIPLICATIVE_EXPRESSION_1: {
-                break;
-            }
+        case MULTIPLICATIVE_EXPRESSION_1: {
+            // MULTIPLICATIVE_EXPRESSION_1("<multiplikativni_izraz> ::= <cast_izraz>"),
+            node.getChild(0).generate();
+            break;
+        }
 
-            case MULTIPLICATIVE_EXPRESSION_2: {
-                break;
-            }
+        case MULTIPLICATIVE_EXPRESSION_2: {
+            // MULTIPLICATIVE_EXPRESSION_2("<multiplikativni_izraz> ::= <multiplikativni_izraz> OP_PUTA <cast_izraz>"),
+            node.getChild(0).generate();
+            node.getChild(2).generate();
+            break;
+        }
 
-            case MULTIPLICATIVE_EXPRESSION_3: {
-                break;
-            }
+        case MULTIPLICATIVE_EXPRESSION_3: {
+            // MULTIPLICATIVE_EXPRESSION_3("<multiplikativni_izraz> ::= <multiplikativni_izraz> OP_DIJELI
+            // <cast_izraz>"),
+            node.getChild(0).generate();
+            node.getChild(2).generate();
+            break;
+        }
 
-            case MULTIPLICATIVE_EXPRESSION_4: {
-                break;
-            }
+        case MULTIPLICATIVE_EXPRESSION_4: {
+            // MULTIPLICATIVE_EXPRESSION_4("<multiplikativni_izraz> ::= <multiplikativni_izraz> OP_MOD <cast_izraz>"),
+            node.getChild(0).generate();
+            node.getChild(2).generate();
+            break;
+        }
 
-            default:
-                System.err.println("Generation reached undefined production!");
-                break;
+        default:
+            System.err.println("Generation reached undefined production!");
+            break;
         }
     }
 }

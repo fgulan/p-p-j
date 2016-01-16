@@ -54,8 +54,7 @@ public class ParameterListManipulator implements Manipulator {
         Node decl;
         if (size == 1) {
             decl = node.getChild(0);
-        }
-        else {
+        } else {
             decl = node.getChild(2);
         }
 
@@ -84,17 +83,22 @@ public class ParameterListManipulator implements Manipulator {
     @Override
     public void generate(Node node) {
         switch (Production.fromNode(node)) {
-            case PARAMETER_LIST_1: {
-                break;
-            }
+        case PARAMETER_LIST_1: {
+            // PARAMETER_LIST_1("<lista_parametara> ::= <deklaracija_parametra>"),
+            node.getChild(0).generate();
+            break;
+        }
 
-            case PARAMETER_LIST_2: {
-                break;
-            }
+        case PARAMETER_LIST_2: {
+            // PARAMETER_LIST_2("<lista_parametara> ::= <lista_parametara> ZAREZ <deklaracija_parametra>"),
+            node.getChild(0).generate();
+            node.getChild(2).generate();
+            break;
+        }
 
-            default:
-                System.err.println("Generation reached undefined production!");
-                break;
+        default:
+            System.err.println("Generation reached undefined production!");
+            break;
         }
     }
 }

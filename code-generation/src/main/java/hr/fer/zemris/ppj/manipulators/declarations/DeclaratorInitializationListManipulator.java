@@ -52,10 +52,15 @@ public class DeclaratorInitializationListManipulator implements Manipulator {
     public void generate(Node node) {
         switch (Production.fromNode(node)) {
             case DECLARATOR_INITIALIZATION_LIST_1: {
+//                DECLARATOR_INITIALIZATION_LIST_1("<lista_init_deklaratora> ::= <init_deklarator>"),
+                node.getChild(0).generate();
                 break;
             }
 
             case DECLARATOR_INITIALIZATION_LIST_2: {
+//                DECLARATOR_INITIALIZATION_LIST_2("<lista_init_deklaratora> ::= <lista_init_deklaratora> ZAREZ <init_deklarator>"),
+                node.getChild(0).generate();
+                node.getChild(2).generate();
                 break;
             }
 

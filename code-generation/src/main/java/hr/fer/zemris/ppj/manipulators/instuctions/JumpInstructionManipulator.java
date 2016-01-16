@@ -4,7 +4,9 @@ import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
+import hr.fer.zemris.ppj.code.Reg;
 import hr.fer.zemris.ppj.code.command.CommandFactory;
+import hr.fer.zemris.ppj.code.generator.FRISCGenerator;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 import hr.fer.zemris.ppj.types.Type;
 import hr.fer.zemris.ppj.types.VoidType;
@@ -92,25 +94,31 @@ public class JumpInstructionManipulator implements Manipulator {
     @Override
     public void generate(Node node) {
         switch (Production.fromNode(node)) {
-            case JUMP_INSTRUCTION_1: {
-                break;
-            }
+        case JUMP_INSTRUCTION_1: {
+            // JUMP_INSTRUCTION_1("<naredba_skoka> ::= KR_CONTINUE TOCKAZAREZ"),
+            break;
+        }
 
-            case JUMP_INSTRUCTION_2: {
-                break;
-            }
+        case JUMP_INSTRUCTION_2: {
+            // JUMP_INSTRUCTION_2("<naredba_skoka> ::= KR_BREAK TOCKAZAREZ"),
+            break;
+        }
 
-            case JUMP_INSTRUCTION_3: {
-                break;
-            }
+        case JUMP_INSTRUCTION_3: {
+            // JUMP_INSTRUCTION_3("<naredba_skoka> ::= KR_RETURN TOCKAZAREZ"),
+            break;
+        }
 
-            case JUMP_INSTRUCTION_4: {
-                break;
-            }
+        case JUMP_INSTRUCTION_4: {
+            // JUMP_INSTRUCTION_4("<naredba_skoka> ::= KR_RETURN <izraz> TOCKAZAREZ"),
+            node.getChild(1).generate();
+            FRISCGenerator.generateCommand(ch.pop(Reg.R6));
+            break;
+        }
 
-            default:
-                System.err.println("Generation reached undefined production!");
-                break;
+        default:
+            System.err.println("Generation reached undefined production!");
+            break;
         }
     }
 }

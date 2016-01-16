@@ -26,7 +26,7 @@ public class FunctionType extends Type {
      * @since 1.0
      */
     public FunctionType(final Type returnType, final List<Type> argumentList) {
-        super(false, true, false);
+        super(false, true, false, 1);
 
         this.returnType = returnType;
         this.argumentList = argumentList;

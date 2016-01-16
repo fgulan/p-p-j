@@ -99,17 +99,22 @@ public class LogicalOrExpressionManipulator implements Manipulator {
     @Override
     public void generate(Node node) {
         switch (Production.fromNode(node)) {
-            case LOGICAL_OR_EXPRESSION_1: {
-                break;
-            }
+        case LOGICAL_OR_EXPRESSION_1: {
+            // LOGICAL_OR_EXPRESSION_1("<log_ili_izraz> ::= <log_i_izraz>"),
+            node.getChild(0).generate();
+            break;
+        }
 
-            case LOGICAL_OR_EXPRESSION_2: {
-                break;
-            }
+        case LOGICAL_OR_EXPRESSION_2: {
+            // LOGICAL_OR_EXPRESSION_2("<log_ili_izraz> ::= <log_ili_izraz> OP_ILI <log_i_izraz>"),
+            node.getChild(0).generate();
+            node.getChild(2).generate();
+            break;
+        }
 
-            default:
-                System.err.println("Generation reached undefined production!");
-                break;
+        default:
+            System.err.println("Generation reached undefined production!");
+            break;
         }
     }
 }

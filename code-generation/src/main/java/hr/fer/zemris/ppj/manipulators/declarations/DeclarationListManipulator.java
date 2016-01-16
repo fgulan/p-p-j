@@ -49,17 +49,22 @@ public class DeclarationListManipulator implements Manipulator {
     @Override
     public void generate(Node node) {
         switch (Production.fromNode(node)) {
-            case DECLARATION_LIST_1: {
-                break;
-            }
+        case DECLARATION_LIST_1: {
+            // DECLARATION_LIST_1("<lista_deklaracija> ::= <deklaracija>"),
+            node.getChild(0).generate();
+            break;
+        }
 
-            case DECLARATION_LIST_2: {
-                break;
-            }
+        case DECLARATION_LIST_2: {
+            // DECLARATION_LIST_2("<lista_deklaracija> ::= <lista_deklaracija> <deklaracija>"),
+            node.getChild(0).generate();
+            node.getChild(1).generate();
+            break;
+        }
 
-            default:
-                System.err.println("Generation reached undefined production!");
-                break;
+        default:
+            System.err.println("Generation reached undefined production!");
+            break;
         }
     }
 

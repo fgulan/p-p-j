@@ -91,12 +91,17 @@ public class CastExpressionManipulator implements Manipulator {
 
     @Override
     public void generate(Node node) {
+//        CAST_EXPRESSION_1("<cast_izraz> ::= <unarni_izraz>"),
+//        CAST_EXPRESSION_2("<cast_izraz> ::= L_ZAGRADA <ime_tipa> D_ZAGRADA <cast_izraz>"),
         switch (Production.fromNode(node)) {
             case CAST_EXPRESSION_1: {
+                node.getChild(0).generate();
                 break;
             }
 
             case CAST_EXPRESSION_2: {
+                node.getChild(1).generate();
+                node.getChild(3).generate();
                 break;
             }
 

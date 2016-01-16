@@ -5,6 +5,7 @@ import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.code.command.CommandFactory;
+import hr.fer.zemris.ppj.code.generator.FRISCGenerator;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 import hr.fer.zemris.ppj.types.CharType;
 import hr.fer.zemris.ppj.types.IntType;
@@ -131,29 +132,37 @@ public class PrimaryExpressionManipulator implements Manipulator {
     @Override
     public void generate(Node node) {
         switch (Production.fromNode(node)) {
-            case PRIMARY_EXPRESSION_1: {
-                break;
-            }
+        case PRIMARY_EXPRESSION_1: {
+            // PRIMARY_EXPRESSION_1("<primarni_izraz> ::= IDN"),
+            break;
+        }
 
-            case PRIMARY_EXPRESSION_2: {
-                break;
-            }
+        case PRIMARY_EXPRESSION_2: {
+            // PRIMARY_EXPRESSION_2("<primarni_izraz> ::= BROJ"),
+            Integer value = (Integer) node.getChild(0).getAttribute(Attribute.VALUE);
+            FRISCGenerator.generateNumber(value);
+            break;
+        }
 
-            case PRIMARY_EXPRESSION_3: {
-                break;
-            }
+        case PRIMARY_EXPRESSION_3: {
+            // PRIMARY_EXPRESSION_3("<primarni_izraz> ::= ZNAK"),
+            break;
+        }
 
-            case PRIMARY_EXPRESSION_4: {
-                break;
-            }
+        case PRIMARY_EXPRESSION_4: {
+            // PRIMARY_EXPRESSION_4("<primarni_izraz> ::= NIZ_ZNAKOVA"),
+            break;
+        }
 
-            case PRIMARY_EXPRESSION_5: {
-                break;
-            }
+        case PRIMARY_EXPRESSION_5: {
+            // <primarni_izraz> ::= L_ZAGRADA <izraz> D_ZAGRADA
+            node.getChild(1).generate();
+            break;
+        }
 
-            default:
-                System.err.println("Generation reached undefined production!");
-                break;
+        default:
+            System.err.println("Generation reached undefined production!");
+            break;
         }
     }
 }

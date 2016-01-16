@@ -33,7 +33,9 @@ public class FRISCGenerator {
     private static final CommandFactory COMMAND_FACTORY = new CommandFactory();
 
     private static final List<Pair> program = new ArrayList<>();
-
+    
+    private static String currentFunction = "";
+    
     public static void generateTo(OutputStream outputStream) throws IOException {
         OutputStreamWriter writer = new OutputStreamWriter(outputStream);
 
@@ -69,6 +71,15 @@ public class FRISCGenerator {
         // TODO: F_DIV
         // TODO: F_MOD
         // TODO: Globals
+    }
+    
+    public static void setCurrentFunction(String functionName) {
+        currentFunction = functionName;
+    }
+    
+    public static void generateNumber(int value) {
+        generateCommand(COMMAND_FACTORY.move(value, Reg.R0));
+        generateCommand(COMMAND_FACTORY.push(Reg.R0));
     }
 
     public static void contextSave() {

@@ -93,17 +93,22 @@ public class AssignExpressionListManipulator implements Manipulator {
     @Override
     public void generate(Node node) {
         switch (Production.fromNode(node)) {
-            case ASSIGN_EXPRESSION_LIST_1: {
-                break;
-            }
+        case ASSIGN_EXPRESSION_LIST_1: {
+            // ASSIGN_EXPRESSION_LIST_1("<lista_izraza_pridruzivanja> ::= <izraz_pridruzivanja>"),
+            node.getChild(0).generate();
+            break;
+        }
 
-            case ASSIGN_EXPRESSION_LIST_2: {
-                break;
-            }
+        case ASSIGN_EXPRESSION_LIST_2: {
+            // <lista_izraza_pridruzivanja> ::= <lista_izraza_pridruzivanja> ZAREZ <izraz_pridruzivanja>");
+            node.getChild(0).generate();
+            node.getChild(2).generate();
+            break;
+        }
 
-            default:
-                System.err.println("Generation reached undefined production!");
-                break;
+        default:
+            System.err.println("Generation reached undefined production!");
+            break;
         }
     }
 }

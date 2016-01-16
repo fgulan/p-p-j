@@ -41,25 +41,29 @@ public class UnaryOperatorManipulator implements Manipulator {
     @Override
     public void generate(Node node) {
         switch (Production.fromNode(node)) {
-            case UNARY_OPERATOR_1: {
-                break;
-            }
+        case UNARY_OPERATOR_1: {
+            // UNARY_OPERATOR_1("<unarni_operator> ::= PLUS"),
+            break;
+        }
 
-            case UNARY_OPERATOR_2: {
-                break;
-            }
+        case UNARY_OPERATOR_2: {
+            // UNARY_OPERATOR_2("<unarni_operator> ::= MINUS"),
+            break;
+        }
 
-            case UNARY_OPERATOR_3: {
-                break;
-            }
+        case UNARY_OPERATOR_3: {
+            // UNARY_OPERATOR_3("<unarni_operator> ::= OP_TILDA"),
+            break;
+        }
 
-            case UNARY_OPERATOR_4: {
-                break;
-            }
+        case UNARY_OPERATOR_4: {
+            // UNARY_OPERATOR_4("<unarni_operator> ::= OP_NEG"),
+            break;
+        }
 
-            default:
-                System.err.println("Generation reached undefined production!");
-                break;
+        default:
+            System.err.println("Generation reached undefined production!");
+            break;
         }
     }
 }

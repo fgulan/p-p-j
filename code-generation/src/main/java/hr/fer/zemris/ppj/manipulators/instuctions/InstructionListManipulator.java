@@ -69,17 +69,22 @@ public class InstructionListManipulator implements Manipulator {
     @Override
     public void generate(Node node) {
         switch (Production.fromNode(node)) {
-            case INSTRUCTION_LIST_1: {
-                break;
-            }
+        case INSTRUCTION_LIST_1: {
+            // INSTRUCTION_LIST_1("<lista_naredbi> ::= <naredba>"),
+            node.getChild(0).generate();
+            break;
+        }
 
-            case INSTRUCTION_LIST_2: {
-                break;
-            }
+        case INSTRUCTION_LIST_2: {
+            // INSTRUCTION_LIST_2("<lista_naredbi> ::= <lista_naredbi> <naredba>"),
+            node.getChild(0).generate();
+            node.getChild(1).generate();
+            break;
+        }
 
-            default:
-                System.err.println("Generation reached undefined production!");
-                break;
+        default:
+            System.err.println("Generation reached undefined production!");
+            break;
         }
     }
 }

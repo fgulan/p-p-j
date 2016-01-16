@@ -68,17 +68,22 @@ public class CompoundInstructionManipulator implements Manipulator {
     @Override
     public void generate(Node node) {
         switch (Production.fromNode(node)) {
-            case COMPOUND_INSTRUCTION_1: {
-                break;
-            }
+        case COMPOUND_INSTRUCTION_1: {
+            // COMPOUND_INSTRUCTION_1("<slozena_naredba> ::= L_VIT_ZAGRADA <lista_naredbi> D_VIT_ZAGRADA"),
+            node.getChild(1).generate();
+            break;
+        }
 
-            case COMPOUND_INSTRUCTION_2: {
-                break;
-            }
+        case COMPOUND_INSTRUCTION_2: {
+            // COMPOUND_INSTRUCTION_2("<slozena_naredba> ::= L_VIT_ZAGRADA <lista_deklaracija> <lista_naredbi> D_VIT_ZAGRADA"),
+            node.getChild(1).generate();
+            node.getChild(2).generate();
+            break;
+        }
 
-            default:
-                System.err.println("Generation reached undefined production!");
-                break;
+        default:
+            System.err.println("Generation reached undefined production!");
+            break;
         }
     }
 }

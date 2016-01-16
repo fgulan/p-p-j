@@ -81,18 +81,22 @@ public class TypeNameManipulator implements Manipulator {
 
     @Override
     public void generate(Node node) {
+        // TYPE_NAME_1("<ime_tipa> ::= <specifikator_tipa>"),
+        // TYPE_NAME_2("<ime_tipa> ::= KR_CONST <specifikator_tipa>"),
         switch (Production.fromNode(node)) {
-            case TYPE_NAME_1: {
-                break;
-            }
+        case TYPE_NAME_1: {
+            node.getChild(0).generate();
+            break;
+        }
 
-            case TYPE_NAME_2: {
-                break;
-            }
+        case TYPE_NAME_2: {
+            node.getChild(1).generate();
+            break;
+        }
 
-            default:
-                System.err.println("Generation reached undefined production!");
-                break;
+        default:
+            System.err.println("Generation reached undefined production!");
+            break;
         }
     }
 }

@@ -77,19 +77,22 @@ public class TranslationUnitManipulator implements Manipulator {
     @Override
     public void generate(Node node) {
         switch (Production.fromNode(node)) {
-            case TRANSLATION_UNIT_1: {
-                node.getChild(0).generate();
-                break;
-            }
+        case TRANSLATION_UNIT_1: {
+            // TRANSLATION_UNIT_1("<prijevodna_jedinica> ::= <vanjska_deklaracija>"),
+            node.getChild(0).generate();
+            break;
+        }
 
-            case TRANSLATION_UNIT_2: {
-                node.getChild(0).generate();
-                break;
-            }
+        case TRANSLATION_UNIT_2: {
+            // TRANSLATION_UNIT_2("<prijevodna_jedinica> ::= <prijevodna_jedinica> <vanjska_deklaracija>"),
+            node.getChild(0).generate();
+            node.getChild(1).generate();
+            break;
+        }
 
-            default:
-                System.err.println("Generation reached undefined production!");
-                break;
+        default:
+            System.err.println("Generation reached undefined production!");
+            break;
         }
     }
 }

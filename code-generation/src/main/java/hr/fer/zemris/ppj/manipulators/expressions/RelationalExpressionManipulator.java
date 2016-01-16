@@ -204,22 +204,36 @@ public class RelationalExpressionManipulator implements Manipulator {
     public void generate(Node node) {
         switch (Production.fromNode(node)) {
             case RELATIONAL_EXPRESSION_1: {
+                // RELATIONAL_EXPRESSION_1("<odnosni_izraz> ::= <aditivni_izraz>"),
+                node.getChild(0).generate();
                 break;
             }
 
             case RELATIONAL_EXPRESSION_2: {
+                // RELATIONAL_EXPRESSION_2("<odnosni_izraz> ::= <odnosni_izraz> OP_LT <aditivni_izraz>"),
+                node.getChild(0).generate();
+                node.getChild(2).generate();
                 break;
             }
 
             case RELATIONAL_EXPRESSION_3: {
+                // RELATIONAL_EXPRESSION_3("<odnosni_izraz> ::= <odnosni_izraz> OP_GT <aditivni_izraz>"),
+                node.getChild(0).generate();
+                node.getChild(2).generate();
                 break;
             }
 
             case RELATIONAL_EXPRESSION_4: {
+                // RELATIONAL_EXPRESSION_4("<odnosni_izraz> ::= <odnosni_izraz> OP_LTE <aditivni_izraz>"),
+                node.getChild(0).generate();
+                node.getChild(2).generate();
                 break;
             }
 
             case RELATIONAL_EXPRESSION_5: {
+                // RELATIONAL_EXPRESSION_5("<odnosni_izraz> ::= <odnosni_izraz> OP_GTE <aditivni_izraz>"),
+                node.getChild(0).generate();
+                node.getChild(2).generate();
                 break;
             }
 

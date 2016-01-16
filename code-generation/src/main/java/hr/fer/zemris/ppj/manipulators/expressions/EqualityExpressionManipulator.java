@@ -136,21 +136,29 @@ public class EqualityExpressionManipulator implements Manipulator {
     @Override
     public void generate(Node node) {
         switch (Production.fromNode(node)) {
-            case EQUALITY_EXPRESSION_1: {
-                break;
-            }
+        case EQUALITY_EXPRESSION_1: {
+            // EQUALITY_EXPRESSION_1("<jednakosni_izraz> ::= <odnosni_izraz>"),
+            node.getChild(0).generate();
+            break;
+        }
 
-            case EQUALITY_EXPRESSION_2: {
-                break;
-            }
+        case EQUALITY_EXPRESSION_2: {
+            // EQUALITY_EXPRESSION_2("<jednakosni_izraz> ::= <jednakosni_izraz> OP_EQ <odnosni_izraz>"),
+            node.getChild(0).generate();
+            node.getChild(2).generate();
+            break;
+        }
 
-            case EQUALITY_EXPRESSION_3: {
-                break;
-            }
+        case EQUALITY_EXPRESSION_3: {
+            // EQUALITY_EXPRESSION_3("<jednakosni_izraz> ::= <jednakosni_izraz> OP_NEQ <odnosni_izraz>"),
+            node.getChild(0).generate();
+            node.getChild(2).generate();
+            break;
+        }
 
-            default:
-                System.err.println("Generation reached undefined production!");
-                break;
+        default:
+            System.err.println("Generation reached undefined production!");
+            break;
         }
     }
 }

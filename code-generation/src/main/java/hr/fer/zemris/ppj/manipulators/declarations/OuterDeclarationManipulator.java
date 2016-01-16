@@ -47,19 +47,21 @@ public class OuterDeclarationManipulator implements Manipulator {
     @Override
     public void generate(Node node) {
         switch (Production.fromNode(node)) {
-            case OUTER_DECLARATION_1: {
-                node.getChild(0).generate();
-                break;
-            }
+        case OUTER_DECLARATION_1: {
+            // OUTER_DECLARATION_1("<vanjska_deklaracija> ::= <definicija_funkcije>"),
+            node.getChild(0).generate();
+            break;
+        }
 
-            case OUTER_DECLARATION_2: {
-                node.getChild(0).generate();
-                break;
-            }
+        case OUTER_DECLARATION_2: {
+            // OUTER_DECLARATION_2("<vanjska_deklaracija> ::= <deklaracija>"),
+            node.getChild(0).generate();
+            break;
+        }
 
-            default:
-                System.err.println("Generation reached undefined production!");
-                break;
+        default:
+            System.err.println("Generation reached undefined production!");
+            break;
         }
     }
 }

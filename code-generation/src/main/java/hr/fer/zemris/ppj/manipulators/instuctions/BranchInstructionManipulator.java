@@ -111,17 +111,24 @@ public class BranchInstructionManipulator implements Manipulator {
     @Override
     public void generate(Node node) {
         switch (Production.fromNode(node)) {
-            case BRANCH_INSTRUCTION_1: {
-                break;
-            }
+        case BRANCH_INSTRUCTION_1: {
+            // BRANCH_INSTRUCTION_1("<naredba_grananja> ::= KR_IF L_ZAGRADA <izraz> D_ZAGRADA <naredba>"),
+            node.getChild(2).generate();
+            node.getChild(4).generate();
+            break;
+        }
 
-            case BRANCH_INSTRUCTION_2: {
-                break;
-            }
+        case BRANCH_INSTRUCTION_2: {
+            // BRANCH_INSTRUCTION_2("<naredba_grananja> ::= KR_IF L_ZAGRADA <izraz> D_ZAGRADA <naredba> KR_ELSE <naredba>"),
+            node.getChild(2).generate();
+            node.getChild(4).generate();
+            node.getChild(6).generate();
+            break;
+        }
 
-            default:
-                System.err.println("Generation reached undefined production!");
-                break;
+        default:
+            System.err.println("Generation reached undefined production!");
+            break;
         }
     }
 }

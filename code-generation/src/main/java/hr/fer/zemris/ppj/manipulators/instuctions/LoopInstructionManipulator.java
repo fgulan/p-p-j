@@ -146,21 +146,33 @@ public class LoopInstructionManipulator implements Manipulator {
     @Override
     public void generate(Node node) {
         switch (Production.fromNode(node)) {
-            case LOOP_INSTRUCTION_1: {
-                break;
-            }
+        case LOOP_INSTRUCTION_1: {
+            // "<naredba_petlje> ::= KR_WHILE L_ZAGRADA <izraz> D_ZAGRADA <naredba>"
+            node.getChild(2).generate();
+            node.getChild(4).generate();
+            break;
+        }
 
-            case LOOP_INSTRUCTION_2: {
-                break;
-            }
+        case LOOP_INSTRUCTION_2: {
+            // "<naredba_petlje> ::= KR_FOR L_ZAGRADA <izraz_naredba> <izraz_naredba> D_ZAGRADA <naredba>"
+            node.getChild(2).generate();
+            node.getChild(3).generate();
+            node.getChild(5).generate();
+            break;
+        }
 
-            case LOOP_INSTRUCTION_3: {
-                break;
-            }
+        case LOOP_INSTRUCTION_3: {
+            // "<naredba_petlje> ::= KR_FOR L_ZAGRADA <izraz_naredba> <izraz_naredba> <izraz> D_ZAGRADA <naredba>"
+            node.getChild(2).generate();
+            node.getChild(3).generate();
+            node.getChild(4).generate();
+            node.getChild(6).generate();
+            break;
+        }
 
-            default:
-                System.err.println("Generation reached undefined production!");
-                break;
+        default:
+            System.err.println("Generation reached undefined production!");
+            break;
         }
     }
 }

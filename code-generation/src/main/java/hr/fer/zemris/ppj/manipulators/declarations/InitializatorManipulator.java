@@ -111,17 +111,21 @@ public class InitializatorManipulator implements Manipulator {
     @Override
     public void generate(Node node) {
         switch (Production.fromNode(node)) {
-            case INITIALIZATOR_1: {
-                break;
-            }
+        case INITIALIZATOR_1: {
+            // INITIALIZATOR_1("<inicijalizator> ::= <izraz_pridruzivanja>"),
+            node.getChild(0).generate();
+            break;
+        }
 
-            case INITIALIZATOR_2: {
-                break;
-            }
+        case INITIALIZATOR_2: {
+            // INITIALIZATOR_2("<inicijalizator> ::= L_VIT_ZAGRADA <lista_izraza_pridruzivanja> D_VIT_ZAGRADA"),
+            node.getChild(1).generate();
+            break;
+        }
 
-            default:
-                System.err.println("Generation reached undefined production!");
-                break;
+        default:
+            System.err.println("Generation reached undefined production!");
+            break;
         }
     }
 }

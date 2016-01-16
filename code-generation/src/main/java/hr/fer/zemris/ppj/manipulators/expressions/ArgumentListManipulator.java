@@ -89,17 +89,22 @@ public class ArgumentListManipulator implements Manipulator {
     @Override
     public void generate(Node node) {
         switch (Production.fromNode(node)) {
-            case ARGUMENT_LIST_1: {
-                break;
-            }
+        case ARGUMENT_LIST_1: {
+            // ARGUMENT_LIST_1("<lista_argumenata> ::= <izraz_pridruzivanja>"),
+            node.getChild(0).generate();
+            break;
+        }
 
-            case ARGUMENT_LIST_2: {
-                break;
-            }
+        case ARGUMENT_LIST_2: {
+            // ARGUMENT_LIST_2("<lista_argumenata> ::= <lista_argumenata> ZAREZ <izraz_pridruzivanja>"),
+            node.getChild(0).generate();
+            node.getChild(2).generate();
+            break;
+        }
 
-            default:
-                System.err.println("Generation reached undefined production!");
-                break;
+        default:
+            System.err.println("Generation reached undefined production!");
+            break;
         }
     }
 }

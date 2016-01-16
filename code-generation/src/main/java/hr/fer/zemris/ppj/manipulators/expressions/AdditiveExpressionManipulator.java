@@ -136,21 +136,29 @@ public class AdditiveExpressionManipulator implements Manipulator {
     @Override
     public void generate(Node node) {
         switch (Production.fromNode(node)) {
-            case ADDITIVE_EXPRESSION_1: {
-                break;
-            }
+        case ADDITIVE_EXPRESSION_1: {
+            // ADDITIVE_EXPRESSION_1("<aditivni_izraz> ::= <multiplikativni_izraz>"),
+            node.getChild(0).generate();
+            break;
+        }
 
-            case ADDITIVE_EXPRESSION_2: {
-                break;
-            }
+        case ADDITIVE_EXPRESSION_2: {
+            // ADDITIVE_EXPRESSION_2("<aditivni_izraz> ::= <aditivni_izraz> PLUS <multiplikativni_izraz>"),
+            node.getChild(0).generate();
+            node.getChild(2).generate();
+            break;
+        }
 
-            case ADDITIVE_EXPRESSION_3: {
-                break;
-            }
+        case ADDITIVE_EXPRESSION_3: {
+            // ADDITIVE_EXPRESSION_3("<aditivni_izraz> ::= <aditivni_izraz> MINUS <multiplikativni_izraz>"),
+            node.getChild(0).generate();
+            node.getChild(2).generate();
+            break;
+        }
 
-            default:
-                System.err.println("Generation reached undefined production!");
-                break;
+        default:
+            System.err.println("Generation reached undefined production!");
+            break;
         }
     }
 }

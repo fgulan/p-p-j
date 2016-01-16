@@ -59,21 +59,24 @@ public class TypeSpecifierManipulator implements Manipulator {
     @Override
     public void generate(Node node) {
         switch (Production.fromNode(node)) {
-            case TYPE_SPECIFIER_1: {
-                break;
-            }
+        case TYPE_SPECIFIER_1: {
+            // TYPE_SPECIFIER_1("<specifikator_tipa> ::= KR_VOID"),
+            break;
+        }
 
-            case TYPE_SPECIFIER_2: {
-                break;
-            }
+        case TYPE_SPECIFIER_2: {
+            // TYPE_SPECIFIER_2("<specifikator_tipa> ::= KR_CHAR"),
+            break;
+        }
 
-            case TYPE_SPECIFIER_3: {
-                break;
-            }
+        case TYPE_SPECIFIER_3: {
+            // TYPE_SPECIFIER_3("<specifikator_tipa> ::= KR_INT"),
+            break;
+        }
 
-            default:
-                System.err.println("Generation reached undefined production!");
-                break;
+        default:
+            System.err.println("Generation reached undefined production!");
+            break;
         }
     }
 }

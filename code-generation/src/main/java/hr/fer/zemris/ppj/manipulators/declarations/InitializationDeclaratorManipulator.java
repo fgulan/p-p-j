@@ -80,8 +80,7 @@ public class InitializationDeclaratorManipulator implements Manipulator {
                 List<Type> initTypes;
                 if (type.isArray()) {
                     initTypes = (List<Type>) current.getAttribute(Attribute.TYPES);
-                }
-                else {
+                } else {
                     initTypes = new ArrayList<>();
                     final Type initType = (Type) current.getAttribute(Attribute.TYPE);
                     if (initType == null) {
@@ -92,8 +91,7 @@ public class InitializationDeclaratorManipulator implements Manipulator {
 
                 if (handleInits(elemCount, type, initTypes)) {
                     return true;
-                }
-                else {
+                } else {
                     return Utils.badNode(node);
                 }
             }
@@ -125,17 +123,22 @@ public class InitializationDeclaratorManipulator implements Manipulator {
     @Override
     public void generate(Node node) {
         switch (Production.fromNode(node)) {
-            case INITIALIZATION_DECLARATOR_1: {
-                break;
-            }
+        case INITIALIZATION_DECLARATOR_1: {
+            // INITIALIZATION_DECLARATOR_1("<init_deklarator> ::= <izravni_deklarator>"),
+            node.getChild(0).generate();
+            break;
+        }
 
-            case INITIALIZATION_DECLARATOR_2: {
-                break;
-            }
+        case INITIALIZATION_DECLARATOR_2: {
+            // INITIALIZATION_DECLARATOR_2("<init_deklarator> ::= <izravni_deklarator> OP_PRIDRUZI <inicijalizator>"),
+            node.getChild(0).generate();
+            node.getChild(2).generate();
+            break;
+        }
 
-            default:
-                System.err.println("Generation reached undefined production!");
-                break;
+        default:
+            System.err.println("Generation reached undefined production!");
+            break;
         }
     }
 }

@@ -99,17 +99,22 @@ public class BinaryXorExpressionManipulator implements Manipulator {
     @Override
     public void generate(Node node) {
         switch (Production.fromNode(node)) {
-            case BINARY_XOR_EXPRESSION_1: {
-                break;
-            }
+        case BINARY_XOR_EXPRESSION_1: {
+            // BINARY_XOR_EXPRESSION_1("<bin_xili_izraz> ::= <bin_i_izraz>"),
+            node.getChild(0).generate();
+            break;
+        }
 
-            case BINARY_XOR_EXPRESSION_2: {
-                break;
-            }
+        case BINARY_XOR_EXPRESSION_2: {
+            // BINARY_XOR_EXPRESSION_2("<bin_xili_izraz> ::= <bin_xili_izraz> OP_BIN_XILI <bin_i_izraz>"),
+            node.getChild(0).generate();
+            node.getChild(2).generate();
+            break;
+        }
 
-            default:
-                System.err.println("Generation reached undefined production!");
-                break;
+        default:
+            System.err.println("Generation reached undefined production!");
+            break;
         }
     }
 }

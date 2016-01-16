@@ -66,17 +66,21 @@ public class ParameterDeclarationManipulator implements Manipulator {
     @Override
     public void generate(Node node) {
         switch (Production.fromNode(node)) {
-            case PARAMETER_DECLARATION_1: {
-                break;
-            }
+        case PARAMETER_DECLARATION_1: {
+            // PARAMETER_DECLARATION_1("<deklaracija_parametra> ::= <ime_tipa> IDN"),
+            node.getChild(0).generate();
+            break;
+        }
 
-            case PARAMETER_DECLARATION_2: {
-                break;
-            }
+        case PARAMETER_DECLARATION_2: {
+            // PARAMETER_DECLARATION_2("<deklaracija_parametra> ::= <ime_tipa> IDN L_UGL_ZAGRADA D_UGL_ZAGRADA"),
+            node.getChild(0).generate();
+            break;
+        }
 
-            default:
-                System.err.println("Generation reached undefined production!");
-                break;
+        default:
+            System.err.println("Generation reached undefined production!");
+            break;
         }
     }
 }

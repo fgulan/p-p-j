@@ -64,17 +64,20 @@ public class ExpressionInstructionManipulator implements Manipulator {
     @Override
     public void generate(Node node) {
         switch (Production.fromNode(node)) {
-            case EXPRESSION_INSTRUCTION_1: {
-                break;
-            }
+        case EXPRESSION_INSTRUCTION_1: {
+            // EXPRESSION_INSTRUCTION_1("<izraz_naredba> ::= TOCKAZAREZ"),
+            break;
+        }
 
-            case EXPRESSION_INSTRUCTION_2: {
-                break;
-            }
+        case EXPRESSION_INSTRUCTION_2: {
+            // EXPRESSION_INSTRUCTION_2("<izraz_naredba> ::= <izraz> TOCKAZAREZ"),
+            node.getChild(0).generate();
+            break;
+        }
 
-            default:
-                System.err.println("Generation reached undefined production!");
-                break;
+        default:
+            System.err.println("Generation reached undefined production!");
+            break;
         }
     }
 }
