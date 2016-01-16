@@ -122,4 +122,11 @@ public class FRISCGenerator {
         generateCommand(COMMAND_FACTORY.pop(Reg.R1));
         generateCommand(COMMAND_FACTORY.pop(Reg.R0));
     }
+
+    public static void generateUnaryNegate() {
+        generateCommand(COMMAND_FACTORY.pop(Reg.R0));
+        generateCommand(COMMAND_FACTORY.move(0, Reg.R1));
+        generateCommand(COMMAND_FACTORY.sub(Reg.R1, Reg.R0, Reg.R0));
+        generateCommand(COMMAND_FACTORY.push(Reg.R0));
+    }
 }

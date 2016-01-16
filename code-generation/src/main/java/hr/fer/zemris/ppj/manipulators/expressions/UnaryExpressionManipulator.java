@@ -160,8 +160,8 @@ public class UnaryExpressionManipulator implements Manipulator {
 
         case UNARY_EXPRESSION_4: {
             // UNARY_EXPRESSION_4("<unarni_izraz> ::= <unarni_operator> <cast_izraz>"),
-            node.getChild(0).generate();
             node.getChild(1).generate();
+            node.getChild(0).generate();
             break;
         }
 

@@ -3,6 +3,7 @@ package hr.fer.zemris.ppj.manipulators.expressions;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.code.command.CommandFactory;
+import hr.fer.zemris.ppj.code.generator.FRISCGenerator;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 
 /**
@@ -48,6 +49,7 @@ public class UnaryOperatorManipulator implements Manipulator {
 
         case UNARY_OPERATOR_2: {
             // UNARY_OPERATOR_2("<unarni_operator> ::= MINUS"),
+            FRISCGenerator.generateUnaryNegate();
             break;
         }
 
