@@ -109,7 +109,7 @@ public class AssignExpressionManipulator implements Manipulator {
             // ASSIGN_EXPRESSION_2("<izraz_pridruzivanja> ::= <postfiks_izraz> OP_PRIDRUZI <izraz_pridruzivanja>"),
             node.getChild(0).generate();
             node.getChild(2).generate();
-            FRISCGenerator.generateAssigmentOperation();
+            FRISCGenerator.generateAssignmentOperation();
             break;
         }
 

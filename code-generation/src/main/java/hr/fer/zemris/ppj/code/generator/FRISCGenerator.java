@@ -102,7 +102,6 @@ public class FRISCGenerator {
         else {
             String label = generateGlobalLabel(identifier);
             generateCommand(COMMAND_FACTORY.load(Reg.R0, label));
-            generateCommand(COMMAND_FACTORY.move(label, Reg.R5));
             generateCommand(COMMAND_FACTORY.push(Reg.R0));
         }
     }
@@ -224,10 +223,9 @@ public class FRISCGenerator {
         return !(bitCount == 12 && signumBit || bitCount == 0 && !signumBit);
     }
     
-    public static void generateAssigmentOperation() {
+    public static void generateAssignmentOperation() {
         generateCommand(COMMAND_FACTORY.pop(Reg.R0));
         generateCommand(COMMAND_FACTORY.pop(Reg.R1));
-        generateCommand(COMMAND_FACTORY.store(Reg.R0, Reg.R5));
         generateCommand(COMMAND_FACTORY.push(Reg.R0));
     }
 
