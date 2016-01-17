@@ -191,7 +191,6 @@ public class FRISCGenerator {
 
     public static void generateStartIfIntstruction() {
         String label = "IF_START_" + ifCounter;
-        Pair pair = new Pair(label, "");
         generateCommand(label, COMMAND_FACTORY.pop(Reg.R0));
         generateCommand(COMMAND_FACTORY.cmp(Reg.R0, 0));
         generateCommand(COMMAND_FACTORY.jp("IF_END_" + ifCounter, Condition.EQUAL));
@@ -206,7 +205,6 @@ public class FRISCGenerator {
 
     public static void generateStartIfElseIntstruction() {
         String label = "IF_ELSE_START_" + ifElseCounter;
-        Pair pair = new Pair(label, "");
         generateCommand(label, COMMAND_FACTORY.pop(Reg.R0));
         generateCommand(COMMAND_FACTORY.cmp(Reg.R0, 0));
         generateCommand(COMMAND_FACTORY.jp("ELSE_START_" + ifElseCounter, Condition.EQUAL));
