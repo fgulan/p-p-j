@@ -41,8 +41,8 @@ public class FRISCGenerator {
 
     private static final List<Pair> globals = new ArrayList<>();
 
-    private static final Stack<Pair> ifBranch = new Stack<Pair>();
-    private static final Stack<Pair> ifElseBranch = new Stack<Pair>();
+    private static int ifCounter = 0;
+    private static int ifElseCounter = 0;
 
     private static String currentFunction = "";
     
@@ -190,41 +190,39 @@ public class FRISCGenerator {
     }
 
     public static void generateStartIfIntstruction() {
-        int ifCounter = ifBranch.size();
         String label = "IF_START_" + ifCounter;
         Pair pair = new Pair(label, "");
-        ifBranch.push(pair);
         generateCommand(label, COMMAND_FACTORY.pop(Reg.R0));
         generateCommand(COMMAND_FACTORY.cmp(Reg.R0, 0));
         generateCommand(COMMAND_FACTORY.jp("IF_END_" + ifCounter, Condition.EQUAL));
+        ifCounter++;
     }
 
     public static void generateEndIfIntstruction() {
-        ifBranch.pop();
-        String label = "IF_END_" + ifBranch.size();
+        ifCounter--;
+        String label = "IF_END_" + ifCounter;
         generateCommand(label, "");        
     }
 
     public static void generateStartIfElseIntstruction() {
-        int ifElseCounter = ifElseBranch.size();
         String label = "IF_ELSE_START_" + ifElseCounter;
         Pair pair = new Pair(label, "");
-        ifElseBranch.push(pair);
         generateCommand(label, COMMAND_FACTORY.pop(Reg.R0));
         generateCommand(COMMAND_FACTORY.cmp(Reg.R0, 0));
-        generateCommand(COMMAND_FACTORY.jp("ELSE_START_" + ifElseCounter, Condition.EQUAL));        
+        generateCommand(COMMAND_FACTORY.jp("ELSE_START_" + ifElseCounter, Condition.EQUAL));
+        ifElseCounter++;
     }
 
     public static void generateElseIntstruction() {
-        int ifElseCounter = ifElseBranch.size() - 1;
-        String label = "IF_ELSE_END_" + ifElseCounter;
-        generateCommand(label, COMMAND_FACTORY.jp("ELSE_END_" + ifElseCounter));        
-        generateCommand("ELSE_START_" + ifElseCounter, "");
+        int count = ifElseCounter - 1;
+        String label = "IF_ELSE_END_" + count;
+        generateCommand(label, COMMAND_FACTORY.jp("ELSE_END_" + count));        
+        generateCommand("ELSE_START_" + count, "");
     }
 
     public static void generateEndIfElseIntstruction() {
-        ifElseBranch.pop();
-        String label = "ELSE_END_" + ifElseBranch.size();
+        ifElseCounter--;
+        String label = "ELSE_END_" + ifElseCounter;
         generateCommand(label, "");            
     }
 }
