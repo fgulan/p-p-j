@@ -26,7 +26,7 @@
                    <unarni_izraz>
                     <postfiks_izraz>
                      <primarni_izraz>
-                      BROJ 1 1234
+                      BROJ 1 15
      TOCKAZAREZ 1 ;
   <vanjska_deklaracija>
    <deklaracija>
@@ -53,7 +53,7 @@
                   <unarni_izraz>
                    <postfiks_izraz>
                     <primarni_izraz>
-                     BROJ 2 12345
+                     BROJ 2 16
     TOCKAZAREZ 2 ;
  <vanjska_deklaracija>
   <definicija_funkcije>
@@ -67,91 +67,9 @@
    <slozena_naredba>
     L_VIT_ZAGRADA 3 {
     <lista_naredbi>
-     <lista_naredbi>
-      <naredba>
-       <naredba_grananja>
-        KR_IF 4 if
-        L_ZAGRADA 4 (
-        <izraz>
-         <izraz_pridruzivanja>
-          <log_ili_izraz>
-           <log_i_izraz>
-            <bin_ili_izraz>
-             <bin_xili_izraz>
-              <bin_i_izraz>
-               <jednakosni_izraz>
-                <odnosni_izraz>
-                 <odnosni_izraz>
-                  <aditivni_izraz>
-                   <multiplikativni_izraz>
-                    <cast_izraz>
-                     <unarni_izraz>
-                      <postfiks_izraz>
-                       <primarni_izraz>
-                        IDN 4 x
-                 OP_LT 4 <
-                 <aditivni_izraz>
-                  <multiplikativni_izraz>
-                   <cast_izraz>
-                    <unarni_izraz>
-                     <postfiks_izraz>
-                      <primarni_izraz>
-                       IDN 4 y
-        D_ZAGRADA 4 )
-        <naredba>
-         <slozena_naredba>
-          L_VIT_ZAGRADA 4 {
-          <lista_naredbi>
-           <naredba>
-            <naredba_skoka>
-             KR_RETURN 5 return
-             <izraz>
-              <izraz_pridruzivanja>
-               <log_ili_izraz>
-                <log_i_izraz>
-                 <bin_ili_izraz>
-                  <bin_xili_izraz>
-                   <bin_i_izraz>
-                    <jednakosni_izraz>
-                     <odnosni_izraz>
-                      <aditivni_izraz>
-                       <multiplikativni_izraz>
-                        <cast_izraz>
-                         <unarni_izraz>
-                          <postfiks_izraz>
-                           <primarni_izraz>
-                            BROJ 5 12
-             TOCKAZAREZ 5 ;
-          D_VIT_ZAGRADA 6 }
-        KR_ELSE 6 else
-        <naredba>
-         <slozena_naredba>
-          L_VIT_ZAGRADA 6 {
-          <lista_naredbi>
-           <naredba>
-            <naredba_skoka>
-             KR_RETURN 7 return
-             <izraz>
-              <izraz_pridruzivanja>
-               <log_ili_izraz>
-                <log_i_izraz>
-                 <bin_ili_izraz>
-                  <bin_xili_izraz>
-                   <bin_i_izraz>
-                    <jednakosni_izraz>
-                     <odnosni_izraz>
-                      <aditivni_izraz>
-                       <multiplikativni_izraz>
-                        <cast_izraz>
-                         <unarni_izraz>
-                          <postfiks_izraz>
-                           <primarni_izraz>
-                            BROJ 7 21
-             TOCKAZAREZ 7 ;
-          D_VIT_ZAGRADA 8 }
      <naredba>
       <naredba_skoka>
-       KR_RETURN 9 return
+       KR_RETURN 4 return
        <izraz>
         <izraz_pridruzivanja>
          <log_ili_izraz>
@@ -162,11 +80,19 @@
               <jednakosni_izraz>
                <odnosni_izraz>
                 <aditivni_izraz>
+                 <aditivni_izraz>
+                  <multiplikativni_izraz>
+                   <cast_izraz>
+                    <unarni_izraz>
+                     <postfiks_izraz>
+                      <primarni_izraz>
+                       IDN 4 x
+                 PLUS 4 +
                  <multiplikativni_izraz>
                   <cast_izraz>
                    <unarni_izraz>
                     <postfiks_izraz>
                      <primarni_izraz>
-                      BROJ 9 9
-       TOCKAZAREZ 9 ;
-    D_VIT_ZAGRADA 10 }
+                      IDN 4 y
+       TOCKAZAREZ 4 ;
+    D_VIT_ZAGRADA 5 }

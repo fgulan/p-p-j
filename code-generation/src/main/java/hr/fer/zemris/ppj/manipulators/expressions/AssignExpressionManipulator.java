@@ -5,6 +5,7 @@ import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.code.command.CommandFactory;
+import hr.fer.zemris.ppj.code.generator.FRISCGenerator;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 import hr.fer.zemris.ppj.types.Type;
 
@@ -108,6 +109,7 @@ public class AssignExpressionManipulator implements Manipulator {
             // ASSIGN_EXPRESSION_2("<izraz_pridruzivanja> ::= <postfiks_izraz> OP_PRIDRUZI <izraz_pridruzivanja>"),
             node.getChild(0).generate();
             node.getChild(2).generate();
+            FRISCGenerator.generateAssigmentOperation();
             break;
         }
 

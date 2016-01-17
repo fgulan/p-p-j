@@ -195,6 +195,10 @@ public class CommandFactory {
     public String load(Reg dest, String label) {
         return load(dest, label, Size.WORD);
     }
+    
+    public String loadDW(Reg dest, String label) {
+        return "\tLOAD " + dest + ", " + label;
+    }
 
     public String load(Reg dest, String label, Size size) {
         return "\tLOAD" + size + " " + dest + ", (" + label + ")";

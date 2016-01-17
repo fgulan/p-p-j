@@ -100,7 +100,9 @@ public class FRISCGenerator {
             generateCommand(COMMAND_FACTORY.push(Reg.R0));
         }
         else {
-            generateCommand(COMMAND_FACTORY.load(Reg.R0, generateGlobalLabel(identifier)));
+            String label = generateGlobalLabel(identifier);
+            generateCommand(COMMAND_FACTORY.load(Reg.R0, label));
+            generateCommand(COMMAND_FACTORY.move(label, Reg.R5));
             generateCommand(COMMAND_FACTORY.push(Reg.R0));
         }
     }
@@ -171,10 +173,30 @@ public class FRISCGenerator {
             break;
         case LT:
             generateCommand(COMMAND_FACTORY.cmp(Reg.R0, Reg.R1));
-            generateCommand(COMMAND_FACTORY.move(Reg.SR, Reg.R0));
-            generateCommand(COMMAND_FACTORY.shr(Reg.R0, 2, Reg.R1));
-            generateCommand(COMMAND_FACTORY.xor(Reg.R0, Reg.R1, Reg.R0));
-            generateCommand(COMMAND_FACTORY.and(Reg.R0, 1, Reg.R0));
+            setFlagsLessThan();
+            break;
+        case GT:
+            generateCommand(COMMAND_FACTORY.cmp(Reg.R1, Reg.R0));
+            setFlagsLessThan();
+            break;
+        case LE:
+            generateCommand(COMMAND_FACTORY.cmp(Reg.R1, Reg.R0));
+            setFlagsLessThan();
+            generateCommand(COMMAND_FACTORY.xor(Reg.R0, 1, Reg.R0));
+            break;
+        case GE:
+            generateCommand(COMMAND_FACTORY.cmp(Reg.R0, Reg.R1));
+            setFlagsLessThan();
+            generateCommand(COMMAND_FACTORY.xor(Reg.R0, 1, Reg.R0));
+            break;
+        case EQ:
+            generateCommand(COMMAND_FACTORY.cmp(Reg.R0, Reg.R1));
+            setFlagsEqual();
+            break;
+        case NE:
+            generateCommand(COMMAND_FACTORY.cmp(Reg.R0, Reg.R1));
+            setFlagsEqual();
+            generateCommand(COMMAND_FACTORY.xor(Reg.R0, 1, Reg.R0));
             break;
         default:
             break;
@@ -182,11 +204,31 @@ public class FRISCGenerator {
         generateCommand(COMMAND_FACTORY.push(Reg.R0));
     }
     
+    private static void setFlagsEqual() {
+        generateCommand(COMMAND_FACTORY.move(Reg.SR, Reg.R0));
+        generateCommand(COMMAND_FACTORY.shr(Reg.R0, 3, Reg.R0));
+        generateCommand(COMMAND_FACTORY.and(Reg.R0, 1, Reg.R0));
+    }
+
+    private static void setFlagsLessThan() {
+        generateCommand(COMMAND_FACTORY.move(Reg.SR, Reg.R0));
+        generateCommand(COMMAND_FACTORY.shr(Reg.R0, 2, Reg.R1));
+        generateCommand(COMMAND_FACTORY.xor(Reg.R0, Reg.R1, Reg.R0));
+        generateCommand(COMMAND_FACTORY.and(Reg.R0, 1, Reg.R0));
+    }
+    
     private static boolean isBigInteger(int value) {
         int upper12 = (value & 0xfff00000);
         boolean signumBit = (value & 0x00010000) != 0;
         int bitCount = Integer.bitCount(upper12);
         return !(bitCount == 12 && signumBit || bitCount == 0 && !signumBit);
+    }
+    
+    public static void generateAssigmentOperation() {
+        generateCommand(COMMAND_FACTORY.pop(Reg.R0));
+        generateCommand(COMMAND_FACTORY.pop(Reg.R1));
+        generateCommand(COMMAND_FACTORY.store(Reg.R0, Reg.R5));
+        generateCommand(COMMAND_FACTORY.push(Reg.R0));
     }
 
     public static void generateStartIfIntstruction() {
