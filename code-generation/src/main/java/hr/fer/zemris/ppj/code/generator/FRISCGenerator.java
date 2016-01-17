@@ -5,10 +5,12 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 import hr.fer.zemris.ppj.BinaryOperation;
 import hr.fer.zemris.ppj.code.Reg;
 import hr.fer.zemris.ppj.code.command.CommandFactory;
+import hr.fer.zemris.ppj.code.command.Condition;
 import hr.fer.zemris.ppj.types.VoidType;
 import hr.fer.zemris.ppj.types.functions.FunctionType;
 
@@ -39,8 +41,12 @@ public class FRISCGenerator {
 
     private static final List<Pair> globals = new ArrayList<>();
 
-    private static String currentFunction = "";
+    private static final Stack<Pair> ifBranch = new Stack<Pair>();
+    private static final Stack<Pair> ifElseBranch = new Stack<Pair>();
 
+    private static String currentFunction = "";
+    
+    
     public static void generateTo(OutputStream outputStream) throws IOException {
         OutputStreamWriter writer = new OutputStreamWriter(outputStream);
 
@@ -174,5 +180,44 @@ public class FRISCGenerator {
         boolean signumBit = (value & 0x00010000) != 0;
         int bitCount = Integer.bitCount(upper12);
         return !(bitCount == 12 && signumBit || bitCount == 0 && !signumBit);
+    }
+
+    public static void generateStartIfIntstruction() {
+        int ifCounter = ifBranch.size();
+        String label = "IF_START_" + ifCounter;
+        Pair pair = new Pair(label, "");
+        ifBranch.push(pair);
+        generateCommand(label, COMMAND_FACTORY.pop(Reg.R0));
+        generateCommand(COMMAND_FACTORY.cmp(Reg.R0, 0));
+        generateCommand(COMMAND_FACTORY.jp("IF_END_" + ifCounter, Condition.EQUAL));
+    }
+
+    public static void generateEndIfIntstruction() {
+        ifBranch.pop();
+        String label = "IF_END_" + ifBranch.size();
+        generateCommand(label, "");        
+    }
+
+    public static void generateStartIfElseIntstruction() {
+        int ifElseCounter = ifElseBranch.size();
+        String label = "IF_ELSE_START_" + ifElseCounter;
+        Pair pair = new Pair(label, "");
+        ifElseBranch.push(pair);
+        generateCommand(label, COMMAND_FACTORY.pop(Reg.R0));
+        generateCommand(COMMAND_FACTORY.cmp(Reg.R0, 0));
+        generateCommand(COMMAND_FACTORY.jp("ELSE_START_" + ifElseCounter, Condition.EQUAL));        
+    }
+
+    public static void generateElseIntstruction() {
+        int ifElseCounter = ifElseBranch.size() - 1;
+        String label = "IF_ELSE_END_" + ifElseCounter;
+        generateCommand(label, COMMAND_FACTORY.jp("ELSE_END_" + ifElseCounter));        
+        generateCommand("ELSE_START_" + ifElseCounter, "");
+    }
+
+    public static void generateEndIfElseIntstruction() {
+        ifElseBranch.pop();
+        String label = "ELSE_END_" + ifElseBranch.size();
+        generateCommand(label, "");            
     }
 }

@@ -106,6 +106,8 @@ public class JumpInstructionManipulator implements Manipulator {
 
         case JUMP_INSTRUCTION_3: {
             // JUMP_INSTRUCTION_3("<naredba_skoka> ::= KR_RETURN TOCKAZAREZ"),
+            FRISCGenerator.contextLoad();
+            FRISCGenerator.generateCommand(ch.ret());
             break;
         }
 
@@ -113,6 +115,8 @@ public class JumpInstructionManipulator implements Manipulator {
             // JUMP_INSTRUCTION_4("<naredba_skoka> ::= KR_RETURN <izraz> TOCKAZAREZ"),
             node.getChild(1).generate();
             FRISCGenerator.generateCommand(ch.pop(Reg.R6));
+            FRISCGenerator.contextLoad();
+            FRISCGenerator.generateCommand(ch.ret());
             break;
         }
 

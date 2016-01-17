@@ -269,7 +269,7 @@ public class CommandFactory {
     }
 
     public String jp(String label, Condition condition) {
-        return "\tJP_" + condition + " %D " + label;
+        return "\tJP_" + condition + " " + label;
     }
 
     public String jp(Reg adrreg) {

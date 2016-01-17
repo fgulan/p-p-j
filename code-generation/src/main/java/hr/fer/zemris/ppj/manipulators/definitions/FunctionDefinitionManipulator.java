@@ -116,8 +116,6 @@ public class FunctionDefinitionManipulator implements Manipulator {
                 FRISCGenerator.generateCommand(label, "");
                 FRISCGenerator.contextSave();
                 node.getChild(5).generate();
-                FRISCGenerator.contextLoad();
-                FRISCGenerator.generateCommand(ch.ret());
                 break;
             }
 
@@ -130,8 +128,6 @@ public class FunctionDefinitionManipulator implements Manipulator {
                 FRISCGenerator.contextSave();
                 node.getChild(3).generate();
                 node.getChild(5).generate();
-                FRISCGenerator.contextLoad();
-                FRISCGenerator.generateCommand(ch.ret());
                 break;
             }
 

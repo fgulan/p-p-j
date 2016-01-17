@@ -111,15 +111,21 @@ public class OuterDeclarationManipulator implements Manipulator {
                         else {
                             Node current = initDeclarator.getChild(2);
                             while (!(PrimaryExpressionManipulator.HR_NAME.equals(current.name()))) {
-                                current = current.getChild(0);
+                                if (current.getChildren().size() != 0) {
+                                    current = current.getChild(0);
+                                }
                             }
                             if (type.size() == 1) {
-                                char value = (Character) current.getChild(0).getAttribute(Attribute.VALUE);
-                                command = ch.db(value);
+                                if (current.getChildren().size() != 0) {
+                                    char value = (Character) current.getChild(0).getAttribute(Attribute.VALUE);
+                                    command = ch.db(value);
+                                }
                             }
                             else {
-                                int value = (Integer) current.getChild(0).getAttribute(Attribute.VALUE);
-                                command = ch.dw(value);
+                                if (current.getChildren().size() != 0) {
+                                    int value = (Integer) current.getChild(0).getAttribute(Attribute.VALUE);
+                                    command = ch.dw(value);
+                                }
                             }
                         }
                     }

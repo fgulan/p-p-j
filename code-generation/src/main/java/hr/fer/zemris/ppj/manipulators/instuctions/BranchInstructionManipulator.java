@@ -5,6 +5,7 @@ import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.code.command.CommandFactory;
+import hr.fer.zemris.ppj.code.generator.FRISCGenerator;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 import hr.fer.zemris.ppj.types.IntType;
 import hr.fer.zemris.ppj.types.Type;
@@ -114,15 +115,20 @@ public class BranchInstructionManipulator implements Manipulator {
         case BRANCH_INSTRUCTION_1: {
             // BRANCH_INSTRUCTION_1("<naredba_grananja> ::= KR_IF L_ZAGRADA <izraz> D_ZAGRADA <naredba>"),
             node.getChild(2).generate();
+            FRISCGenerator.generateStartIfIntstruction();
             node.getChild(4).generate();
+            FRISCGenerator.generateEndIfIntstruction();
             break;
         }
 
         case BRANCH_INSTRUCTION_2: {
             // BRANCH_INSTRUCTION_2("<naredba_grananja> ::= KR_IF L_ZAGRADA <izraz> D_ZAGRADA <naredba> KR_ELSE <naredba>"),
             node.getChild(2).generate();
+            FRISCGenerator.generateStartIfElseIntstruction();
             node.getChild(4).generate();
+            FRISCGenerator.generateElseIntstruction();
             node.getChild(6).generate();
+            FRISCGenerator.generateEndIfElseIntstruction();
             break;
         }
 
