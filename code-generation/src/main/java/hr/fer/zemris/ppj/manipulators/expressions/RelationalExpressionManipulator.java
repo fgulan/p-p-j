@@ -1,10 +1,12 @@
 package hr.fer.zemris.ppj.manipulators.expressions;
 
 import hr.fer.zemris.ppj.Attribute;
+import hr.fer.zemris.ppj.BinaryOperation;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.code.command.CommandFactory;
+import hr.fer.zemris.ppj.code.generator.FRISCGenerator;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 import hr.fer.zemris.ppj.types.IntType;
 import hr.fer.zemris.ppj.types.Type;
@@ -213,6 +215,7 @@ public class RelationalExpressionManipulator implements Manipulator {
                 // RELATIONAL_EXPRESSION_2("<odnosni_izraz> ::= <odnosni_izraz> OP_LT <aditivni_izraz>"),
                 node.getChild(0).generate();
                 node.getChild(2).generate();
+                FRISCGenerator.generateBinaryOperation(BinaryOperation.LT);
                 break;
             }
 
@@ -220,6 +223,7 @@ public class RelationalExpressionManipulator implements Manipulator {
                 // RELATIONAL_EXPRESSION_3("<odnosni_izraz> ::= <odnosni_izraz> OP_GT <aditivni_izraz>"),
                 node.getChild(0).generate();
                 node.getChild(2).generate();
+                FRISCGenerator.generateBinaryOperation(BinaryOperation.GT);
                 break;
             }
 
@@ -227,6 +231,7 @@ public class RelationalExpressionManipulator implements Manipulator {
                 // RELATIONAL_EXPRESSION_4("<odnosni_izraz> ::= <odnosni_izraz> OP_LTE <aditivni_izraz>"),
                 node.getChild(0).generate();
                 node.getChild(2).generate();
+                FRISCGenerator.generateBinaryOperation(BinaryOperation.LE);
                 break;
             }
 
@@ -234,6 +239,7 @@ public class RelationalExpressionManipulator implements Manipulator {
                 // RELATIONAL_EXPRESSION_5("<odnosni_izraz> ::= <odnosni_izraz> OP_GTE <aditivni_izraz>"),
                 node.getChild(0).generate();
                 node.getChild(2).generate();
+                FRISCGenerator.generateBinaryOperation(BinaryOperation.GE);
                 break;
             }
 

@@ -169,6 +169,13 @@ public class FRISCGenerator {
         case XOR:
             generateCommand(COMMAND_FACTORY.xor(Reg.R0, Reg.R1, Reg.R0));
             break;
+        case LT:
+            generateCommand(COMMAND_FACTORY.cmp(Reg.R0, Reg.R1));
+            generateCommand(COMMAND_FACTORY.move(Reg.SR, Reg.R0));
+            generateCommand(COMMAND_FACTORY.shr(Reg.R0, 2, Reg.R1));
+            generateCommand(COMMAND_FACTORY.xor(Reg.R0, Reg.R1, Reg.R0));
+            generateCommand(COMMAND_FACTORY.and(Reg.R0, 1, Reg.R0));
+            break;
         default:
             break;
         }
