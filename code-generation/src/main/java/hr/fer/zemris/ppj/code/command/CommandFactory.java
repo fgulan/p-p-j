@@ -1,5 +1,7 @@
 package hr.fer.zemris.ppj.code.command;
 
+import java.util.List;
+
 import hr.fer.zemris.ppj.code.Reg;
 
 /**
@@ -195,7 +197,7 @@ public class CommandFactory {
     public String load(Reg dest, String label) {
         return load(dest, label, Size.WORD);
     }
-    
+
     public String loadDW(Reg dest, String label) {
         return "\tLOAD " + dest + ", " + label;
     }
@@ -354,6 +356,15 @@ public class CommandFactory {
 
     public String dw(int value) {
         return "\tDW %D " + value;
+    }
+
+    public String dw(List<Integer> values) {
+        String vals = "";
+        for (int val : values) {
+            vals += "%D " + val + ", ";
+        }
+
+        return "\tDW " + vals.substring(0, vals.length() - 2);
     }
 
 }

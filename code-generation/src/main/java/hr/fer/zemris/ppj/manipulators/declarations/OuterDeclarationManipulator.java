@@ -1,8 +1,10 @@
 package hr.fer.zemris.ppj.manipulators.declarations;
 
+import java.util.List;
 import java.util.Stack;
 
 import hr.fer.zemris.ppj.Attribute;
+import hr.fer.zemris.ppj.ConstexprCalculator;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.Utils;
@@ -10,7 +12,6 @@ import hr.fer.zemris.ppj.code.command.CommandFactory;
 import hr.fer.zemris.ppj.code.generator.FRISCGenerator;
 import hr.fer.zemris.ppj.identifier.table.IdentifierTable;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
-import hr.fer.zemris.ppj.manipulators.expressions.PrimaryExpressionManipulator;
 import hr.fer.zemris.ppj.types.Type;
 
 /**
@@ -95,39 +96,16 @@ public class OuterDeclarationManipulator implements Manipulator {
                     if (initDeclarator.childrenCount() == 1) {
                         if (type.isArray()) {
                             int size = (Integer) initDeclarator.getChild(0).getChild(2).getAttribute(Attribute.VALUE);
-                            command = ch.ds(size * type.size());
+                            command = ch.ds(size * 4);
                         }
                         else {
-                            command = ch.ds(type.size());
+                            command = ch.ds(4);
                         }
                     }
                     // Variable with a defined value
                     else {
-                        // Calculate the value for each element, these are all constexpr
-                        // Refactor to constexpr calculator
-                        if (type.isArray()) {
-                            // TODO: ubi me neda mi se sad.
-                        }
-                        else {
-                            Node current = initDeclarator.getChild(2);
-                            while (!(PrimaryExpressionManipulator.HR_NAME.equals(current.name()))) {
-                                if (current.getChildren().size() != 0) {
-                                    current = current.getChild(0);
-                                }
-                            }
-                            if (type.size() == 1) {
-                                if (current.getChildren().size() != 0) {
-                                    char value = (Character) current.getChild(0).getAttribute(Attribute.VALUE);
-                                    command = ch.db(value);
-                                }
-                            }
-                            else {
-                                if (current.getChildren().size() != 0) {
-                                    int value = (Integer) current.getChild(0).getAttribute(Attribute.VALUE);
-                                    command = ch.dw(value);
-                                }
-                            }
-                        }
+                        List<Integer> values = ConstexprCalculator.calculate(initDeclarator.getChild(2));
+                        command = ch.dw(values);
                     }
 
                     FRISCGenerator.defineClobal(name, command);
