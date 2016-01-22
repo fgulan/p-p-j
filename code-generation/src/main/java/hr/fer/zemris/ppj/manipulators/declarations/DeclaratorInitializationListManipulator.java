@@ -1,5 +1,7 @@
 package hr.fer.zemris.ppj.manipulators.declarations;
 
+import java.util.Stack;
+
 import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
@@ -51,16 +53,20 @@ public class DeclaratorInitializationListManipulator implements Manipulator {
     @Override
     public void generate(Node node) {
         switch (Production.fromNode(node)) {
-            case DECLARATOR_INITIALIZATION_LIST_1: {
-//                DECLARATOR_INITIALIZATION_LIST_1("<lista_init_deklaratora> ::= <init_deklarator>"),
-                node.getChild(0).generate();
-                break;
-            }
-
+            case DECLARATOR_INITIALIZATION_LIST_1:
             case DECLARATOR_INITIALIZATION_LIST_2: {
-//                DECLARATOR_INITIALIZATION_LIST_2("<lista_init_deklaratora> ::= <lista_init_deklaratora> ZAREZ <init_deklarator>"),
-                node.getChild(0).generate();
-                node.getChild(2).generate();
+                Stack<Node> initDeclaratorStack = new Stack<>();
+                Node temp = node;
+                while (Production.fromNode(temp) == Production.DECLARATOR_INITIALIZATION_LIST_2) {
+                    initDeclaratorStack.push(temp.getChild(2));
+                    temp = temp.getChild(0);
+                }
+                initDeclaratorStack.push(temp.getChild(0));
+
+                while (!initDeclaratorStack.isEmpty()) {
+                    initDeclaratorStack.pop().generate();
+                }
+
                 break;
             }
 

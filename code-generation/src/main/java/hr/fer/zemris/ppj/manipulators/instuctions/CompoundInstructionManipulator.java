@@ -4,6 +4,7 @@ import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.code.command.CommandFactory;
+import hr.fer.zemris.ppj.code.generator.CallStack;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 
 /**
@@ -68,22 +69,25 @@ public class CompoundInstructionManipulator implements Manipulator {
     @Override
     public void generate(Node node) {
         switch (Production.fromNode(node)) {
-        case COMPOUND_INSTRUCTION_1: {
-            // COMPOUND_INSTRUCTION_1("<slozena_naredba> ::= L_VIT_ZAGRADA <lista_naredbi> D_VIT_ZAGRADA"),
-            node.getChild(1).generate();
-            break;
-        }
+            case COMPOUND_INSTRUCTION_1: {
+                // COMPOUND_INSTRUCTION_1("<slozena_naredba> ::= L_VIT_ZAGRADA <lista_naredbi> D_VIT_ZAGRADA"),
+                node.getChild(1).generate();
+                break;
+            }
 
-        case COMPOUND_INSTRUCTION_2: {
-            // COMPOUND_INSTRUCTION_2("<slozena_naredba> ::= L_VIT_ZAGRADA <lista_deklaracija> <lista_naredbi> D_VIT_ZAGRADA"),
-            node.getChild(1).generate();
-            node.getChild(2).generate();
-            break;
-        }
+            case COMPOUND_INSTRUCTION_2: {
+                // COMPOUND_INSTRUCTION_2("<slozena_naredba> ::= L_VIT_ZAGRADA <lista_deklaracija> <lista_naredbi>
+                // D_VIT_ZAGRADA"),
+                CallStack.setScopeStart();
+                node.getChild(1).generate();
+                node.getChild(2).generate();
+                CallStack.clearScope();
+                break;
+            }
 
-        default:
-            System.err.println("Generation reached undefined production!");
-            break;
+            default:
+                System.err.println("Generation reached undefined production!");
+                break;
         }
     }
 }

@@ -1,5 +1,7 @@
 package hr.fer.zemris.ppj.manipulators.declarations;
 
+import java.util.Stack;
+
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.Utils;
@@ -48,23 +50,28 @@ public class DeclarationListManipulator implements Manipulator {
 
     @Override
     public void generate(Node node) {
+
         switch (Production.fromNode(node)) {
-        case DECLARATION_LIST_1: {
             // DECLARATION_LIST_1("<lista_deklaracija> ::= <deklaracija>"),
-            node.getChild(0).generate();
-            break;
-        }
+            // DECLARATION_LIST_2("<lista_deklaracija> ::= <lista_deklaracija> <deklaracija>")
+            case DECLARATION_LIST_1:
+            case DECLARATION_LIST_2: {
+                Stack<Node> declarationNodeStack = new Stack<>();
+                Node temp = node;
+                while (Production.fromNode(temp) == Production.DECLARATOR_INITIALIZATION_LIST_2) {
+                    declarationNodeStack.push(temp.getChild(1));
+                    temp = temp.getChild(0);
+                }
+                declarationNodeStack.push(temp.getChild(0));
 
-        case DECLARATION_LIST_2: {
-            // DECLARATION_LIST_2("<lista_deklaracija> ::= <lista_deklaracija> <deklaracija>"),
-            node.getChild(0).generate();
-            node.getChild(1).generate();
-            break;
-        }
-
-        default:
-            System.err.println("Generation reached undefined production!");
-            break;
+                while (!declarationNodeStack.isEmpty()) {
+                    declarationNodeStack.pop().generate();
+                }
+                break;
+            }
+            default:
+                System.err.println("Generation reached undefined production!");
+                break;
         }
     }
 

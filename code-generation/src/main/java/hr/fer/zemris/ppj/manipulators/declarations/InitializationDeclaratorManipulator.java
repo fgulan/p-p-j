@@ -8,7 +8,10 @@ import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.Utils;
+import hr.fer.zemris.ppj.code.Reg;
 import hr.fer.zemris.ppj.code.command.CommandFactory;
+import hr.fer.zemris.ppj.code.generator.CallStack;
+import hr.fer.zemris.ppj.code.generator.FRISCGenerator;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 import hr.fer.zemris.ppj.types.Type;
 import hr.fer.zemris.ppj.types.arrays.ArrayType;
@@ -80,7 +83,8 @@ public class InitializationDeclaratorManipulator implements Manipulator {
                 List<Type> initTypes;
                 if (type.isArray()) {
                     initTypes = (List<Type>) current.getAttribute(Attribute.TYPES);
-                } else {
+                }
+                else {
                     initTypes = new ArrayList<>();
                     final Type initType = (Type) current.getAttribute(Attribute.TYPE);
                     if (initType == null) {
@@ -91,7 +95,8 @@ public class InitializationDeclaratorManipulator implements Manipulator {
 
                 if (handleInits(elemCount, type, initTypes)) {
                     return true;
-                } else {
+                }
+                else {
                     return Utils.badNode(node);
                 }
             }
@@ -122,23 +127,45 @@ public class InitializationDeclaratorManipulator implements Manipulator {
 
     @Override
     public void generate(Node node) {
+        Node directDeclarator = node.getChild(0);
+        String name = (String) directDeclarator.getChild(0).getAttribute(Attribute.VALUE);
+        Type type = directDeclarator.identifierTable().variable(name);
+
         switch (Production.fromNode(node)) {
-        case INITIALIZATION_DECLARATOR_1: {
-            // INITIALIZATION_DECLARATOR_1("<init_deklarator> ::= <izravni_deklarator>"),
-            node.getChild(0).generate();
-            break;
-        }
+            case INITIALIZATION_DECLARATOR_1: {
+                // INITIALIZATION_DECLARATOR_1("<init_deklarator> ::= <izravni_deklarator>"),
+                FRISCGenerator.generateCommand(ch.move(0, Reg.R5));
+                FRISCGenerator.generateCommand(ch.push(Reg.R5));
+                CallStack.push(name, type);
+                if (type.isArray()) {
+                    int size = (Integer) directDeclarator.getChild(2).getAttribute(Attribute.VALUE);
 
-        case INITIALIZATION_DECLARATOR_2: {
-            // INITIALIZATION_DECLARATOR_2("<init_deklarator> ::= <izravni_deklarator> OP_PRIDRUZI <inicijalizator>"),
-            node.getChild(0).generate();
-            node.getChild(2).generate();
-            break;
-        }
+                    for (int i = 1; i < size; i++) {
+                        FRISCGenerator.generateCommand(ch.push(Reg.R5));
+                        CallStack.push(null, type.fromArray());
+                    }
+                }
+                break;
+            }
 
-        default:
-            System.err.println("Generation reached undefined production!");
-            break;
+            case INITIALIZATION_DECLARATOR_2: {
+                // INITIALIZATION_DECLARATOR_2("<init_deklarator> ::= <izravni_deklarator> OP_PRIDRUZI
+                // <inicijalizator>"),
+                CallStack.push(name, type);
+                if (type.isArray()) {
+                    int size = (Integer) directDeclarator.getChild(2).getAttribute(Attribute.VALUE);
+
+                    for (int i = 1; i < size; i++) {
+                        CallStack.push(null, type.fromArray());
+                    }
+                }
+                node.getChild(2).generate();
+                break;
+            }
+
+            default:
+                System.err.println("Generation reached undefined production!");
+                break;
         }
     }
 }

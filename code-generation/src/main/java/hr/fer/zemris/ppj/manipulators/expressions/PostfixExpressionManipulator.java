@@ -6,12 +6,12 @@ import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
+import hr.fer.zemris.ppj.code.Reg;
 import hr.fer.zemris.ppj.code.command.CommandFactory;
 import hr.fer.zemris.ppj.code.generator.FRISCGenerator;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 import hr.fer.zemris.ppj.types.IntType;
 import hr.fer.zemris.ppj.types.Type;
-import hr.fer.zemris.ppj.types.VoidType;
 import hr.fer.zemris.ppj.types.functions.FunctionType;
 
 /**
@@ -236,15 +236,20 @@ public class PostfixExpressionManipulator implements Manipulator {
             case POSTFIX_EXPRESSION_2: {
                 // POSTFIX_EXPRESSION_2("<postfiks_izraz> ::= <postfiks_izraz> L_UGL_ZAGRADA <izraz> D_UGL_ZAGRADA"),
                 node.getChild(0).generate();
+                FRISCGenerator.generateCommand(ch.pop(Reg.R4));
                 node.getChild(2).generate();
+                FRISCGenerator.generateCommand(ch.pop(Reg.R5));
+                FRISCGenerator.generateCommand(ch.add(Reg.R4, Reg.R5, Reg.R1));
+                FRISCGenerator.generateCommand(ch.load(Reg.R0, Reg.R1));
+                FRISCGenerator.generateCommand(ch.pop(Reg.R0));
                 break;
             }
 
             case POSTFIX_EXPRESSION_3: {
                 // POSTFIX_EXPRESSION_3("<postfiks_izraz> ::= <postfiks_izraz> L_ZAGRADA D_ZAGRADA"),
                 node.getChild(0).generate();
-                //Type returnType = (Type) node.getChild(0).getAttribute(Attribute.TYPE);
-                //FRISCGenerator.generateFunctionCall(returnType, null);
+                // Type returnType = (Type) node.getChild(0).getAttribute(Attribute.TYPE);
+                // FRISCGenerator.generateFunctionCall(returnType, null);
                 break;
             }
 
@@ -252,8 +257,8 @@ public class PostfixExpressionManipulator implements Manipulator {
                 // POSTFIX_EXPRESSION_4("<postfiks_izraz> ::= <postfiks_izraz> L_ZAGRADA <lista_argumenata> D_ZAGRADA"),
                 node.getChild(0).generate();
                 node.getChild(2).generate();
-                //Type returnType = (Type) node.getChild(0).getAttribute(Attribute.TYPE);
-                //FRISCGenerator.generateFunctionCall(returnType, null);
+                // Type returnType = (Type) node.getChild(0).getAttribute(Attribute.TYPE);
+                // FRISCGenerator.generateFunctionCall(returnType, null);
                 break;
             }
 

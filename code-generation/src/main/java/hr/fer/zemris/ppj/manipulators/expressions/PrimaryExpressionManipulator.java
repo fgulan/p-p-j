@@ -143,7 +143,7 @@ public class PrimaryExpressionManipulator implements Manipulator {
                     FRISCGenerator.generateFunctionCall(name, functionType);
                 }
                 else {
-                    FRISCGenerator.generateIdentificator(name);
+                    FRISCGenerator.generateIdentifier(name);
                 }
                 break;
             }
@@ -157,11 +157,18 @@ public class PrimaryExpressionManipulator implements Manipulator {
 
             case PRIMARY_EXPRESSION_3: {
                 // PRIMARY_EXPRESSION_3("<primarni_izraz> ::= ZNAK"),
+                char value = (Character) node.getChild(0).getAttribute(Attribute.VALUE);
+                FRISCGenerator.generateNumber(value);
                 break;
             }
 
             case PRIMARY_EXPRESSION_4: {
                 // PRIMARY_EXPRESSION_4("<primarni_izraz> ::= NIZ_ZNAKOVA"),
+                String value = (String) node.getChild(0).getAttribute(Attribute.VALUE);
+                for (int i = 0; i < value.length(); i++) {
+                    FRISCGenerator.generateNumber(value.charAt(i));
+                }
+                FRISCGenerator.generateNumber(0);
                 break;
             }
 
