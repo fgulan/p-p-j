@@ -8,6 +8,7 @@ import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.code.Reg;
 import hr.fer.zemris.ppj.code.command.CommandFactory;
+import hr.fer.zemris.ppj.code.generator.CallStack;
 import hr.fer.zemris.ppj.code.generator.FRISCGenerator;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 import hr.fer.zemris.ppj.types.IntType;
@@ -235,13 +236,23 @@ public class PostfixExpressionManipulator implements Manipulator {
 
             case POSTFIX_EXPRESSION_2: {
                 // POSTFIX_EXPRESSION_2("<postfiks_izraz> ::= <postfiks_izraz> L_UGL_ZAGRADA <izraz> D_UGL_ZAGRADA"),
-                node.getChild(0).generate();
-                FRISCGenerator.generateCommand(ch.pop(Reg.R4));
+                String name = (String) node.getChild(0).getChild(0).getChild(0).getAttribute(Attribute.VALUE);
                 node.getChild(2).generate();
-                FRISCGenerator.generateCommand(ch.pop(Reg.R5));
-                FRISCGenerator.generateCommand(ch.add(Reg.R4, Reg.R5, Reg.R1));
-                FRISCGenerator.generateCommand(ch.load(Reg.R0, Reg.R1));
-                FRISCGenerator.generateCommand(ch.pop(Reg.R0));
+                FRISCGenerator.generateCommand(ch.pop(Reg.R1));
+                FRISCGenerator.generateCommand(ch.add(Reg.R1, Reg.R1, Reg.R1));
+                FRISCGenerator.generateCommand(ch.add(Reg.R1, Reg.R1, Reg.R1));
+                if (CallStack.isLocal(name)) {
+                    int offset = CallStack.offset(name);
+                    FRISCGenerator.generateCommand(ch.add(Reg.R1, offset, Reg.R1));
+                    FRISCGenerator.generateCommand(ch.add(Reg.R1, Reg.SP, Reg.R1));
+                    FRISCGenerator.generateCommand(ch.load(Reg.R0, Reg.R1));
+                }
+                else {
+                    FRISCGenerator.generateCommand(ch.move(FRISCGenerator.generateGlobalLabel(name), Reg.R2));
+                    FRISCGenerator.generateCommand(ch.add(Reg.R1, Reg.R2, Reg.R1));
+                    FRISCGenerator.generateCommand(ch.load(Reg.R0, Reg.R1));
+                }
+                FRISCGenerator.generateCommand(ch.push(Reg.R0));
                 break;
             }
 

@@ -110,7 +110,6 @@ public class AssignExpressionManipulator implements Manipulator {
             case ASSIGN_EXPRESSION_2: {
                 // ASSIGN_EXPRESSION_2("<izraz_pridruzivanja> ::= <postfiks_izraz> OP_PRIDRUZI <izraz_pridruzivanja>"),
                 node.getChild(2).generate();
-                FRISCGenerator.generateCommand(ch.pop(Reg.R0));
                 Node postfixExpression = node.getChild(0);
                 switch (Production.fromNode(postfixExpression)) {
                     case POSTFIX_EXPRESSION_1: {
@@ -118,10 +117,12 @@ public class AssignExpressionManipulator implements Manipulator {
                         String name = (String) primaryExpression.getAttribute(Attribute.VALUE);
                         if (CallStack.isLocal(name)) {
                             int offset = CallStack.offset(name);
+                            FRISCGenerator.generateCommand(ch.pop(Reg.R0));
                             FRISCGenerator.generateCommand(ch.store(Reg.R0, Reg.SP, Integer.toHexString(offset)));
                         }
                         else {
                             FRISCGenerator.generateCommand(ch.move(FRISCGenerator.generateGlobalLabel(name), Reg.R1));
+                            FRISCGenerator.generateCommand(ch.pop(Reg.R0));
                             FRISCGenerator.generateCommand(ch.store(Reg.R0, Reg.R1));
                         }
                         break;
@@ -131,10 +132,18 @@ public class AssignExpressionManipulator implements Manipulator {
                         String name = (String) primaryExpression.getAttribute(Attribute.VALUE);
                         postfixExpression.getChild(2).generate();
                         FRISCGenerator.generateCommand(ch.pop(Reg.R1));
+                        FRISCGenerator.generateCommand(ch.pop(Reg.R0));
+                        FRISCGenerator.generateCommand(ch.add(Reg.R1, Reg.R1, Reg.R1));
+                        FRISCGenerator.generateCommand(ch.add(Reg.R1, Reg.R1, Reg.R1));
                         if (CallStack.isLocal(name)) {
                             int offset = CallStack.offset(name);
                             FRISCGenerator.generateCommand(ch.add(Reg.R1, offset, Reg.R1));
                             FRISCGenerator.generateCommand(ch.add(Reg.R1, Reg.SP, Reg.R1));
+                            FRISCGenerator.generateCommand(ch.store(Reg.R0, Reg.R1));
+                        }
+                        else {
+                            FRISCGenerator.generateCommand(ch.move(FRISCGenerator.generateGlobalLabel(name), Reg.R2));
+                            FRISCGenerator.generateCommand(ch.add(Reg.R1, Reg.R2, Reg.R1));
                             FRISCGenerator.generateCommand(ch.store(Reg.R0, Reg.R1));
                         }
                         break;
