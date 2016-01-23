@@ -58,7 +58,7 @@ public class DeclarationListManipulator implements Manipulator {
             case DECLARATION_LIST_2: {
                 Stack<Node> declarationNodeStack = new Stack<>();
                 Node temp = node;
-                while (Production.fromNode(temp) == Production.DECLARATOR_INITIALIZATION_LIST_2) {
+                while (Production.fromNode(temp) == Production.DECLARATION_LIST_2) {
                     declarationNodeStack.push(temp.getChild(1));
                     temp = temp.getChild(0);
                 }
