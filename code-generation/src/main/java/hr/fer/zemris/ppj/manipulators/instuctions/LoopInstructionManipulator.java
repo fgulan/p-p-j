@@ -154,6 +154,7 @@ public class LoopInstructionManipulator implements Manipulator {
             node.getChild(2).generate();
             FRISCGenerator.generateLoopCheckInstruction();
             node.getChild(4).generate();
+            FRISCGenerator.generateLoopJumpToStartInstruction();
             FRISCGenerator.generateEndLoopIntstruction();
             break;
         }
