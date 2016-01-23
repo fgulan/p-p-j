@@ -97,11 +97,13 @@ public class JumpInstructionManipulator implements Manipulator {
         switch (Production.fromNode(node)) {
             case JUMP_INSTRUCTION_1: {
                 // JUMP_INSTRUCTION_1("<naredba_skoka> ::= KR_CONTINUE TOCKAZAREZ"),
+            	FRISCGenerator.generateLoopJumpToStartInstruction();
                 break;
             }
 
             case JUMP_INSTRUCTION_2: {
                 // JUMP_INSTRUCTION_2("<naredba_skoka> ::= KR_BREAK TOCKAZAREZ"),
+            	FRISCGenerator.generateLoopJumpToEndInstruction();
                 break;
             }
 
