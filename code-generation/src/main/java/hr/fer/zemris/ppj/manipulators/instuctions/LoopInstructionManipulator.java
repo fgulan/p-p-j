@@ -5,6 +5,8 @@ import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.code.command.CommandFactory;
+import hr.fer.zemris.ppj.code.generator.CallStack;
+import hr.fer.zemris.ppj.code.generator.FRISCGenerator;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 import hr.fer.zemris.ppj.types.IntType;
 import hr.fer.zemris.ppj.types.Type;
@@ -148,8 +150,11 @@ public class LoopInstructionManipulator implements Manipulator {
         switch (Production.fromNode(node)) {
         case LOOP_INSTRUCTION_1: {
             // "<naredba_petlje> ::= KR_WHILE L_ZAGRADA <izraz> D_ZAGRADA <naredba>"
+            FRISCGenerator.generateStartLoopIntstruction();
             node.getChild(2).generate();
+            FRISCGenerator.generateLoopCheckInstruction();
             node.getChild(4).generate();
+            FRISCGenerator.generateEndLoopIntstruction();
             break;
         }
 

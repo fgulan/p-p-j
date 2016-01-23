@@ -1,5 +1,9 @@
-int x = 15;
-int y = -12;
 int main(void) {
-    return x+y;
+    int x = 0;
+    int i = 15;
+    while (i >= 0) {
+        x = x + 1;
+        i = i - 1;
+    }
+    return x;
 }

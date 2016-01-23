@@ -43,6 +43,8 @@ public class FRISCGenerator {
 
     private static int ifCounter = 0;
     private static int ifElseCounter = 0;
+    
+    private static int loopCounter = 0;
 
     private static String currentFunction = "";
 
@@ -257,6 +259,33 @@ public class FRISCGenerator {
         String label = "IF_END_" + ifCounter;
         generateCommand(label, "");
     }
+    
+    public static void generateStartLoopIntstruction() {
+        loopCounter++;
+        String label = "LO_START_" + loopCounter;
+        generateCommand(label, "");
+    }
+
+    public static void generateLoopCheckInstruction() {
+        generateCommand(COMMAND_FACTORY.pop(Reg.R0));
+        generateCommand(COMMAND_FACTORY.cmp(Reg.R0, 0));
+        generateCommand(COMMAND_FACTORY.jp("LO_END_" + loopCounter, Condition.EQUAL));
+    }
+    
+    public static void generateLoopJumpToStartInstruction() {
+        generateCommand(COMMAND_FACTORY.jp("LO_START_" + loopCounter));
+    }
+    
+    public static void generateLoopJumpToEndInstruction() {
+        generateCommand(COMMAND_FACTORY.jp("LO_END_" + loopCounter));
+    }
+    
+    public static void generateEndLoopIntstruction() {
+        String label = "LO_END_" + loopCounter;
+        generateCommand(label, "");
+        loopCounter--;
+    }
+
 
     public static void generateStartIfElseIntstruction() {
         String label = "IF_ELSE_START_" + ifElseCounter;

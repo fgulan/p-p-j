@@ -137,6 +137,7 @@ public class InitializationDeclaratorManipulator implements Manipulator {
                 FRISCGenerator.generateCommand(ch.move(0, Reg.R5));
                 FRISCGenerator.generateCommand(ch.push(Reg.R5));
                 CallStack.push(name, type);
+                System.out.println("Tu sam");
                 if (type.isArray()) {
                     int size = (Integer) directDeclarator.getChild(2).getAttribute(Attribute.VALUE);
 
@@ -150,7 +151,7 @@ public class InitializationDeclaratorManipulator implements Manipulator {
 
             case INITIALIZATION_DECLARATOR_2: {
                 // INITIALIZATION_DECLARATOR_2("<init_deklarator> ::= <izravni_deklarator> OP_PRIDRUZI
-                // <inicijalizator>"),
+                // <inicijalizator>");
                 CallStack.push(name, type);
                 if (type.isArray()) {
                     int size = (Integer) directDeclarator.getChild(2).getAttribute(Attribute.VALUE);
