@@ -55,11 +55,13 @@ public class UnaryOperatorManipulator implements Manipulator {
 
         case UNARY_OPERATOR_3: {
             // UNARY_OPERATOR_3("<unarni_operator> ::= OP_TILDA"),
+            FRISCGenerator.generateBitwiseNot();
             break;
         }
 
         case UNARY_OPERATOR_4: {
             // UNARY_OPERATOR_4("<unarni_operator> ::= OP_NEG"),
+            FRISCGenerator.generateLogicalNot();
             break;
         }
 

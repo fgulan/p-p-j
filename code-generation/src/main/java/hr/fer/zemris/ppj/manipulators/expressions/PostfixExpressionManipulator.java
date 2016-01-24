@@ -276,12 +276,14 @@ public class PostfixExpressionManipulator implements Manipulator {
             case POSTFIX_EXPRESSION_5: {
                 // POSTFIX_EXPRESSION_5("<postfiks_izraz> ::= <postfiks_izraz> OP_INC"),
                 node.getChild(0).generate();
+                FRISCGenerator.generatePostIncrement();
                 break;
             }
 
             case POSTFIX_EXPRESSION_6: {
                 // POSTFIX_EXPRESSION_6("<postfiks_izraz> ::= <postfiks_izraz> OP_DEC"),
                 node.getChild(0).generate();
+                FRISCGenerator.generatePostDecrement();
                 break;
             }
 

@@ -1,10 +1,12 @@
 package hr.fer.zemris.ppj.manipulators.expressions;
 
 import hr.fer.zemris.ppj.Attribute;
+import hr.fer.zemris.ppj.BinaryOperation;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.code.command.CommandFactory;
+import hr.fer.zemris.ppj.code.generator.FRISCGenerator;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 import hr.fer.zemris.ppj.types.IntType;
 import hr.fer.zemris.ppj.types.Type;
@@ -178,6 +180,7 @@ public class MultiplicativeExpressionManipulator implements Manipulator {
             // MULTIPLICATIVE_EXPRESSION_2("<multiplikativni_izraz> ::= <multiplikativni_izraz> OP_PUTA <cast_izraz>"),
             node.getChild(0).generate();
             node.getChild(2).generate();
+            FRISCGenerator.generateBinaryOperation(BinaryOperation.MUL);
             break;
         }
 
@@ -186,6 +189,7 @@ public class MultiplicativeExpressionManipulator implements Manipulator {
             // <cast_izraz>"),
             node.getChild(0).generate();
             node.getChild(2).generate();
+            FRISCGenerator.generateBinaryOperation(BinaryOperation.DIV);
             break;
         }
 
@@ -193,6 +197,7 @@ public class MultiplicativeExpressionManipulator implements Manipulator {
             // MULTIPLICATIVE_EXPRESSION_4("<multiplikativni_izraz> ::= <multiplikativni_izraz> OP_MOD <cast_izraz>"),
             node.getChild(0).generate();
             node.getChild(2).generate();
+            FRISCGenerator.generateBinaryOperation(BinaryOperation.MOD);
             break;
         }
 

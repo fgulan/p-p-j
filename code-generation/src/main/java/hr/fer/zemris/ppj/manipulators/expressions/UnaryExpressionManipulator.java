@@ -5,6 +5,7 @@ import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.SemanticErrorReporter;
 import hr.fer.zemris.ppj.code.command.CommandFactory;
+import hr.fer.zemris.ppj.code.generator.FRISCGenerator;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
 import hr.fer.zemris.ppj.types.IntType;
 import hr.fer.zemris.ppj.types.Type;
@@ -149,12 +150,14 @@ public class UnaryExpressionManipulator implements Manipulator {
         case UNARY_EXPRESSION_2: {
             // UNARY_EXPRESSION_2("<unarni_izraz> ::= OP_INC <unarni_izraz>"),
             node.getChild(1).generate();
+            FRISCGenerator.generatePreIncrement();
             break;
         }
 
         case UNARY_EXPRESSION_3: {
             // UNARY_EXPRESSION_3("<unarni_izraz> ::= OP_DEC <unarni_izraz>"),
             node.getChild(1).generate();
+            FRISCGenerator.generatePreDecrement();
             break;
         }
 
