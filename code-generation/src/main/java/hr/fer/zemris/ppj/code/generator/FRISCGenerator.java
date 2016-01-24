@@ -350,6 +350,12 @@ public class FRISCGenerator {
     public static void generateBitwiseNot() {
         generateCommand(COMMAND_FACTORY.pop(Reg.R0));
         generateCommand(COMMAND_FACTORY.xor(Reg.R0, -1, Reg.R0));
+    }
+    
+    public static void generateInc(int increment) {
+        generateCommand(COMMAND_FACTORY.pop(Reg.R0));
+        generateCommand(COMMAND_FACTORY.move(increment, Reg.R1));
+        generateCommand(COMMAND_FACTORY.add(Reg.R0, Reg.R1, Reg.R0));
         generateCommand(COMMAND_FACTORY.push(Reg.R0));
     }
 }

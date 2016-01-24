@@ -161,8 +161,8 @@ public class LoopInstructionManipulator implements Manipulator {
 
         case LOOP_INSTRUCTION_2: {
             // "<naredba_petlje> ::= KR_FOR L_ZAGRADA <izraz_naredba> <izraz_naredba> D_ZAGRADA <naredba>"
-        	FRISCGenerator.generateStartLoopIntstruction();
         	node.getChild(2).generate();
+        	FRISCGenerator.generateStartLoopIntstruction();
             node.getChild(3).generate();
             FRISCGenerator.generateLoopCheckInstruction();
             node.getChild(5).generate();
@@ -173,12 +173,12 @@ public class LoopInstructionManipulator implements Manipulator {
 
         case LOOP_INSTRUCTION_3: {
             // "<naredba_petlje> ::= KR_FOR L_ZAGRADA <izraz_naredba> <izraz_naredba> <izraz> D_ZAGRADA <naredba>"
-        	FRISCGenerator.generateStartLoopIntstruction();
-        	node.getChild(2).generate();
+            node.getChild(2).generate();
+            FRISCGenerator.generateStartLoopIntstruction();
             node.getChild(3).generate();
             FRISCGenerator.generateLoopCheckInstruction();
-            node.getChild(4).generate();
             node.getChild(6).generate();
+            node.getChild(4).generate();
             FRISCGenerator.generateLoopJumpToStartInstruction();
             FRISCGenerator.generateEndLoopIntstruction();
             break;

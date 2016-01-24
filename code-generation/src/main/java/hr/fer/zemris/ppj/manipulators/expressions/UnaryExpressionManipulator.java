@@ -150,7 +150,7 @@ public class UnaryExpressionManipulator implements Manipulator {
         case UNARY_EXPRESSION_2: {
             // UNARY_EXPRESSION_2("<unarni_izraz> ::= OP_INC <unarni_izraz>"),
             node.getChild(1).generate();
-            FRISCGenerator.generatePreIncrement();
+            FRISCGenerator.generateInc(1);
             break;
         }
 

@@ -1,9 +1,8 @@
 int main(void) {
     int x = 0;
-    int i = 15;
-    while (i >= 0) {
-        x = x + 1;
-        i = i - 1;
+    int i;
+    for (i=0; i<42; ++i) {
+        x = x + 2;
     }
     return x;
 }
