@@ -52,8 +52,10 @@ public class FRISCGenerator {
         program.addAll(globals);
 
         for (Pair pair : program) {
-            System.out.println(pair.label + pair.command);
+            // System.out.println(pair.label + pair.command);
+            writer.write(pair.label + pair.command + "\n");
         }
+        writer.flush();
     }
 
     public static String generateGlobalLabel(String name) {
@@ -95,12 +97,14 @@ public class FRISCGenerator {
             if (type == null) {
                 generateCommand(COMMAND_FACTORY.move("F_" + identifier.toUpperCase(), Reg.R0));
                 generateCommand(COMMAND_FACTORY.push(Reg.R0));
-            } else {
+            }
+            else {
                 int offset = CallStack.offset(identifier);
                 generateCommand(COMMAND_FACTORY.load(Reg.R0, Reg.SP, Integer.toHexString(offset)));
                 generateCommand(COMMAND_FACTORY.push(Reg.R0));
             }
-        } else {
+        }
+        else {
             String label = generateGlobalLabel(identifier);
             generateCommand(COMMAND_FACTORY.load(Reg.R0, label));
             generateCommand(COMMAND_FACTORY.push(Reg.R0));
@@ -114,7 +118,8 @@ public class FRISCGenerator {
 
             generateCommand(COMMAND_FACTORY.load(Reg.R0, label));
             generateCommand(COMMAND_FACTORY.push(Reg.R0));
-        } else {
+        }
+        else {
             generateCommand(COMMAND_FACTORY.move(value, Reg.R0));
             generateCommand(COMMAND_FACTORY.push(Reg.R0));
         }
@@ -469,7 +474,7 @@ public class FRISCGenerator {
         generateCommand(COMMAND_FACTORY.pop(Reg.R0));
         generateCommand(COMMAND_FACTORY.xor(Reg.R0, -1, Reg.R0));
     }
-    
+
     public static void generateInc(int increment) {
         generateCommand(COMMAND_FACTORY.pop(Reg.R0));
         generateCommand(COMMAND_FACTORY.move(increment, Reg.R1));
