@@ -266,8 +266,11 @@ public class PostfixExpressionManipulator implements Manipulator {
 
             case POSTFIX_EXPRESSION_4: {
                 // POSTFIX_EXPRESSION_4("<postfiks_izraz> ::= <postfiks_izraz> L_ZAGRADA <lista_argumenata> D_ZAGRADA"),
-                node.getChild(0).generate();
+            	CallStack.setScopeStart();
                 node.getChild(2).generate();
+                CallStack.push();
+                node.getChild(0).generate();
+                CallStack.clearScope();
                 // Type returnType = (Type) node.getChild(0).getAttribute(Attribute.TYPE);
                 // FRISCGenerator.generateFunctionCall(returnType, null);
                 break;

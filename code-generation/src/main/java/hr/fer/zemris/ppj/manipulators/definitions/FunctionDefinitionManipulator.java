@@ -2,6 +2,8 @@ package hr.fer.zemris.ppj.manipulators.definitions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
@@ -34,6 +36,8 @@ public class FunctionDefinitionManipulator implements Manipulator {
      * Name of the node in Croatian.
      */
     public static final String HR_NAME = "<definicija_funkcije>";
+    
+    public static final Map<String, List<String>> FNC = new HashMap<>();
 
     /**
      * {@inheritDoc} <br>
@@ -49,6 +53,8 @@ public class FunctionDefinitionManipulator implements Manipulator {
         String name;
         List<Type> types;
         List<String> names = new ArrayList<>();
+        
+
 
         if (!node.getChild(0).check()) {
             return Utils.badNode(node);
@@ -91,6 +97,8 @@ public class FunctionDefinitionManipulator implements Manipulator {
         }
 
         IdentifierTable.GLOBAL_SCOPE.defineFunction(name, type, types);
+        
+        FNC.put(name, names);
 
         final int paramCount = names.size();
         for (int i = 0; i < paramCount; i++) {
