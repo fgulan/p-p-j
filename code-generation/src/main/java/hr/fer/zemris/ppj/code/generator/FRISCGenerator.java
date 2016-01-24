@@ -164,13 +164,131 @@ public class FRISCGenerator {
         generateCommand(COMMAND_FACTORY.pop(Reg.R0));
         switch (operation) {
         case MUL:
-            //TODO
+            // check if either number is 0
+            generateCommand(COMMAND_FACTORY.cmp(Reg.R0, 0));
+            generateCommand(COMMAND_FACTORY.jp("MUL_ZERO", Condition.EQUAL));
+            
+            // check if either number is 0
+            generateCommand(COMMAND_FACTORY.cmp(Reg.R1, 0));
+            generateCommand(COMMAND_FACTORY.jp("MUL_ZERO", Condition.EQUAL));
+            
+            // determine sign
+            generateCommand(COMMAND_FACTORY.rotl(Reg.R0, 1, Reg.R4));
+            generateCommand(COMMAND_FACTORY.and(Reg.R4, 1, Reg.R4));
+            generateCommand(COMMAND_FACTORY.rotl(Reg.R1, 1, Reg.R5));
+            generateCommand(COMMAND_FACTORY.and(Reg.R5, 1, Reg.R5));
+            generateCommand(COMMAND_FACTORY.xor(Reg.R4, Reg.R5, Reg.R4));
+            // the sign is now in R4
+            
+            // remove signs from original numbers
+            generateCommand(COMMAND_FACTORY.shl(Reg.R0, 1, Reg.R0));
+            generateCommand(COMMAND_FACTORY.shr(Reg.R0, 1, Reg.R0));
+            generateCommand(COMMAND_FACTORY.shl(Reg.R1, 1, Reg.R1));
+            generateCommand(COMMAND_FACTORY.shr(Reg.R1, 1, Reg.R1));
+            
+            // consecutively add numbers
+            generateCommand("MUL_START", "");
+            generateCommand(COMMAND_FACTORY.cmp(Reg.R1, 1));
+            generateCommand(COMMAND_FACTORY.jp("APPLY_SIGN", Condition.EQUAL));
+            generateCommand(COMMAND_FACTORY.add(Reg.R0, Reg.R0, Reg.R0));
+            generateCommand(COMMAND_FACTORY.sub(Reg.R1, 1, Reg.R1));
+            generateCommand(COMMAND_FACTORY.jp("MUL_START"));
+            
+            generateCommand("APPLY_SIGN", "");
+            generateCommand(COMMAND_FACTORY.cmp(Reg.R4, 0));
+            generateCommand(COMMAND_FACTORY.jp("MUL_END", Condition.EQUAL));
+            generateCommand(COMMAND_FACTORY.move(0, Reg.R1));
+            generateCommand(COMMAND_FACTORY.sub(Reg.R1, Reg.R0, Reg.R0));
+            generateCommand(COMMAND_FACTORY.jp("MUL_END"));
+            
+            // deal with mul with zero
+            generateCommand("MUL_ZERO", "");
+            generateCommand(COMMAND_FACTORY.move(0, Reg.R0));
+            
+            // end mul
+            generateCommand("MUL_END", "");
+            
             break;
         case DIV:
-            //TODO
+            
+            // determine sign
+            generateCommand(COMMAND_FACTORY.rotl(Reg.R0, 1, Reg.R4));
+            generateCommand(COMMAND_FACTORY.and(Reg.R4, 1, Reg.R4));
+            generateCommand(COMMAND_FACTORY.rotl(Reg.R1, 1, Reg.R5));
+            generateCommand(COMMAND_FACTORY.and(Reg.R5, 1, Reg.R5));
+            generateCommand(COMMAND_FACTORY.xor(Reg.R4, Reg.R5, Reg.R4));
+            generateCommand(COMMAND_FACTORY.rotr(Reg.R4, 1, Reg.R4));
+            // the sign is now in R4
+            
+            // remove signs from original numbers
+            generateCommand(COMMAND_FACTORY.shl(Reg.R0, 1, Reg.R0));
+            generateCommand(COMMAND_FACTORY.shr(Reg.R0, 1, Reg.R0));
+            generateCommand(COMMAND_FACTORY.shl(Reg.R1, 1, Reg.R1));
+            generateCommand(COMMAND_FACTORY.shr(Reg.R1, 1, Reg.R1));
+            
+            generateCommand(COMMAND_FACTORY.move(0, Reg.R5));
+            
+            // consecutively subtract numbers
+            generateCommand("DIV_START", "");
+            generateCommand(COMMAND_FACTORY.cmp(Reg.R0, Reg.R1));
+            generateCommand(COMMAND_FACTORY.jp("APPLY_SIGN", Condition.UNSIGNED_LESS_THAN));
+            generateCommand(COMMAND_FACTORY.sub(Reg.R0, Reg.R1, Reg.R0));
+            generateCommand(COMMAND_FACTORY.add(Reg.R5, 1, Reg.R5));
+            generateCommand(COMMAND_FACTORY.jp("DIV_START"));
+            
+           
+            
+            generateCommand("APPLY_SIGN", "");
+            generateCommand(COMMAND_FACTORY.move(Reg.R5, Reg.R0));
+            generateCommand(COMMAND_FACTORY.cmp(Reg.R4, 0));
+            generateCommand(COMMAND_FACTORY.jp("DIV_END", Condition.EQUAL));
+            generateCommand(COMMAND_FACTORY.move(0, Reg.R1));
+            generateCommand(COMMAND_FACTORY.sub(Reg.R1, Reg.R0, Reg.R0));
+            
+            // end div
+            generateCommand("DIV_END", "");
             break;
         case MOD:
-            //TODO
+            // determine signs
+            generateCommand(COMMAND_FACTORY.rotl(Reg.R0, 1, Reg.R4));
+            generateCommand(COMMAND_FACTORY.and(Reg.R4, 1, Reg.R4));
+            generateCommand(COMMAND_FACTORY.rotl(Reg.R1, 1, Reg.R5));
+            generateCommand(COMMAND_FACTORY.and(Reg.R5, 1, Reg.R5));
+            generateCommand(COMMAND_FACTORY.xor(Reg.R4, Reg.R5, Reg.R4));
+            // the sign for second is in R5, the sign that determines if the result needs to be inverted is in R4
+            
+            // remove signs from original numbers
+            generateCommand(COMMAND_FACTORY.shl(Reg.R0, 1, Reg.R0));
+            generateCommand(COMMAND_FACTORY.shr(Reg.R0, 1, Reg.R0));
+            generateCommand(COMMAND_FACTORY.shl(Reg.R1, 1, Reg.R1));
+            generateCommand(COMMAND_FACTORY.shr(Reg.R1, 1, Reg.R1));
+            
+            generateCommand(COMMAND_FACTORY.move(Reg.R0, Reg.R3));
+            // consecutively subtract numbers
+            generateCommand("MOD_START", "");
+            generateCommand(COMMAND_FACTORY.cmp(Reg.R0, Reg.R1));
+            generateCommand(COMMAND_FACTORY.jp("INV_CHK", Condition.UNSIGNED_LESS_THAN));
+            generateCommand(COMMAND_FACTORY.sub(Reg.R0, Reg.R1, Reg.R0));
+            generateCommand(COMMAND_FACTORY.jp("MOD_START"));
+            
+            // inversion check
+            generateCommand("INV_CHK", "");
+            
+            // determine if inversion is necessary
+            generateCommand(COMMAND_FACTORY.cmp(Reg.R4, 0));
+            generateCommand(COMMAND_FACTORY.jp("APPLY_SIGN", Condition.EQUAL));
+            
+            // invert
+            generateCommand(COMMAND_FACTORY.sub(Reg.R3, Reg.R0, Reg.R0));
+            
+            generateCommand("APPLY_SIGN", "");
+            generateCommand(COMMAND_FACTORY.cmp(Reg.R5, 0));
+            generateCommand(COMMAND_FACTORY.jp("MOD_END", Condition.EQUAL));
+            generateCommand(COMMAND_FACTORY.move(0, Reg.R1));
+            generateCommand(COMMAND_FACTORY.sub(Reg.R1, Reg.R0, Reg.R0));
+            
+            // mod end
+            generateCommand("MOD_END", "");
             break;
         case ADD:
             generateCommand(COMMAND_FACTORY.add(Reg.R0, Reg.R1, Reg.R0));
