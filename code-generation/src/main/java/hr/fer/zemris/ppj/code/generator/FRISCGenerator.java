@@ -52,8 +52,10 @@ public class FRISCGenerator {
         program.addAll(globals);
 
         for (Pair pair : program) {
-            System.out.println(pair.label + pair.command);
+            // System.out.println(pair.label + pair.command);
+            writer.write(pair.label + pair.command + "\n");
         }
+        writer.flush();
     }
 
     public static String generateGlobalLabel(String name) {
@@ -95,12 +97,14 @@ public class FRISCGenerator {
             if (type == null) {
                 generateCommand(COMMAND_FACTORY.move("F_" + identifier.toUpperCase(), Reg.R0));
                 generateCommand(COMMAND_FACTORY.push(Reg.R0));
-            } else {
+            }
+            else {
                 int offset = CallStack.offset(identifier);
                 generateCommand(COMMAND_FACTORY.load(Reg.R0, Reg.SP, Integer.toHexString(offset)));
                 generateCommand(COMMAND_FACTORY.push(Reg.R0));
             }
-        } else {
+        }
+        else {
             String label = generateGlobalLabel(identifier);
             generateCommand(COMMAND_FACTORY.load(Reg.R0, label));
             generateCommand(COMMAND_FACTORY.push(Reg.R0));
@@ -114,7 +118,8 @@ public class FRISCGenerator {
 
             generateCommand(COMMAND_FACTORY.load(Reg.R0, label));
             generateCommand(COMMAND_FACTORY.push(Reg.R0));
-        } else {
+        }
+        else {
             generateCommand(COMMAND_FACTORY.move(value, Reg.R0));
             generateCommand(COMMAND_FACTORY.push(Reg.R0));
         }
@@ -163,59 +168,59 @@ public class FRISCGenerator {
         generateCommand(COMMAND_FACTORY.pop(Reg.R1));
         generateCommand(COMMAND_FACTORY.pop(Reg.R0));
         switch (operation) {
-        case MUL:
-            //TODO
-            break;
-        case DIV:
-            //TODO
-            break;
-        case MOD:
-            //TODO
-            break;
-        case ADD:
-            generateCommand(COMMAND_FACTORY.add(Reg.R0, Reg.R1, Reg.R0));
-            break;
-        case SUB:
-            generateCommand(COMMAND_FACTORY.sub(Reg.R0, Reg.R1, Reg.R0));
-            break;
-        case OR:
-            generateCommand(COMMAND_FACTORY.or(Reg.R0, Reg.R1, Reg.R0));
-            break;
-        case AND:
-            generateCommand(COMMAND_FACTORY.and(Reg.R0, Reg.R1, Reg.R0));
-            break;
-        case XOR:
-            generateCommand(COMMAND_FACTORY.xor(Reg.R0, Reg.R1, Reg.R0));
-            break;
-        case LT:
-            generateCommand(COMMAND_FACTORY.cmp(Reg.R0, Reg.R1));
-            setFlagsLessThan();
-            break;
-        case GT:
-            generateCommand(COMMAND_FACTORY.cmp(Reg.R1, Reg.R0));
-            setFlagsLessThan();
-            break;
-        case LE:
-            generateCommand(COMMAND_FACTORY.cmp(Reg.R1, Reg.R0));
-            setFlagsLessThan();
-            generateCommand(COMMAND_FACTORY.xor(Reg.R0, 1, Reg.R0));
-            break;
-        case GE:
-            generateCommand(COMMAND_FACTORY.cmp(Reg.R0, Reg.R1));
-            setFlagsLessThan();
-            generateCommand(COMMAND_FACTORY.xor(Reg.R0, 1, Reg.R0));
-            break;
-        case EQ:
-            generateCommand(COMMAND_FACTORY.cmp(Reg.R0, Reg.R1));
-            setFlagsEqual();
-            break;
-        case NE:
-            generateCommand(COMMAND_FACTORY.cmp(Reg.R0, Reg.R1));
-            setFlagsEqual();
-            generateCommand(COMMAND_FACTORY.xor(Reg.R0, 1, Reg.R0));
-            break;
-        default:
-            break;
+            case MUL:
+                // TODO
+                break;
+            case DIV:
+                // TODO
+                break;
+            case MOD:
+                // TODO
+                break;
+            case ADD:
+                generateCommand(COMMAND_FACTORY.add(Reg.R0, Reg.R1, Reg.R0));
+                break;
+            case SUB:
+                generateCommand(COMMAND_FACTORY.sub(Reg.R0, Reg.R1, Reg.R0));
+                break;
+            case OR:
+                generateCommand(COMMAND_FACTORY.or(Reg.R0, Reg.R1, Reg.R0));
+                break;
+            case AND:
+                generateCommand(COMMAND_FACTORY.and(Reg.R0, Reg.R1, Reg.R0));
+                break;
+            case XOR:
+                generateCommand(COMMAND_FACTORY.xor(Reg.R0, Reg.R1, Reg.R0));
+                break;
+            case LT:
+                generateCommand(COMMAND_FACTORY.cmp(Reg.R0, Reg.R1));
+                setFlagsLessThan();
+                break;
+            case GT:
+                generateCommand(COMMAND_FACTORY.cmp(Reg.R1, Reg.R0));
+                setFlagsLessThan();
+                break;
+            case LE:
+                generateCommand(COMMAND_FACTORY.cmp(Reg.R1, Reg.R0));
+                setFlagsLessThan();
+                generateCommand(COMMAND_FACTORY.xor(Reg.R0, 1, Reg.R0));
+                break;
+            case GE:
+                generateCommand(COMMAND_FACTORY.cmp(Reg.R0, Reg.R1));
+                setFlagsLessThan();
+                generateCommand(COMMAND_FACTORY.xor(Reg.R0, 1, Reg.R0));
+                break;
+            case EQ:
+                generateCommand(COMMAND_FACTORY.cmp(Reg.R0, Reg.R1));
+                setFlagsEqual();
+                break;
+            case NE:
+                generateCommand(COMMAND_FACTORY.cmp(Reg.R0, Reg.R1));
+                setFlagsEqual();
+                generateCommand(COMMAND_FACTORY.xor(Reg.R0, 1, Reg.R0));
+                break;
+            default:
+                break;
         }
         generateCommand(COMMAND_FACTORY.push(Reg.R0));
     }
@@ -351,7 +356,7 @@ public class FRISCGenerator {
         generateCommand(COMMAND_FACTORY.pop(Reg.R0));
         generateCommand(COMMAND_FACTORY.xor(Reg.R0, -1, Reg.R0));
     }
-    
+
     public static void generateInc(int increment) {
         generateCommand(COMMAND_FACTORY.pop(Reg.R0));
         generateCommand(COMMAND_FACTORY.move(increment, Reg.R1));
