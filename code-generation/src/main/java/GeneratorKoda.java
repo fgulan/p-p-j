@@ -1,6 +1,6 @@
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Scanner;
@@ -28,10 +28,11 @@ public class GeneratorKoda {
      * @since 1.0
      */
     public static void main(String[] args) throws FileNotFoundException {
-        // final Node node = TreeParser.parse(new Scanner(new FileInputStream(new File("test.in"))));
-        final Node node = TreeParser.parse(new Scanner(System.in));
+        final Node node = TreeParser.parse(new Scanner(new FileInputStream(new File("test.in"))));
+        // final Node node = TreeParser.parse(new Scanner(System.in));
         runSemanticAnalysis(node);
-        runCodeGeneration(node, new FileOutputStream(new File("a.frisc")));
+        // runCodeGeneration(node, new FileOutputStream(new File("a.frisc")));
+        runCodeGeneration(node, System.out);
     }
 
     private static void runSemanticAnalysis(Node node) {
@@ -47,7 +48,8 @@ public class GeneratorKoda {
         FRISCGenerator.generateEpilogue();
         try {
             FRISCGenerator.generateTo(outputStream);
-            outputStream.flush();
+            // outputStream.flush();
+            // outputStream.close();
         }
         catch (IOException e) {
             e.printStackTrace();

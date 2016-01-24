@@ -65,6 +65,10 @@ public class CallStack {
     }
 
     public static void clearScope() {
+        if (scopeStart) {
+            return;
+        }
+
         boolean hasScope = false;
         for (int i = callStack.size() - 1; i >= 0; i--) {
             if (callStack.get(i).scopeStart()) {

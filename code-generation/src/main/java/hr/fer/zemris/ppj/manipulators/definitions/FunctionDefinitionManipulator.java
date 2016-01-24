@@ -1,8 +1,8 @@
 package hr.fer.zemris.ppj.manipulators.definitions;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import hr.fer.zemris.ppj.Attribute;
@@ -10,6 +10,7 @@ import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.Utils;
 import hr.fer.zemris.ppj.code.command.CommandFactory;
+import hr.fer.zemris.ppj.code.generator.CallStack;
 import hr.fer.zemris.ppj.code.generator.FRISCGenerator;
 import hr.fer.zemris.ppj.identifier.table.IdentifierTable;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
@@ -36,7 +37,7 @@ public class FunctionDefinitionManipulator implements Manipulator {
      * Name of the node in Croatian.
      */
     public static final String HR_NAME = "<definicija_funkcije>";
-    
+
     public static final Map<String, List<String>> FNC = new HashMap<>();
 
     /**
@@ -53,8 +54,6 @@ public class FunctionDefinitionManipulator implements Manipulator {
         String name;
         List<Type> types;
         List<String> names = new ArrayList<>();
-        
-
 
         if (!node.getChild(0).check()) {
             return Utils.badNode(node);
@@ -97,7 +96,7 @@ public class FunctionDefinitionManipulator implements Manipulator {
         }
 
         IdentifierTable.GLOBAL_SCOPE.defineFunction(name, type, types);
-        
+
         FNC.put(name, names);
 
         final int paramCount = names.size();
@@ -133,9 +132,10 @@ public class FunctionDefinitionManipulator implements Manipulator {
                 String label =
                         FRISCGenerator.generateFunctionLabel((String) node.getChild(1).getAttribute(Attribute.VALUE));
                 FRISCGenerator.generateCommand(label, "");
-                FRISCGenerator.contextSave();
                 node.getChild(3).generate();
+                FRISCGenerator.contextSave();
                 node.getChild(5).generate();
+                CallStack.clearScope();
                 break;
             }
 

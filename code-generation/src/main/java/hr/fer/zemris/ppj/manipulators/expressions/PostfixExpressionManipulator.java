@@ -1,6 +1,7 @@
 package hr.fer.zemris.ppj.manipulators.expressions;
 
 import java.util.List;
+import java.util.Stack;
 
 import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
@@ -11,6 +12,7 @@ import hr.fer.zemris.ppj.code.command.CommandFactory;
 import hr.fer.zemris.ppj.code.generator.CallStack;
 import hr.fer.zemris.ppj.code.generator.FRISCGenerator;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
+import hr.fer.zemris.ppj.manipulators.definitions.FunctionDefinitionManipulator;
 import hr.fer.zemris.ppj.types.IntType;
 import hr.fer.zemris.ppj.types.Type;
 import hr.fer.zemris.ppj.types.functions.FunctionType;
@@ -266,11 +268,24 @@ public class PostfixExpressionManipulator implements Manipulator {
 
             case POSTFIX_EXPRESSION_4: {
                 // POSTFIX_EXPRESSION_4("<postfiks_izraz> ::= <postfiks_izraz> L_ZAGRADA <lista_argumenata> D_ZAGRADA"),
-            	CallStack.setScopeStart();
-                node.getChild(2).generate();
-                CallStack.push();
+                String name = (String) node.getChild(0).getChild(0).getChild(0).getAttribute(Attribute.VALUE);
+                CallStack.setScopeStart();
+                Node temp = node.getChild(2);
+                Stack<Node> argumentStack = new Stack<>();
+                while (Production.fromNode(temp) == Production.ARGUMENT_LIST_2) {
+                    argumentStack.push(temp.getChild(2));
+                    temp = temp.getChild(0);
+                }
+                argumentStack.push(temp.getChild(0));
+
+                int i = 0;
+                while (!argumentStack.isEmpty()) {
+                    String argumentName = FunctionDefinitionManipulator.FNC.get(name).get(i++);
+                    CallStack.push(argumentName, null);
+                    argumentStack.pop().generate();
+                }
+
                 node.getChild(0).generate();
-                CallStack.clearScope();
                 // Type returnType = (Type) node.getChild(0).getAttribute(Attribute.TYPE);
                 // FRISCGenerator.generateFunctionCall(returnType, null);
                 break;

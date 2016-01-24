@@ -2,13 +2,18 @@ package hr.fer.zemris.ppj.manipulators.definitions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 import hr.fer.zemris.ppj.Attribute;
 import hr.fer.zemris.ppj.Node;
 import hr.fer.zemris.ppj.Production;
 import hr.fer.zemris.ppj.Utils;
+import hr.fer.zemris.ppj.code.Reg;
 import hr.fer.zemris.ppj.code.command.CommandFactory;
+import hr.fer.zemris.ppj.code.generator.CallStack;
+import hr.fer.zemris.ppj.code.generator.FRISCGenerator;
 import hr.fer.zemris.ppj.interfaces.Manipulator;
+import hr.fer.zemris.ppj.types.IntType;
 import hr.fer.zemris.ppj.types.Type;
 
 /**
@@ -54,7 +59,8 @@ public class ParameterListManipulator implements Manipulator {
         Node decl;
         if (size == 1) {
             decl = node.getChild(0);
-        } else {
+        }
+        else {
             decl = node.getChild(2);
         }
 
@@ -83,22 +89,30 @@ public class ParameterListManipulator implements Manipulator {
     @Override
     public void generate(Node node) {
         switch (Production.fromNode(node)) {
-        case PARAMETER_LIST_1: {
-            // PARAMETER_LIST_1("<lista_parametara> ::= <deklaracija_parametra>"),
-            node.getChild(0).generate();
-            break;
-        }
+            case PARAMETER_LIST_1:
+            case PARAMETER_LIST_2: {
+                // PARAMETER_LIST_1("<lista_parametara> ::= <deklaracija_parametra>"),
+                Node temp = node;
+                Stack<Node> parameterStack = new Stack<>();
+                while (Production.fromNode(temp) == Production.PARAMETER_DECLARATION_2) {
+                    parameterStack.push(temp.getChild(2));
+                    temp = temp.getChild(0);
+                }
+                parameterStack.push(temp.getChild(0));
 
-        case PARAMETER_LIST_2: {
-            // PARAMETER_LIST_2("<lista_parametara> ::= <lista_parametara> ZAREZ <deklaracija_parametra>"),
-            node.getChild(0).generate();
-            node.getChild(2).generate();
-            break;
-        }
+                CallStack.setScopeStart();
+                while (!parameterStack.isEmpty()) {
+                    Node parameterNode = parameterStack.pop();
+                    String name = (String) parameterNode.getChild(1).getAttribute(Attribute.VALUE);
+                    CallStack.push(name, new IntType());
+                    FRISCGenerator.generateCommand(ch.push(Reg.R0));
+                }
+                break;
+            }
 
-        default:
-            System.err.println("Generation reached undefined production!");
-            break;
+            default:
+                System.err.println("Generation reached undefined production!");
+                break;
         }
     }
 }
