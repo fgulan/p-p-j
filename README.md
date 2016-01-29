@@ -11,7 +11,7 @@ Check *ppj-labos-upute*.
 1. Lexical analysis: 30/30
 2. Syntax analysis: 25/25
 3. Semantic analysis: 30/30
-4. Code generation: x/y
+4. Code generation: 24/38
 
 ###Deadlines
 1. Lexical analysis
